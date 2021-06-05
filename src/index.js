@@ -1,21 +1,19 @@
 import "./style.scss";
 
-import Model from "./MVP/model";
-import View from "./MVP/view";
+import Presenter from "./mvp/presenter";
 
-(function ($) {
-  jQuery.fn.test = function () {
-    this.append(
-      `
-      <div class='slider'>
-        <div class='slider__line'>
-          <span class='slider__dot'></span>
-        </div>
-        <div class='slider__line slider__line_align-right'>
-          <span class='slider__dot slider__dot_align-right'></span>
-        </div>  
-      </div>  
-      `
-    );
-  };
-})(jQuery);
+class Slider {
+  constructor(element, options) {
+    this.element = element;
+    this.options = options;
+    this._init();
+  }
+
+  _init() {
+    this.presenter = new Presenter(this.element, this.options);
+  }
+}
+
+$.fn.slider = function initSlider(options) {
+  new Slider(this, options);
+};

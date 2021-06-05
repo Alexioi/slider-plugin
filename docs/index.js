@@ -1,1 +1,1 @@
-$(".example").test();
+$(".example").slider({ isRange: true });

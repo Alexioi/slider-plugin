@@ -8,15 +8,15 @@
   box-sizing: border-box;
 
   &__line {
-    position: relative;
     display: flex;
+    border-radius: 3px;
     background: linear-gradient(180deg, #6fcf97 0%, #66d2ea 100%);
     box-sizing: border-box;
     flex-shrink: 0;
   }
 
   &__dot {
-    transform: translate(-1px, -4px);
+    transform: translateY(-4px);
     display: block;
     height: 14px;
     width: 14px;
@@ -24,10 +24,10 @@
     border: 2px solid #ffffff;
     border-radius: 10px;
     box-sizing: border-box;
+    cursor: grab;
 
     &_align-right {
       margin-left: auto;
-      transform: translate(1px, -4px);
     }
   }
 }
