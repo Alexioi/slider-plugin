@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./plugin.scss";
 
 import Presenter from "./mvp/presenter";
 
@@ -14,6 +14,6 @@ class Slider {
   }
 }
 
-$.fn.slider = function initSlider(options) {
+$.fn.slider = function (options) {
   new Slider(this, options);
 };

@@ -3,30 +3,22 @@ class View {
     this.element = element;
   }
 
-  addElement(options) {
-    let elementContent = "";
-    let isRange = options?.isRange || false;
-
-    if (isRange) {
-      elementContent = `
-        <div class='slider'>
-          <div class='slider__line'>
-            <span class='slider__dot'></span>
-            <span class='slider__dot slider__dot_align-right'></span>
-          </div>
-        </div>
-      `;
-    } else {
-      elementContent = `
+  drawElement(isRange) {
+    let elementContent = `
         <div class='slider'>
           <div class='slider__line'>
             <span class='slider__dot slider__dot_align-right'></span>
           </div>
         </div>
       `;
-    }
 
     this.element.append(elementContent);
+
+    if (isRange) {
+      this.element
+        .find(".slider__line")
+        .prepend("<span class='slider__dot'></span>");
+    }
   }
 }
 

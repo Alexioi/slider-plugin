@@ -7,16 +7,17 @@ class Presenter {
     this.options = options;
 
     this._initMVP();
-    this.updateView();
+    this._init();
   }
 
   _initMVP() {
     this.view = new View(this.element);
-    this.model = new Model();
+    this.model = new Model(this.options);
   }
 
-  updateView() {
-    this.view.addElement(this.options);
+  _init() {
+    let isRange = this.model.options.isRange;
+    this.view.drawElement(isRange);
   }
 }
 
