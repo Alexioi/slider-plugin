@@ -3,22 +3,36 @@ class View {
     this.element = element;
   }
 
-  drawElement(isRange) {
-    let elementContent = `
-        <div class='slider'>
-          <div class='slider__line'>
-            <span class='slider__dot slider__dot_align-right'></span>
-          </div>
-        </div>
-      `;
+  init(isRange) {
+    this.drawSlider();
+    this.drawLine();
+    this.drawDots(isRange);
+  }
 
-    this.element.append(elementContent);
+  drawSlider() {
+    const slider = "<div class='slider'></div>";
+
+    this.element.append(slider);
+  }
+
+  drawLine() {
+    const line = "<div class='slider__line'></div>";
+
+    this.element.find(".slider").append(line);
+  }
+
+  drawDots(isRange) {
+    const dot = "<div class='slider__dot'></div>";
+
+    this.element.find(".slider").append(dot);
 
     if (isRange) {
-      this.element
-        .find(".slider__line")
-        .prepend("<span class='slider__dot'></span>");
+      this.element.find(".slider").prepend(dot);
     }
+  }
+
+  clearSlider() {
+    this.element.find(".slider").empty();
   }
 }
 
