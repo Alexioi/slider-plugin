@@ -1,15 +1,31 @@
 class Model {
-  constructor(options) {
+  constructor(element, options) {
     this.options = options;
+    this.element = element;
 
     this._init();
   }
 
   _init() {
-    let { isRange = false, test = "test" } = this.options || {};
+    const defaultSettings = {
+      isRange: false,
+    };
 
-    this.options.isRange = isRange;
-    this.options.test = test;
+    this.changeSetting(defaultSettings, this.options);
+  }
+
+  changeSetting(settings, newSettings) {
+    for (let setting in settings) {
+      if (newSettings[setting] === undefined) {
+        this.element.data(setting, settings[setting]);
+      } else {
+        this.element.data(setting, newSettings[setting]);
+      }
+    }
+  }
+
+  getSettings() {
+    return this.element.data();
   }
 }
 

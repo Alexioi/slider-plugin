@@ -10,19 +10,25 @@ class Presenter {
     this._init();
   }
 
-  changeSetting() {
-    console.log("test11");
+  changeSetting(newSetting) {
+    let settings = this.model.getSettings();
+
+    this.model.changeSetting(settings, newSetting);
+
+    let isRange = this.model.getSettings().isRange;
+
+    this.view.toggleFromDots(isRange);
   }
 
   _initMVP() {
     this.view = new View(this.element);
-    this.model = new Model(this.options);
+    this.model = new Model(this.element, this.options);
   }
 
   _init() {
-    let isRange = this.model.options.isRange;
+    let isRange = this.model.getSettings().isRange;
 
-    this.view.init(isRange);
+    this.view.drawSlider(isRange);
   }
 }
 

@@ -3,31 +3,41 @@ class View {
     this.element = element;
   }
 
-  init(isRange) {
-    this.drawSlider();
-    this.drawLine();
-    this.drawDots(isRange);
-  }
-
-  drawSlider() {
-    const slider = "<div class='slider'></div>";
+  drawSlider(isRange) {
+    const slider = `
+      <div class='slider'>
+        <div class='slider__dot slider__dot_from'></div>
+        <div class='slider__line'></div>
+        <div class='slider__dot slider__dot_to'></div>
+      </div>
+    `;
 
     this.element.append(slider);
+
+    this.toggleFromDots(isRange);
   }
 
-  drawLine() {
-    const line = "<div class='slider__line'></div>";
+  toggleFromDots(isRange) {
+    const sliderDotFrom = this.element.find(".slider__dot_from");
+
+    if (isRange) {
+      sliderDotFrom.css({ display: "block" });
+    } else {
+      sliderDotFrom.css({ display: "none" });
+    }
+  }
+
+  drawSliderContent(isRange) {
+    const line = "";
+    const dot = "";
+
+    this.clearSlider();
 
     this.element.find(".slider").append(line);
-  }
-
-  drawDots(isRange) {
-    const dot = "<div class='slider__dot'></div>";
-
     this.element.find(".slider").append(dot);
 
     if (isRange) {
-      this.element.find(".slider").prepend(dot);
+      this.element.find(".slider").append(dot);
     }
   }
 
