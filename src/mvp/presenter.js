@@ -15,9 +15,17 @@ class Presenter {
 
     this.model.changeSetting(settings, newSetting);
 
-    let isRange = this.model.getSettings().isRange;
+    settings = this.model.getSettings();
 
-    this.view.toggleFromDots(isRange);
+    this.changeVisible(settings);
+  }
+
+  changeVisible(settings) {
+    if (settings.isRange) {
+      this.view.displayFromDots();
+    } else {
+      this.view.hideFromDots();
+    }
   }
 
   _initMVP() {
@@ -26,9 +34,10 @@ class Presenter {
   }
 
   _init() {
-    let isRange = this.model.getSettings().isRange;
+    let settings = this.model.getSettings();
 
-    this.view.drawSlider(isRange);
+    this.view.drawSlider();
+    this.changeVisible(settings);
   }
 }
 

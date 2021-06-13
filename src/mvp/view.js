@@ -3,7 +3,7 @@ class View {
     this.element = element;
   }
 
-  drawSlider(isRange) {
+  drawSlider() {
     const slider = `
       <div class='slider'>
         <div class='slider__dot slider__dot_from'></div>
@@ -13,36 +13,18 @@ class View {
     `;
 
     this.element.append(slider);
-
-    this.toggleFromDots(isRange);
   }
 
-  toggleFromDots(isRange) {
+  displayFromDots() {
     const sliderDotFrom = this.element.find(".slider__dot_from");
 
-    if (isRange) {
-      sliderDotFrom.css({ display: "block" });
-    } else {
-      sliderDotFrom.css({ display: "none" });
-    }
+    sliderDotFrom.css({ display: "block" });
   }
 
-  drawSliderContent(isRange) {
-    const line = "";
-    const dot = "";
+  hideFromDots() {
+    const sliderDotFrom = this.element.find(".slider__dot_from");
 
-    this.clearSlider();
-
-    this.element.find(".slider").append(line);
-    this.element.find(".slider").append(dot);
-
-    if (isRange) {
-      this.element.find(".slider").append(dot);
-    }
-  }
-
-  clearSlider() {
-    this.element.find(".slider").empty();
+    sliderDotFrom.css({ display: "none" });
   }
 }
 
