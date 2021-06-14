@@ -1,46 +1,32 @@
 import EventEmitter from "event-emitter";
 
 class Model {
-  constructor(element, options) {
-    this.options = options;
+  constructor(element) {
     this.element = element;
 
-    this.test();
-    this._init();
+    this._addEventEmitters();
   }
 
-  _init() {
-    const defaultSettings = {
+  _addEventEmitters() {
+    this.on("setOptions", (options) => this._setOptions(options));
+  }
+
+  _setOptions(options) {
+    let { isRange } = options;
+
+    const defaultOptions = {
       isRange: false,
-      min: 0,
-      max: 100,
-      step: 1,
-      isVertical: false,
     };
 
-    for (let defaultSetting in defaultSettings) {
-      this.element.data(defaultSetting, defaultSettings[defaultSetting]);
+    if (typeof this.options === "undefined") {
+      this.options = defaultOptions;
     }
 
-    this.changeSetting(defaultSettings, this.options);
-  }
-
-  changeSetting(settings, newSettings) {
-    for (let setting in settings) {
-      if (newSettings[setting] !== undefined) {
-        this.element.data(setting, newSettings[setting]);
-      }
+    if (typeof isRange === "boolean") {
+      this.options.isRange = isRange;
     }
-  }
 
-  getSettings() {
-    return this.element.data();
-  }
-
-  test() {
-    this.on("test", () => {
-      console.log("test");
-    });
+    this.emit("setModelOptions", this.options);
   }
 }
 

@@ -3,9 +3,15 @@ import EventEmitter from "event-emitter";
 class View {
   constructor(element) {
     this.element = element;
+
+    this._addEventEmitters();
   }
 
-  drawSlider() {
+  _addEventEmitters() {
+    this.on("drawSlider", (options) => this.drawSlider(options));
+  }
+
+  drawSlider(options) {
     const slider = `
       <div class='slider'>
         <div class='slider__dot slider__dot_from'></div>
@@ -14,19 +20,14 @@ class View {
       </div>
     `;
 
+    this.element.empty();
     this.element.append(slider);
-  }
 
-  displayFromDots() {
-    const sliderDotFrom = this.element.find(".slider__dot_from");
-
-    sliderDotFrom.css({ display: "block" });
-  }
-
-  hideFromDots() {
-    const sliderDotFrom = this.element.find(".slider__dot_from");
-
-    sliderDotFrom.css({ display: "none" });
+    if (options.isRange) {
+      this.element.find(".slider__dot_from").css({ display: "block" });
+    } else {
+      this.element.find(".slider__dot_from").css({ display: "none" });
+    }
   }
 }
 
