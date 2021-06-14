@@ -1,3 +1,5 @@
+import EventEmitter from "event-emitter";
+
 class View {
   constructor(element) {
     this.element = element;
@@ -27,5 +29,7 @@ class View {
     sliderDotFrom.css({ display: "none" });
   }
 }
+
+EventEmitter(View.prototype);
 
 export default View;

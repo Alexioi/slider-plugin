@@ -1,8 +1,11 @@
+import EventEmitter from "event-emitter";
+
 class Model {
   constructor(element, options) {
     this.options = options;
     this.element = element;
 
+    this.test();
     this._init();
   }
 
@@ -33,6 +36,14 @@ class Model {
   getSettings() {
     return this.element.data();
   }
+
+  test() {
+    this.on("test", () => {
+      console.log("test");
+    });
+  }
 }
+
+EventEmitter(Model.prototype);
 
 export default Model;

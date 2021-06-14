@@ -1,6 +1,8 @@
 import Model from "./model";
 import View from "./view";
 
+import EventEmitter from "event-emitter";
+
 class Presenter {
   constructor(element, options) {
     this.element = element;
@@ -18,6 +20,8 @@ class Presenter {
     settings = this.model.getSettings();
 
     this.changeVisible(settings);
+
+    this.model.emit("test");
   }
 
   changeVisible(settings) {
@@ -40,5 +44,7 @@ class Presenter {
     this.changeVisible(settings);
   }
 }
+
+EventEmitter(Presenter.prototype);
 
 export default Presenter;
