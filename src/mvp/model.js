@@ -1,21 +1,26 @@
 import EventEmitter from "event-emitter";
 
 class Model {
-  constructor(element) {
-    this.element = element;
 
-    this._addEventEmitters();
-  }
-
-  _addEventEmitters() {
-    this.on("setOptions", (options) => this._setOptions(options));
-  }
-
-  _setOptions(options) {
-    let { isRange } = options;
+  update(options) {
+    let { 
+      isRange,
+      isVertical, 
+      step,
+      min,
+      max,  
+      from, 
+      to,
+    } = options;
 
     const defaultOptions = {
       isRange: false,
+      isVertical: false,
+      step: 1,
+      min: 0,
+      max: 100,
+      from: 40,
+      to: 70,
     };
 
     if (typeof this.options === "undefined") {
@@ -26,7 +31,31 @@ class Model {
       this.options.isRange = isRange;
     }
 
-    this.emit("setModelOptions", this.options);
+    if (typeof isVertical === "boolean") {
+      this.options.isVertical = isVertical;
+    }
+
+    if (typeof step === "number") {
+      this.options.step = step;
+    }
+
+    if (typeof min === "number") {
+      this.options.min = min;
+    }
+
+    if (typeof max === "number") {
+      this.options.max = max;
+    }
+
+    if (typeof from === "number") {
+      this.options.from = from;
+    }
+
+    if (typeof to === "number") {
+      this.options.to = to;
+    }
+
+    this.emit("updateModel", this.options);
   }
 }
 

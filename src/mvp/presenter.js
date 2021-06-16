@@ -8,29 +8,37 @@ class Presenter {
     this.element = element;
     this.options = options;
 
-    this._initMVP();
-    this._addEventEmitters();
-    this._init();
+    this.initMVP();
+    this.addEventEmitters();
+    this.init();
   }
 
-  _addEventEmitters() {
-    this.model.on("changeOption", (options) => this.changeOptions(options));
-    this.model.on("setModelOptions", (options) =>
-      this.view.emit("drawSlider", options)
+  addEventEmitters() {
+    this.model.on("updateModel", (options) =>
+      this.updateView(options)
     );
   }
 
-  changeOptions(options) {
-    this.model.emit("setOptions", options);
+  updateOptions(options) {
+    this.model.update(options);
   }
 
-  _init() {
-    this.changeOptions(this.options);
+  drawView () {
+    this.view.draw()
   }
 
-  _initMVP() {
+  updateView (options) {
+    this.view.update(options)
+  }
+
+  init() {
+    this.view.draw()
+    this.model.update(this.options) 
+  }
+
+  initMVP() {
     this.view = new View(this.element);
-    this.model = new Model(this.element, this.options);
+    this.model = new Model();
   }
 }
 
