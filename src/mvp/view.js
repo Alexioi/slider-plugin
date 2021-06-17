@@ -1,52 +1,60 @@
 import EventEmitter from "event-emitter";
 
 import Bar from "./subView/bar";
+import Runner from "./subView/runner";
 
 
 class View {
   constructor(element) {
     this.element = element;
 
-    // this._addEventEmitters();
     this.initSubView();
   }
 
   initSubView() {
     this.bar = new Bar(this.element)
+    this.runner = new Runner(this.element)
   }
-
-  // _addEventEmitters() {
-  //   this.on("drawSlider", (options) => this.drawSlider(options));
-  // }
 
   draw() {
     const sliderContainer = "<div class='slider__container'></div>"
 
     this.element.append(sliderContainer);
+
+    this.bar.draw()
+    this.runner.draw()
   }
 
-  update() {
-    this.bar.emit('test')
+  update(options) {
+    const {
+      isRange,
+      isVertical, 
+      step,
+      min,
+      max,  
+      from, 
+      to,
+    } = options
+
+    let leftPosition = 0
+    let widthBar = 0
+    let rightPosition 
+
+    rightPosition = to / (max - min) * 100 
+    
+    if (isRange) {
+      leftPosition = from / (max - min) * 100 
+      widthBar = (to - from) / (max - min) * 100 
+      this.runner.displayLeftRunner()
+    } else {
+      leftPosition = 0
+      widthBar =  to / (max - min) * 100 
+      this.runner.hideLeftRunner()
+    }
+    
+    this.bar.update(widthBar, leftPosition)
+    this.runner.update(leftPosition, rightPosition)
   }
-
-  // drawSlider(options) {
-  //   const slider = `
-  //     <div class='slider'>
-  //       <div class='slider__dot slider__dot_from'></div>
-  //       <div class='slider__line'></div>
-  //       <div class='slider__dot slider__dot_to'></div>
-  //     </div>
-  //   `;
-
-  //   this.element.empty();
-  //   this.element.append(slider);
-
-  //   if (options.isRange) {
-  //     this.element.find(".slider__dot_from").css({ display: "block" });
-  //   } else {
-  //     this.element.find(".slider__dot_from").css({ display: "none" });
-  //   }
-  // }
 }
 
 EventEmitter(View.prototype);
