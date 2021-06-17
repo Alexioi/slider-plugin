@@ -17,6 +17,8 @@ class Presenter {
     this.model.on("updateModel", (options) =>
       this.updateView(options)
     );
+
+    this.view.on("click", (x, y) => console.log(x, y))
   }
 
   updateOptions(options) {

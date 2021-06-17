@@ -9,11 +9,18 @@ class View {
     this.element = element;
 
     this.initSubView();
+    this.addEventEmitters();
   }
 
   initSubView() {
     this.bar = new Bar(this.element)
     this.runner = new Runner(this.element)
+  }
+
+  addEventEmitters() {
+    this.bar.on("click", (x, y) =>
+      this.emit("click", x, y)
+    );
   }
 
   draw() {
