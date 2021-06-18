@@ -1,17 +1,8 @@
 import EventEmitter from "event-emitter";
 
 class Model {
-
   update(options) {
-    let { 
-      isRange,
-      isVertical, 
-      step,
-      min,
-      max,  
-      from, 
-      to,
-    } = options;
+    let { isRange, isVertical, step, min, max, from, to } = options;
 
     const defaultOptions = {
       isRange: false,
@@ -54,6 +45,12 @@ class Model {
     if (typeof to === "number") {
       this.options.to = to;
     }
+
+    this.emit("updateModel", this.options);
+  }
+
+  test(x) {
+    this.options.to = (this.options.max * x) / 100;
 
     this.emit("updateModel", this.options);
   }

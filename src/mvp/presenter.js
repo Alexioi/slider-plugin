@@ -14,28 +14,26 @@ class Presenter {
   }
 
   addEventEmitters() {
-    this.model.on("updateModel", (options) =>
-      this.updateView(options)
-    );
+    this.model.on("updateModel", (options) => this.updateView(options));
 
-    this.view.on("click", (x, y) => console.log(x, y))
+    this.view.on("click", (x) => this.model.test(x));
   }
 
   updateOptions(options) {
     this.model.update(options);
   }
 
-  drawView () {
-    this.view.draw()
+  drawView() {
+    this.view.draw();
   }
 
-  updateView (options) {
-    this.view.update(options)
+  updateView(options) {
+    this.view.update(options);
   }
 
   init() {
-    this.view.draw()
-    this.model.update(this.options) 
+    this.view.draw();
+    this.model.update(this.options);
   }
 
   initMVP() {
