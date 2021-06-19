@@ -5,5 +5,3 @@ const slider = $(".example").slider({
   step: 1,
   isVertical: false,
 });
-
-// slider.changeSetting();

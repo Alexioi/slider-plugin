@@ -1,0 +1,1 @@
+$(".example").slider({isRange:!0,min:0,max:101,step:1,isVertical:!1});
