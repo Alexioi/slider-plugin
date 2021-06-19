@@ -49,9 +49,20 @@ class Model {
     this.emit("updateModel", this.options);
   }
 
-  test(x) {
-    this.options.to = (this.options.max * x) / 100;
+  test(clickRate) {
+    let rate = 0;
 
+    this.options.isVertical ? (rate = clickRate.y) : (rate = clickRate.x);
+
+    let newPosition = this.options.max * rate;
+    let newPositionTO = this.options.to - newPosition;
+    let newPositionFrom = newPosition - this.options.from;
+
+    if (newPositionTO < newPositionFrom) {
+      this.options.to = newPosition;
+    } else {
+      this.options.from = newPosition;
+    }
     this.emit("updateModel", this.options);
   }
 }

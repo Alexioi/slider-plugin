@@ -16,7 +16,7 @@ class Presenter {
   addEventEmitters() {
     this.model.on("updateModel", (options) => this.updateView(options));
 
-    this.view.on("click", (x) => this.model.test(x));
+    this.view.on("click", (clickRate) => this.model.test(clickRate));
   }
 
   updateOptions(options) {
@@ -28,6 +28,7 @@ class Presenter {
   }
 
   updateView(options) {
+    console.log(options.from, options.to);
     this.view.update(options);
   }
 

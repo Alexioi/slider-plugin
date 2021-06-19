@@ -6,21 +6,21 @@ import Runner from "./subView/runner";
 class View {
   constructor(element) {
     this.element = element;
-
-    this.initSubView();
-    this.addEventEmitters();
   }
 
   initSubView() {
-    this.bar = new Bar(this.element);
-    this.runner = new Runner(this.element);
+    this.bar = new Bar(this.$container);
+    this.runner = new Runner(this.$container);
   }
 
   addEventEmitters() {
     this.bar.on("click", (position) => {
-      let x = (position.x / position.barWidth) * 100;
+      const clickRate = {};
 
-      this.emit("click", x);
+      clickRate.x = position.x / position.barWidth;
+      clickRate.y = position.y / position.barHeight;
+
+      this.emit("click", clickRate);
     });
   }
 
@@ -28,6 +28,11 @@ class View {
     const sliderContainer = "<div class='slider__container'></div>";
 
     this.element.append(sliderContainer);
+
+    this.$container = this.element.find(".slider__container");
+
+    this.initSubView();
+    this.addEventEmitters();
 
     this.bar.draw();
     this.runner.draw();
