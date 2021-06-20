@@ -1,3 +1,5 @@
+import EventEmitter from "event-emitter";
+
 class Runner {
   constructor(container) {
     this.container = container;
@@ -14,6 +16,24 @@ class Runner {
 
     this.$runnerLeft = this.container.find(".slider__runner_position-left");
     this.$runnerRight = this.container.find(".slider__runner_position-right");
+
+    this.$runner = this.container.find(".slider__runner");
+
+    this.$runner.on("mousedown", () => {
+      this.$runner.on("mousemove", () => {
+        this.emit("click", this.getPosition(event));
+        this.$runner.on("mouseup", () => this.$runner.off("mousemove"));
+      });
+    });
+  }
+
+  getPosition(event) {
+    const position = {};
+
+    position.x = event.pageX;
+    position.y = event.pageY;
+
+    return position;
   }
 
   update(left, right) {
@@ -29,5 +49,7 @@ class Runner {
     this.$runnerLeft.css("display", "block");
   }
 }
+
+EventEmitter(Runner.prototype);
 
 export default Runner;

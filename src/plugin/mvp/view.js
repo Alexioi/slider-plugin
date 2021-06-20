@@ -14,14 +14,24 @@ class View {
   }
 
   addEventEmitters() {
-    this.bar.on("click", (position) => {
-      const clickRate = {};
+    this.bar.on("click", (position) =>
+      this.calculatePercentageClicks(position)
+    );
+    this.runner.on("click", (position) =>
+      this.calculatePercentageClicks(position)
+    );
+  }
 
-      clickRate.x = position.x / position.barWidth;
-      clickRate.y = position.y / position.barHeight;
+  calculatePercentageClicks(position) {
+    const clickRate = {};
 
-      this.emit("click", clickRate);
-    });
+    let containerWidth = this.$container.width();
+    let containerHeight = this.$container.height();
+
+    clickRate.x = (position.x - this.$container.offset().left) / containerWidth;
+    clickRate.y = (position.y - this.$container.offset().top) / containerHeight;
+
+    this.emit("click", clickRate);
   }
 
   draw() {

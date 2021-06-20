@@ -16,11 +16,13 @@ class Presenter {
   addEventEmitters() {
     this.model.on("updateModel", (options) => this.updateView(options));
 
-    this.view.on("click", (clickRate) => this.model.test(clickRate));
+    this.view.on("click", (clickRate) =>
+      this.model.changePositionDependingPercentage(clickRate)
+    );
   }
 
   updateOptions(options) {
-    this.model.update(options);
+    this.model.updateOptions(options);
   }
 
   drawView() {
@@ -34,7 +36,7 @@ class Presenter {
 
   init() {
     this.view.draw();
-    this.model.update(this.options);
+    this.model.updateOptions(this.options);
   }
 
   initMVP() {

@@ -1,12 +1,15 @@
 import EventEmitter from "event-emitter";
 
 class Model {
-  update(options) {
+  updateOptions(options) {
     let { isRange, isVertical, step, min, max, from, to } = options;
 
     const defaultOptions = {
       isRange: false,
       isVertical: false,
+      hasTip: false,
+      hasScale: false,
+      numberMarks: 10,
       step: 1,
       min: 0,
       max: 100,
@@ -24,6 +27,14 @@ class Model {
 
     if (typeof isVertical === "boolean") {
       this.options.isVertical = isVertical;
+    }
+
+    if (typeof hasTip === "boolean") {
+      this.options.hasTip = isVertical;
+    }
+
+    if (typeof numberMarks === "number") {
+      this.options.numberMarks = step;
     }
 
     if (typeof step === "number") {
@@ -49,7 +60,7 @@ class Model {
     this.emit("updateModel", this.options);
   }
 
-  test(clickRate) {
+  changePositionDependingPercentage(clickRate) {
     let rate = 0;
 
     this.options.isVertical ? (rate = clickRate.y) : (rate = clickRate.x);
@@ -58,10 +69,13 @@ class Model {
     let newPositionTO = this.options.to - newPosition;
     let newPositionFrom = newPosition - this.options.from;
 
-    if (newPositionTO < newPositionFrom) {
-      this.options.to = newPosition;
+    if (this.options.isRange) {
+      newPositionTO < newPositionFrom
+        ? (this.options.to = newPosition)
+        : (this.options.from = newPosition);
     } else {
-      this.options.from = newPosition;
+      this.options.from = newPosition / 2;
+      this.options.to = newPosition;
     }
     this.emit("updateModel", this.options);
   }

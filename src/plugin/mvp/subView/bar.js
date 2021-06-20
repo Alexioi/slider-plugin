@@ -20,10 +20,8 @@ class Bar {
   getPosition(event) {
     const position = {};
 
-    position.x = event.pageX - this.$bar.offset().left;
-    position.y = event.pageY - this.$bar.offset().top;
-    position.barWidth = this.$bar.width();
-    position.barHeight = this.$bar.height();
+    position.x = event.pageX;
+    position.y = event.pageY;
 
     return position;
   }
