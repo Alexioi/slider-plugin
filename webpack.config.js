@@ -23,7 +23,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: `index.html`,
-      template: `./src/docs/docs.pug`,
+      template: `./src/docs/page/docs.pug`,
     }),
   ],
   devServer: {

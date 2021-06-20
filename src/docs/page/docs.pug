@@ -1,3 +1,5 @@
+include ../panel/panel
+
 doctype html
 html(lang="en")
   head
@@ -6,6 +8,8 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Document
   body 
-   .example(style="width: 500px; height: 100px; margin: 100px auto;")
+    .container
+      +panel
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="../plugin/plugin.js"></script>

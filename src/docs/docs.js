@@ -1,7 +1,4 @@
-const slider = $(".example").slider({
-  isRange: true,
-  min: 0,
-  max: 101,
-  step: 1,
-  isVertical: false,
-});
+import "./panel/panel";
+
+import "./page/docs.scss";
+import "./panel/panel.scss";
