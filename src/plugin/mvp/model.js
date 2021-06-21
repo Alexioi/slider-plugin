@@ -77,7 +77,28 @@ class Model {
       this.options.from = newPosition / 2;
       this.options.to = newPosition;
     }
+
+    this.verifyCounter()
+
     this.emit("updateModel", this.options);
+  }
+
+  verifyCounter(){
+    if (this.options.from < this.options.min) {
+      this.options.from = this.options.min
+    }
+
+    if (this.options.to < this.options.min) {
+      this.options.to = this.options.min
+    }
+
+    if (this.options.from > this.options.max) {
+      this.options.from = this.options.max
+    }
+
+    if (this.options.to > this.options.max) {
+      this.options.to = this.options.max
+    }
   }
 }
 

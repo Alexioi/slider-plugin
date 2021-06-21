@@ -20,9 +20,9 @@ class Runner {
     this.$runner = this.container.find(".slider__runner");
 
     this.$runner.on("mousedown", () => {
-      this.$runner.on("mousemove", () => {
+      $( document ).on("mousemove", () => {
         this.emit("click", this.getPosition(event));
-        this.$runner.on("mouseup", () => this.$runner.off("mousemove"));
+        $( document ).on("mouseup", () => $( document ).off("mousemove"));
       });
     });
   }
