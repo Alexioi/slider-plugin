@@ -26,8 +26,12 @@ class Bar {
     return position;
   }
 
-  update(width, left) {
-    this.$range.css({ width: width + "%", "margin-left": left + "%" });
+  update(width, left, isVertical) {
+    if (isVertical) {
+      this.$range.css({ height: width + "%", "margin-left": top + "%" });
+    } else {
+      this.$range.css({ width: width + "%", "margin-left": left + "%" });
+    }
   }
 }
 

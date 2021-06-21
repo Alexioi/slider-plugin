@@ -20,9 +20,9 @@ class Runner {
     this.$runner = this.container.find(".slider__runner");
 
     this.$runner.on("mousedown", () => {
-      $( document ).on("mousemove", () => {
+      $(document).on("mousemove", () => {
         this.emit("click", this.getPosition(event));
-        $( document ).on("mouseup", () => $( document ).off("mousemove"));
+        $(document).on("mouseup", () => $(document).off("mousemove"));
       });
     });
   }
@@ -36,9 +36,14 @@ class Runner {
     return position;
   }
 
-  update(left, right) {
-    this.$runnerLeft.css("margin-left", left + "%");
-    this.$runnerRight.css("margin-left", right + "%");
+  update(left, right, isVertical) {
+    if (isVertical) {
+      this.$runnerLeft.css("margin-top", left + "%");
+      this.$runnerRight.css("margin-top", right + "%");
+    } else {
+      this.$runnerLeft.css("margin-left", left + "%");
+      this.$runnerRight.css("margin-left", right + "%");
+    }
   }
 
   hideLeftRunner() {
