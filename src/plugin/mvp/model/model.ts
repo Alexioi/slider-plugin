@@ -1,8 +1,28 @@
 import EventEmitter from "event-emitter";
 
+interface Options {
+  isRange: boolean;
+  isVertical: boolean;
+  hasTip: boolean;
+  hasScale: boolean;
+  numberMarks: number;
+  step: number;
+  min: number;
+  max: number;
+  from: number;
+  to: number;
+}
+
+interface ClickRate {
+  x: number;
+  y: number;
+}
+
 class Model {
-  updateOptions(options) {
-    let { isRange, isVertical, step, min, max, from, to } = options;
+  options: Options;
+
+  updateOptions(options: Options) {
+    let { isRange, isVertical,  hasTip, numberMarks, step, min, max, from, to } = options;
 
     const defaultOptions = {
       isRange: false,
@@ -60,7 +80,7 @@ class Model {
     this.emit("updateModel", this.options);
   }
 
-  changePositionDependingPercentage(clickRate) {
+  changePositionDependingPercentage(clickRate: ClickRate): void {
     let rate = 0;
 
     this.options.isVertical ? (rate = clickRate.y) : (rate = clickRate.x);

@@ -20,6 +20,8 @@
     "sass": "^1.34.1",
     "sass-loader": "^12.0.0",
     "style-loader": "^2.0.0",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.4",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
