@@ -32,4 +32,14 @@
     background-color: green;
     transform: translateX(-50%);
   }
+
+  &__info {
+    background-color:green;
+    position: absolute;
+    top: -30px;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 3px;
+    transform: translateX(-50%);
+  }
 }

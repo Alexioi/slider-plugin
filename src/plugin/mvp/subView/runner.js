@@ -19,6 +19,8 @@ class Runner {
 
     this.$runner = this.container.find(".slider__runner");
 
+    this.$info = this.container.find(".slider__info");
+
     this.$runner.on("mousedown", () => {
       $(document).on("mousemove", () => {
         this.emit("click", this.getPosition(event));
@@ -36,7 +38,7 @@ class Runner {
     return position;
   }
 
-  update(left, right, isVertical) {
+  update(left, right, isVertical, from, to) {
     if (isVertical) {
       this.$runnerLeft.css("margin-top", left + "%");
       this.$runnerRight.css("margin-top", right + "%");
@@ -44,6 +46,9 @@ class Runner {
       this.$runnerLeft.css("margin-left", left + "%");
       this.$runnerRight.css("margin-left", right + "%");
     }
+
+    this.$info.first().text(from)
+    this.$info.last().text(to)
   }
 
   hideLeftRunner() {

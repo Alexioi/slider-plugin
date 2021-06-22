@@ -68,7 +68,7 @@ class View {
     }
 
     this.bar.update(widthBar, leftPosition, isVertical);
-    this.runner.update(leftPosition, rightPosition, isVertical);
+    this.runner.update(leftPosition, rightPosition, isVertical, from, to);
   }
 }
 
