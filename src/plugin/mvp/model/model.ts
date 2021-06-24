@@ -1,17 +1,6 @@
 import EventEmitter from "event-emitter";
 
-interface Options {
-  isRange: boolean;
-  isVertical: boolean;
-  hasTip: boolean;
-  hasScale: boolean;
-  numberMarks: number;
-  step: number;
-  min: number;
-  max: number;
-  from: number;
-  to: number;
-}
+import {IOptions} from "../interfaces/interfaces"
 
 interface ClickRate {
   x: number;
@@ -19,27 +8,14 @@ interface ClickRate {
 }
 
 class Model {
-  options: Options;
+  options: IOptions;
+  emit: any;
+  
+  constructor(options: IOptions) {
+    this.options = options;
+  }
 
-  updateOptions(options: Options) {
-    let { isRange, isVertical,  hasTip, numberMarks, step, min, max, from, to } = options;
-
-    const defaultOptions = {
-      isRange: false,
-      isVertical: false,
-      hasTip: false,
-      hasScale: false,
-      numberMarks: 10,
-      step: 1,
-      min: 0,
-      max: 100,
-      from: 40,
-      to: 70,
-    };
-
-    if (typeof this.options === "undefined") {
-      this.options = defaultOptions;
-    }
+  updateOptions({ isRange, isVertical,  hasTip, numberMarks, step, min, max, from, to }: IOptions) {
 
     if (typeof isRange === "boolean") {
       this.options.isRange = isRange;

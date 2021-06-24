@@ -1,7 +1,7 @@
 import EventEmitter from "event-emitter";
 
-import Bar from "./subView/bar";
-import Runner from "./subView/runner";
+import Bar from "../subView/bar";
+import Runner from "../subView/runner";
 
 class View {
   constructor(element) {
