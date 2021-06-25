@@ -3,26 +3,15 @@ import View from "../view/view";
 
 import EventEmitter from "event-emitter";
 
-
-interface IOptions {
-  isRange: boolean;
-  isVertical: boolean;
-  hasTip: boolean;
-  hasScale: boolean;
-  numberMarks: number;
-  step: number;
-  min: number;
-  max: number;
-  from: number;
-  to: number;
-}
+import {IOptions, IClickRate} from "../interfaces/interfaces"
 
 class Presenter {
   options: IOptions;
   view: any;
   model: any;
+  element: any;
 
-  constructor(element, options: IOptions) {
+  constructor(element: any, options: IOptions) {
     this.element = element;
     this.options = options;
 
@@ -34,7 +23,7 @@ class Presenter {
   addEventEmitters() {
     this.model.on("updateModel", (options: IOptions) => this.updateView(options));
 
-    this.view.on("click", (clickRate) =>
+    this.view.on("click", (clickRate: IClickRate) =>
       this.model.changePositionDependingPercentage(clickRate)
     );
   }

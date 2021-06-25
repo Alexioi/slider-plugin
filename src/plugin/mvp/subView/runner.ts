@@ -1,7 +1,15 @@
 import EventEmitter from "event-emitter";
+import { IPosition } from "../interfaces/interfaces";
 
 class Runner {
-  constructor(container) {
+  container: any;
+  $runnerLeft: any;
+  $runnerRight: any;
+  $runner: any;
+  $info: any;
+  emit: any; 
+
+  constructor(container: any) {
     this.container = container;
   }
 
@@ -29,8 +37,8 @@ class Runner {
     });
   }
 
-  getPosition(event) {
-    const position = {};
+  getPosition(event: any) {
+    const position: IPosition = {x: 0, y: 0};
 
     position.x = event.pageX;
     position.y = event.pageY;
@@ -38,7 +46,7 @@ class Runner {
     return position;
   }
 
-  update(left, right, isVertical, from, to) {
+  update(left: number, right: number, isVertical: number, from: number, to: number) {
     if (isVertical) {
       this.$runnerLeft.css("margin-top", left + "%");
       this.$runnerRight.css("margin-top", right + "%");

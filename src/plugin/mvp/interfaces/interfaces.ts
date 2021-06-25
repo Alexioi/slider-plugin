@@ -11,4 +11,14 @@ interface IOptions {
     to: number;
   }
 
-  export {IOptions}
+  interface IClickRate {
+    x: number;
+    y: number;
+  }
+
+  interface IPosition {
+    x: number;
+    y: number;
+  }
+
+  export {IOptions, IClickRate, IPosition}

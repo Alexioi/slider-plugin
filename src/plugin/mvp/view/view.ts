@@ -3,8 +3,17 @@ import EventEmitter from "event-emitter";
 import Bar from "../subView/bar";
 import Runner from "../subView/runner";
 
+
+import {IClickRate, IOptions, IPosition} from "../interfaces/interfaces"
+
 class View {
-  constructor(element) {
+  element: any;
+  bar: any;
+  runner: any;
+  $container: any;
+  emit: any;
+
+  constructor(element: any) {
     this.element = element;
   }
 
@@ -14,16 +23,16 @@ class View {
   }
 
   addEventEmitters() {
-    this.bar.on("click", (position) =>
+    this.bar.on("click", (position: IPosition) =>
       this.calculatePercentageClicks(position)
     );
-    this.runner.on("click", (position) =>
+    this.runner.on("click", (position: IPosition) =>
       this.calculatePercentageClicks(position)
     );
   }
 
-  calculatePercentageClicks(position) {
-    const clickRate = {};
+  calculatePercentageClicks(position: IPosition) {
+    const clickRate: IClickRate = {x: 0, y: 0};
 
     let containerWidth = this.$container.width();
     let containerHeight = this.$container.height();
@@ -48,9 +57,7 @@ class View {
     this.runner.draw();
   }
 
-  update(options) {
-    const { isRange, isVertical, step, min, max, from, to } = options;
-
+  update({ isRange, isVertical, step, min, max, from, to }: IOptions) {
     let leftPosition = 0;
     let widthBar = 0;
     let rightPosition;

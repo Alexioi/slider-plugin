@@ -1,7 +1,13 @@
 import EventEmitter from "event-emitter";
+import { IPosition } from "../interfaces/interfaces";
 
 class Bar {
-  constructor(container) {
+  container: any;
+  $range: any;
+  $bar: any;
+  emit: any;
+
+  constructor(container: any) {
     this.container = container;
   }
 
@@ -17,8 +23,8 @@ class Bar {
     this.$bar.on("click", () => this.emit("click", this.getPosition(event)));
   }
 
-  getPosition(event) {
-    const position = {};
+  getPosition(event: any) {
+    const position: IPosition = {x:0, y:0};
 
     position.x = event.pageX;
     position.y = event.pageY;
@@ -26,7 +32,7 @@ class Bar {
     return position;
   }
 
-  update(width, left, isVertical) {
+  update(width:number, left:number, isVertical:boolean) {
     if (isVertical) {
       this.$range.css({ height: width + "%", "margin-left": top + "%" });
     } else {

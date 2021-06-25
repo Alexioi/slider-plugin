@@ -1,11 +1,6 @@
 import EventEmitter from "event-emitter";
 
-import {IOptions} from "../interfaces/interfaces"
-
-interface ClickRate {
-  x: number;
-  y: number;
-}
+import {IOptions, IClickRate} from "../interfaces/interfaces"
 
 class Model {
   options: IOptions;
@@ -56,7 +51,7 @@ class Model {
     this.emit("updateModel", this.options);
   }
 
-  changePositionDependingPercentage(clickRate: ClickRate): void {
+  changePositionDependingPercentage(clickRate: IClickRate): void {
     let rate = 0;
 
     this.options.isVertical ? (rate = clickRate.y) : (rate = clickRate.x);
