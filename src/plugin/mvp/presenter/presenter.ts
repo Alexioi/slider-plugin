@@ -10,10 +10,12 @@ class Presenter {
   view: any;
   model: any;
   element: any;
+  defaultOptions: IOptions;
 
-  constructor(element: any, options: IOptions) {
+  constructor(element: any, options: IOptions, defaultOptions: IOptions) {
     this.element = element;
     this.options = options;
+    this.defaultOptions = defaultOptions
 
     this.initMVP();
     this.addEventEmitters();
@@ -46,21 +48,8 @@ class Presenter {
   }
 
   initMVP() {
-    const defaultOptions = {
-      isRange: false,
-      isVertical: false,
-      hasTip: false,
-      hasScale: false,
-      numberMarks: 10,
-      step: 1,
-      min: 0,
-      max: 100,
-      from: 40,
-      to: 70,
-    };
-
     this.view = new View(this.element);
-    this.model = new Model(defaultOptions);
+    this.model = new Model(this.defaultOptions);
   }
 }
 

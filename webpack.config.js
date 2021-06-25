@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: { plugin: "./src/plugin/plugin.js", docs: "./src/docs/docs.js" },
+  entry: { plugin: "./src/plugin/plugin.ts", docs: "./src/docs/docs.js" },
 
   output: {
     filename: "[name]/[name].js",
