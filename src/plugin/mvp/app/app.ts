@@ -16,7 +16,7 @@ class App {
 
       init() {
         const defaultOptions: IOptions = {
-            isRange: false,
+            isRange: true,
             isVertical: false,
             hasTip: false,
             hasScale: false,

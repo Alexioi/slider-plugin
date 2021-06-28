@@ -39,6 +39,7 @@ class View {
 
     clickRate.x = (position.x - this.$container.offset().left) / containerWidth;
     clickRate.y = (position.y - this.$container.offset().top) / containerHeight;
+    clickRate.valueName = position.name
 
     this.emit("click", clickRate);
   }

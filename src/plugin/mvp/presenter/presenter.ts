@@ -23,10 +23,10 @@ class Presenter {
   }
 
   addEventEmitters() {
-    this.model.on("updateModel", (options: IOptions) => this.updateView(options));
+    this.model.on("updateModelOptions", (options: IOptions) => this.updateView(options));
 
     this.view.on("click", (clickRate: IClickRate) =>
-      this.model.changePositionDependingPercentage(clickRate)
+      this.model.updateValue(clickRate)
     );
   }
 

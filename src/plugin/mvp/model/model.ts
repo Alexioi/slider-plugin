@@ -3,94 +3,121 @@ import EventEmitter from "event-emitter";
 import {IOptions, IClickRate} from "../interfaces/interfaces"
 
 class Model {
-  options: IOptions;
-  emit: any;
-  
-  constructor(options: IOptions) {
-    this.options = options;
-  }
+    options: IOptions;
+    emit: any;
 
-  updateOptions({ isRange, isVertical,  hasTip, numberMarks, step, min, max, from, to }: IOptions) {
-
-    if (typeof isRange === "boolean") {
-      this.options.isRange = isRange;
+    constructor(options: IOptions) {
+        this.options = options;
     }
 
-    if (typeof isVertical === "boolean") {
-      this.options.isVertical = isVertical;
+    public updateOptions({isRange, isVertical, hasTip, numberMarks, step, min, max, from, to}: IOptions) {
+        if (typeof isRange === "boolean") {
+            if (this.options.isRange !== isRange) {
+                this.calculateFrom(isRange)
+            }
+            this.options.isRange = isRange;
+        }
+
+        if (typeof isVertical === "boolean") {
+            this.options.isVertical = isVertical;
+        }
+
+        if (typeof hasTip === "boolean") {
+            this.options.hasTip = isVertical;
+        }
+
+        if (typeof numberMarks === "number") {
+            this.options.numberMarks = step;
+        }
+
+        if (typeof step === "number") {
+            this.options.step = step;
+        }
+
+        if (typeof min === "number") {
+            this.options.min = min;
+        }
+
+        if (typeof max === "number") {
+            this.options.max = max;
+        }
+
+        if (typeof to === "number") {
+            this.options.to = to;
+        }
+
+        if (typeof from === "number") {
+            this.options.from = from;
+        }
+
+        this.verifyMax()
+        this.verifyFrom()
+        this.verifyTo()
+
+        this.emit("updateModelOptions", this.options);
     }
 
-    if (typeof hasTip === "boolean") {
-      this.options.hasTip = isVertical;
+    public updateValue({x, y, valueName}: IClickRate) {
+        let rate: number;
+
+        this.options.isVertical ? (rate = y) : (rate = x);
+
+        if (valueName === 'from') {
+            this.options.from = this.options.max * rate;
+
+            this.verifyFrom()
+        }
+
+        if (valueName === 'to') {
+            this.options.to = this.options.max * rate;
+
+            this.verifyTo()
+        }
+        
+        this.emit("updateModelOptions", this.options);
     }
 
-    if (typeof numberMarks === "number") {
-      this.options.numberMarks = step;
+    public updateNearValue() {
+
     }
 
-    if (typeof step === "number") {
-      this.options.step = step;
+    private verifyMax(): void {
+        if (this.options.max < this.options.min) {
+            this.options.max = this.options.min * 2
+        }
     }
 
-    if (typeof min === "number") {
-      this.options.min = min;
+    private verifyFrom() {
+        if (this.options.from < this.options.min) {
+            this.options.from = this.options.min
+        }
+
+        if (this.options.from > this.options.max) {
+            this.options.from = this.options.max
+        }
+
+        if (this.options.from > this.options.to) {
+            this.options.from = this.options.to
+        }
     }
 
-    if (typeof max === "number") {
-      this.options.max = max;
+    private verifyTo() {
+        if (this.options.to < this.options.from) {
+            this.options.to = this.options.from
+        }
+
+        if (this.options.to > this.options.max) {
+            this.options.to = this.options.max
+        }
     }
 
-    if (typeof from === "number") {
-      this.options.from = from;
+    private calculateFrom(isRange: boolean) {
+        if (isRange) {
+            this.options.from = this.options.to / 2
+        } else {
+            this.options.from = this.options.min
+        }
     }
-
-    if (typeof to === "number") {
-      this.options.to = to;
-    }
-
-    this.emit("updateModel", this.options);
-  }
-
-  changePositionDependingPercentage(clickRate: IClickRate): void {
-    let rate = 0;
-
-    this.options.isVertical ? (rate = clickRate.y) : (rate = clickRate.x);
-
-    let newPosition = this.options.max * rate;
-    let newPositionTO = this.options.to - newPosition;
-    let newPositionFrom = newPosition - this.options.from;
-
-    if (this.options.isRange) {
-      newPositionTO < newPositionFrom
-        ? (this.options.to = newPosition)
-        : (this.options.from = newPosition);
-    } else {
-      this.options.from = newPosition / 2;
-      this.options.to = newPosition;
-    }
-
-    this.verifyCounter()
-
-    this.emit("updateModel", this.options);
-  }
-
-  verifyCounter(){
-    if (this.options.from < this.options.min) {
-      this.options.from = this.options.min
-    }
-
-    if (this.options.to < this.options.min) {
-      this.options.to = this.options.min
-    }
-
-    if (this.options.from > this.options.max) {
-      this.options.from = this.options.max
-    }
-
-    if (this.options.to > this.options.max) {
-      this.options.to = this.options.max
-    }
-  }
 }
 
 EventEmitter(Model.prototype);
