@@ -29,18 +29,25 @@ class Runner {
 
         this.$info = this.container.find(".slider__info");
 
-        this.$runner.on("mousedown", () => {
-            this.$runner.on("mousemove", () => {
-                this.emit("click", this.getPosition(event));
-                this.$runner.on("mouseover", () => $(document).off("mousemove"));
+        this.$runnerLeft.on("mousedown", () => {
+            $(document).on("mousemove", () => {
+                this.emit("click", this.getPosition(event, 'from'));
             });
+            $(document).on("mouseup", () => $(document).off("mousemove"));
+        });
+
+        this.$runnerRight.on("mousedown", () => {
+            $(document).on("mousemove", () => {
+                this.emit("click", this.getPosition(event, 'to'));
+            });
+            $(document).on("mouseup", () => $(document).off("mousemove"));
         });
     }
 
-    getPosition(event: any) {
+    getPosition(event: any, runner: string) {
         const position: IPosition = {x: 0, y: 0, name: ''};
 
-        if (event.target.className.toString().indexOf('right') !== -1) {
+        if (runner === 'to') {
             position.name = 'to'
         } else {
             position.name = 'from'

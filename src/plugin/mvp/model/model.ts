@@ -62,23 +62,49 @@ class Model {
 
         this.options.isVertical ? (rate = y) : (rate = x);
 
+        let value: number
+
         if (valueName === 'from') {
+
+            value = this.options.from
+
             this.options.from = this.options.max * rate;
 
+            this.options.from = this.checkValueComplianceWithStep(value, this.options.from)
             this.verifyFrom()
+
         }
 
         if (valueName === 'to') {
+            value = this.options.to
+
+            console.log(value)
             this.options.to = this.options.max * rate;
 
+            this.options.to = this.checkValueComplianceWithStep(value, this.options.to)
             this.verifyTo()
+
         }
-        
+
         this.emit("updateModelOptions", this.options);
     }
 
     public updateNearValue() {
 
+    }
+
+    private checkValueComplianceWithStep(value: number, oldValue: number): number {
+        if (oldValue === this.options.min) {
+            oldValue = this.options.min
+        } else if (oldValue === this.options.max) {
+            oldValue = this.options.max
+        } else if (Math.abs(oldValue - value) > this.options.step / 2) {
+            oldValue = oldValue - value > 0 ? value + this.options.step : value - this.options.step
+        } else {
+            oldValue = value
+        }
+
+        return oldValue
     }
 
     private verifyMax(): void {

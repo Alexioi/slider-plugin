@@ -21,9 +21,9 @@ class App {
             hasTip: false,
             hasScale: false,
             numberMarks: 10,
-            step: 1,
+            step: 10,
             min: 0,
-            max: 100,
+            max: 103,
             from: 40,
             to: 70,
           };
