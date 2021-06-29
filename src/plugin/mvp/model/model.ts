@@ -94,9 +94,9 @@ class Model {
     }
 
     private checkValueComplianceWithStep(value: number, oldValue: number): number {
-        if (oldValue === this.options.min) {
+        if (oldValue < this.options.min) {
             oldValue = this.options.min
-        } else if (oldValue === this.options.max) {
+        } else if (oldValue > this.options.max) {
             oldValue = this.options.max
         } else if (Math.abs(oldValue - value) > this.options.step / 2) {
             oldValue = oldValue - value > 0 ? value + this.options.step : value - this.options.step

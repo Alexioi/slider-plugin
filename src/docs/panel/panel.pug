@@ -4,8 +4,24 @@ mixin panel(options)
     .panel__example 
     .panel__control
       label.panel__range
-        input.panel__range-checkbox(type='checkbox')
         span.panel__range-text Range
+        input.panel__range-checkbox(type='checkbox')      
       label.panel__vertical
-        input.panel__vertical-checkbox(type='checkbox')
         span.panel__vertical-text Vertical
+        input.panel__vertical-checkbox(type='checkbox')
+      label.panel__min
+        span.panel__min-text Min
+        input.panel__min-checkbox(type='number')
+      label.panel__max
+        span.panel__max-text Max
+        input.panel__max-checkbox(type='number')
+      label.panel__from
+        span.panel__from-text From
+        input.panel__from-checkbox(type='number')
+      label.panel__to
+        span.panel__to-text To
+        input.panel__to-checkbox(type='number')
+      label.panel__step
+        span.panel__step-text Step
+        input.panel__step-checkbox(type='number')
+        
