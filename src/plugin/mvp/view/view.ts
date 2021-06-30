@@ -59,19 +59,19 @@ class View {
   }
 
   update({ isRange, isVertical, step, min, max, from, to }: IOptions) {
-    let leftPosition = 0;
-    let widthBar = 0;
-    let rightPosition;
+    let leftPosition: number,
+        widthBar: number,
+        rightPosition: number;
 
-    rightPosition = (to / (max - min)) * 100;
+    rightPosition = (to - min) / (max - min) * 100;
 
     if (isRange) {
-      leftPosition = (from / (max - min)) * 100;
-      widthBar = ((to - from) / (max - min)) * 100;
+      leftPosition = (from - min) / (max - min) * 100;
+      widthBar = ((to - from) /  (max - min) * 100);
       this.runner.displayLeftRunner();
     } else {
       leftPosition = 0;
-      widthBar = (to / (max - min)) * 100;
+      widthBar = (to / (max - min) * 100);
       this.runner.hideLeftRunner();
     }
 

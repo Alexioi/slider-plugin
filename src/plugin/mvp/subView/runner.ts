@@ -36,6 +36,10 @@ class Runner {
             $(document).on("mouseup", () => $(document).off("mousemove"));
         });
 
+        this.$runnerRight.ondragstart = function() {
+            return false;
+          };
+
         this.$runnerRight.on("mousedown", () => {
             $(document).on("mousemove", () => {
                 this.emit("click", this.getPosition(event, 'to'));

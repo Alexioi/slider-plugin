@@ -82,7 +82,6 @@ class Model {
         if (valueName === 'to') {
             value = this.options.to
 
-            console.log(value)
             this.options.to = this.options.max * rate;
 
             this.options.to = this.checkValueComplianceWithStep(value, this.options.to)
