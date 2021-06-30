@@ -34,6 +34,10 @@ class Presenter {
     this.model.updateOptions(options);
   }
 
+  getOptions() {
+    return this.model.getOptions()
+  }
+
   drawView() {
     this.view.draw();
   }

@@ -9,7 +9,7 @@ class App {
 
     constructor(element: any, options: IOptions) {
         this.element = element;
-        this.options = options;
+        this.options = options || {};
     
         this.init();
       }
@@ -33,6 +33,10 @@ class App {
 
       updateOptions(options: IOptions) {
         this.presenter.updateOptions(options);
+      }
+
+      getOptions() {
+        return this.presenter.getOptions()
       }
 }
 

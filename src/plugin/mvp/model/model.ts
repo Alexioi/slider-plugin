@@ -53,8 +53,12 @@ class Model {
         this.verifyMax()
         this.verifyFrom()
         this.verifyTo()
-
+        
         this.emit("updateModelOptions", this.options);
+    }
+
+    public getOptions() {
+        return this.options
     }
 
     public updateValue({x, y, valueName}: IClickRate) {
@@ -114,6 +118,10 @@ class Model {
     }
 
     private verifyFrom() {
+        if (this.options.from > this.options.to) {
+            this.options.from = this.options.to
+        }
+
         if (this.options.from < this.options.min) {
             this.options.from = this.options.min
         }
@@ -121,15 +129,15 @@ class Model {
         if (this.options.from > this.options.max) {
             this.options.from = this.options.max
         }
-
-        if (this.options.from > this.options.to) {
-            this.options.from = this.options.to
-        }
     }
 
     private verifyTo() {
         if (this.options.to < this.options.from) {
             this.options.to = this.options.from
+        }
+
+        if (this.options.to < this.options.min) {
+            this.options.to = this.options.min
         }
 
         if (this.options.to > this.options.max) {

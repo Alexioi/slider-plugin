@@ -9,9 +9,9 @@ class Panel {
     this.from = this.control.querySelector(".panel__from-checkbox");
     this.to = this.control.querySelector(".panel__to-checkbox");
     this.step = this.control.querySelector(".panel__step-checkbox");
-    this.example = this.control.querySelector(".panel__example");
 
     this.addEventHandler();
+    this.verifyInput()
   }
 
   addEventHandler() {
@@ -30,6 +30,8 @@ class Panel {
     } else {
       this.slider.updateOptions({ isRange: false });
     }
+
+    this.verifyInput()
   }
 
   changeVertical() {
@@ -38,38 +40,58 @@ class Panel {
     } else {
       this.slider.updateOptions({ isVertical: false });
     }
+
+    this.verifyInput()
   }
 
   changeMin() {
     let value = Number(this.min.value)
     this.slider.updateOptions({ min: value });
+
+    this.verifyInput()
   }
 
   changeMax() {
     let value = Number(this.max.value)
     this.slider.updateOptions({ max: value });
+
+    this.verifyInput()
   }
 
   changeFrom() {
     let value = Number(this.from.value)
     this.slider.updateOptions({ from: value });
+
+    this.verifyInput()
   }
 
   changeTo() {
     let value = Number(this.to.value)
     this.slider.updateOptions({ to: value });
+
+    this.verifyInput()
   }
 
   changeStep() {
     let value = Number(this.step.value)
     this.slider.updateOptions({ step: value });
+
+    this.verifyInput()
+  }
+
+  verifyInput() {
+    let options = this.slider.getOptions()
+    this.range.checked = options.isRange
+    this.vertical.checked = options.isVertical
+    this.min.value = options.min
+    this.max.value = options.max
+    this.from.value = options.from
+    this.to.value = options.to
+    this.step.value = options.step
   }
 }
 
-const slider = $(".panel__example").slider({
-  isRange: true,
-  isVertical: false,
-});
+const slider = $(".panel__example").slider();
 
 document.querySelectorAll(".panel__control").forEach((node) => {
   new Panel(node, slider);
