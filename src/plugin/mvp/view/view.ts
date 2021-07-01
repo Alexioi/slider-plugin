@@ -17,20 +17,6 @@ class View {
     this.element = element;
   }
 
-  initSubView() {
-    this.bar = new Bar(this.$container);
-    this.runner = new Runner(this.$container);
-  }
-
-  addEventEmitters() {
-    this.bar.on("click", (position: IPosition) =>
-      this.calculatePercentageClicks(position)
-    );
-    this.runner.on("click", (position: IPosition) =>
-      this.calculatePercentageClicks(position)
-    );
-  }
-
   calculatePercentageClicks(position: IPosition) {
     const clickRate: IClickRate = {x: 0, y: 0};
 
@@ -55,28 +41,53 @@ class View {
     this.addEventEmitters();
 
     this.bar.draw();
-    this.runner.draw();
   }
 
   update({ isRange, isVertical, step, min, max, from, to }: IOptions) {
+
+    this.runner.destroyRunners()
+    
+    if (isRange) {
+      this.runner.drawRunnerFrom()
+      this.runner.drawRunnerTo()
+    } else {
+      this.runner.drawRunnerTo()
+    }
+
+    this.updatePosition({
+      min: min,
+      max: max,
+      from: from,
+      to: to,
+    })
+  }
+
+  updatePosition({min, max, from, to}: any) {
     let leftPosition: number,
         widthBar: number,
         rightPosition: number;
 
     rightPosition = (to - min) / (max - min) * 100;
+    leftPosition = (from - min) / (max - min) * 100;
+    widthBar = ((to - from) /  (max - min) * 100);
 
-    if (isRange) {
-      leftPosition = (from - min) / (max - min) * 100;
-      widthBar = ((to - from) /  (max - min) * 100);
-      this.runner.displayLeftRunner();
-    } else {
-      leftPosition = 0;
-      widthBar = (to / (max - min) * 100);
-      this.runner.hideLeftRunner();
-    }
 
-    this.bar.update(widthBar, leftPosition, isVertical);
-    this.runner.update(leftPosition, rightPosition, isVertical, from, to);
+    this.bar.update(widthBar, leftPosition);
+    this.runner.update(leftPosition, rightPosition, from, to);
+  }
+
+  private initSubView() {
+    this.bar = new Bar(this.$container);
+    this.runner = new Runner(this.$container);
+  }
+
+  private addEventEmitters() {
+    this.bar.on("click", (position: IPosition) =>
+      this.calculatePercentageClicks(position)
+    );
+    this.runner.on("click", (position: IPosition) =>
+      this.calculatePercentageClicks(position)
+    );
   }
 }
 

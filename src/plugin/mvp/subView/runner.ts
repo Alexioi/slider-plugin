@@ -1,61 +1,68 @@
 import EventEmitter from "event-emitter";
+
 import {IPosition} from "../interfaces/interfaces";
 
 class Runner {
     container: any;
-    $runnerLeft: any;
-    $runnerRight: any;
-    $runner: any;
-    $info: any;
+    $runnerFrom: any;
+    $runnerTo: any;
     emit: any;
 
     constructor(container: any) {
         this.container = container;
     }
 
-    draw() {
-        const runnerLeft =
-            "<div class='slider__runner slider__runner_position-left'><div class='slider__info'></div></div>";
-        const runnerRight =
-            "<div class='slider__runner slider__runner_position-right'><div class='slider__info'></div></div>";
+    public drawRunnerFrom() {
+        const runnerFrom = "<div class='slider__runner slider__runner_name-from'></div>";
 
-        this.container.append(runnerLeft);
-        this.container.append(runnerRight);
+        this.container.append(runnerFrom);
 
-        this.$runnerLeft = this.container.find(".slider__runner_position-left");
-        this.$runnerRight = this.container.find(".slider__runner_position-right");
+        this.$runnerFrom = this.container.find(".slider__runner_name-from");
 
-        this.$runner = this.container.find(".slider__runner");
+        this.attachEventRunner(this.$runnerFrom);
+    }
 
-        this.$info = this.container.find(".slider__info");
+    public drawRunnerTo() {
+        const runnerTo = "<div class='slider__runner slider__runner_name-to'></div>";
 
-        this.$runnerLeft.on("mousedown", () => {
-            $(document).on("mousemove", () => {
-                this.emit("click", this.getPosition(event, 'from'));
-            });
-            $(document).on("mouseup", () => $(document).off("mousemove"));
-        });
+        this.container.append(runnerTo);
 
-        this.$runnerRight.ondragstart = function() {
+        this.$runnerTo = this.container.find(".slider__runner_name-to");
+
+        this.attachEventRunner(this.$runnerTo);
+    }
+
+    public destroyRunners () {
+        if (typeof this.$runnerFrom !== 'undefined') {
+            this.$runnerFrom.remove()
+        }
+
+        if (typeof this.$runnerTo !== 'undefined') {
+            this.$runnerTo.remove()
+        } 
+    }
+
+    private attachEventRunner(node: any) {
+        let nodeName: string
+
+        nodeName = node.hasClass('slider__runner_name-from') ? 'from': 'to'
+       
+        node.ondragstart = function() {
             return false;
-          };
+        };
 
-        this.$runnerRight.on("mousedown", () => {
+        node.on("mousedown", () => {
             $(document).on("mousemove", () => {
-                this.emit("click", this.getPosition(event, 'to'));
+                this.emit("click", this.getPosition(event, nodeName));
             });
             $(document).on("mouseup", () => $(document).off("mousemove"));
         });
     }
 
-    getPosition(event: any, runner: string) {
+    private getPosition(event: any, runnerName: string) {
         const position: IPosition = {x: 0, y: 0, name: ''};
 
-        if (runner === 'to') {
-            position.name = 'to'
-        } else {
-            position.name = 'from'
-        }
+        position.name = runnerName
 
         position.x = event.pageX;
         position.y = event.pageY;
@@ -63,25 +70,17 @@ class Runner {
         return position;
     }
 
-    update(left: number, right: number, isVertical: number, from: number, to: number) {
-        if (isVertical) {
-            this.$runnerLeft.css("margin-top", left + "%");
-            this.$runnerRight.css("margin-top", right + "%");
-        } else {
-            this.$runnerLeft.css("margin-left", left + "%");
-            this.$runnerRight.css("margin-left", right + "%");
-        }
-
-        this.$info.first().text(from)
-        this.$info.last().text(to)
+    update(left: number, right: number, from: number, to: number) {
+        this.$runnerFrom.css("margin-left", left + "%");
+        this.$runnerTo.css("margin-left", right + "%");
     }
 
-    hideLeftRunner() {
-        this.$runnerLeft.css("display", "none");
+    updatePositionRunnerFrom() {
+
     }
 
-    displayLeftRunner() {
-        this.$runnerLeft.css("display", "block");
+    updatePositionRunnerTo() {
+
     }
 }
 

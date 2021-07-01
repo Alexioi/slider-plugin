@@ -14,21 +14,21 @@ class App {
         this.init();
       }
 
-      init() {
-        const defaultOptions: IOptions = {
-            isRange: true,
-            isVertical: false,
-            hasTip: false,
-            hasScale: false,
-            numberMarks: 10,
-            step: 10,
-            min: 0,
-            max: 103,
-            from: 40,
-            to: 70,
-          };
+    init() {
+      const defaultOptions: IOptions = {
+          isRange: true,
+          isVertical: false,
+          hasTip: false,
+          hasScale: false,
+          numberMarks: 10,
+          step: 10,
+          min: 0,
+          max: 103,
+          from: 40,
+          to: 70,
+        };
 
-          this.presenter = new Presenter(this.element, this.options, defaultOptions)
+        this.presenter = new Presenter(this.element, this.options, defaultOptions)
       }
 
       updateOptions(options: IOptions) {
@@ -36,6 +36,7 @@ class App {
       }
 
       getOptions() {
+        console.log(this)
         return this.presenter.getOptions()
       }
 }

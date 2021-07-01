@@ -93,7 +93,7 @@ class Model {
     }
 
     public updateNearValue() {
-
+        
     }
 
     private checkValueComplianceWithStep(value: number, oldValue: number): number {
