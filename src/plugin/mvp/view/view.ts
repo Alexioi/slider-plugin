@@ -54,15 +54,22 @@ class View {
       this.runner.drawRunnerTo()
     }
 
+    if (isVertical) {
+      this.bar.addClassVertical()
+    } else {
+      this.bar.removeClassVertical()
+    }
+
     this.updatePosition({
       min: min,
       max: max,
       from: from,
       to: to,
+      isVertical,
     })
   }
 
-  updatePosition({min, max, from, to}: any) {
+  updatePosition({min, max, from, to, isVertical,}: any) {
     let leftPosition: number,
         widthBar: number,
         rightPosition: number;
@@ -72,8 +79,16 @@ class View {
     widthBar = ((to - from) /  (max - min) * 100);
 
 
-    this.bar.update(widthBar, leftPosition);
-    this.runner.update(leftPosition, rightPosition, from, to);
+    let positionFrom: number = this.$container.height() * leftPosition / 100
+    let positionTo: number = this.$container.height() * rightPosition / 100
+
+    if (isVertical) {
+      this.bar.moveVerticalRange(widthBar, positionFrom);
+      this.runner.moveBottomRunners(positionFrom, positionTo)
+    } else {
+      this.bar.moveHorizonRange(widthBar, leftPosition);
+      this.runner.moveRightRunners(leftPosition, rightPosition)
+    }
   }
 
   private initSubView() {

@@ -1,5 +1,4 @@
 import EventEmitter from "event-emitter";
-import { IPosition } from "../interfaces/interfaces";
 
 class Bar {
   container: any;
@@ -12,32 +11,38 @@ class Bar {
   }
 
   draw() {
-    const bar =
-      "<div class='slider__bar'><div class='slider__range'></div></div>";
+    const bar ="<div class='slider__bar'><div class='slider__range'></div></div>";
 
     this.container.append(bar);
 
     this.$range = this.container.find(".slider__range");
     this.$bar = this.container.find(".slider__bar");
-
-    this.$bar.on("click", () => this.emit("click", this.getPosition(event)));
   }
 
-  getPosition(event: any) {
-    const position: IPosition = {x:0, y:0};
-
-    position.x = event.pageX;
-    position.y = event.pageY;
-
-    return position;
+  public addClassVertical () {
+    this.$bar.addClass('slider__bar_vertical')
   }
 
-  update(width:number, left:number, isVertical:boolean) {
-    if (isVertical) {
-      this.$range.css({ height: width + "%", "margin-left": top + "%" });
-    } else {
-      this.$range.css({ width: width + "%", "margin-left": left + "%" });
-    }
+  public removeClassVertical () {
+    this.$bar.removeClass('slider__bar_vertical')
+  }
+  
+  public moveHorizonRange(width:number, left:number) {
+    this.$range.css({ 
+      'width': width + "%", 
+      'height': '100%',
+      "margin-top": '0%',
+      "margin-left": left + "%" 
+    });
+  }
+
+  public moveVerticalRange(width:number, left:number) {
+    this.$range.css({ 
+      'height': width + "%",
+      'width': '100%', 
+      "margin-left": "0%",
+      "margin-top": left + 'px' 
+    });
   }
 }
 

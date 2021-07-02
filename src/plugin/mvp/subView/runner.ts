@@ -70,17 +70,16 @@ class Runner {
         return position;
     }
 
-    update(left: number, right: number, from: number, to: number) {
-        this.$runnerFrom.css("margin-left", left + "%");
-        this.$runnerTo.css("margin-left", right + "%");
+    public moveRightRunners(positionFrom: number, positionTo: number) {
+        this.$runnerFrom.css("margin-left", positionFrom + "%");
+        this.$runnerTo.css("margin-left", positionTo + "%");
     }
 
-    updatePositionRunnerFrom() {
+    public moveBottomRunners(positionFrom: number, positionTo: number) {
+       
 
-    }
-
-    updatePositionRunnerTo() {
-
+        this.$runnerFrom.css("margin-top", positionFrom + "px");
+        this.$runnerTo.css("margin-top", positionTo + "px");
     }
 }
 
