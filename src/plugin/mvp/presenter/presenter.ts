@@ -3,7 +3,7 @@ import View from "../view/view";
 
 import EventEmitter from "event-emitter";
 
-import {IOptions, IClickRate} from "../interfaces/interfaces"
+import { IOptions, IClickRate } from "../interfaces/interfaces";
 
 class Presenter {
   options: IOptions;
@@ -15,7 +15,7 @@ class Presenter {
   constructor(element: any, options: IOptions, defaultOptions: IOptions) {
     this.element = element;
     this.options = options;
-    this.defaultOptions = defaultOptions
+    this.defaultOptions = defaultOptions;
 
     this.initMVP();
     this.addEventEmitters();
@@ -23,7 +23,12 @@ class Presenter {
   }
 
   addEventEmitters() {
-    this.model.on("updateModelOptions", (options: IOptions) => this.updateView(options));
+    this.model.on("updateModelOptions", (options: IOptions) =>
+      this.view.updateVisible(options)
+    );
+    this.model.on("updateModelValues", (options: IOptions) =>
+      this.view.updatePosition(options)
+    );
 
     this.view.on("click", (clickRate: IClickRate) =>
       this.model.updateValue(clickRate)
@@ -35,15 +40,11 @@ class Presenter {
   }
 
   getOptions() {
-    return this.model.getOptions()
+    return this.model.getOptions();
   }
 
   drawView() {
     this.view.draw();
-  }
-
-  updateView(options: IOptions) {
-    this.view.update(options);
   }
 
   init() {

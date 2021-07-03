@@ -1,20 +1,23 @@
+$runnerWidth: 1.5rem;
+
 .slider {
   &__container {
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
-    position: relative;
+    padding: $runnerWidth / 2;
   }
 
   &__bar {
     width: 100%;
-    height: 8px;
+    height: $runnerWidth / 2;
     border: 1px solid black;
     background-color: #999;
     border-radius: 3px;
     position: relative;
 
     &_vertical {
-      width: 8px;
+      width: $runnerWidth / 2;
       height: 100%;
     }
   }
@@ -26,14 +29,21 @@
   }
 
   &__runner {
+    box-sizing: border-box;
     position: absolute;
     z-index: 2;
-    top: -5px;
+    top: -($runnerWidth / 4);
     border: 2px solid white;
-    height: 16px;
-    width: 16px;
+    height: $runnerWidth;
+    width: $runnerWidth;
     border-radius: 50%;
     background-color: green;
     transform: translateX(-50%);
+
+    &_vertical {
+      left: -($runnerWidth / 4);
+      transform: translateX(0);
+      transform: translateY(-50%);
+    }
   }
 }
