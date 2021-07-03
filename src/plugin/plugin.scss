@@ -66,13 +66,16 @@ $runnerWidth: 1.5rem;
   &__info {
     position: relative;
     width: 100%;
-    padding-bottom: $runnerWidth / 2;
+    height: 16px;
+    padding-bottom: $runnerWidth;
   }
 
   &__tip {
-    width: 10px;
-    height: 10px;
+    line-height: 16px;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 2px;
     position: absolute;
-    background-color: gray;
+    background-color: green;
   }
 }

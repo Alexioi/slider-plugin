@@ -72,11 +72,16 @@ class View {
     }
 
     if (isRange) {
-      this.info.drawTipFrom();
+      if (hasTip) {
+        this.info.drawTipFrom();
+      }
       this.bar.drawRunnerFrom();
     }
 
-    this.info.drawTipTo();
+    if (hasTip) {
+      this.info.drawTipTo();
+    }
+
     this.bar.drawRunnerTo();
 
     if (isVertical) {
@@ -88,19 +93,37 @@ class View {
     this.updatePosition(options);
   }
 
-  updatePosition({ min, max, from, to, isVertical }: IOptions) {
+  updatePosition({
+    min,
+    max,
+    from,
+    to,
+    isVertical,
+    hasTip,
+    isRange,
+  }: IOptions) {
     let leftPosition: number, widthBar: number, rightPosition: number;
 
     rightPosition = ((to - min) / (max - min)) * 100;
     leftPosition = ((from - min) / (max - min)) * 100;
     widthBar = ((to - from) / (max - min)) * 100;
 
+    if (hasTip) {
+      if (isRange) {
+        this.info.addValueTipFrom(from);
+      }
+
+      this.info.addValueTipTo(to);
+    }
+
     if (isVertical) {
       this.bar.moveVerticalRange(widthBar, leftPosition);
       this.bar.moveBottomRunners(leftPosition, rightPosition);
+      this.info.moveBottomTips(leftPosition, rightPosition);
     } else {
       this.bar.moveHorizonRange(widthBar, leftPosition);
       this.bar.moveRightRunners(leftPosition, rightPosition);
+      this.info.moveRightTips(leftPosition, rightPosition);
     }
   }
 
