@@ -3,23 +3,26 @@ import EventEmitter from "event-emitter";
 import { IPosition } from "../interfaces/interfaces";
 
 class Bar {
-  container: any;
+  $slider: any;
+  $container: any;
   $range: any;
   $bar: any;
   $runnerFrom: any;
   $runnerTo: any;
   emit: any;
 
-  constructor(container: any) {
-    this.container = container;
+  constructor(slider: any) {
+    this.$slider = slider;
   }
 
   public drawBar() {
     const bar = "<div class='slider__bar'></div>";
 
-    this.container.append(bar);
+    this.$container = this.$slider.find(".slider__container");
 
-    this.$bar = this.container.find(".slider__bar");
+    this.$container.append(bar);
+
+    this.$bar = this.$container.find(".slider__bar");
 
     this.drawRange();
   }
@@ -29,7 +32,7 @@ class Bar {
 
     this.$bar.append(range);
 
-    this.$range = this.container.find(".slider__range");
+    this.$range = this.$container.find(".slider__range");
   }
 
   public drawRunnerFrom() {
@@ -38,7 +41,7 @@ class Bar {
 
     this.$bar.append(runnerFrom);
 
-    this.$runnerFrom = this.container.find(".slider__runner_name-from");
+    this.$runnerFrom = this.$container.find(".slider__runner_name-from");
 
     this.attachEventRunner(this.$runnerFrom);
   }
@@ -49,24 +52,9 @@ class Bar {
 
     this.$bar.append(runnerTo);
 
-    this.$runnerTo = this.container.find(".slider__runner_name-to");
+    this.$runnerTo = this.$container.find(".slider__runner_name-to");
 
     this.attachEventRunner(this.$runnerTo);
-  }
-
-  public destroyRunners() {
-    if (typeof this.$runnerFrom !== "undefined") {
-      this.$runnerFrom.remove();
-    }
-
-    if (typeof this.$runnerTo !== "undefined") {
-      this.$runnerTo.remove();
-    }
-  }
-
-  public addRunnersClassVertical() {
-    this.$runnerFrom.addClass("slider__runner_vertical");
-    this.$runnerTo.addClass("slider__runner_vertical");
   }
 
   private attachEventRunner(node: any) {
@@ -74,9 +62,7 @@ class Bar {
 
     nodeName = node.hasClass("slider__runner_name-from") ? "from" : "to";
 
-    node.ondragstart = function () {
-      return false;
-    };
+    node.on("dragstart", () => false);
 
     node.on("mousedown", () => {
       $(document).on("mousemove", () => {
@@ -98,21 +84,17 @@ class Bar {
   }
 
   public moveRightRunners(positionFrom: number, positionTo: number) {
-    this.$runnerFrom.css("left", positionFrom + "%");
+    if (typeof this.$runnerFrom !== "undefined") {
+      this.$runnerFrom.css("left", positionFrom + "%");
+    }
     this.$runnerTo.css("left", positionTo + "%");
   }
 
   public moveBottomRunners(positionFrom: number, positionTo: number) {
-    this.$runnerFrom.css("top", positionFrom + "%");
+    if (typeof this.$runnerFrom !== "undefined") {
+      this.$runnerFrom.css("top", positionFrom + "%");
+    }
     this.$runnerTo.css("top", positionTo + "%");
-  }
-
-  public addClassVertical() {
-    this.$bar.addClass("slider__bar_vertical");
-  }
-
-  public removeClassVertical() {
-    this.$bar.removeClass("slider__bar_vertical");
   }
 
   public moveHorizonRange(width: number, left: number) {

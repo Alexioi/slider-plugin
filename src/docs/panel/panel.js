@@ -9,9 +9,10 @@ class Panel {
     this.from = this.control.querySelector(".panel__from-checkbox");
     this.to = this.control.querySelector(".panel__to-checkbox");
     this.step = this.control.querySelector(".panel__step-checkbox");
+    this.tip = this.control.querySelector(".panel__tip-checkbox");
 
     this.addEventHandler();
-    this.verifyInput()
+    this.verifyInput();
   }
 
   addEventHandler() {
@@ -22,6 +23,7 @@ class Panel {
     this.from.addEventListener("input", () => this.changeFrom());
     this.to.addEventListener("input", () => this.changeTo());
     this.step.addEventListener("input", () => this.changeStep());
+    this.tip.addEventListener("click", () => this.changeTip());
   }
 
   changeRange() {
@@ -31,7 +33,17 @@ class Panel {
       this.slider.updateOptions({ isRange: false });
     }
 
-    this.verifyInput()
+    this.verifyInput();
+  }
+
+  changeTip() {
+    if (this.tip.checked) {
+      this.slider.updateOptions({ hasTip: true });
+    } else {
+      this.slider.updateOptions({ hasTip: false });
+    }
+
+    this.verifyInput();
   }
 
   changeVertical() {
@@ -41,57 +53,59 @@ class Panel {
       this.slider.updateOptions({ isVertical: false });
     }
 
-    this.verifyInput()
+    this.verifyInput();
   }
 
   changeMin() {
-    let value = Number(this.min.value)
+    let value = Number(this.min.value);
     this.slider.updateOptions({ min: value });
 
-    this.verifyInput()
+    this.verifyInput();
   }
 
   changeMax() {
-    let value = Number(this.max.value)
+    let value = Number(this.max.value);
     this.slider.updateOptions({ max: value });
 
-    this.verifyInput()
+    this.verifyInput();
   }
 
   changeFrom() {
-    let value = Number(this.from.value)
+    let value = Number(this.from.value);
     this.slider.updateOptions({ from: value });
 
-    this.verifyInput()
+    this.verifyInput();
   }
 
   changeTo() {
-    let value = Number(this.to.value)
+    let value = Number(this.to.value);
     this.slider.updateOptions({ to: value });
 
-    this.verifyInput()
+    this.verifyInput();
   }
 
   changeStep() {
-    let value = Number(this.step.value)
+    let value = Number(this.step.value);
     this.slider.updateOptions({ step: value });
 
-    this.verifyInput()
+    this.verifyInput();
   }
 
   verifyInput() {
-    let options = this.slider.getOptions()
-    this.range.checked = options.isRange
-    this.vertical.checked = options.isVertical
-    this.min.value = options.min
-    this.max.value = options.max
-    this.from.value = options.from
-    this.to.value = options.to
-    this.step.value = options.step
+    let options = this.slider.getOptions();
+
+    this.range.checked = options.isRange;
+    this.vertical.checked = options.isVertical;
+    this.min.value = options.min;
+    this.max.value = options.max;
+    this.from.value = options.from;
+    this.to.value = options.to;
+    this.step.value = options.step;
+    this.tip.checked = options.hasTip;
   }
 }
 
-const slider = $(".panel__example").slider();
+const slider = $(".panel__example").slider({ hasTip: true });
 
 document.querySelectorAll(".panel__control").forEach((node) => {
   new Panel(node, slider);

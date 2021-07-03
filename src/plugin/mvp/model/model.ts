@@ -33,7 +33,7 @@ class Model {
     }
 
     if (typeof hasTip === "boolean") {
-      this.options.hasTip = isVertical;
+      this.options.hasTip = hasTip;
     }
 
     if (typeof numberMarks === "number") {

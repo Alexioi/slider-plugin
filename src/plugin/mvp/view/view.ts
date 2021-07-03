@@ -1,13 +1,15 @@
 import EventEmitter from "event-emitter";
 
 import Bar from "../subView/bar";
+import Info from "../subView/info";
 
 import { IClickRate, IOptions, IPosition } from "../interfaces/interfaces";
 
 class View {
   element: any;
   bar: any;
-  runner: any;
+  info: any;
+  $slider: any;
   $container: any;
   emit: any;
 
@@ -29,35 +31,58 @@ class View {
   }
 
   draw() {
+    const slider = "<div class='slider'></div>";
+
+    this.element.append(slider);
+
+    this.$slider = this.element.find(".slider");
+
+    this.updateSlider();
+  }
+
+  updateSlider() {
     const sliderContainer = "<div class='slider__container'></div>";
 
-    this.element.append(sliderContainer);
+    this.$slider.append(sliderContainer);
 
     this.$container = this.element.find(".slider__container");
 
     this.initSubView();
     this.addEventEmitters();
+  }
 
-    this.bar.drawBar();
+  destroyContainer() {
+    this.$container.remove();
   }
 
   updateVisible(options: IOptions): void {
-    let { isRange, isVertical, step, min, max, from, to } = options;
+    let { isRange, isVertical, hasTip } = options;
 
-    this.bar.destroyRunners();
+    this.destroyContainer();
+    this.updateSlider();
 
-    if (isRange) {
-      this.bar.drawRunnerFrom();
-      this.bar.drawRunnerTo();
-    } else {
-      this.bar.drawRunnerTo();
+    if (hasTip && !isVertical) {
+      this.info.drawInfo();
     }
 
+    this.bar.drawBar();
+
+    if (hasTip && isVertical) {
+      this.info.drawInfo();
+    }
+
+    if (isRange) {
+      this.info.drawTipFrom();
+      this.bar.drawRunnerFrom();
+    }
+
+    this.info.drawTipTo();
+    this.bar.drawRunnerTo();
+
     if (isVertical) {
-      this.bar.addClassVertical();
-      this.bar.addRunnersClassVertical();
+      this.addClassVertical();
     } else {
-      this.bar.removeClassVertical();
+      this.removeClassVertical();
     }
 
     this.updatePosition(options);
@@ -79,8 +104,17 @@ class View {
     }
   }
 
+  private addClassVertical() {
+    this.$slider.addClass("slider_vertical");
+  }
+
+  private removeClassVertical() {
+    this.$slider.removeClass("slider_vertical");
+  }
+
   private initSubView() {
-    this.bar = new Bar(this.$container);
+    this.bar = new Bar(this.$slider);
+    this.info = new Info(this.$slider);
   }
 
   private addEventEmitters() {
