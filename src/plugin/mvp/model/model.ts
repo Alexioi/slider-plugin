@@ -37,7 +37,7 @@ class Model {
     }
 
     if (typeof numberMarks === "number") {
-      this.options.numberMarks = step;
+      this.options.numberMarks = numberMarks;
     }
 
     if (typeof step === "number") {

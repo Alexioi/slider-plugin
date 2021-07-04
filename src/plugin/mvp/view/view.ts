@@ -2,6 +2,7 @@ import EventEmitter from "event-emitter";
 
 import Bar from "../subView/bar";
 import Info from "../subView/info";
+import Scale from "../subView/scale";
 
 import { IClickRate, IOptions, IPosition } from "../interfaces/interfaces";
 
@@ -9,6 +10,7 @@ class View {
   element: any;
   bar: any;
   info: any;
+  scale: any;
   $slider: any;
   $container: any;
   emit: any;
@@ -56,20 +58,16 @@ class View {
   }
 
   updateVisible(options: IOptions): void {
-    let { isRange, isVertical, hasTip } = options;
+    let { isRange, isVertical, hasTip, min, max, numberMarks } = options;
 
     this.destroyContainer();
     this.updateSlider();
 
-    if (hasTip && !isVertical) {
+    if (hasTip) {
       this.info.drawInfo();
     }
 
     this.bar.drawBar();
-
-    if (hasTip && isVertical) {
-      this.info.drawInfo();
-    }
 
     if (isRange) {
       if (hasTip) {
@@ -88,6 +86,22 @@ class View {
       this.addClassVertical();
     } else {
       this.removeClassVertical();
+    }
+
+    this.scale.drawScale();
+
+    let counter: number;
+
+    for (let i = 0; i <= numberMarks; i++) {
+      if (i === 0) {
+        counter = min;
+      } else if (i === max) {
+        counter = max;
+      } else {
+        counter = Math.round(min + ((max - min) / numberMarks) * i);
+      }
+
+      this.scale.drawSerif(counter);
     }
 
     this.updatePosition(options);
@@ -138,6 +152,7 @@ class View {
   private initSubView() {
     this.bar = new Bar(this.$slider);
     this.info = new Info(this.$slider);
+    this.scale = new Scale(this.$slider);
   }
 
   private addEventEmitters() {
