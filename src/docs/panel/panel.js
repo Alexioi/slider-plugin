@@ -10,6 +10,7 @@ class Panel {
     this.to = this.control.querySelector(".panel__to-checkbox");
     this.step = this.control.querySelector(".panel__step-checkbox");
     this.tip = this.control.querySelector(".panel__tip-checkbox");
+    this.numberMarks = this.control.querySelector(".panel__number-marks-checkbox");
 
     this.addEventHandler();
     this.verifyInput();
@@ -24,6 +25,7 @@ class Panel {
     this.to.addEventListener("input", () => this.changeTo());
     this.step.addEventListener("input", () => this.changeStep());
     this.tip.addEventListener("click", () => this.changeTip());
+    this.numberMarks.addEventListener("input", () => this.changeNumberMarks());
   }
 
   changeRange() {
@@ -45,6 +47,13 @@ class Panel {
 
     this.verifyInput();
   }
+
+  changeNumberMarks() {
+      let value = Number(this.numberMarks.value);
+      this.slider.updateOptions({ numberMarks: value });
+
+      this.verifyInput();
+    }
 
   changeVertical() {
     if (this.vertical.checked) {
@@ -102,6 +111,7 @@ class Panel {
     this.to.value = options.to;
     this.step.value = options.step;
     this.tip.checked = options.hasTip;
+    this.numberMarks.value = options.numberMarks;
   }
 }
 

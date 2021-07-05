@@ -90,19 +90,36 @@ class View {
 
     this.scale.drawScale();
 
-    let counter: number;
+    let counter: number, sliderWidth: number, rate: number;
 
-    for (let i = 0; i <= numberMarks; i++) {
-      if (i === 0) {
-        counter = min;
-      } else if (i === max) {
-        counter = max;
-      } else {
-        counter = Math.round(min + ((max - min) / numberMarks) * i);
+    sliderWidth = max - min
+
+      numberMarks = numberMarks -1
+
+      if (numberMarks > 0) {
+          this.scale.drawSerif(min);
+          isVertical ? this.scale.moveBottomSerif(0) : this.scale.moveLeftSerif(0)
+          this.scale.drawSerif(max);
+          isVertical ? this.scale.moveBottomSerif(100) :  this.scale.moveLeftSerif(100)
+
+
+          for (let i = 0; i < numberMarks; i++) {
+
+              counter = Math.round(min + ((max - min) / numberMarks) * i);
+
+
+              this.scale.drawSerif(counter);
+
+              rate = counter / sliderWidth * 100
+
+              if (isVertical) {
+                  this.scale.moveBottomSerif(rate)
+              } else {
+              this.scale.moveLeftSerif(rate)}
+          }
       }
 
-      this.scale.drawSerif(counter);
-    }
+
 
     this.updatePosition(options);
   }

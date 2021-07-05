@@ -28,6 +28,14 @@ class Scale {
 
     this.$serif = this.$container.find(".slider__serif");
   }
+
+  public moveLeftSerif(position: number) {
+      this.$serif.last().css('left', position + '%')
+  }
+
+    public moveBottomSerif(position: number) {
+        this.$serif.last().css('top', position + '%')
+    }
 }
 
 EventEmitter(Scale.prototype);

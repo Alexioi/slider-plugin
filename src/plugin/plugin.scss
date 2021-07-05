@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $runnerWidth: 1.5rem;
 
 .slider {
@@ -14,17 +16,17 @@ $runnerWidth: 1.5rem;
     & .slider__info {
       width: auto;
       height: 100%;
-      padding-left: $runnerWidth / 2;
+      padding-left: $runnerWidth * 0.5;
       padding-bottom: 0;
     }
 
     & .slider__bar {
-      width: $runnerWidth / 2;
+      width: $runnerWidth * 0.5;
       height: 100%;
     }
 
     & .slider__runner {
-      right: -($runnerWidth / 3);
+      right: -(math.div($runnerWidth, 3));
       transform: translateY(-50%);
     }
 
@@ -33,9 +35,11 @@ $runnerWidth: 1.5rem;
     }
 
     & .slider__scale {
-      flex-direction: column;
-      align-items: flex-end;
-      margin-right: 10px;
+      margin-right: 30px;
+    }
+
+    & .slider__serif {
+      transform: translateY(-50%);
     }
   }
 
@@ -43,13 +47,13 @@ $runnerWidth: 1.5rem;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    padding: $runnerWidth / 2;
+    padding: $runnerWidth * 0.5;
   }
 
   &__bar {
     box-sizing: border-box;
     width: 100%;
-    height: $runnerWidth / 2;
+    height: $runnerWidth * 0.5;
     border: 1px solid black;
     background-color: #999;
     border-radius: 3px;
@@ -66,7 +70,7 @@ $runnerWidth: 1.5rem;
     box-sizing: border-box;
     position: absolute;
     z-index: 2;
-    top: -($runnerWidth / 3);
+    top: -(math.div($runnerWidth, 3));
     border: 2px solid white;
     height: $runnerWidth;
     width: $runnerWidth;
@@ -93,9 +97,13 @@ $runnerWidth: 1.5rem;
   }
 
   &__scale {
+    position: relative;
+  }
+
+  &__serif {
     font-weight: bold;
-    display: flex;
-    justify-content: space-between;
     cursor: pointer;
+    position: absolute;
+    transform: translateX(-50%);
   }
 }
