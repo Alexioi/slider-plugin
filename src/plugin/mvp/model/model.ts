@@ -81,7 +81,8 @@ class Model {
     if (valueName === "from") {
       value = this.options.from;
 
-      this.options.from = this.options.max * rate;
+      this.options.from = (this.options.max - this.options.min) * rate + this.options.min;
+    
 
       this.options.from = this.checkValueComplianceWithStep(
         value,
@@ -93,7 +94,8 @@ class Model {
     if (valueName === "to") {
       value = this.options.to;
 
-      this.options.to = this.options.max * rate;
+      this.options.to = (this.options.max - this.options.min) * rate + this.options.min;
+      
 
       this.options.to = this.checkValueComplianceWithStep(
         value,
