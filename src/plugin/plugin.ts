@@ -1,11 +1,23 @@
 import "./plugin.scss";
 
-import {IOptions} from "./mvp/interfaces/interfaces";
+import { IOptions } from "./mvp/interfaces/interfaces";
 
 import App from "./mvp/app/app";
 
 declare const $: any;
 
 $.fn.slider = function (options: IOptions) {
-    return new App(this, options);
+  let apps: any = [];
+
+  apps.push(
+    this.each((i: number) => {
+      let node = this.slice(i, i + 1);
+
+      let app = new App(node, options);
+
+      apps.push(app);
+    })
+  );
+
+  return apps;
 };

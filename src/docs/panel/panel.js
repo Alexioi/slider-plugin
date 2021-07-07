@@ -10,7 +10,9 @@ class Panel {
     this.to = this.control.querySelector(".panel__to-checkbox");
     this.step = this.control.querySelector(".panel__step-checkbox");
     this.tip = this.control.querySelector(".panel__tip-checkbox");
-    this.numberMarks = this.control.querySelector(".panel__number-marks-checkbox");
+    this.numberMarks = this.control.querySelector(
+      ".panel__number-marks-checkbox"
+    );
 
     this.addEventHandler();
     this.verifyInput();
@@ -49,11 +51,11 @@ class Panel {
   }
 
   changeNumberMarks() {
-      let value = Number(this.numberMarks.value);
-      this.slider.updateOptions({ numberMarks: value });
+    let value = Number(this.numberMarks.value);
+    this.slider.updateOptions({ numberMarks: value });
 
-      this.verifyInput();
-    }
+    this.verifyInput();
+  }
 
   changeVertical() {
     if (this.vertical.checked) {
@@ -115,8 +117,8 @@ class Panel {
   }
 }
 
-const slider = $(".panel__example").slider({ hasTip: true });
+const slider = $(".panel__example").slider();
 
-document.querySelectorAll(".panel__control").forEach((node) => {
-  new Panel(node, slider);
+document.querySelectorAll(".panel__control").forEach((node, i) => {
+  new Panel(node, slider[i]);
 });

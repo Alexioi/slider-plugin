@@ -18,12 +18,12 @@ class App {
     const defaultOptions: IOptions = {
       isRange: true,
       isVertical: false,
-      hasTip: false,
+      hasTip: true,
       hasScale: false,
-      numberMarks: 10,
+      numberMarks: 5,
       step: 10,
       min: 0,
-      max: 103,
+      max: 100,
       from: 40,
       to: 70,
     };
