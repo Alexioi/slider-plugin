@@ -107,10 +107,9 @@ class View {
 
               counter = Math.round(min + ((max - min) / numberMarks) * i);
 
-
               this.scale.drawSerif(counter);
 
-              rate = counter / sliderWidth * 100
+              rate = Math.abs(counter / sliderWidth * 100)
 
               if (isVertical) {
                   this.scale.moveBottomSerif(rate)
