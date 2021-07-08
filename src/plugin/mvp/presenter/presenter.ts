@@ -1,4 +1,4 @@
-import Model from "../model/model";
+import {Model, IModel} from "../model/model";
 import View from "../view/view";
 
 import EventEmitter from "event-emitter";
@@ -8,8 +8,8 @@ import { IOptions, IClickRate } from "../interfaces/interfaces";
 class Presenter {
   options: IOptions;
   view: any;
-  model: any;
-  element: any;
+  model!: IModel;
+  element: JQuery;
   defaultOptions: IOptions;
 
   constructor(element: any, options: IOptions, defaultOptions: IOptions) {

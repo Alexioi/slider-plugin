@@ -2,7 +2,18 @@ import EventEmitter from "event-emitter";
 
 import { IOptions, IClickRate } from "../interfaces/interfaces";
 
-class Model {
+interface IModel {
+  options: IOptions;
+
+  updateOptions(options: IOptions): void;
+  updateValue(clickRate: IClickRate): void;
+  getOptions(): IOptions;
+
+  emit?: any;
+  on?: any;
+}
+
+class Model implements IModel {
   options: IOptions;
   emit: any;
 
@@ -117,7 +128,9 @@ class Model {
       oldValue = this.options.min;
     } else if (oldValue > this.options.max) {
       oldValue = this.options.max;
-    } else if (Math.abs(oldValue - value) > this.options.step / 2) {
+
+    } 
+    else if (Math.abs(oldValue - value) > this.options.step / 2) {
       oldValue =
         oldValue - value > 0
           ? value + this.options.step
@@ -174,4 +187,4 @@ class Model {
 
 EventEmitter(Model.prototype);
 
-export default Model;
+export {Model, IModel};

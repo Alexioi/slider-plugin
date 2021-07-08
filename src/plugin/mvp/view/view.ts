@@ -7,12 +7,12 @@ import Scale from "../subView/scale";
 import { IClickRate, IOptions, IPosition } from "../interfaces/interfaces";
 
 class View {
-  element: any;
+  element: JQuery;
   bar: any;
   info: any;
   scale: any;
-  $slider: any;
-  $container: any;
+  $slider!: any;
+  $container!: any;
   emit: any;
 
   constructor(element: any) {
