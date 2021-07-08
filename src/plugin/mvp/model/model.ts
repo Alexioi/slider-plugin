@@ -32,10 +32,18 @@ class Model implements IModel {
     from,
     to,
   }: IOptions) {
+
+    if (typeof from !== "undefined") { 
+      from = this.verifyFrom(from);
+    }
+
+    if (typeof to !== "undefined") { 
+      to = this.verifyTo(to);
+    }
+
     if (typeof isRange === "boolean") {
-      if (this.options.isRange !== isRange) {
-        this.calculateFrom(isRange);
-      }
+      this.calculateFrom(isRange);
+      
       this.options.isRange = isRange;
     }
 
@@ -72,9 +80,7 @@ class Model implements IModel {
     }
 
     this.verifyMax();
-    this.verifyFrom();
-    this.verifyTo();
-
+    
     this.emit("updateModelOptions", this.options);
   }
 
@@ -83,39 +89,46 @@ class Model implements IModel {
   }
 
   public updateValue({ x, y, valueName }: IClickRate) {
-    let rate: number;
 
-    this.options.isVertical ? (rate = y) : (rate = x);
+    let {isVertical, from, to, min, max } = this.options
 
-    let value: number;
+    let percentageOfMaximum: number;
+
+    isVertical ? (percentageOfMaximum = y) : (percentageOfMaximum = x);
+
+    let newValue: number;
+
+    newValue = (max - min) * percentageOfMaximum + min;
 
     if (valueName === "from") {
-      value = this.options.from;
 
-      this.options.from = (this.options.max - this.options.min) * rate + this.options.min;
-    
-
-      this.options.from = this.checkValueComplianceWithStep(
-        value,
-        this.options.from
+      newValue = this.checkValueComplianceWithStep(
+        from,
+        newValue
       );
-      this.verifyFrom();
+
+      newValue = this.verifyFrom(newValue);
+    
+      if (newValue !== from) {
+        this.options.from = newValue
+        this.emit("updateModelValues", this.options);
+      }
     }
 
     if (valueName === "to") {
-      value = this.options.to;
 
-      this.options.to = (this.options.max - this.options.min) * rate + this.options.min;
-      
-
-      this.options.to = this.checkValueComplianceWithStep(
-        value,
-        this.options.to
+      newValue = this.checkValueComplianceWithStep(
+        to,
+        newValue
       );
-      this.verifyTo();
-    }
 
-    this.emit("updateModelValues", this.options);
+      newValue = this.verifyTo(newValue);
+
+      if (newValue !== to) {
+        this.options.to = newValue
+        this.emit("updateModelValues", this.options);
+      }
+    }
   }
 
   public updateNearValue() {}
@@ -148,38 +161,48 @@ class Model implements IModel {
     }
   }
 
-  private verifyFrom() {
-    if (this.options.from > this.options.to) {
-      this.options.from = this.options.to;
+  private verifyFrom(from: number): number {
+    const {to, min, max} = this.options
+
+    if (from > to) {
+      return from = to;
     }
 
-    if (this.options.from < this.options.min) {
-      this.options.from = this.options.min;
+    if (from < min) {
+      return from = min;
     }
 
-    if (this.options.from > this.options.max) {
-      this.options.from = this.options.max;
+    if (from > max) {
+      return from = max;
     }
+
+    return from
   }
 
-  private verifyTo() {
-    if (this.options.to < this.options.from) {
-      this.options.to = this.options.from;
+  private verifyTo(to: number): number {
+    const {from, min, max} = this.options
+
+    if (to < from) {
+      return to = from;
     }
 
-    if (this.options.to < this.options.min) {
-      this.options.to = this.options.min;
+    if (to < min) {
+      return to = min;
     }
 
-    if (this.options.to > this.options.max) {
-      this.options.to = this.options.max;
+    if (to > max) {
+      return to = max;
     }
+    
+    return to
   }
 
   private calculateFrom(isRange: boolean) {
-    if (isRange) {
+    if (isRange !== this.options.isRange) {
       this.options.from = this.options.to / 2;
-    } else {
+    } 
+
+    if (!isRange) {
       this.options.from = this.options.min;
     }
   }
