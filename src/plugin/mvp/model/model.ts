@@ -88,7 +88,7 @@ class Model implements IModel {
     return this.options;
   }
 
-  public updateValue({ x, y, valueName }: IClickRate) {
+  public updateValue({ x, y, valueName }: IClickRate): void {
 
     let {isVertical, from, to, min, max } = this.options
 
@@ -100,59 +100,76 @@ class Model implements IModel {
 
     newValue = (max - min) * percentageOfMaximum + min;
 
-    if (valueName === "from") {
+    newValue = this.checkValueComplianceWithStep(
+      valueName,
+      newValue
+    );
 
-      newValue = this.checkValueComplianceWithStep(
-        from,
-        newValue
-      );
-
-      newValue = this.verifyFrom(newValue);
-    
-      if (newValue !== from) {
-        this.options.from = newValue
-        this.emit("updateModelValues", this.options);
-      }
+    if (valueName === "from" && newValue !== from) {
+      this.options.from = newValue
+      this.emit("updateModelValues", this.options);
     }
 
-    if (valueName === "to") {
-
-      newValue = this.checkValueComplianceWithStep(
-        to,
-        newValue
-      );
-
-      newValue = this.verifyTo(newValue);
-
-      if (newValue !== to) {
-        this.options.to = newValue
-        this.emit("updateModelValues", this.options);
-      }
+    if (valueName === "to" && newValue !== to) {
+      this.options.to = newValue
+      this.emit("updateModelValues", this.options);
     }
   }
 
   public updateNearValue() {}
 
   private checkValueComplianceWithStep(
-    value: number,
-    oldValue: number
+    valueName: string | undefined,
+    newValue: number
   ): number {
-    if (oldValue < this.options.min) {
-      oldValue = this.options.min;
-    } else if (oldValue > this.options.max) {
-      oldValue = this.options.max;
+    const {min, max, from, to, step} = this.options
 
+    let value: number
+
+    value = valueName === 'to' ? to : from;
+
+    if (valueName === 'to') {
+      value = to
+
+      if (newValue < from) {
+        newValue = from;
+  
+        return newValue
+      } 
     } 
-    else if (Math.abs(oldValue - value) > this.options.step / 2) {
-      oldValue =
-        oldValue - value > 0
-          ? value + this.options.step
-          : value - this.options.step;
-    } else {
-      oldValue = value;
+
+    if (valueName === 'from') {
+      value = from
+
+      if (newValue > to) {
+        newValue = to;
+  
+        return newValue
+      } 
     }
 
-    return oldValue;
+    if (newValue < min) {
+      newValue = min;
+
+      return newValue
+    } 
+
+    if (newValue > max) {
+      newValue = max;
+
+      return newValue
+    } 
+
+    if (Math.abs(newValue - value) > step / 2) {
+      newValue =
+        newValue - value > 0
+          ? value + step
+          : value - step;
+
+      return newValue
+    } 
+
+    return newValue = value;
   }
 
   private verifyMax(): void {
