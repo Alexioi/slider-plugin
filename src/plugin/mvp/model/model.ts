@@ -98,14 +98,24 @@ class Model implements IModel {
 
     newValue = (max - min) * percentageOfMaximum + min;
 
-    newValue = this.calculateValueDependingOnStep(valueName, newValue);
-
     if (valueName === "from" && newValue !== from) {
+      if (newValue === this.checkFrom(newValue)) {
+        newValue = this.calculateValueDependingOnStep(from, newValue);
+      }
+
+      newValue = this.checkFrom(newValue);
+
       this.options.from = newValue;
       this.emit("updateModelValues", this.options);
     }
 
     if (valueName === "to" && newValue !== to) {
+      if (newValue === this.checkTo(newValue)) {
+        newValue = this.calculateValueDependingOnStep(to, newValue);
+      }
+
+      newValue = this.checkTo(newValue);
+
       this.options.to = newValue;
       this.emit("updateModelValues", this.options);
     }
@@ -114,29 +124,11 @@ class Model implements IModel {
   public updateNearValue() {}
 
   private calculateValueDependingOnStep(
-    valueName: string | undefined,
+    value: number,
     newValue: number
   ): number {
-    const { min, max, from, to, step } = this.options;
-    let value: number, x: number;
-
-    value = valueName === "to" ? to : from;
-
-    if (valueName === "to" && newValue < from) {
-      return from;
-    }
-
-    if (valueName === "from" && newValue > to) {
-      return to;
-    }
-
-    if (newValue < min) {
-      return min;
-    }
-
-    if (newValue > max) {
-      return max;
-    }
+    const { step } = this.options;
+    let x: number;
 
     x = Math.abs(newValue - value) - (Math.abs(newValue - value) % step);
 
@@ -145,30 +137,42 @@ class Model implements IModel {
     }
 
     if (newValue - value > 0) {
-      newValue = value + x;
+      return value + x;
     }
 
     if (newValue - value < 0) {
-      newValue = value - x;
-    }
-
-    if (valueName === "to" && newValue < from) {
-      return from;
-    }
-
-    if (valueName === "from" && newValue > to) {
-      return to;
-    }
-
-    if (newValue < min) {
-      return min;
-    }
-
-    if (newValue > max) {
-      return max;
+      return value - x;
     }
 
     return newValue;
+  }
+
+  private checkFrom(from: number): number {
+    const { to, min } = this.options;
+
+    if (from > to) {
+      return to;
+    }
+
+    if (from < min) {
+      return min;
+    }
+
+    return from;
+  }
+
+  private checkTo(to: number): number {
+    const { from, max } = this.options;
+
+    if (to < from) {
+      return from;
+    }
+
+    if (to > max) {
+      return max;
+    }
+
+    return to;
   }
 
   private verifyMax(): void {
