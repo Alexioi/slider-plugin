@@ -32,18 +32,17 @@ class Model implements IModel {
     from,
     to,
   }: IOptions) {
-
-    if (typeof from !== "undefined") { 
+    if (typeof from !== "undefined") {
       from = this.verifyFrom(from);
     }
 
-    if (typeof to !== "undefined") { 
+    if (typeof to !== "undefined") {
       to = this.verifyTo(to);
     }
 
     if (typeof isRange === "boolean") {
       this.calculateFrom(isRange);
-      
+
       this.options.isRange = isRange;
     }
 
@@ -80,7 +79,7 @@ class Model implements IModel {
     }
 
     this.verifyMax();
-    
+
     this.emit("updateModelOptions", this.options);
   }
 
@@ -89,8 +88,7 @@ class Model implements IModel {
   }
 
   public updateValue({ x, y, valueName }: IClickRate): void {
-
-    let {isVertical, from, to, min, max } = this.options
+    const { isVertical, from, to, min, max } = this.options;
 
     let percentageOfMaximum: number;
 
@@ -100,76 +98,77 @@ class Model implements IModel {
 
     newValue = (max - min) * percentageOfMaximum + min;
 
-    newValue = this.checkValueComplianceWithStep(
-      valueName,
-      newValue
-    );
+    newValue = this.calculateValueDependingOnStep(valueName, newValue);
 
     if (valueName === "from" && newValue !== from) {
-      this.options.from = newValue
+      this.options.from = newValue;
       this.emit("updateModelValues", this.options);
     }
 
     if (valueName === "to" && newValue !== to) {
-      this.options.to = newValue
+      this.options.to = newValue;
       this.emit("updateModelValues", this.options);
     }
   }
 
   public updateNearValue() {}
 
-  private checkValueComplianceWithStep(
+  private calculateValueDependingOnStep(
     valueName: string | undefined,
     newValue: number
   ): number {
-    const {min, max, from, to, step} = this.options
+    const { min, max, from, to, step } = this.options;
+    let value: number, x: number;
 
-    let value: number
+    value = valueName === "to" ? to : from;
 
-    value = valueName === 'to' ? to : from;
+    if (valueName === "to" && newValue < from) {
+      return from;
+    }
 
-    if (valueName === 'to') {
-      value = to
-
-      if (newValue < from) {
-        newValue = from;
-  
-        return newValue
-      } 
-    } 
-
-    if (valueName === 'from') {
-      value = from
-
-      if (newValue > to) {
-        newValue = to;
-  
-        return newValue
-      } 
+    if (valueName === "from" && newValue > to) {
+      return to;
     }
 
     if (newValue < min) {
-      newValue = min;
-
-      return newValue
-    } 
+      return min;
+    }
 
     if (newValue > max) {
-      newValue = max;
+      return max;
+    }
 
-      return newValue
-    } 
+    x = Math.abs(newValue - value) - (Math.abs(newValue - value) % step);
 
     if (Math.abs(newValue - value) > step / 2) {
-      newValue =
-        newValue - value > 0
-          ? value + step
-          : value - step;
+      x = x + step;
+    }
 
-      return newValue
-    } 
+    if (newValue - value > 0) {
+      newValue = value + x;
+    }
 
-    return newValue = value;
+    if (newValue - value < 0) {
+      newValue = value - x;
+    }
+
+    if (valueName === "to" && newValue < from) {
+      return from;
+    }
+
+    if (valueName === "from" && newValue > to) {
+      return to;
+    }
+
+    if (newValue < min) {
+      return min;
+    }
+
+    if (newValue > max) {
+      return max;
+    }
+
+    return newValue;
   }
 
   private verifyMax(): void {
@@ -179,45 +178,37 @@ class Model implements IModel {
   }
 
   private verifyFrom(from: number): number {
-    const {to, min, max} = this.options
+    const { to, min } = this.options;
 
     if (from > to) {
-      return from = to;
+      return (from = to);
     }
 
     if (from < min) {
-      return from = min;
+      return (from = min);
     }
 
-    if (from > max) {
-      return from = max;
-    }
-
-    return from
+    return from;
   }
 
   private verifyTo(to: number): number {
-    const {from, min, max} = this.options
+    const { from, max } = this.options;
 
     if (to < from) {
-      return to = from;
-    }
-
-    if (to < min) {
-      return to = min;
+      return (to = from);
     }
 
     if (to > max) {
-      return to = max;
+      return (to = max);
     }
-    
-    return to
+
+    return to;
   }
 
   private calculateFrom(isRange: boolean) {
     if (isRange !== this.options.isRange) {
       this.options.from = this.options.to / 2;
-    } 
+    }
 
     if (!isRange) {
       this.options.from = this.options.min;
@@ -227,4 +218,4 @@ class Model implements IModel {
 
 EventEmitter(Model.prototype);
 
-export {Model, IModel};
+export { Model, IModel };
