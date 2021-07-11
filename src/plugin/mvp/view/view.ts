@@ -20,7 +20,7 @@ class View {
   }
 
   calculatePercentageClicks(position: IPosition) {
-    const clickRate: IClickRate = { x: 0, y: 0 };
+    const clickRate: IClickRate = { x: 0, y: 0, valueName: "" };
 
     let containerWidth = this.$container.width();
     let containerHeight = this.$container.height();
@@ -92,33 +92,32 @@ class View {
 
     let counter: number, sliderWidth: number, rate: number;
 
-    sliderWidth = max - min
+    sliderWidth = max - min;
 
-      numberMarks = numberMarks -1
+    numberMarks = numberMarks - 1;
 
-      if (numberMarks > 0) {
-          this.scale.drawSerif(min);
-          isVertical ? this.scale.moveBottomSerif(0) : this.scale.moveLeftSerif(0)
-          this.scale.drawSerif(max);
-          isVertical ? this.scale.moveBottomSerif(100) :  this.scale.moveLeftSerif(100)
+    if (numberMarks > 0) {
+      this.scale.drawSerif(min);
+      isVertical ? this.scale.moveBottomSerif(0) : this.scale.moveLeftSerif(0);
+      this.scale.drawSerif(max);
+      isVertical
+        ? this.scale.moveBottomSerif(100)
+        : this.scale.moveLeftSerif(100);
 
+      for (let i = 0; i < numberMarks; i++) {
+        counter = Math.round(min + ((max - min) / numberMarks) * i);
 
-          for (let i = 0; i < numberMarks; i++) {
+        this.scale.drawSerif(counter);
 
-              counter = Math.round(min + ((max - min) / numberMarks) * i);
+        rate = Math.abs((counter / sliderWidth) * 100);
 
-              this.scale.drawSerif(counter);
-
-              rate = Math.abs(counter / sliderWidth * 100)
-
-              if (isVertical) {
-                  this.scale.moveBottomSerif(rate)
-              } else {
-              this.scale.moveLeftSerif(rate)}
-          }
+        if (isVertical) {
+          this.scale.moveBottomSerif(rate);
+        } else {
+          this.scale.moveLeftSerif(rate);
+        }
       }
-
-
+    }
 
     this.updatePosition(options);
   }

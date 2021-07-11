@@ -70,33 +70,35 @@ class Model implements IModel {
   public updateValue({ x, y, valueName }: IClickRate): void {
     const { isVertical, from, to, min, max } = this.options;
 
-    let percentageOfMaximum: number;
+    let percentageOfMaximum: number,
+      newValue: number,
+      oldValue: number,
+      validTo: number,
+      validFrom: number,
+      validValue: number,
+      isTo: boolean,
+      isValidValue: boolean;
 
-    isVertical ? (percentageOfMaximum = y) : (percentageOfMaximum = x);
-
-    let newValue: number;
-
+    percentageOfMaximum = isVertical ? y : x;
     newValue = (max - min) * percentageOfMaximum + min;
+    isTo = valueName === "to";
+    oldValue = isTo ? to : from;
+    validFrom = this.checkFrom(newValue);
+    validTo = this.checkTo(newValue);
+    validValue = isTo ? validTo : validFrom;
+    isValidValue = newValue === validValue;
 
-    if (valueName === "from" && newValue !== from) {
-      if (newValue === this.checkFrom(newValue)) {
-        newValue = this.calculateValueDependingOnStep(from, newValue);
-      }
-
-      newValue = this.checkFrom(newValue);
-
-      this.options.from = newValue;
-      this.emit("updateModelValues", this.options);
+    if (isValidValue) {
+      newValue = this.calculateValueDependingOnStep(oldValue, newValue);
+      newValue = isTo ? this.checkTo(newValue) : this.checkFrom(newValue);
     }
 
-    if (valueName === "to" && newValue !== to) {
-      if (newValue === this.checkTo(newValue)) {
-        newValue = this.calculateValueDependingOnStep(to, newValue);
-      }
+    if (!isValidValue) {
+      newValue = validValue;
+    }
 
-      newValue = this.checkTo(newValue);
-
-      this.options.to = newValue;
+    if (newValue !== this.options[valueName]) {
+      this.options[valueName] = newValue;
       this.emit("updateModelValues", this.options);
     }
   }
@@ -108,19 +110,25 @@ class Model implements IModel {
     newValue: number
   ): number {
     const { step } = this.options;
-    let x: number;
+    let x: number, differenceValue: number;
 
-    x = Math.abs(newValue - value) - (Math.abs(newValue - value) % step);
+    if (step === 0) {
+      return newValue;
+    }
 
-    if (Math.abs(newValue - value) > step / 2) {
+    differenceValue = newValue - value;
+
+    x = Math.abs(differenceValue) - (Math.abs(differenceValue) % step);
+
+    if (Math.abs(differenceValue) > step / 2) {
       x = x + step;
     }
 
-    if (newValue - value > 0) {
+    if (differenceValue > 0) {
       return value + x;
     }
 
-    if (newValue - value < 0) {
+    if (differenceValue < 0) {
       return value - x;
     }
 
@@ -155,30 +163,31 @@ class Model implements IModel {
     return to;
   }
 
+  private isTypeNumberOrUndefined(
+    newValue: number | undefined,
+    value: number
+  ): number | never {
+    if (typeof newValue === "undefined") {
+      newValue = value;
+    }
+
+    if (typeof newValue !== "number") {
+      throw new Error("Value is not number");
+    }
+
+    return newValue;
+  }
+
   private verifyMin(newMin: number | undefined): number {
     const { min } = this.options;
 
-    if (typeof newMin === "undefined") {
-      return min;
-    }
-
-    if (typeof newMin !== "number") {
-      throw new Error("min is not number");
-    }
-
-    return newMin;
+    return this.isTypeNumberOrUndefined(newMin, min);
   }
 
   private verifyMax(min: number, newMax: number | undefined): number {
     const { max } = this.options;
 
-    if (typeof newMax === "undefined") {
-      newMax = max;
-    }
-
-    if (typeof newMax !== "number") {
-      throw new Error("max is not number");
-    }
+    newMax = this.isTypeNumberOrUndefined(newMax, max);
 
     if (newMax > min) {
       return newMax;
@@ -200,13 +209,7 @@ class Model implements IModel {
   ): number {
     const { from, isRange } = this.options;
 
-    if (typeof newFrom === "undefined") {
-      newFrom = from;
-    }
-
-    if (typeof newFrom !== "number") {
-      throw new Error("from is not number");
-    }
+    newFrom = this.isTypeNumberOrUndefined(newFrom, from);
 
     if (!newIsRange) {
       return min;
@@ -227,13 +230,7 @@ class Model implements IModel {
   ): number {
     const { to } = this.options;
 
-    if (typeof newTo === "undefined") {
-      newTo = to;
-    }
-
-    if (typeof newTo !== "number") {
-      throw new Error("to is not number");
-    }
+    newTo = this.isTypeNumberOrUndefined(newTo, to);
 
     if (newTo > from && newTo < max) {
       return newTo;
@@ -250,13 +247,7 @@ class Model implements IModel {
   ): number {
     const { step } = this.options;
 
-    if (typeof newStep === "undefined") {
-      newStep = step;
-    }
-
-    if (typeof newStep !== "number") {
-      throw new Error("step is not number");
-    }
+    newStep = this.isTypeNumberOrUndefined(newStep, step);
 
     if (newStep < 0) {
       return 0;
@@ -315,13 +306,7 @@ class Model implements IModel {
   private verifyNumberMarks(newNumberMarks: number | undefined): number {
     const { numberMarks } = this.options;
 
-    if (typeof newNumberMarks === "undefined") {
-      newNumberMarks = numberMarks;
-    }
-
-    if (typeof newNumberMarks !== "number") {
-      throw new Error("numberMarks is not number");
-    }
+    newNumberMarks = this.isTypeNumberOrUndefined(newNumberMarks, numberMarks);
 
     if (newNumberMarks > 1) {
       return newNumberMarks;
