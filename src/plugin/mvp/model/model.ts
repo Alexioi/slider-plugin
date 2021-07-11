@@ -32,55 +32,35 @@ class Model implements IModel {
     from,
     to,
   }: IOptions) {
-    if (typeof from !== "undefined") {
-      from = this.verifyFrom(from);
-    }
+    isRange = this.verifyRange(isRange);
+    isVertical = this.verifyVertical(isVertical);
+    hasTip = this.verifyTip(hasTip);
+    numberMarks = this.verifyNumberMarks(numberMarks);
+    min = this.verifyMin(min);
+    max = this.verifyMax(min, max);
+    from = this.verifyFrom(from, min, max, isRange);
+    to = this.verifyTo(to, from, max);
+    step = this.verifyStep(step, min, max);
 
-    if (typeof to !== "undefined") {
-      to = this.verifyTo(to);
-    }
-
-    if (typeof isRange === "boolean") {
-      this.calculateFrom(isRange);
-
-      this.options.isRange = isRange;
-    }
-
-    if (typeof isVertical === "boolean") {
-      this.options.isVertical = isVertical;
-    }
-
-    if (typeof hasTip === "boolean") {
-      this.options.hasTip = hasTip;
-    }
-
-    if (typeof numberMarks === "number") {
-      this.options.numberMarks = numberMarks;
-    }
-
-    if (typeof step === "number") {
-      this.options.step = step;
-    }
-
-    if (typeof min === "number") {
-      this.options.min = min;
-    }
-
-    if (typeof max === "number") {
-      this.options.max = max;
-    }
-
-    if (typeof to === "number") {
-      this.options.to = to;
-    }
-
-    if (typeof from === "number") {
-      this.options.from = from;
-    }
-
-    this.verifyMax();
+    this.updateExistOptions({
+      isRange,
+      isVertical,
+      hasTip,
+      numberMarks,
+      step,
+      min,
+      max,
+      from,
+      to,
+    });
 
     this.emit("updateModelOptions", this.options);
+  }
+
+  private updateExistOptions(options: IOptions) {
+    for (let key in this.options) {
+      this.options[key] = options[key];
+    }
   }
 
   public getOptions() {
@@ -175,48 +155,180 @@ class Model implements IModel {
     return to;
   }
 
-  private verifyMax(): void {
-    if (this.options.max < this.options.min) {
-      this.options.max = this.options.min * 2;
+  private verifyMin(newMin: number | undefined): number {
+    const { min } = this.options;
+
+    if (typeof newMin === "undefined") {
+      return min;
     }
+
+    if (typeof newMin !== "number") {
+      throw new Error("min is not number");
+    }
+
+    return newMin;
   }
 
-  private verifyFrom(from: number): number {
-    const { to, min } = this.options;
+  private verifyMax(min: number, newMax: number | undefined): number {
+    const { max } = this.options;
 
-    if (from > to) {
-      return (from = to);
+    if (typeof newMax === "undefined") {
+      newMax = max;
     }
 
-    if (from < min) {
-      return (from = min);
+    if (typeof newMax !== "number") {
+      throw new Error("max is not number");
     }
 
-    return from;
+    if (newMax > min) {
+      return newMax;
+    }
+
+    console.warn("max < min");
+    if (min > 0) {
+      return min * 2;
+    }
+
+    return min / 2;
   }
 
-  private verifyTo(to: number): number {
-    const { from, max } = this.options;
+  private verifyFrom(
+    newFrom: number | undefined,
+    min: number,
+    max: number,
+    newIsRange: boolean
+  ): number {
+    const { from, isRange } = this.options;
 
-    if (to < from) {
-      return (to = from);
+    if (typeof newFrom === "undefined") {
+      newFrom = from;
     }
 
-    if (to > max) {
-      return (to = max);
+    if (typeof newFrom !== "number") {
+      throw new Error("from is not number");
     }
 
-    return to;
+    if (!newIsRange) {
+      return min;
+    }
+
+    if (newFrom > min && newFrom < max) {
+      return newFrom;
+    }
+
+    console.warn("from < min || from > max");
+    return min;
   }
 
-  private calculateFrom(isRange: boolean) {
-    if (isRange !== this.options.isRange) {
-      this.options.from = this.options.to / 2;
+  private verifyTo(
+    newTo: number | undefined,
+    from: number,
+    max: number
+  ): number {
+    const { to } = this.options;
+
+    if (typeof newTo === "undefined") {
+      newTo = to;
     }
 
-    if (!isRange) {
-      this.options.from = this.options.min;
+    if (typeof newTo !== "number") {
+      throw new Error("to is not number");
     }
+
+    if (newTo > from && newTo < max) {
+      return newTo;
+    }
+
+    console.warn("to < min || to > max");
+    return max;
+  }
+
+  private verifyStep(
+    newStep: number | undefined,
+    min: number,
+    max: number
+  ): number {
+    const { step } = this.options;
+
+    if (typeof newStep === "undefined") {
+      newStep = step;
+    }
+
+    if (typeof newStep !== "number") {
+      throw new Error("step is not number");
+    }
+
+    if (newStep < 0) {
+      return 0;
+    }
+
+    if (newStep < Math.abs(max - min)) {
+      return newStep;
+    }
+
+    console.warn("step > max");
+    return Math.abs(max - min);
+  }
+
+  private verifyRange(newIsRange: boolean | undefined): boolean {
+    const { isRange } = this.options;
+
+    if (typeof newIsRange === "undefined") {
+      newIsRange = isRange;
+    }
+
+    if (typeof newIsRange !== "boolean") {
+      throw new Error("isRange is not boolean");
+    }
+
+    return newIsRange;
+  }
+
+  private verifyVertical(newIsVertical: boolean | undefined): boolean {
+    const { isVertical } = this.options;
+
+    if (typeof newIsVertical === "undefined") {
+      newIsVertical = isVertical;
+    }
+
+    if (typeof newIsVertical !== "boolean") {
+      throw new Error("isVertical is not boolean");
+    }
+
+    return newIsVertical;
+  }
+
+  private verifyTip(newHasTip: boolean | undefined): boolean {
+    const { hasTip } = this.options;
+
+    if (typeof newHasTip === "undefined") {
+      newHasTip = hasTip;
+    }
+
+    if (typeof newHasTip !== "boolean") {
+      throw new Error("hasTip is not boolean");
+    }
+
+    return newHasTip;
+  }
+
+  private verifyNumberMarks(newNumberMarks: number | undefined): number {
+    const { numberMarks } = this.options;
+
+    if (typeof newNumberMarks === "undefined") {
+      newNumberMarks = numberMarks;
+    }
+
+    if (typeof newNumberMarks !== "number") {
+      throw new Error("numberMarks is not number");
+    }
+
+    if (newNumberMarks > 1) {
+      return newNumberMarks;
+    }
+
+    console.warn("numberMarks = 0");
+    return 0;
   }
 }
 

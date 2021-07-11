@@ -21,13 +21,13 @@ class Panel {
   addEventHandler() {
     this.range.addEventListener("click", () => this.changeRange());
     this.vertical.addEventListener("click", () => this.changeVertical());
-    this.min.addEventListener("input", () => this.changeMin());
-    this.max.addEventListener("input", () => this.changeMax());
-    this.from.addEventListener("input", () => this.changeFrom());
-    this.to.addEventListener("input", () => this.changeTo());
-    this.step.addEventListener("input", () => this.changeStep());
     this.tip.addEventListener("click", () => this.changeTip());
-    this.numberMarks.addEventListener("input", () => this.changeNumberMarks());
+    this.min.addEventListener("change", () => this.changeMin());
+    this.max.addEventListener("change", () => this.changeMax());
+    this.from.addEventListener("change", () => this.changeFrom());
+    this.to.addEventListener("change", () => this.changeTo());
+    this.step.addEventListener("change", () => this.changeStep());
+    this.numberMarks.addEventListener("change", () => this.changeNumberMarks());
   }
 
   changeRange() {
