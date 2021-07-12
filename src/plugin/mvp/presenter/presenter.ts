@@ -30,6 +30,10 @@ class Presenter {
       this.view.updatePosition(options)
     );
 
+    this.view.on("clickScale", (value: number) =>
+    this.model.updateNearValue(value)
+    );
+
     this.view.on("click", (clickRate: IClickRate) =>
       this.model.updateValue(clickRate)
     );

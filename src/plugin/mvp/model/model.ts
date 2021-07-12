@@ -7,6 +7,7 @@ interface IModel {
 
   updateOptions(options: IOptions): void;
   updateValue(clickRate: IClickRate): void;
+  updateNearValue(value: number): void;
   getOptions(): IOptions;
 
   emit?: any;
@@ -103,7 +104,22 @@ class Model implements IModel {
     }
   }
 
-  public updateNearValue() {}
+  public updateNearValue(value: number) {
+    const {from, to} = this.options
+
+    let diffFrom = Math.abs(Math.abs(from) - Math.abs(value))
+    let diffTo = Math.abs(Math.abs(to) - Math.abs(value))
+
+    if (diffFrom < diffTo) {
+      this.options.from = value
+    }
+
+    if ( diffTo <= diffFrom) {
+      this.options.to = value
+    }
+
+    this.emit("updateModelValues", this.options);
+  }
 
   private calculateValueDependingOnStep(
     value: number,
@@ -207,7 +223,7 @@ class Model implements IModel {
     max: number,
     newIsRange: boolean
   ): number {
-    const { from, isRange } = this.options;
+    const { from } = this.options;
 
     newFrom = this.isTypeNumberOrUndefined(newFrom, from);
 

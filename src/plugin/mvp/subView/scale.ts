@@ -19,6 +19,14 @@ class Scale {
     this.$container.append(scale);
 
     this.$scale = this.$container.find(".slider__scale");
+
+    this.attachEventInfo()
+  }
+
+  private attachEventInfo() {
+    this.$scale.on('mousedown', (event: any) => {
+      this.emit('clickScale', event.target.innerHTML)
+    })
   }
 
   public drawSerif(counter: number) {

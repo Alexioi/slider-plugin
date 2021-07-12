@@ -1,4 +1,5 @@
 import EventEmitter from "event-emitter";
+import { event } from "jquery";
 
 class Info {
   $slider: any;
@@ -20,7 +21,11 @@ class Info {
     this.$container.append(info);
 
     this.$info = this.$container.find(".slider__info");
+
+   
   }
+
+
 
   public drawTipFrom() {
     let infoValueFrom = "<div class='slider__tip slider__tip_name-from'></div>";

@@ -174,6 +174,9 @@ class View {
     this.bar.on("click", (position: IPosition) =>
       this.calculatePercentageClicks(position)
     );
+    
+    this.scale.on("clickScale", (value: number) =>  this.emit("clickScale", value)
+    );
   }
 }
 
