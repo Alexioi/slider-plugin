@@ -20,7 +20,13 @@ interface IClickRate {
 interface IPosition {
   x: number;
   y: number;
-  name: string;
+  runnerName: string;
 }
 
-export { IOptions, IClickRate, IPosition };
+interface IRunner {
+  moveRunnerFrom(position: number): void;
+  moveRunnerTo(position: number): void;
+  on: any;
+}
+
+export { IRunner, IOptions, IClickRate, IPosition };

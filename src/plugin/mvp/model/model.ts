@@ -5,7 +5,7 @@ import { IOptions, IClickRate } from "../interfaces/interfaces";
 interface IModel {
   options: IOptions;
 
-  updateOptions(options: IOptions): void;
+  verifyAllOptions(options: IOptions): void;
   updateValue(clickRate: IClickRate): void;
   updateNearValue(value: number): void;
   getOptions(): IOptions;
@@ -14,7 +14,7 @@ interface IModel {
   on?: any;
 }
 
-class Model implements IModel {
+class Model {
   options: IOptions;
   emit: any;
 
@@ -22,17 +22,9 @@ class Model implements IModel {
     this.options = options;
   }
 
-  public updateOptions({
-    isRange,
-    isVertical,
-    hasTip,
-    numberMarks,
-    step,
-    min,
-    max,
-    from,
-    to,
-  }: IOptions) {
+  public verifyAllOptions(options: IOptions): void {
+    let {isRange, isVertical,  hasTip, numberMarks, min, max, from, to, step} = options
+
     isRange = this.verifyRange(isRange);
     isVertical = this.verifyVertical(isVertical);
     hasTip = this.verifyTip(hasTip);
@@ -43,25 +35,15 @@ class Model implements IModel {
     to = this.verifyTo(to, from, max);
     step = this.verifyStep(step, min, max);
 
-    this.updateExistOptions({
-      isRange,
-      isVertical,
-      hasTip,
-      numberMarks,
-      step,
-      min,
-      max,
-      from,
-      to,
-    });
-
-    this.emit("updateModelOptions", this.options);
+    this.updateOptions({isRange, isVertical,  hasTip, numberMarks, min, max, from, to, step})
   }
 
-  private updateExistOptions(options: IOptions) {
+  private updateOptions(options: IOptions) {
     for (let key in this.options) {
       this.options[key] = options[key];
     }
+
+    this.emit("updateModelOptions", this.options);
   }
 
   public getOptions() {
@@ -79,6 +61,8 @@ class Model implements IModel {
       validValue: number,
       isTo: boolean,
       isValidValue: boolean;
+
+      
 
     percentageOfMaximum = isVertical ? y : x;
     newValue = (max - min) * percentageOfMaximum + min;
@@ -100,7 +84,10 @@ class Model implements IModel {
 
     if (newValue !== this.options[valueName]) {
       this.options[valueName] = newValue;
-      this.emit("updateModelValues", this.options);
+      // console.log(this.options)
+      // this.emit("updateModelValues", this.options);
+      this.emit(`updateModelFrom`, this.options);
+      this.emit(`updateModelTo`, this.options);
     }
   }
 
@@ -112,13 +99,15 @@ class Model implements IModel {
 
     if (diffFrom < diffTo) {
       this.options.from = value
+      this.emit("updateModelFrom", this.options);
     }
 
     if ( diffTo <= diffFrom) {
       this.options.to = value
+      this.emit("updateModelTo", this.options);
     }
 
-    this.emit("updateModelValues", this.options);
+    // this.emit("updateModelValues", this.options);
   }
 
   private calculateValueDependingOnStep(

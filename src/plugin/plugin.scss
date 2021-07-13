@@ -7,11 +7,9 @@ $runnerWidth: 1.5rem;
   height: 100%;
 
   &_vertical {
-    & .slider__container {
       display: flex;
       justify-content: flex-end;
       flex-direction: row-reverse;
-    }
 
     & .slider__info {
       width: auto;

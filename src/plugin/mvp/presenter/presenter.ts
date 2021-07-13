@@ -6,28 +6,30 @@ import EventEmitter from "event-emitter";
 import { IOptions, IClickRate } from "../interfaces/interfaces";
 
 class Presenter {
-  options: IOptions;
   view: any;
-  model!: IModel;
+  model: IModel;
   element: JQuery;
-  defaultOptions: IOptions;
 
   constructor(element: any, options: IOptions, defaultOptions: IOptions) {
     this.element = element;
-    this.options = options;
-    this.defaultOptions = defaultOptions;
+    this.view = new View(this.element);
+    this.model = new Model(defaultOptions);
 
-    this.initMVP();
     this.addEventEmitters();
-    this.init();
+    this.updateOptions(options)
   }
 
   addEventEmitters() {
     this.model.on("updateModelOptions", (options: IOptions) =>
       this.view.updateVisible(options)
     );
-    this.model.on("updateModelValues", (options: IOptions) =>
-      this.view.updatePosition(options)
+    this.model.on("updateModelFrom", (options: IOptions) =>
+    // console.log(options)
+      this.view.updatePositionFrom(options)
+    );
+
+    this.model.on("updateModelTo", (options: IOptions) =>
+      this.view.updatePositionTo(options)
     );
 
     this.view.on("clickScale", (value: number) =>
@@ -35,30 +37,17 @@ class Presenter {
     );
 
     this.view.on("click", (clickRate: IClickRate) =>
+    // console.log(clickRate)
       this.model.updateValue(clickRate)
     );
   }
 
   updateOptions(options: IOptions) {
-    this.model.updateOptions(options);
+    this.model.verifyAllOptions(options);
   }
 
   getOptions() {
     return this.model.getOptions();
-  }
-
-  drawView() {
-    this.view.draw();
-  }
-
-  init() {
-    this.view.draw();
-    this.model.updateOptions(this.options);
-  }
-
-  initMVP() {
-    this.view = new View(this.element);
-    this.model = new Model(this.defaultOptions);
   }
 }
 
