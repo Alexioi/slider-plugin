@@ -21,10 +21,9 @@ class Presenter {
 
   addEventEmitters() {
     this.model.on("updateModelOptions", (options: IOptions) =>
-      this.view.updateVisible(options)
+      this.view.updateSlider(options)
     );
     this.model.on("updateModelFrom", (options: IOptions) =>
-    // console.log(options)
       this.view.updatePositionFrom(options)
     );
 
@@ -37,7 +36,6 @@ class Presenter {
     );
 
     this.view.on("click", (clickRate: IClickRate) =>
-    // console.log(clickRate)
       this.model.updateValue(clickRate)
     );
   }

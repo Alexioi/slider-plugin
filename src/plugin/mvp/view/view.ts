@@ -24,19 +24,6 @@ class View {
     this.addEventEmitters();
   }
 
-  // calculatePercentageClicks(position: IPosition) {
-  //   let containerWidth: number, containerHeight: number;
-
-  //   containerWidth = this.$slider.width();
-  //   containerHeight = this.$slider.height();
-
-  //   let x = (position.x - this.$slider.offset().left) / containerWidth;
-  //   let y = (position.y - this.$slider.offset().top) / containerHeight;
-  //   let valueName = position.name;
-
-  //   this.emit("click", { x, y, valueName});
-  // }
-
   public updateSlider (options: IOptions) {
     const {isVertical} = options
 
@@ -45,6 +32,9 @@ class View {
     } else {
       this.removeClassVertical()
     }
+
+    this.updatePositionFrom(options);
+    this.updatePositionTo(options);
   }
 
   private initSlider (): JQuery {
@@ -55,62 +45,6 @@ class View {
     return this.element.find(".slider");
   }
 
-  // draw() {
-  //   const slider = "<div class='slider'></div>";
-
-  //   this.element.append(slider);
-
-  //   this.$slider = this.element.find(".slider");
-
-  //   this.updateSlider();
-  // }
-
-  // public updateSlider() {
-    // const sliderContainer = "<div class='slider__container'></div>";
-
-    // this.$slider.append(sliderContainer);
-
-    // this.$container = this.element.find(".slider__container");
-
-    // this.initSubView();
-  // }
-
-  // destroyContainer() {
-  //   this.$container.remove();
-  // }
-
-  updateVisible(options: IOptions): void {
-    let { isRange, isVertical, hasTip, min, max, numberMarks } = options;
-
-  //   // this.destroyContainer();
-  //   // this.updateSlider();
-
-  //   if (hasTip) {
-  //     this.info.drawInfo();
-  //   }
-
-  //   this.bar.drawBar();
-
-  //   if (isRange) {
-  //     if (hasTip) {
-  //       this.info.drawTipFrom();
-  //     }
-  //     this.bar.drawRunnerFrom();
-  //   }
-
-  //   if (hasTip) {
-  //     this.info.drawTipTo();
-  //   }
-
-  //   this.bar.drawRunnerTo();
-
-  //   if (isVertical) {
-  //     this.addClassVertical();
-  //   } else {
-  //     this.removeClassVertical();
-  //   }
-
-  //   this.scale.drawScale();
 
   //   let counter: number, sliderWidth: number, rate: number;
 
@@ -139,23 +73,17 @@ class View {
   //         this.scale.moveLeftSerif(rate);
   //       }
   //     }
-    // }
-
-    this.updatePositionFrom(options);
-    this.updatePositionTo(options);
-  }
 
   public updatePositionFrom({
     min,
     max,
     from,
-    to,
-    isVertical,
-    hasTip,
-    isRange,
+    to
   }: IOptions) {
     let positionFrom = this.calculatePositionFrom(from, min, max)
+    let width = this.calculateBarWidth(from, to, min, max)
 
+    this.bar.moveRange(positionFrom, width)
     this.bar.moveRunnerFrom(positionFrom)
   }
 
@@ -164,16 +92,15 @@ class View {
     max,
     from,
     to,
-    isVertical,
-    hasTip,
-    isRange,
   }: IOptions) {
+    let positionFrom = this.calculatePositionFrom(from, min, max)
     let positionTo = this.calculatePositionTo(to, min, max)
+    let width = this.calculateBarWidth(from, to, min, max)
     
-
+    this.bar.moveRange(positionFrom, width)
     this.bar.moveRunnerTo(positionTo)
   }
-
+  
   private calculatePositionFrom(from: number, min: number, max: number) {
     return ((from - min) / (max - min)) * 100;
   }
@@ -182,46 +109,9 @@ class View {
     return ((to - min) / (max - min)) * 100;
   }
 
-  // updatePosition({
-  //   min,
-  //   max,
-  //   from,
-  //   to,
-  //   isVertical,
-  //   hasTip,
-  //   isRange,
-  // }: IOptions) {
-  //   let leftPosition: number, widthBar: number, rightPosition: number;
-
-  //   rightPosition = ((to - min) / (max - min)) * 100;
-  //   leftPosition = ((from - min) / (max - min)) * 100;
-  //   widthBar = ((to - from) / (max - min)) * 100;
-
-    // if (hasTip) {
-    //   if (isRange) {
-    //     this.info.addValueTipFrom(from);
-    //   }
-
-    //   this.info.addValueTipTo(to);
-    // }
-    // if(isRange) {
-    //   this.bar.moveRunnerFrom(leftPosition)
-    // } 
-
-    // this.bar.moveRunnerTo(rightPosition)
-    
-   
-
-    // if (isVertical) {
-    //   this.bar.moveVerticalRange(widthBar, leftPosition);
-    //   this.bar.moveBottomRunners(leftPosition, rightPosition);
-    //   this.info.moveBottomTips(leftPosition, rightPosition);
-    // } else {
-    //   this.bar.moveHorizonRange(widthBar, leftPosition);
-    //   this.bar.moveRightRunners(leftPosition, rightPosition);
-    //   this.info.moveRightTips(leftPosition, rightPosition);
-    // }
-  // }
+  private calculateBarWidth (from: number, to: number, min: number, max: number) { 
+   return  ((to - from) / (max - min)) * 100;
+  }
 
   private addClassVertical() {
     this.$slider.addClass("slider_vertical");
@@ -232,13 +122,8 @@ class View {
   }
 
   private addEventEmitters() {
-  //   this.bar.on("click", (position: IPosition) =>
-  //     this.calculatePercentageClicks(position)
-  //   );
-
     this.bar.on("click", (position: IPosition) =>
-    // console.log(position)
-    this.emit("click", position)
+     this.emit("click", position)
     )
     
   //   this.scale.on("clickScale", (value: number) =>  this.emit("clickScale", value)

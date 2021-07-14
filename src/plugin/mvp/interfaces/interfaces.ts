@@ -29,4 +29,8 @@ interface IRunner {
   on: any;
 }
 
-export { IRunner, IOptions, IClickRate, IPosition };
+interface IRange {
+  moveRange(position: number, width: number): void;
+}
+
+export { IRunner, IOptions, IClickRate, IPosition, IRange };
