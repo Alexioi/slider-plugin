@@ -26,6 +26,8 @@ interface IPosition {
 interface IRunner {
   moveRunnerFrom(position: number): void;
   moveRunnerTo(position: number): void;
+  moveTopRunnerFrom(value: number): void;
+  moveTopRunnerTo(value: number): void;
   on: any;
 }
 

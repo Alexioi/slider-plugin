@@ -1,8 +1,6 @@
 import EventEmitter from "event-emitter";
 
-import Bar from "./bar/bar";
-import Info from "./subView/info";
-import Scale from "./subView/scale";
+import Bar from "./bar";
 
 import { IOptions, IPosition } from "../interfaces/interfaces";
 
@@ -18,8 +16,6 @@ class View {
     this.element = element;
     this.$slider = this.initSlider()
     this.bar = new Bar(this.$slider);
-    this.info = new Info(this.$slider);
-    this.scale = new Scale(this.$slider);
 
     this.addEventEmitters();
   }
@@ -74,44 +70,15 @@ class View {
   //       }
   //     }
 
-  public updatePositionFrom({
-    min,
-    max,
-    from,
-    to
-  }: IOptions) {
-    let positionFrom = this.calculatePositionFrom(from, min, max)
-    let width = this.calculateBarWidth(from, to, min, max)
-
-    this.bar.moveRange(positionFrom, width)
-    this.bar.moveRunnerFrom(positionFrom)
+  public updatePositionFrom(options: IOptions) {
+    this.bar.updatePositionFrom(options)
   }
 
-  public updatePositionTo({
-    min,
-    max,
-    from,
-    to,
-  }: IOptions) {
-    let positionFrom = this.calculatePositionFrom(from, min, max)
-    let positionTo = this.calculatePositionTo(to, min, max)
-    let width = this.calculateBarWidth(from, to, min, max)
-    
-    this.bar.moveRange(positionFrom, width)
-    this.bar.moveRunnerTo(positionTo)
+  public updatePositionTo(options: IOptions) {
+    this.bar.updatePositionTo(options)
   }
   
-  private calculatePositionFrom(from: number, min: number, max: number) {
-    return ((from - min) / (max - min)) * 100;
-  }
 
-  private calculatePositionTo(to: number, min: number, max: number) {
-    return ((to - min) / (max - min)) * 100;
-  }
-
-  private calculateBarWidth (from: number, to: number, min: number, max: number) { 
-   return  ((to - from) / (max - min)) * 100;
-  }
 
   private addClassVertical() {
     this.$slider.addClass("slider_vertical");

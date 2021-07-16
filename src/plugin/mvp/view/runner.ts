@@ -14,11 +14,23 @@ class Runner {
   }
 
   public moveRunnerFrom(position: number) {
-    this.$runnerFrom.css("left", `${position}%`);
+    this.$runnerFrom.css({left: `${position}%`,
+                          top: ''});
   }
 
   public moveRunnerTo(position: number) {
-    this.$runnerTo.css("left", `${position}%`);
+    this.$runnerTo.css({left: `${position}%`,
+    top: ''});
+  }
+
+  public moveTopRunnerFrom(position: number) {
+    this.$runnerFrom.css({top: `${position}%`,
+    left: ""});
+  }
+
+  public moveTopRunnerTo(position: number) {
+    this.$runnerTo.css({top: `${position}%`,
+    left: ''});
   }
 
   private initRunner(name: string): JQuery {

@@ -1,7 +1,12 @@
 .panel {
   display: flex;
+  width: calc(50% - 10px);
+  flex-grow: 1;
 
   &__example {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-grow: 1;
     height: 400px;
     background-color: white;
