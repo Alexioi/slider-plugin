@@ -6,22 +6,22 @@ import Range from "./range";
 import { IPosition, IRunner, IRange, IOptions } from "../interfaces/interfaces";
 
 class Bar {
-  $slider: JQuery;
-  range: IRange;
+  private $slider: JQuery;
+  private range: IRange;
   private $bar: JQuery;
-  runners: IRunner;
+  private runners: IRunner;
   emit: any;
   on: any;
 
   constructor($slider: JQuery) {
     this.$slider = $slider;
-    this.$bar = this.initBar()
-    this.range = new Range(this.$bar)
-    this.runners = new Runner(this.$bar)
-    this.addEventEmitters()
+    this.$bar = this.init();
+    this.range = new Range(this.$bar);
+    this.runners = new Runner(this.$bar);
+    this.addEventEmitters();
   }
 
-  private initBar(): JQuery {
+  private init(): JQuery {
     const bar = "<div class='slider__bar'></div>";
 
     this.$slider.append(bar);
@@ -29,84 +29,46 @@ class Bar {
     return this.$slider.find(".slider__bar");
   }
 
-  public updatePositionFrom({
-    min,
-    max,
-    from,
-    to,
-    isVertical,
-    isRange
-  }: IOptions) {
-    let positionFrom = this.calculatePositionFrom(from, min, max)
-    let width = this.calculateBarWidth(from, to, min, max)
+  public update(options: IOptions) {
+    const { isRange } = options;
 
     if (isRange) {
-      this.runners.showRunnerFrom()
+      this.runners.showRunnerFrom();
     } else {
-      this.runners.hideRunnerFrom()
+      this.runners.hideRunnerFrom();
     }
-   
-    if (isVertical) {
-      this.runners.moveTopRunnerFrom(positionFrom)
-      this.range.moveTopRange(positionFrom, width)
-    } else { this.runners.moveRunnerFrom(positionFrom)
-      this.range.moveRange(positionFrom, width)
-    }
-   
+
+    this.updatePositionFrom(options);
+    this.updatePositionTo(options);
   }
 
-  public updatePositionTo({
-    min,
-    max,
-    from,
-    to,
-    isVertical
-  }: IOptions) {
-    let positionFrom = this.calculatePositionFrom(from, min, max)
-    let positionTo = this.calculatePositionTo(to, min, max)
-    let width = this.calculateBarWidth(from, to, min, max)
-    
-    
-    if (isVertical) {
-      this.runners.moveTopRunnerTo(positionTo)
-      this.range.moveTopRange(positionFrom, width)
-    } else { this.runners.moveRunnerTo(positionTo)
-      this.range.moveRange(positionFrom, width)
-    }
-   
+  public updatePositionFrom(options: IOptions) {
+    this.runners.moveRunnerFrom(options);
+    this.range.moveRange(options);
   }
 
-  private calculatePositionFrom(from: number, min: number, max: number) {
-    return ((from - min) / (max - min)) * 100;
+  public updatePositionTo(options: IOptions) {
+    this.runners.moveRunnerTo(options);
+    this.range.moveRange(options);
   }
 
-  private calculatePositionTo(to: number, min: number, max: number) {
-    return ((to - min) / (max - min)) * 100;
-  }
-
-  private calculateBarWidth (from: number, to: number, min: number, max: number) { 
-   return  ((to - from) / (max - min)) * 100;
-  }
-
-   private addEventEmitters() {
+  private addEventEmitters() {
     this.runners.on("click", (position: IPosition) =>
       this.calculatePercentageClicks(position)
     );
-   }
+  }
 
   private calculatePercentageClicks(position: IPosition) {
     let x: number, y: number, valueName: string;
 
     x = (position.x - this.$bar.offset().left) / <number>this.$bar.width();
     y = (position.y - this.$bar.offset().top) / <number>this.$bar.height();
-   
-    valueName = position.runnerName;
-    
 
-    this.emit("click", { x, y, valueName});
+    valueName = position.runnerName;
+
+    this.emit("click", { x, y, valueName });
   }
-    
-  }
+}
 
 EventEmitter(Bar.prototype);
 

@@ -24,16 +24,22 @@ interface IPosition {
 }
 
 interface IRunner {
-  moveRunnerFrom(position: number): void;
-  moveRunnerTo(position: number): void;
-  moveTopRunnerFrom(value: number): void;
-  moveTopRunnerTo(value: number): void;
+  moveRunnerFrom(options: IOptions): void;
+  moveRunnerTo(options: IOptions): void;
+  showRunnerFrom(): void;
+  hideRunnerFrom(): void;
   on: any;
 }
 
 interface IRange {
-  moveRange(position: number, width: number): void;
-  moveTopRange(position: number, width: number): void;
+  moveRange(options: IOptions): void;
 }
 
-export { IRunner, IOptions, IClickRate, IPosition, IRange };
+interface IBar {
+  update(options: IOptions): void;
+  updatePositionFrom(options: IOptions): void;
+  updatePositionTo(options: IOptions): void;
+  on: any;
+}
+
+export { IRunner, IOptions, IClickRate, IPosition, IRange, IBar };
