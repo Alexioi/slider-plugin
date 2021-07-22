@@ -33,6 +33,7 @@ interface IRunner {
 
 interface IRange {
   moveRange(position: number, width: number): void;
+  moveTopRange(position: number, width: number): void;
 }
 
 export { IRunner, IOptions, IClickRate, IPosition, IRange };

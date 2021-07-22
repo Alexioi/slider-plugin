@@ -34,14 +34,21 @@ class Bar {
     max,
     from,
     to,
-    isVertical
+    isVertical,
+    isRange
   }: IOptions) {
     let positionFrom = this.calculatePositionFrom(from, min, max)
     let width = this.calculateBarWidth(from, to, min, max)
 
+    if (isRange) {
+      this.runners.showRunnerFrom()
+    } else {
+      this.runners.hideRunnerFrom()
+    }
    
     if (isVertical) {
       this.runners.moveTopRunnerFrom(positionFrom)
+      this.range.moveTopRange(positionFrom, width)
     } else { this.runners.moveRunnerFrom(positionFrom)
       this.range.moveRange(positionFrom, width)
     }
@@ -62,6 +69,7 @@ class Bar {
     
     if (isVertical) {
       this.runners.moveTopRunnerTo(positionTo)
+      this.range.moveTopRange(positionFrom, width)
     } else { this.runners.moveRunnerTo(positionTo)
       this.range.moveRange(positionFrom, width)
     }
@@ -89,7 +97,7 @@ class Bar {
   private calculatePercentageClicks(position: IPosition) {
     let x: number, y: number, valueName: string;
 
-    x = (position.x - <number>this.$bar.offset().left) / <number>this.$bar.width();
+    x = (position.x - this.$bar.offset().left) / <number>this.$bar.width();
     y = (position.y - this.$bar.offset().top) / <number>this.$bar.height();
    
     valueName = position.runnerName;

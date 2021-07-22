@@ -28,6 +28,14 @@ class Runner {
     left: ""});
   }
 
+  public hideRunnerFrom() {
+    this.$runnerFrom.css({display: 'none'})
+  }
+
+  public showRunnerFrom() {
+    this.$runnerFrom.css({display: 'block'})
+  }
+
   public moveTopRunnerTo(position: number) {
     this.$runnerTo.css({top: `${position}%`,
     left: ''});

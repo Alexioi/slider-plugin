@@ -11,9 +11,18 @@ class Range {
   public moveRange(position: number, width: number) {
     this.$range.css({
             width: `${width}%`,
-            // height: "100%",
-            // top: "0%",
+            height: "100%",
+            top: "0%",
             left: `${position}%`,
+          });
+  }
+
+  public moveTopRange(position: number, width: number) {
+    this.$range.css({
+            width: `100%`,
+            height:  `${width}%`,
+            top:`${position}%`,
+            left: "0%",
           });
   }
 
