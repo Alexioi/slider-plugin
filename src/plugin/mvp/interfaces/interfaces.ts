@@ -11,6 +11,14 @@ interface IOptions {
   to: number;
 }
 
+interface IRunnerOptions {
+  isVertical: boolean;
+  hasTip: boolean;
+  min: number;
+  max: number;
+  value: number;
+}
+
 interface IClickRate {
   x: number;
   y: number;
@@ -24,10 +32,10 @@ interface IPosition {
 }
 
 interface IRunner {
-  moveRunnerFrom(options: IOptions): void;
-  moveRunnerTo(options: IOptions): void;
-  showRunnerFrom(): void;
-  hideRunnerFrom(): void;
+  move(options: IRunnerOptions): void;
+  show(): void;
+  hide(): void;
+  update(nasTip: boolean): void;
   on: any;
 }
 
@@ -42,4 +50,12 @@ interface IBar {
   on: any;
 }
 
-export { IRunner, IOptions, IClickRate, IPosition, IRange, IBar };
+export {
+  IRunner,
+  IOptions,
+  IRunnerOptions,
+  IClickRate,
+  IPosition,
+  IRange,
+  IBar,
+};

@@ -1,77 +1,69 @@
 import EventEmitter from "event-emitter";
-import { IOptions } from "../interfaces/interfaces";
+import { IRunnerOptions, IOptions } from "../interfaces/interfaces";
+
+import Tip from "./tip";
 
 class Runner {
   $bar: JQuery;
-  $runnerFrom: JQuery;
-  $runnerTo: JQuery;
+  $runner: JQuery;
+  tip: any;
   emit: any;
   on: any;
 
   constructor($bar: JQuery) {
     this.$bar = $bar;
-    this.$runnerFrom = this.initRunner("from");
-    this.$runnerTo = this.initRunner("to");
+    this.$runner = this.init();
+    this.tip = new Tip(this.$runner);
   }
 
-  public moveRunnerFrom(options: IOptions): void {
-    const { from, isVertical } = options;
+  public move(options: IRunnerOptions): void {
+    const { value, isVertical } = options;
 
-    const position = this.calculatePosition(from, options);
+    this.tip.setValue(value);
+
+    const position = this.calculatePosition(value, options);
 
     if (isVertical) {
-      this.moveVerticallyRunnerFrom(position);
+      this.moveVertically(position);
     } else {
-      this.moveHorizontallyRunnerFrom(position);
+      this.moveHorizontally(position);
     }
   }
 
-  public moveRunnerTo(options: IOptions): void {
-    const { to, isVertical } = options;
-
-    const position = this.calculatePosition(to, options);
-
-    if (isVertical) {
-      this.moveVerticallyRunnerTo(position);
+  public update(hasTip: boolean) {
+    if (hasTip) {
+      this.tip.show();
     } else {
-      this.moveHorizontallyRunnerTo(position);
+      this.tip.hide();
     }
   }
 
-  public hideRunnerFrom() {
-    this.$runnerFrom.css({ display: "none" });
+  public hide() {
+    this.$runner.css({ display: "none" });
   }
 
-  public showRunnerFrom() {
-    this.$runnerFrom.css({ display: "block" });
+  public show() {
+    this.$runner.css({ display: "" });
   }
 
-  private calculatePosition(value: number, { min, max }: IOptions) {
+  private calculatePosition(value: number, { min, max }: IRunnerOptions) {
     return ((value - min) / (max - min)) * 100;
   }
 
-  private moveHorizontallyRunnerFrom(position: number) {
-    this.$runnerFrom.css({ left: `${position}%`, top: "" });
+  private moveHorizontally(position: number) {
+    this.$runner.css({ left: `${position}%`, top: "" });
   }
 
-  private moveHorizontallyRunnerTo(position: number) {
-    this.$runnerTo.css({ left: `${position}%`, top: "" });
+  private moveVertically(position: number) {
+    this.$runner.css({ top: `${position}%`, left: "" });
   }
 
-  private moveVerticallyRunnerFrom(position: number) {
-    this.$runnerFrom.css({ top: `${position}%`, left: "" });
-  }
-
-  private moveVerticallyRunnerTo(position: number) {
-    this.$runnerTo.css({ top: `${position}%`, left: "" });
-  }
-
-  private initRunner(name: string): JQuery {
-    const runner = `<div class='slider__runner slider__runner_name-${name}'></div>`;
+  private init(): JQuery {
+    const runner = `<div class='slider__runner'></div>`;
 
     this.$bar.append(runner);
 
-    let $runner = this.$bar.find(`.slider__runner_name-${name}`);
+    let $runner = this.$bar.find(`.slider__runner`).last();
 
     this.attachEventRunner($runner);
 
@@ -79,25 +71,21 @@ class Runner {
   }
 
   private attachEventRunner(node: JQuery) {
-    let nodeName: string;
-
-    nodeName = node.hasClass("slider__runner_name-from") ? "from" : "to";
-
     node.on("dragstart", () => false);
 
     node.on("mousedown", () => {
       $(document).on("mousemove", () => {
-        this.emit("click", this.getPosition(event, nodeName));
+        this.emit("click", this.getPosition(event));
       });
       $(document).on("mouseup", () => $(document).off("mousemove"));
     });
   }
 
-  private getPosition(event: any, runnerName: string) {
+  private getPosition(event: any) {
     let x = event.pageX;
     let y = event.pageY;
 
-    return { x, y, runnerName };
+    return { x, y };
   }
 }
 

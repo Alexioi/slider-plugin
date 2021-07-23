@@ -33,18 +33,18 @@ class Range {
   private moveHorizontallyRange(position: number, width: number) {
     this.$range.css({
       width: `${width}%`,
-      height: "100%",
-      top: "0%",
+      height: "",
+      top: "",
       left: `${position}%`,
     });
   }
 
   private moveVerticallyRange(position: number, width: number) {
     this.$range.css({
-      width: `100%`,
+      width: ``,
       height: `${width}%`,
       top: `${position}%`,
-      left: "0%",
+      left: "",
     });
   }
 

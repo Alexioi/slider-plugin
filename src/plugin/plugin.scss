@@ -24,6 +24,10 @@ $runnerWidth: 1.5rem;
       height: 100%;
     }
 
+    & .slider__range {
+      width: 100%;
+    }
+
     & .slider__runner {
       right: -(math.div($runnerWidth, 3));
       transform: translateY(-50%);
@@ -87,6 +91,8 @@ $runnerWidth: 1.5rem;
     padding: 2px;
     position: absolute;
     background-color: green;
+    top: -150%;
+    left: 50%;
     transform: translateX(-50%);
   }
 
