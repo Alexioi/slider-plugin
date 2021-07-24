@@ -1,12 +1,12 @@
 import EventEmitter from "event-emitter";
-import { IRunnerOptions, IOptions } from "../interfaces/interfaces";
+import { IRunnerOptions, ITip } from "../interfaces/interfaces";
 
 import Tip from "./tip";
 
 class Runner {
   $bar: JQuery;
   $runner: JQuery;
-  tip: any;
+  tip: ITip;
   emit: any;
   on: any;
 
@@ -16,12 +16,8 @@ class Runner {
     this.tip = new Tip(this.$runner);
   }
 
-  public move(options: IRunnerOptions): void {
-    const { value, isVertical } = options;
-
+  public move({ value, isVertical, position }: IRunnerOptions): void {
     this.tip.setValue(value);
-
-    const position = this.calculatePosition(value, options);
 
     if (isVertical) {
       this.moveVertically(position);
@@ -44,10 +40,6 @@ class Runner {
 
   public show() {
     this.$runner.css({ display: "" });
-  }
-
-  private calculatePosition(value: number, { min, max }: IRunnerOptions) {
-    return ((value - min) / (max - min)) * 100;
   }
 
   private moveHorizontally(position: number) {

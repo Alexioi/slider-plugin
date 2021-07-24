@@ -1,5 +1,3 @@
-import { IOptions } from "../interfaces/interfaces";
-
 class Tip {
   $runner: JQuery;
   $tip: JQuery;
@@ -9,15 +7,15 @@ class Tip {
     this.$tip = this.init();
   }
 
-  public setValue(value: number) {
+  public setValue(value: number): void {
     this.$tip.text(value);
   }
 
-  public hide() {
+  public hide(): void {
     this.$tip.css({ display: "none" });
   }
 
-  public show() {
+  public show(): void {
     this.$tip.css({ display: "" });
   }
 

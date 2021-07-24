@@ -47,14 +47,31 @@ class Bar {
     this.updatePositionTo(options);
   }
 
-  public updatePositionFrom({ isVertical, hasTip, min, max, from }: IOptions) {
-    this.runnerFrom.move({ isVertical, hasTip, min, max, value: from });
-    // this.range.moveRange(options);
+  public updatePositionFrom({ isVertical, min, max, from, to }: IOptions) {
+    const value = from;
+    const position = this.calculatePosition(value, min, max);
+    const width = this.calculateWidth(from, to, min, max);
+
+    this.runnerFrom.move({ isVertical, position, value });
+    this.range.move({ isVertical, position, width });
   }
 
-  public updatePositionTo({ isVertical, hasTip, min, max, to }: IOptions) {
-    this.runnerTo.move({ isVertical, hasTip, min, max, value: to });
-    // this.range.moveRange(options);
+  public updatePositionTo({ isVertical, min, max, from, to }: IOptions) {
+    const value = to;
+    const position = this.calculatePosition(value, min, max);
+    const rangePosition = this.calculatePosition(from, min, max);
+    const width = this.calculateWidth(from, to, min, max);
+
+    this.runnerTo.move({ isVertical, position, value });
+    this.range.move({ isVertical, position: rangePosition, width });
+  }
+
+  private calculatePosition(value: number, min: number, max: number) {
+    return ((value - min) / (max - min)) * 100;
+  }
+
+  private calculateWidth(from: number, to: number, min: number, max: number) {
+    return ((to - from) / (max - min)) * 100;
   }
 
   private addEventEmitters() {
@@ -67,13 +84,15 @@ class Bar {
     );
   }
 
-  private calculatePercentageClicks(position: IPosition, valueName: string) {
+  private calculatePercentageClicks(position: IPosition, runnerName: string) {
     let x: number, y: number;
 
+    // @ts-ignore
     x = (position.x - this.$bar.offset().left) / <number>this.$bar.width();
+    // @ts-ignore
     y = (position.y - this.$bar.offset().top) / <number>this.$bar.height();
 
-    this.emit("click", { x, y, valueName });
+    this.emit("click", { x, y, runnerName });
   }
 }
 

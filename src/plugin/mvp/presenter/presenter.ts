@@ -1,9 +1,9 @@
-import {Model, IModel} from "../model/model";
+import { Model, IModel } from "../model/model";
 import View from "../view/view";
 
 import EventEmitter from "event-emitter";
 
-import { IOptions, IClickRate } from "../interfaces/interfaces";
+import { IOptions, IPosition } from "../interfaces/interfaces";
 
 class Presenter {
   view: any;
@@ -16,7 +16,7 @@ class Presenter {
     this.model = new Model(defaultOptions);
 
     this.addEventEmitters();
-    this.updateOptions(options)
+    this.updateOptions(options);
   }
 
   addEventEmitters() {
@@ -32,11 +32,11 @@ class Presenter {
     );
 
     this.view.on("clickScale", (value: number) =>
-    this.model.updateNearValue(value)
+      this.model.updateNearValue(value)
     );
 
-    this.view.on("click", (clickRate: IClickRate) =>
-      this.model.updateValue(clickRate)
+    this.view.on("click", (position: IPosition) =>
+      this.model.updateValue(position)
     );
   }
 

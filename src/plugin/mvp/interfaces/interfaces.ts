@@ -13,16 +13,14 @@ interface IOptions {
 
 interface IRunnerOptions {
   isVertical: boolean;
-  hasTip: boolean;
-  min: number;
-  max: number;
+  position: number;
   value: number;
 }
 
-interface IClickRate {
-  x: number;
-  y: number;
-  valueName: string;
+interface IRangeOptions {
+  isVertical: boolean;
+  position: number;
+  width: number;
 }
 
 interface IPosition {
@@ -39,8 +37,14 @@ interface IRunner {
   on: any;
 }
 
+interface ITip {
+  setValue(value: number): void;
+  hide(): void;
+  show(): void;
+}
+
 interface IRange {
-  moveRange(options: IOptions): void;
+  move(options: IRangeOptions): void;
 }
 
 interface IBar {
@@ -54,8 +58,9 @@ export {
   IRunner,
   IOptions,
   IRunnerOptions,
-  IClickRate,
   IPosition,
   IRange,
   IBar,
+  ITip,
+  IRangeOptions,
 };

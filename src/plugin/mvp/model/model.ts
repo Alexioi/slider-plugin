@@ -1,12 +1,12 @@
 import EventEmitter from "event-emitter";
 
-import { IOptions, IClickRate } from "../interfaces/interfaces";
+import { IOptions, IPosition } from "../interfaces/interfaces";
 
 interface IModel {
   options: IOptions;
 
   verifyAllOptions(options: IOptions): void;
-  updateValue(clickRate: IClickRate): void;
+  updateValue(position: IPosition): void;
   updateNearValue(value: number): void;
   getOptions(): IOptions;
 
@@ -23,7 +23,8 @@ class Model {
   }
 
   public verifyAllOptions(options: IOptions): void {
-    let {isRange, isVertical,  hasTip, numberMarks, min, max, from, to, step} = options
+    let { isRange, isVertical, hasTip, numberMarks, min, max, from, to, step } =
+      options;
 
     isRange = this.verifyRange(isRange);
     isVertical = this.verifyVertical(isVertical);
@@ -35,7 +36,17 @@ class Model {
     to = this.verifyTo(to, from, max);
     step = this.verifyStep(step, min, max);
 
-    this.updateOptions({isRange, isVertical,  hasTip, numberMarks, min, max, from, to, step})
+    this.updateOptions({
+      isRange,
+      isVertical,
+      hasTip,
+      numberMarks,
+      min,
+      max,
+      from,
+      to,
+      step,
+    });
   }
 
   private updateOptions(options: IOptions) {
@@ -50,7 +61,7 @@ class Model {
     return this.options;
   }
 
-  public updateValue({ x, y, valueName }: IClickRate): void {
+  public updateValue({ x, y, runnerName }: IPosition): void {
     const { isVertical, from, to, min, max } = this.options;
 
     let percentageOfMaximum: number,
@@ -62,11 +73,9 @@ class Model {
       isTo: boolean,
       isValidValue: boolean;
 
-      
-
     percentageOfMaximum = isVertical ? y : x;
     newValue = (max - min) * percentageOfMaximum + min;
-    isTo = valueName === "to";
+    isTo = runnerName === "to";
     oldValue = isTo ? to : from;
     validFrom = this.checkFrom(newValue);
     validTo = this.checkTo(newValue);
@@ -82,28 +91,27 @@ class Model {
       newValue = validValue;
     }
 
-    if (newValue !== this.options[valueName]) {
-      this.options[valueName] = newValue;
-      // console.log(this.options)
-      // this.emit("updateModelValues", this.options);
+    if (newValue !== this.options[runnerName]) {
+      this.options[runnerName] = newValue;
+
       this.emit(`updateModelFrom`, this.options);
       this.emit(`updateModelTo`, this.options);
     }
   }
 
   public updateNearValue(value: number) {
-    const {from, to} = this.options
+    const { from, to } = this.options;
 
-    let diffFrom = Math.abs(Math.abs(from) - Math.abs(value))
-    let diffTo = Math.abs(Math.abs(to) - Math.abs(value))
+    let diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
+    let diffTo = Math.abs(Math.abs(to) - Math.abs(value));
 
     if (diffFrom < diffTo) {
-      this.options.from = value
+      this.options.from = value;
       this.emit("updateModelFrom", this.options);
     }
 
-    if ( diffTo <= diffFrom) {
-      this.options.to = value
+    if (diffTo <= diffFrom) {
+      this.options.to = value;
       this.emit("updateModelTo", this.options);
     }
 
