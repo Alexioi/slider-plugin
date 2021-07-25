@@ -2,12 +2,14 @@ import EventEmitter from "event-emitter";
 
 import Runner from "./runner";
 import Range from "./range";
+import Scale from "./scale";
 
 import { IPosition, IRunner, IRange, IOptions } from "../interfaces/interfaces";
 
 class Bar {
   private $slider: JQuery;
   private range: IRange;
+  scale: any;
   private $bar: JQuery;
   private runnerFrom: IRunner;
   private runnerTo: IRunner;
@@ -20,6 +22,7 @@ class Bar {
     this.range = new Range(this.$bar);
     this.runnerFrom = new Runner(this.$bar);
     this.runnerTo = new Runner(this.$bar);
+    this.scale = new Scale(this.$bar);
     this.addEventEmitters();
   }
 

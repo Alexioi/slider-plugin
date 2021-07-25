@@ -6,18 +6,21 @@ import App from "./mvp/app/app";
 
 declare const $: any;
 
-$.fn.slider = function (options: IOptions) {
-  let apps: any = [];
+(function ($) {
+  // @ts-ignore
+  $.fn.slider = function (options: IOptions) {
+    let apps: any = [];
 
-  apps.push(
-    this.each((i: number) => {
-      let node = this.slice(i, i + 1);
+    apps.push(
+      this.each((i: number) => {
+        let node = this.slice(i, i + 1);
 
-      let app = new App(node, options);
+        let app = new App(node, options);
 
-      apps.push(app);
-    })
-  );
+        apps.push(app);
+      })
+    );
 
-  return apps;
-};
+    return apps;
+  };
+})(jQuery);
