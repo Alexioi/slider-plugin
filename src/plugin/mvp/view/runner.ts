@@ -1,13 +1,17 @@
-import EventEmitter from "event-emitter";
-import { IRunnerOptions, ITip } from "../interfaces/interfaces";
+import EventEmitter from 'event-emitter';
+import { IRunnerOptions, ITip } from '../interfaces/interfaces';
 
-import Tip from "./tip";
+import Tip from './tip';
 
 class Runner {
   $bar: JQuery;
+
   $runner: JQuery;
+
   tip: ITip;
+
   emit: any;
+
   on: any;
 
   constructor($bar: JQuery) {
@@ -26,7 +30,7 @@ class Runner {
     }
   }
 
-  public update(hasTip: boolean) {
+  public update(hasTip: boolean): void {
     if (hasTip) {
       this.tip.show();
     } else {
@@ -34,48 +38,56 @@ class Runner {
     }
   }
 
-  public hide() {
-    this.$runner.css({ display: "none" });
+  public hide(): void {
+    this.$runner.css({ display: 'none' });
   }
 
-  public show() {
-    this.$runner.css({ display: "" });
+  public show(): void {
+    this.$runner.css({ display: '' });
   }
 
   private moveHorizontally(position: number) {
-    this.$runner.css({ left: `${position}%`, top: "" });
+    this.$runner.css({ left: `${position}%`, top: '' });
   }
 
   private moveVertically(position: number) {
-    this.$runner.css({ top: `${position}%`, left: "" });
+    this.$runner.css({ top: `${position}%`, left: '' });
   }
 
   private init(): JQuery {
-    const runner = `<div class='slider__runner'></div>`;
+    const runner = "<div class='slider__runner'></div>";
 
     this.$bar.append(runner);
 
-    let $runner = this.$bar.find(`.slider__runner`).last();
+    const $runner = this.$bar.find('.slider__runner').last();
 
-    this.attachEventRunner($runner);
+    this.attachEvents($runner);
 
     return $runner;
   }
 
-  private attachEventRunner(node: JQuery) {
-    node.on("dragstart", () => false);
+  private attachEvents(node: JQuery) {
+    node.on('dragstart', false);
 
-    node.on("mousedown", () => {
-      $(document).on("mousemove", () => {
-        this.emit("click", this.getPosition(event));
-      });
-      $(document).on("mouseup", () => $(document).off("mousemove"));
-    });
+    node.on('mousedown', this.attachEventMouseDown);
   }
 
+  private attachEventMouseDown = (): void => {
+    $(document).on('mousemove', this.attachEventMouseMove);
+    $(document).on('mouseup', this.attachEventMouseUp);
+  };
+
+  private attachEventMouseMove = (): void => {
+    this.emit('click', this.getPosition(event));
+  };
+
+  private attachEventMouseUp = (): void => {
+    $(document).off('mousemove');
+  };
+
   private getPosition(event: any) {
-    let x = event.pageX;
-    let y = event.pageY;
+    const x = event.pageX;
+    const y = event.pageY;
 
     return { x, y };
   }

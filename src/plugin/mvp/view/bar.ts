@@ -1,19 +1,26 @@
-import EventEmitter from "event-emitter";
+import EventEmitter from 'event-emitter';
 
-import Runner from "./runner";
-import Range from "./range";
-import Scale from "./scale";
+import Runner from './runner';
+import Range from './range';
+import Scale from './scale';
 
-import { IPosition, IRunner, IRange, IOptions } from "../interfaces/interfaces";
+import { IPosition, IRunner, IRange, IOptions } from '../interfaces/interfaces';
 
 class Bar {
   private $slider: JQuery;
+
   private range: IRange;
+
   scale: any;
+
   private $bar: JQuery;
+
   private runnerFrom: IRunner;
+
   private runnerTo: IRunner;
+
   emit: any;
+
   on: any;
 
   constructor($slider: JQuery) {
@@ -31,10 +38,10 @@ class Bar {
 
     this.$slider.append(bar);
 
-    return this.$slider.find(".slider__bar");
+    return this.$slider.find('.slider__bar');
   }
 
-  public update(options: IOptions) {
+  public update(options: IOptions): void {
     const { hasTip, isRange } = options;
 
     if (isRange) {
@@ -50,7 +57,13 @@ class Bar {
     this.updatePositionTo(options);
   }
 
-  public updatePositionFrom({ isVertical, min, max, from, to }: IOptions) {
+  public updatePositionFrom({
+    isVertical,
+    min,
+    max,
+    from,
+    to,
+  }: IOptions): void {
     const value = from;
     const position = this.calculatePosition(value, min, max);
     const width = this.calculateWidth(from, to, min, max);
@@ -59,7 +72,7 @@ class Bar {
     this.range.move({ isVertical, position, width });
   }
 
-  public updatePositionTo({ isVertical, min, max, from, to }: IOptions) {
+  public updatePositionTo({ isVertical, min, max, from, to }: IOptions): void {
     const value = to;
     const position = this.calculatePosition(value, min, max);
     const rangePosition = this.calculatePosition(from, min, max);
@@ -78,24 +91,21 @@ class Bar {
   }
 
   private addEventEmitters() {
-    this.runnerFrom.on("click", (position: IPosition) =>
-      this.calculatePercentageClicks(position, "from")
+    this.runnerFrom.on('click', (position: IPosition) =>
+      this.calculatePercentageClicks(position, 'from')
     );
 
-    this.runnerTo.on("click", (position: IPosition) =>
-      this.calculatePercentageClicks(position, "to")
+    this.runnerTo.on('click', (position: IPosition) =>
+      this.calculatePercentageClicks(position, 'to')
     );
   }
 
   private calculatePercentageClicks(position: IPosition, runnerName: string) {
-    let x: number, y: number;
+    const x = (position.x - this.$bar.offset()!.left) / this.$bar.width()!;
 
-    // @ts-ignore
-    x = (position.x - this.$bar.offset().left) / <number>this.$bar.width();
-    // @ts-ignore
-    y = (position.y - this.$bar.offset().top) / <number>this.$bar.height();
+    const y = (position.y - this.$bar.offset()!.top) / this.$bar.height()!;
 
-    this.emit("click", { x, y, runnerName });
+    this.emit('click', { x, y, runnerName });
   }
 }
 

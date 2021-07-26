@@ -1,20 +1,22 @@
-import Presenter from "../presenter/presenter";
+import Presenter from '../presenter/presenter';
 
-import { IOptions } from "../interfaces/interfaces";
+import { IOptions } from '../interfaces/interfaces';
 
 class App {
   element: any;
+
   options: IOptions;
+
   presenter: any;
 
-  constructor(element: any, options: IOptions) {
+  constructor(element: JQuery, options: IOptions) {
     this.element = element;
     this.options = options || {};
 
     this.init();
   }
 
-  init() {
+  init(): void {
     const defaultOptions: IOptions = {
       isRange: true,
       isVertical: false,
@@ -31,11 +33,11 @@ class App {
     this.presenter = new Presenter(this.element, this.options, defaultOptions);
   }
 
-  updateOptions(options: IOptions) {
+  updateOptions(options: IOptions): void {
     this.presenter.updateOptions(options);
   }
 
-  getOptions() {
+  getOptions(): IOptions {
     return this.presenter.getOptions();
   }
 }

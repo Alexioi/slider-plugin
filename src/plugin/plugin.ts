@@ -1,13 +1,12 @@
-import "./plugin.scss";
+import './plugin.scss';
 
-import { IOptions } from "./mvp/interfaces/interfaces";
+import { IOptions } from './mvp/interfaces/interfaces';
 
-import App from "./mvp/app/app";
+import App from './mvp/app/app';
 
-declare const $: any;
+declare var $: any;
 
 (function ($) {
-  // @ts-ignore
   $.fn.slider = function (options: IOptions) {
     let apps: any = [];
 

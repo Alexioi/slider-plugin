@@ -1,8 +1,10 @@
-import Mark from "./mark";
+import Mark from './mark';
 
 class Scale {
   mark: any;
+
   $bar: JQuery;
+
   $scale: JQuery;
 
   constructor($bar: JQuery) {
@@ -12,28 +14,27 @@ class Scale {
   }
 
   public hide(): void {
-    this.$scale.css({ display: "none" });
+    this.$scale.css({ display: 'none' });
   }
 
   public show(): void {
-    this.$scale.css({ display: "" });
+    this.$scale.css({ display: '' });
   }
 
   private init(): JQuery {
-    const scale = `<div class='slider__scale'></div>`;
+    const scale = '<div class="slider__scale"></div>';
 
     this.$bar.append(scale);
 
-    return this.$bar.find(`.slider__scale`);
+    return this.$bar.find('.slider__scale');
   }
 
   private addMarks() {
-    const width = this.$bar.width();
-    console.log(this.$bar.width());
-    // @ts-ignore
-    const countMarks = Math.floor(width / 100);
+    // const width = this.$bar.width();
 
-    let value = 1;
+    // const countMarks = Math.floor(width / 100);
+
+    const value = 1;
 
     const mark = `<span class='slider__mark'>${value}</span>`;
 

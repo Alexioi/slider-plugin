@@ -14,7 +14,12 @@
   "devDependencies": {
     "@types/event-emitter": "^0.3.3",
     "@types/jquery": "^3.5.5",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
     "css-loader": "^5.2.6",
+    "eslint": "^6.0.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-fsd": "^1.0.1",
     "gh-pages": "^3.2.2",
     "html-webpack-plugin": "^5.3.1",
     "pug": "^2.0.4",
@@ -29,6 +34,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "event-emitter": "^0.3.5"
+    "event-emitter": "^0.3.5",
+    "jquery": "^3.6.0"
   }
 }

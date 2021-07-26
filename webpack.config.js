@@ -1,18 +1,19 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
-  entry: { plugin: "./src/plugin/plugin.ts", docs: "./src/docs/docs.js" },
+  entry: "./src/docs/docs.ts",
 
   output: {
-    filename: "[name]/[name].js",
+    filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: "ts-loader",
         exclude: /node_modules/,
       },
       {
@@ -26,9 +27,14 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.jQuery": "jquery",
+    }),
     new HtmlWebpackPlugin({
       filename: `index.html`,
       template: `./src/docs/page/docs.pug`,
