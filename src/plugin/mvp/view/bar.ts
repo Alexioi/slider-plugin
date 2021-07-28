@@ -4,20 +4,20 @@ import Runner from './runner';
 import Range from './range';
 import Scale from './scale';
 
-import { IPosition, IRunner, IRange, IOptions } from '../interfaces/interfaces';
+import { IPosition, IOptions } from '../interfaces/interfaces';
 
 class Bar {
   private $slider: JQuery;
 
-  private range: IRange;
+  private range: Range;
 
-  scale: any;
+  scale: Scale;
 
   private $bar: JQuery;
 
-  private runnerFrom: IRunner;
+  private runnerFrom: Runner;
 
-  private runnerTo: IRunner;
+  private runnerTo: Runner;
 
   emit: any;
 
@@ -91,14 +91,18 @@ class Bar {
   }
 
   private addEventEmitters() {
-    this.runnerFrom.on('click', (position: IPosition) =>
-      this.calculatePercentageClicks(position, 'from')
-    );
+    this.runnerFrom.on('click', this.clickRunnerFrom);
 
-    this.runnerTo.on('click', (position: IPosition) =>
-      this.calculatePercentageClicks(position, 'to')
-    );
+    this.runnerTo.on('click', this.clickRunnerTo);
   }
+
+  private clickRunnerFrom = (position: IPosition) => {
+    this.calculatePercentageClicks(position, 'from');
+  };
+
+  private clickRunnerTo = (position: IPosition) => {
+    this.calculatePercentageClicks(position, 'to');
+  };
 
   private calculatePercentageClicks(position: IPosition, runnerName: string) {
     const x = (position.x - this.$bar.offset()!.left) / this.$bar.width()!;

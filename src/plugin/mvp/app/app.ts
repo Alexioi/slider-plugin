@@ -7,7 +7,7 @@ class App {
 
   options: IOptions;
 
-  presenter: any;
+  presenter!: Presenter;
 
   constructor(element: JQuery, options: IOptions) {
     this.element = element;

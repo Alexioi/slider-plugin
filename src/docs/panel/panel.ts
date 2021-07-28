@@ -5,23 +5,23 @@ class Panel {
 
   slider: any;
 
-  range: HTMLInputElement;
+  range!: HTMLInputElement;
 
-  vertical: HTMLInputElement;
+  vertical!: HTMLInputElement;
 
-  min: HTMLInputElement;
+  min!: HTMLInputElement;
 
-  max: HTMLInputElement;
+  max!: HTMLInputElement;
 
-  from: HTMLInputElement;
+  from!: HTMLInputElement;
 
-  to: HTMLInputElement;
+  to!: HTMLInputElement;
 
-  step: HTMLInputElement;
+  step!: HTMLInputElement;
 
-  tip: HTMLInputElement;
+  tip!: HTMLInputElement;
 
-  numberMarks: HTMLInputElement;
+  numberMarks!: HTMLInputElement;
 
   constructor(control: HTMLElement, slider: any) {
     this.control = control;

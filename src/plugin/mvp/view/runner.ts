@@ -1,5 +1,5 @@
 import EventEmitter from 'event-emitter';
-import { IRunnerOptions, ITip } from '../interfaces/interfaces';
+import { IRunnerOptions } from '../interfaces/interfaces';
 
 import Tip from './tip';
 
@@ -8,7 +8,7 @@ class Runner {
 
   $runner: JQuery;
 
-  tip: ITip;
+  tip: Tip;
 
   emit: any;
 
@@ -85,7 +85,7 @@ class Runner {
     $(document).off('mousemove');
   };
 
-  private getPosition(event: any) {
+  private getPosition(event: MouseEvent) {
     const x = event.pageX;
     const y = event.pageY;
 

@@ -23,6 +23,11 @@
   "rules": {
     "no-undef": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "class-methods-use-this": "off",
+    "object-curly-newline": "off",
+    "no-shadow": "off"
   }
 }

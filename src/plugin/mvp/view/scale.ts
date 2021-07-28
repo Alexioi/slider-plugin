@@ -1,4 +1,4 @@
-import Mark from './mark';
+//  import Mark from './mark';
 
 class Scale {
   mark: any;

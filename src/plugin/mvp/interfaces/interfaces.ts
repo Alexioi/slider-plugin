@@ -29,38 +29,4 @@ interface IPosition {
   runnerName: string;
 }
 
-interface IRunner {
-  move(options: IRunnerOptions): void;
-  show(): void;
-  hide(): void;
-  update(nasTip: boolean): void;
-  on: any;
-}
-
-interface ITip {
-  setValue(value: number): void;
-  hide(): void;
-  show(): void;
-}
-
-interface IRange {
-  move(options: IRangeOptions): void;
-}
-
-interface IBar {
-  update(options: IOptions): void;
-  updatePositionFrom(options: IOptions): void;
-  updatePositionTo(options: IOptions): void;
-  on: any;
-}
-
-export {
-  IRunner,
-  IOptions,
-  IRunnerOptions,
-  IPosition,
-  IRange,
-  IBar,
-  ITip,
-  IRangeOptions,
-};
+export { IOptions, IRunnerOptions, IPosition, IRangeOptions };
