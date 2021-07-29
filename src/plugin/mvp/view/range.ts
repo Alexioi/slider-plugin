@@ -1,4 +1,4 @@
-import { IRangeOptions } from "../interfaces/interfaces";
+import { IRangeOptions } from '../interfaces/interfaces';
 
 class Range {
   $bar: JQuery;
@@ -9,7 +9,7 @@ class Range {
     this.$range = this.initRange();
   }
 
-  public move({ isVertical, position, width }: IRangeOptions) {
+  public move({ isVertical, position, width }: IRangeOptions): void {
     if (isVertical) {
       this.moveVerticallyRange(position, width);
     } else {
@@ -20,8 +20,8 @@ class Range {
   private moveHorizontallyRange(position: number, width: number) {
     this.$range.css({
       width: `${width}%`,
-      height: "",
-      top: "",
+      height: '',
+      top: '',
       left: `${position}%`,
     });
   }
@@ -31,7 +31,7 @@ class Range {
       width: ``,
       height: `${width}%`,
       top: `${position}%`,
-      left: "",
+      left: '',
     });
   }
 

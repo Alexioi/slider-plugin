@@ -4,22 +4,24 @@ import { IOptions } from './mvp/interfaces/interfaces';
 
 import App from './mvp/app/app';
 
-declare var $: any;
+declare global {
+  interface JQuery {
+    slider: (options: IOptions) => JQuery[];
+  }
+}
 
-(function ($) {
-  $.fn.slider = function (options: IOptions) {
-    let apps: any = [];
+$.fn.slider = function initSlider(options: IOptions) {
+  const apps = [];
 
-    apps.push(
-      this.each((i: number) => {
-        let node = this.slice(i, i + 1);
+  apps.push(
+    this.each((i: number) => {
+      const node = this.slice(i, i + 1);
 
-        let app = new App(node, options);
+      const app = new App(node, options);
 
-        apps.push(app);
-      })
-    );
+      apps.push(app);
+    })
+  );
 
-    return apps;
-  };
-})(jQuery);
+  return apps;
+};

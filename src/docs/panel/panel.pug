@@ -1,11 +1,10 @@
 mixin panel(options)
-
   .panel
     .panel__control
-      div(style='display: flex; gap: 10px;')
+      div(style='display: flex; gap: 10px')
         label.panel__label
           span.panel__input-header Range
-          input.panel__range-checkbox(type='checkbox')      
+          input.panel__range-checkbox(type='checkbox') 
         label.panel__label
           span.panel__input-header Vertical
           input.panel__vertical-checkbox(type='checkbox')
@@ -31,4 +30,4 @@ mixin panel(options)
         span.panel__input-header Step
         input.panel__input.panel__step-checkbox(type='number')
     .panel__example.js-panel__example 
-        
+    

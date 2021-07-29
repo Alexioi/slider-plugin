@@ -1,8 +1,6 @@
-//  import Mark from './mark';
+import { IOptions } from '../interfaces/interfaces';
 
 class Scale {
-  mark: any;
-
   $bar: JQuery;
 
   $scale: JQuery;
@@ -10,7 +8,6 @@ class Scale {
   constructor($bar: JQuery) {
     this.$bar = $bar;
     this.$scale = this.init();
-    this.addMarks();
   }
 
   public hide(): void {
@@ -29,16 +26,41 @@ class Scale {
     return this.$bar.find('.slider__scale');
   }
 
-  private addMarks() {
-    // const width = this.$bar.width();
+  public addMarks({ min, max }: { min: number; max: number }): void {
+    const length = this.$bar.width();
 
-    // const countMarks = Math.floor(width / 100);
+    const countMarks = Math.floor(length! / 100);
 
-    const value = 1;
+    if (countMarks === 0) return;
 
-    const mark = `<span class='slider__mark'>${value}</span>`;
+    const difference = Math.abs(max - min);
 
-    this.$scale.append(mark);
+    const step = Math.trunc(difference / (countMarks - 1));
+
+    let value = min;
+    let left: number;
+
+    while (value <= max) {
+      const mark = `<span class='slider__mark js-slider__mark'>${value}</span>`;
+
+      this.$scale.append(mark);
+
+      const $mark = this.$scale.find('.js-slider__mark').last();
+
+      left = (value / difference) * 100;
+
+      if (left < 0) {
+        left += 100;
+      }
+
+      $mark.css({ left: `${left}%` });
+
+      value += step;
+    }
+  }
+
+  public removeMarks(): void {
+    this.$scale.empty();
   }
 }
 
