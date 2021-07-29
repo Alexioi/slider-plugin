@@ -1,5 +1,6 @@
 class Tip {
   $runner: JQuery;
+
   $tip: JQuery;
 
   constructor($runner: JQuery) {
@@ -12,19 +13,19 @@ class Tip {
   }
 
   public hide(): void {
-    this.$tip.css({ display: "none" });
+    this.$tip.css({ display: 'none' });
   }
 
   public show(): void {
-    this.$tip.css({ display: "" });
+    this.$tip.css({ display: '' });
   }
 
   private init(): JQuery {
-    const tip = `<div class='slider__tip'></div>`;
+    const tip = '<div class="slider__tip"></div>';
 
     this.$runner.append(tip);
 
-    return this.$runner.find(`.slider__tip`);
+    return this.$runner.find('.slider__tip');
   }
 }
 

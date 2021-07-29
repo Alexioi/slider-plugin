@@ -1,18 +1,18 @@
-import EventEmitter from 'event-emitter';
+import EventEmitter, { EmitterMethod, EventListener } from 'event-emitter';
 import { IRunnerOptions } from '../interfaces/interfaces';
 
 import Tip from './tip';
 
 class Runner {
-  $bar: JQuery;
+  private $bar: JQuery;
 
-  $runner: JQuery;
+  private $runner: JQuery;
 
-  tip: Tip;
+  private tip: Tip;
 
-  emit: any;
+  private emit!: EmitterMethod;
 
-  on: any;
+  public on!: EventListener;
 
   constructor($bar: JQuery) {
     this.$bar = $bar;
@@ -78,7 +78,9 @@ class Runner {
   };
 
   private attachEventMouseMove = (): void => {
-    this.emit('click', this.getPosition(event));
+    const position = this.getPosition(event);
+
+    this.emit('click', position);
   };
 
   private attachEventMouseUp = (): void => {

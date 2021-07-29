@@ -1,5 +1,3 @@
-import { IOptions } from '../interfaces/interfaces';
-
 class Scale {
   $bar: JQuery;
 

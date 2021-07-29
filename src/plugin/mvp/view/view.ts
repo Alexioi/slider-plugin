@@ -1,16 +1,21 @@
-import EventEmitter from "event-emitter";
+import EventEmitter, { EmitterMethod } from 'event-emitter';
 
-import Bar from "./bar";
+import Bar from './bar';
 
-import { IOptions, IPosition, IBar } from "../interfaces/interfaces";
+import { IOptions, IPosition } from '../interfaces/interfaces';
 
 class View {
-  element: JQuery;
-  bar: IBar;
-  $slider: JQuery;
-  emit: any;
+  private element: JQuery;
 
-  constructor(element: any) {
+  private bar: Bar;
+
+  private $slider: JQuery;
+
+  private emit!: EmitterMethod;
+
+  public on!: EventListener;
+
+  constructor(element: JQuery) {
     this.element = element;
     this.$slider = this.initSlider();
     this.bar = new Bar(this.$slider);
@@ -18,7 +23,7 @@ class View {
     this.addEventEmitters();
   }
 
-  public updateSlider(options: IOptions) {
+  public updateSlider(options: IOptions): void {
     const { isVertical } = options;
 
     if (isVertical) {
@@ -30,11 +35,11 @@ class View {
     this.bar.update(options);
   }
 
-  public updatePositionFrom(options: IOptions) {
+  public updatePositionFrom(options: IOptions): void {
     this.bar.updatePositionFrom(options);
   }
 
-  public updatePositionTo(options: IOptions) {
+  public updatePositionTo(options: IOptions): void {
     this.bar.updatePositionTo(options);
   }
 
@@ -43,22 +48,26 @@ class View {
 
     this.element.append(slider);
 
-    return this.element.find(".slider");
+    return this.element.find('.slider');
   }
 
   private addEventEmitters() {
-    this.bar.on("click", (position: IPosition) => this.emit("click", position));
+    this.bar.on('click', this.emitBar);
 
     //   this.scale.on("clickScale", (value: number) =>  this.emit("clickScale", value)
     //   );
   }
 
+  private emitBar = (position: IPosition) => {
+    this.emit('click', position);
+  };
+
   private addClassVertical() {
-    this.$slider.addClass("slider_vertical");
+    this.$slider.addClass('slider_vertical');
   }
 
   private removeClassVertical() {
-    this.$slider.removeClass("slider_vertical");
+    this.$slider.removeClass('slider_vertical');
   }
 }
 

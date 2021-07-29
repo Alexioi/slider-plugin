@@ -3,11 +3,11 @@ import Presenter from '../presenter/presenter';
 import { IOptions } from '../interfaces/interfaces';
 
 class App {
-  element: any;
+  private element: JQuery;
 
-  options: IOptions;
+  private options: IOptions;
 
-  presenter!: Presenter;
+  private presenter!: Presenter;
 
   constructor(element: JQuery, options: IOptions) {
     this.element = element;

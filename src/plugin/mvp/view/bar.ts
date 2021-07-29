@@ -1,4 +1,4 @@
-import EventEmitter from 'event-emitter';
+import EventEmitter, { EmitterMethod, EventListener } from 'event-emitter';
 
 import Runner from './runner';
 import Range from './range';
@@ -11,7 +11,7 @@ class Bar {
 
   private range: Range;
 
-  scale: Scale;
+  private scale: Scale;
 
   private $bar: JQuery;
 
@@ -19,9 +19,9 @@ class Bar {
 
   private runnerTo: Runner;
 
-  emit: any;
+  private emit!: EmitterMethod;
 
-  on: any;
+  public on!: EventListener;
 
   constructor($slider: JQuery) {
     this.$slider = $slider;

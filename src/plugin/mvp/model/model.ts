@@ -1,22 +1,11 @@
-import EventEmitter from "event-emitter";
+import EventEmitter, { EmitterMethod } from 'event-emitter';
 
-import { IOptions, IPosition } from "../interfaces/interfaces";
-
-interface IModel {
-  options: IOptions;
-
-  verifyAllOptions(options: IOptions): void;
-  updateValue(position: IPosition): void;
-  updateNearValue(value: number): void;
-  getOptions(): IOptions;
-
-  emit?: any;
-  on?: any;
-}
+import { IOptions, IPosition } from '../interfaces/interfaces';
 
 class Model {
   options: IOptions;
-  emit: any;
+
+  emit!: EmitterMethod;
 
   constructor(options: IOptions) {
     this.options = options;
@@ -54,10 +43,10 @@ class Model {
       this.options[key] = options[key];
     }
 
-    this.emit("updateModelOptions", this.options);
+    this.emit('updateModelOptions', this.options);
   }
 
-  public getOptions() {
+  public getOptions(): IOptions {
     return this.options;
   }
 
@@ -75,7 +64,7 @@ class Model {
 
     percentageOfMaximum = isVertical ? y : x;
     newValue = (max - min) * percentageOfMaximum + min;
-    isTo = runnerName === "to";
+    isTo = runnerName === 'to';
     oldValue = isTo ? to : from;
     validFrom = this.checkFrom(newValue);
     validTo = this.checkTo(newValue);
@@ -94,25 +83,25 @@ class Model {
     if (newValue !== this.options[runnerName]) {
       this.options[runnerName] = newValue;
 
-      this.emit(`updateModelFrom`, this.options);
-      this.emit(`updateModelTo`, this.options);
+      this.emit('updateModelFrom', this.options);
+      this.emit('updateModelTo', this.options);
     }
   }
 
-  public updateNearValue(value: number) {
+  public updateNearValue(value: number): void {
     const { from, to } = this.options;
 
-    let diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
-    let diffTo = Math.abs(Math.abs(to) - Math.abs(value));
+    const diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
+    const diffTo = Math.abs(Math.abs(to) - Math.abs(value));
 
     if (diffFrom < diffTo) {
       this.options.from = value;
-      this.emit("updateModelFrom", this.options);
+      this.emit('updateModelFrom', this.options);
     }
 
     if (diffTo <= diffFrom) {
       this.options.to = value;
-      this.emit("updateModelTo", this.options);
+      this.emit('updateModelTo', this.options);
     }
 
     // this.emit("updateModelValues", this.options);
@@ -180,12 +169,12 @@ class Model {
     newValue: number | undefined,
     value: number
   ): number | never {
-    if (typeof newValue === "undefined") {
+    if (typeof newValue === 'undefined') {
       newValue = value;
     }
 
-    if (typeof newValue !== "number") {
-      throw new Error("Value is not number");
+    if (typeof newValue !== 'number') {
+      throw new Error('Value is not number');
     }
 
     return newValue;
@@ -206,7 +195,7 @@ class Model {
       return newMax;
     }
 
-    console.warn("max < min");
+    console.warn('max < min');
     if (min > 0) {
       return min * 2;
     }
@@ -232,7 +221,7 @@ class Model {
       return newFrom;
     }
 
-    console.warn("from < min || from > max");
+    console.warn('from < min || from > max');
     return min;
   }
 
@@ -249,7 +238,7 @@ class Model {
       return newTo;
     }
 
-    console.warn("to < min || to > max");
+    console.warn('to < min || to > max');
     return max;
   }
 
@@ -270,19 +259,19 @@ class Model {
       return newStep;
     }
 
-    console.warn("step > max");
+    console.warn('step > max');
     return Math.abs(max - min);
   }
 
   private verifyRange(newIsRange: boolean | undefined): boolean {
     const { isRange } = this.options;
 
-    if (typeof newIsRange === "undefined") {
+    if (typeof newIsRange === 'undefined') {
       newIsRange = isRange;
     }
 
-    if (typeof newIsRange !== "boolean") {
-      throw new Error("isRange is not boolean");
+    if (typeof newIsRange !== 'boolean') {
+      throw new Error('isRange is not boolean');
     }
 
     return newIsRange;
@@ -291,12 +280,12 @@ class Model {
   private verifyVertical(newIsVertical: boolean | undefined): boolean {
     const { isVertical } = this.options;
 
-    if (typeof newIsVertical === "undefined") {
+    if (typeof newIsVertical === 'undefined') {
       newIsVertical = isVertical;
     }
 
-    if (typeof newIsVertical !== "boolean") {
-      throw new Error("isVertical is not boolean");
+    if (typeof newIsVertical !== 'boolean') {
+      throw new Error('isVertical is not boolean');
     }
 
     return newIsVertical;
@@ -305,12 +294,12 @@ class Model {
   private verifyTip(newHasTip: boolean | undefined): boolean {
     const { hasTip } = this.options;
 
-    if (typeof newHasTip === "undefined") {
+    if (typeof newHasTip === 'undefined') {
       newHasTip = hasTip;
     }
 
-    if (typeof newHasTip !== "boolean") {
-      throw new Error("hasTip is not boolean");
+    if (typeof newHasTip !== 'boolean') {
+      throw new Error('hasTip is not boolean');
     }
 
     return newHasTip;
@@ -325,11 +314,11 @@ class Model {
       return newNumberMarks;
     }
 
-    console.warn("numberMarks = 0");
+    console.warn('numberMarks = 0');
     return 0;
   }
 }
 
 EventEmitter(Model.prototype);
 
-export { Model, IModel };
+export default Model;
