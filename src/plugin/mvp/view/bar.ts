@@ -98,7 +98,13 @@ class Bar {
     this.runnerFrom.on('click', this.clickRunnerFrom);
 
     this.runnerTo.on('click', this.clickRunnerTo);
+
+    this.scale.on('clickScale', this.clickScale);
   }
+
+  private clickScale = (value: number) => {
+    this.emit('clickScale', value);
+  };
 
   private clickRunnerFrom = (position: IPosition) => {
     this.calculatePercentageClicks(position, 'from');

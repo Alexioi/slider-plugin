@@ -54,12 +54,15 @@ class View {
   private addEventEmitters() {
     this.bar.on('click', this.emitBar);
 
-    //   this.scale.on("clickScale", (value: number) =>  this.emit("clickScale", value)
-    //   );
+    this.bar.on('clickScale', this.emitScale);
   }
 
   private emitBar = (position: IPosition) => {
     this.emit('click', position);
+  };
+
+  private emitScale = (value: number) => {
+    this.emit('clickScale', value);
   };
 
   private addClassVertical() {

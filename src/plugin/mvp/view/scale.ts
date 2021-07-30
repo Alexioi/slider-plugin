@@ -1,11 +1,19 @@
+import EventEmitter, { EmitterMethod } from 'event-emitter';
+
 class Scale {
   $bar: JQuery;
 
   $scale: JQuery;
 
+  public on!: EventListener;
+
+  private emit!: EmitterMethod;
+
   constructor($bar: JQuery) {
     this.$bar = $bar;
     this.$scale = this.init();
+
+    this.attachEvents();
   }
 
   public hide(): void {
@@ -79,6 +87,18 @@ class Scale {
   public removeMarks(): void {
     this.$scale.empty();
   }
+
+  private attachEvents() {
+    this.$scale.on('click', this.clickScale);
+  }
+
+  private clickScale = (event: MouseEvent) => {
+    const value = Number(event.target.innerHTML);
+
+    this.emit('clickScale', value);
+  };
 }
+
+EventEmitter(Scale.prototype);
 
 export default Scale;
