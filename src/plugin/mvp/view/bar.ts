@@ -42,7 +42,7 @@ class Bar {
   }
 
   public update(options: IOptions): void {
-    const { hasTip, isRange, isVertical, min, max } = options;
+    const { hasTip, hasScale, isRange, isVertical, min, max } = options;
 
     if (isRange) {
       this.runnerFrom.show();
@@ -58,7 +58,9 @@ class Bar {
 
     this.scale.removeMarks();
 
-    this.scale.addMarks({ min, max, isVertical });
+    if (hasScale) {
+      this.scale.addMarks({ min, max, isVertical });
+    }
   }
 
   public updatePositionFrom({

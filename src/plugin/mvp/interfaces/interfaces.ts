@@ -3,7 +3,7 @@ interface IOptions {
   isRange: boolean;
   isVertical: boolean;
   hasTip: boolean;
-  numberMarks: number;
+  hasScale: boolean;
   step: number;
   min: number;
   max: number;

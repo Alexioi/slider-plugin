@@ -11,25 +11,35 @@ class Model {
     this.options = options;
   }
 
-  public verifyAllOptions(options: IOptions): void {
-    let { isRange, isVertical, hasTip, numberMarks, min, max, from, to, step } =
-      options;
-
+  public verifyAllOptions({
+    isRange,
+    isVertical,
+    hasTip,
+    hasScale,
+    min,
+    max,
+    from,
+    to,
+    step,
+  }: IOptions): void {
     isRange = this.verifyRange(isRange);
     isVertical = this.verifyVertical(isVertical);
     hasTip = this.verifyTip(hasTip);
-    numberMarks = this.verifyNumberMarks(numberMarks);
     min = this.verifyMin(min);
     max = this.verifyMax(min, max);
     from = this.verifyFrom(from, min, max, isRange);
     to = this.verifyTo(to, from, max);
     step = this.verifyStep(step, min, max);
 
+    if (typeof hasScale !== 'boolean') {
+      hasScale = this.options.hasScale;
+    }
+
     this.updateOptions({
       isRange,
       isVertical,
       hasTip,
-      numberMarks,
+      hasScale,
       min,
       max,
       from,
@@ -53,23 +63,16 @@ class Model {
   public updateValue({ x, y, runnerName }: IPosition): void {
     const { isVertical, from, to, min, max } = this.options;
 
-    let percentageOfMaximum: number,
-      newValue: number,
-      oldValue: number,
-      validTo: number,
-      validFrom: number,
-      validValue: number,
-      isTo: boolean,
-      isValidValue: boolean;
+    const percentageOfMaximum = isVertical ? y : x;
 
-    percentageOfMaximum = isVertical ? y : x;
-    newValue = (max - min) * percentageOfMaximum + min;
-    isTo = runnerName === 'to';
-    oldValue = isTo ? to : from;
-    validFrom = this.checkFrom(newValue);
-    validTo = this.checkTo(newValue);
-    validValue = isTo ? validTo : validFrom;
-    isValidValue = newValue === validValue;
+    let newValue = (max - min) * percentageOfMaximum + min;
+
+    const isTo = runnerName === 'to',
+      oldValue = isTo ? to : from,
+      validFrom = this.checkFrom(newValue),
+      validTo = this.checkTo(newValue),
+      validValue = isTo ? validTo : validFrom,
+      isValidValue = newValue === validValue;
 
     if (isValidValue) {
       newValue = this.calculateValueDependingOnStep(oldValue, newValue);
@@ -112,18 +115,18 @@ class Model {
     newValue: number
   ): number {
     const { step } = this.options;
-    let x: number, differenceValue: number;
+    let x: number;
 
     if (step === 0) {
       return newValue;
     }
 
-    differenceValue = newValue - value;
+    const differenceValue = newValue - value;
 
     x = Math.abs(differenceValue) - (Math.abs(differenceValue) % step);
 
     if (Math.abs(differenceValue) > step / 2) {
-      x = x + step;
+      x += step;
     }
 
     if (differenceValue > 0) {
@@ -303,19 +306,6 @@ class Model {
     }
 
     return newHasTip;
-  }
-
-  private verifyNumberMarks(newNumberMarks: number | undefined): number {
-    const { numberMarks } = this.options;
-
-    newNumberMarks = this.isTypeNumberOrUndefined(newNumberMarks, numberMarks);
-
-    if (newNumberMarks > 1) {
-      return newNumberMarks;
-    }
-
-    console.warn('numberMarks = 0');
-    return 0;
   }
 }
 

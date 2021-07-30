@@ -1,33 +1,21 @@
 mixin panel(options)
+  -
+    const items = [
+      {header: 'Range', name: 'range', type: 'checkbox'},
+      {header: 'Vertical', name: 'vertical', type: 'checkbox'},
+      {header: 'Tip', name: 'tip', type: 'checkbox'},
+      {header: 'Scale', name: 'scale', type: 'checkbox'},
+      {header: 'Min', name: 'min', type: 'number'},
+      {header: 'Max', name: 'max', type: 'number'},
+      {header: 'From', name: 'from', type: 'number'},
+      {header: 'To', name: 'to', type: 'number'},
+      {header: 'Step', name: 'step', type: 'number'},
+    ]
+
   .panel
     .panel__control
-      div(style='display: flex; gap: 10px')
+      each item in items
         label.panel__label
-          span.panel__input-header Range
-          input.panel__range-checkbox(type='checkbox') 
-        label.panel__label
-          span.panel__input-header Vertical
-          input.panel__vertical-checkbox(type='checkbox')
-        label.panel__label
-          span.panel__input-header Tip
-          input.panel__tip-checkbox(type='checkbox')
-      label.panel__label
-        span.panel__input-header Number marks
-        input.panel__input.panel__number-marks-checkbox(type='number')
-      label.panel__label
-        span.panel__input-header Min
-        input.panel__input.panel__min-checkbox(type='number')
-      label.panel__label
-        span.panel__input-header Max
-        input.panel__input.panel__max-checkbox(type='number')
-      label.panel__label
-        span.panel__input-header From
-        input.panel__input.panel__from-checkbox(type='number')
-      label.panel__label
-        span.panel__input-header To
-        input.panel__input.panel__to-checkbox(type='number')
-      label.panel__label
-        span.panel__input-header Step
-        input.panel__input.panel__step-checkbox(type='number')
+          span.panel__input-header= item.header
+          input(class="panel__input panel__input_name-" + item.name, type=item.type) 
     .panel__example.js-panel__example 
-    

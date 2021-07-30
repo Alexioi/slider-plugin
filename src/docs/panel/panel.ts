@@ -21,6 +21,8 @@ class Panel {
 
   tip!: HTMLInputElement;
 
+  scale!: HTMLInputElement;
+
   numberMarks!: HTMLInputElement;
 
   constructor(control: HTMLElement, slider: any) {
@@ -33,28 +35,30 @@ class Panel {
   }
 
   searchElements(): void {
-    this.range = this.control.querySelector('.panel__range-checkbox')!;
-    this.vertical = this.control.querySelector('.panel__vertical-checkbox')!;
-    this.min = this.control.querySelector('.panel__min-checkbox')!;
-    this.max = this.control.querySelector('.panel__max-checkbox')!;
-    this.from = this.control.querySelector('.panel__from-checkbox')!;
-    this.to = this.control.querySelector('.panel__to-checkbox')!;
-    this.step = this.control.querySelector('.panel__step-checkbox')!;
-    this.tip = this.control.querySelector('.panel__tip-checkbox')!;
+    this.range = this.control.querySelector('.panel__input_name-range')!;
+    this.vertical = this.control.querySelector('.panel__input_name-vertical')!;
+    this.scale = this.control.querySelector('.panel__input_name-scale')!;
+    this.min = this.control.querySelector('.panel__input_name-min')!;
+    this.max = this.control.querySelector('.panel__input_name-max')!;
+    this.from = this.control.querySelector('.panel__input_name-from')!;
+    this.to = this.control.querySelector('.panel__input_name-to')!;
+    this.step = this.control.querySelector('.panel__input_name-step')!;
+    this.tip = this.control.querySelector('.panel__input_name-tip')!;
     this.numberMarks = this.control.querySelector(
-      '.panel__number-marks-checkbox'
+      '.panel__input_name-number-marks'
     )!;
   }
 
   addEventHandler(): void {
     this.vertical.addEventListener('click', this.changeVertical);
+    this.scale.addEventListener('click', this.changeScale);
     this.tip.addEventListener('click', this.changeTip);
     this.min.addEventListener('change', this.changeMin);
     this.max.addEventListener('change', this.changeMax);
     this.from.addEventListener('change', this.changeFrom);
     this.to.addEventListener('change', this.changeTo);
     this.step.addEventListener('change', this.changeStep);
-    this.numberMarks.addEventListener('change', this.changeNumberMarks);
+
     this.range.addEventListener('click', this.changeRange);
   }
 
@@ -90,6 +94,16 @@ class Panel {
       this.slider.updateOptions({ isVertical: true });
     } else {
       this.slider.updateOptions({ isVertical: false });
+    }
+
+    this.verifyInput();
+  };
+
+  changeScale = (): void => {
+    if (this.scale.checked) {
+      this.slider.updateOptions({ hasScale: true });
+    } else {
+      this.slider.updateOptions({ hasScale: false });
     }
 
     this.verifyInput();
@@ -141,7 +155,7 @@ class Panel {
     this.to.value = String(options.to);
     this.step.value = String(options.step);
     this.tip.checked = options.hasTip;
-    this.numberMarks.value = String(options.numberMarks);
+    this.scale.checked = options.hasScale;
   }
 }
 
