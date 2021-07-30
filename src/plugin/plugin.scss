@@ -72,10 +72,21 @@ $runnerWidth: 1.5rem;
 
   &_vertical &__tip {
     transform: translateY(-50%);
+    top: 50%;
+    left: 150%;
   }
 
   &__scale {
     position: relative;
+    top: 150%;
+  }
+
+  &_vertical &__scale {
+    display: flex;
+    justify-content: end;
+    height: 100%;
+    top: 0;
+    right: 200%;
   }
 
   &__mark {

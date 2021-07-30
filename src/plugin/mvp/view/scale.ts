@@ -24,8 +24,22 @@ class Scale {
     return this.$bar.find('.slider__scale');
   }
 
-  public addMarks({ min, max }: { min: number; max: number }): void {
-    const length = this.$bar.width();
+  public addMarks({
+    min,
+    max,
+    isVertical,
+  }: {
+    min: number;
+    max: number;
+    isVertical: boolean;
+  }): void {
+    let length: number;
+
+    if (isVertical) {
+      length = <number>this.$bar.height();
+    } else {
+      length = <number>this.$bar.width();
+    }
 
     const countMarks = Math.floor(length! / 100);
 
@@ -33,26 +47,31 @@ class Scale {
 
     const difference = Math.abs(max - min);
 
-    const step = Math.trunc(difference / (countMarks - 1));
+    const step = difference / (countMarks - 1);
 
-    let value = min;
-    let left: number;
+    let value = min,
+      rate = 0,
+      left: number,
+      integerValue: number;
 
     while (value <= max) {
-      const mark = `<span class='slider__mark js-slider__mark'>${value}</span>`;
+      integerValue = Math.trunc(value);
+
+      const mark = `<span class='slider__mark js-slider__mark'>${integerValue}</span>`;
 
       this.$scale.append(mark);
 
       const $mark = this.$scale.find('.js-slider__mark').last();
 
-      left = (value / difference) * 100;
+      left = (rate / difference) * 100;
 
-      if (left < 0) {
-        left += 100;
+      if (isVertical) {
+        $mark.css({ top: `${left}%` });
+      } else {
+        $mark.css({ left: `${left}%` });
       }
 
-      $mark.css({ left: `${left}%` });
-
+      rate += step;
       value += step;
     }
   }

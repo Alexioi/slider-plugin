@@ -28,6 +28,7 @@
     "import/no-unresolved": "off",
     "class-methods-use-this": "off",
     "object-curly-newline": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "one-var": "off"
   }
 }
