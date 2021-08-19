@@ -22,37 +22,131 @@ class Model extends EventEmitter {
     to,
     step,
   }: IOptions): void {
-    isRange = this.verifyRange(isRange);
-    isVertical = this.verifyVertical(isVertical);
-    hasTip = this.verifyTip(hasTip);
-    min = this.verifyMin(min);
-    max = this.verifyMax(min, max);
-    from = this.verifyFrom(from, min, max, isRange);
-    to = this.verifyTo(to, from, max);
-    step = this.verifyStep(step, min, max);
+    this.verifyBoolean('isRange', isRange);
+    this.verifyBoolean('isVertical', isVertical);
+    this.verifyBoolean('hasTip', hasTip);
+    this.verifyBoolean('hasScale', hasScale);
+    this.verifyMinMax(min, max);
+    this.verifyFromTo(from, to);
+    this.verifyStep(step);
 
-    if (typeof hasScale !== 'boolean') {
-      hasScale = this.options.hasScale;
-    }
-
-    this.updateOptions({
-      isRange,
-      isVertical,
-      hasTip,
-      hasScale,
-      min,
-      max,
-      from,
-      to,
-      step,
-    });
+    this.updatedOptions();
   }
 
-  private updateOptions(options: IOptions) {
-    for (let key in this.options) {
-      this.options[key] = options[key];
+  private verifyBoolean(
+    nameOfValue: string,
+    newValue: boolean | undefined
+  ): void {
+    if (typeof newValue === 'undefined') {
+      return;
     }
 
+    if (typeof newValue !== 'boolean') {
+      console.warn(`${nameOfValue} is not boolean`);
+      return;
+    }
+
+    this.options[nameOfValue] = newValue;
+  }
+
+  private verifyMinMax(newMin: number, newMax: number): void {
+    const { min, max } = this.options;
+
+    if (typeof newMin === 'undefined' && typeof newMax === 'undefined') {
+      return;
+    }
+
+    if (typeof newMin !== 'number' && typeof newMax !== 'number') {
+      console.warn('Min or Max is not number');
+      return;
+    }
+
+    if (typeof newMin !== 'undefined' && typeof newMax !== 'undefined') {
+      if (newMin < newMax) {
+        this.options.min = newMin;
+        this.options.max = newMax;
+      } else {
+        console.warn('Min >= Max');
+      }
+    }
+
+    if (typeof newMin === 'undefined' && typeof newMax !== 'undefined') {
+      if (min < newMax) {
+        this.options.max = newMax;
+      } else {
+        console.warn('Min >= Max');
+      }
+    }
+
+    if (typeof newMin !== 'undefined' && typeof newMax === 'undefined') {
+      if (newMin < max) {
+        this.options.min = newMin;
+      } else {
+        console.warn('Min >= Max');
+      }
+    }
+  }
+
+  private verifyFromTo(newFrom: number, newTo: number): void {
+    const { min, max, from, to } = this.options;
+
+    if (typeof newFrom === 'undefined' && typeof newTo === 'undefined') {
+      return;
+    }
+
+    if (typeof newFrom !== 'number' && typeof newTo !== 'number') {
+      console.warn('From or To is not number');
+      return;
+    }
+
+    const isSliderInRange =
+      newFrom > max || newFrom < min || newTo > max || newTo < min;
+
+    if (isSliderInRange) {
+      console.warn('From or To < min or > max');
+      return;
+    }
+
+    if (typeof newFrom !== 'undefined' && typeof newTo !== 'undefined') {
+      if (newFrom < newTo) {
+        this.options.from = newFrom;
+        this.options.to = newTo;
+      } else {
+        console.warn('From >= To');
+      }
+    }
+
+    if (typeof newFrom === 'undefined' && typeof newTo !== 'undefined') {
+      if (from < newTo) {
+        this.options.to = newTo;
+      } else {
+        console.warn('From >= To');
+      }
+    }
+
+    if (typeof newFrom !== 'undefined' && typeof newTo === 'undefined') {
+      if (newFrom < to) {
+        this.options.from = newFrom;
+      } else {
+        console.warn('From >= To');
+      }
+    }
+  }
+
+  private verifyStep(step: number): void {
+    if (typeof step === 'undefined') {
+      return;
+    }
+
+    if (typeof step !== 'number') {
+      console.warn('Step is not number');
+      return;
+    }
+
+    this.options.step = step;
+  }
+
+  private updatedOptions() {
     this.emit('updateModelOptions', this.options);
   }
 
@@ -106,8 +200,6 @@ class Model extends EventEmitter {
       this.options.to = value;
       this.emit('updateModelTo', this.options);
     }
-
-    // this.emit("updateModelValues", this.options);
   }
 
   private calculateValueDependingOnStep(
@@ -166,146 +258,6 @@ class Model extends EventEmitter {
     }
 
     return to;
-  }
-
-  private isTypeNumberOrUndefined(
-    newValue: number | undefined,
-    value: number
-  ): number | never {
-    if (typeof newValue === 'undefined') {
-      newValue = value;
-    }
-
-    if (typeof newValue !== 'number') {
-      throw new Error('Value is not number');
-    }
-
-    return newValue;
-  }
-
-  private verifyMin(newMin: number | undefined): number {
-    const { min } = this.options;
-
-    return this.isTypeNumberOrUndefined(newMin, min);
-  }
-
-  private verifyMax(min: number, newMax: number | undefined): number {
-    const { max } = this.options;
-
-    newMax = this.isTypeNumberOrUndefined(newMax, max);
-
-    if (newMax > min) {
-      return newMax;
-    }
-
-    console.warn('max < min');
-    if (min > 0) {
-      return min * 2;
-    }
-
-    return min / 2;
-  }
-
-  private verifyFrom(
-    newFrom: number | undefined,
-    min: number,
-    max: number,
-    newIsRange: boolean
-  ): number {
-    const { from } = this.options;
-
-    newFrom = this.isTypeNumberOrUndefined(newFrom, from);
-
-    if (!newIsRange) {
-      return min;
-    }
-
-    if (newFrom > min && newFrom < max) {
-      return newFrom;
-    }
-
-    console.warn('from < min || from > max');
-    return min;
-  }
-
-  private verifyTo(
-    newTo: number | undefined,
-    from: number,
-    max: number
-  ): number {
-    const { to } = this.options;
-
-    newTo = this.isTypeNumberOrUndefined(newTo, to);
-
-    if (newTo > from && newTo < max) {
-      return newTo;
-    }
-
-    console.warn('to < min || to > max');
-    return max;
-  }
-
-  private verifyStep(
-    newStep: number | undefined,
-    min: number,
-    max: number
-  ): number {
-    const { step } = this.options;
-
-    newStep = this.isTypeNumberOrUndefined(newStep, step);
-
-    if (newStep < 0) {
-      return 0;
-    }
-
-    if (newStep < Math.abs(max - min)) {
-      return newStep;
-    }
-
-    console.warn('step > max');
-    return Math.abs(max - min);
-  }
-
-  private verifyRange(newIsRange: boolean | undefined): boolean {
-    const { isRange } = this.options;
-
-    if (typeof newIsRange === 'undefined') {
-      newIsRange = isRange;
-    }
-
-    if (typeof newIsRange !== 'boolean') {
-      throw new Error('isRange is not boolean');
-    }
-
-    return newIsRange;
-  }
-
-  private verifyVertical(newIsVertical: boolean | undefined): boolean {
-    const { isVertical } = this.options;
-
-    if (typeof newIsVertical === 'undefined') {
-      newIsVertical = isVertical;
-    }
-
-    if (typeof newIsVertical !== 'boolean') {
-      throw new Error('isVertical is not boolean');
-    }
-
-    return newIsVertical;
-  }
-
-  private verifyTip(newHasTip: boolean | undefined): boolean {
-    const { hasTip } = this.options;
-
-    if (typeof newHasTip === 'undefined') {
-      newHasTip = hasTip;
-    }
-
-    if (typeof newHasTip !== 'boolean') {
-      throw new Error('hasTip is not boolean');
-    }
-
-    return newHasTip;
   }
 }
 
