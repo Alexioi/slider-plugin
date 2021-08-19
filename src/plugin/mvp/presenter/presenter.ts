@@ -31,6 +31,7 @@ class Presenter {
     this.model.subscribe('updateModelOptions', (options: IOptions) =>
       this.view.updateSlider(options)
     );
+
     this.model.subscribe('updateModelFrom', (options: IOptions) =>
       this.view.updatePositionFrom(options)
     );
@@ -46,10 +47,6 @@ class Presenter {
     this.view.subscribe('click', (position: IPosition) =>
       this.model.updateValue(position)
     );
-  }
-
-  private updateModelOptions(options: IOptions) {
-    this.view.updateSlider(options);
   }
 }
 

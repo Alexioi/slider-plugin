@@ -33,10 +33,7 @@ class Model extends EventEmitter {
     this.updatedOptions();
   }
 
-  private verifyBoolean(
-    nameOfValue: string,
-    newValue: boolean | undefined
-  ): void {
+  private verifyBoolean(nameOfValue: string, newValue: boolean | undefined): void {
     if (typeof newValue === 'undefined') {
       return;
     }
@@ -99,8 +96,7 @@ class Model extends EventEmitter {
       return;
     }
 
-    const isSliderInRange =
-      newFrom > max || newFrom < min || newTo > max || newTo < min;
+    const isSliderInRange = newFrom > max || newFrom < min || newTo > max || newTo < min;
 
     if (isSliderInRange) {
       console.warn('From or To < min or > max');
@@ -202,10 +198,7 @@ class Model extends EventEmitter {
     }
   }
 
-  private calculateValueDependingOnStep(
-    value: number,
-    newValue: number
-  ): number {
+  private calculateValueDependingOnStep(value: number, newValue: number): number {
     const { step } = this.options;
     let x: number;
 

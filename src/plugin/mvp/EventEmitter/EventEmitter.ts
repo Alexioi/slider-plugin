@@ -1,13 +1,13 @@
 class EventEmitter {
   private events: {
-    [key: string]: ((args: unknown) => void)[];
+    [key: string]: ((args: any) => void)[];
   };
 
   constructor() {
     this.events = {};
   }
 
-  subscribe(eventName: string, callback: (args: unknown) => void): void {
+  subscribe(eventName: string, callback: (args: any) => void): void {
     if (!this.events[eventName]) {
       this.events[eventName] = [];
     }
@@ -15,13 +15,13 @@ class EventEmitter {
     this.events[eventName].push(callback);
   }
 
-  unsubscribe(eventName: string, callback: (args: unknown) => void): void {
+  unsubscribe(eventName: string, callback: (args: any) => void): void {
     this.events[eventName] = this.events[eventName].filter(
       (eventCallback) => callback !== eventCallback
     );
   }
 
-  emit(eventName: string, args: unknown): void {
+  emit(eventName: string, args: any): void {
     const event = this.events[eventName];
 
     if (event) {

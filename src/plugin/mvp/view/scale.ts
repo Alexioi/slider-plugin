@@ -42,9 +42,9 @@ class Scale extends EventEmitter {
     let length: number;
 
     if (isVertical) {
-      length = <number>this.$bar.height();
+      length = this.$bar.height()!;
     } else {
-      length = <number>this.$bar.width();
+      length = this.$bar.width()!;
     }
 
     const countMarks = Math.floor(length! / 100);

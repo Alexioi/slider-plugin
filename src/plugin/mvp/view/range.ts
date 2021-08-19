@@ -2,6 +2,7 @@ import { IRangeOptions } from '../interfaces/interfaces';
 
 class Range {
   $bar: JQuery;
+
   $range: JQuery;
 
   constructor($bar: JQuery) {
@@ -28,7 +29,7 @@ class Range {
 
   private moveVerticallyRange(position: number, width: number) {
     this.$range.css({
-      width: ``,
+      width: '',
       height: `${width}%`,
       top: `${position}%`,
       left: '',
