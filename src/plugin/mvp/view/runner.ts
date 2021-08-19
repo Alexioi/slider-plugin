@@ -1,20 +1,19 @@
-import EventEmitter, { EmitterMethod, EventListener } from 'event-emitter';
+import EventEmitter from '../EventEmitter/EventEmitter';
+
 import { IRunnerOptions } from '../interfaces/interfaces';
 
 import Tip from './tip';
 
-class Runner {
+class Runner extends EventEmitter {
   private $bar: JQuery;
 
   private $runner: JQuery;
 
   private tip: Tip;
 
-  private emit!: EmitterMethod;
-
-  public on!: EventListener;
-
   constructor($bar: JQuery) {
+    super();
+
     this.$bar = $bar;
     this.$runner = this.init();
     this.tip = new Tip(this.$runner);
@@ -94,7 +93,5 @@ class Runner {
     return { x, y };
   }
 }
-
-EventEmitter(Runner.prototype);
 
 export default Runner;

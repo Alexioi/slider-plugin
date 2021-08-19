@@ -5,11 +5,11 @@
   },
 
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
     "plugin:fsd/all"
   ],
 
@@ -29,6 +29,7 @@
     "class-methods-use-this": "off",
     "object-curly-newline": "off",
     "no-shadow": "off",
-    "one-var": "off"
+    "one-var": "off",
+    "comma-dangle": "off"
   }
 }

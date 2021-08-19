@@ -1,15 +1,13 @@
-import EventEmitter, { EmitterMethod } from 'event-emitter';
+import EventEmitter from '../EventEmitter/EventEmitter';
 
-class Scale {
+class Scale extends EventEmitter {
   $bar: JQuery;
 
   $scale: JQuery;
 
-  public on!: EventListener;
-
-  private emit!: EmitterMethod;
-
   constructor($bar: JQuery) {
+    super();
+
     this.$bar = $bar;
     this.$scale = this.init();
 
@@ -98,7 +96,5 @@ class Scale {
     this.emit('clickScale', value);
   };
 }
-
-EventEmitter(Scale.prototype);
 
 export default Scale;

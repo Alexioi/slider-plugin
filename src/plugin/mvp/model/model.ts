@@ -1,13 +1,13 @@
-import EventEmitter, { EmitterMethod } from 'event-emitter';
+import EventEmitter from '../EventEmitter/EventEmitter';
 
 import { IOptions, IPosition } from '../interfaces/interfaces';
 
-class Model {
+class Model extends EventEmitter {
   options: IOptions;
 
-  emit!: EmitterMethod;
-
   constructor(options: IOptions) {
+    super();
+
     this.options = options;
   }
 
@@ -308,7 +308,5 @@ class Model {
     return newHasTip;
   }
 }
-
-EventEmitter(Model.prototype);
 
 export default Model;

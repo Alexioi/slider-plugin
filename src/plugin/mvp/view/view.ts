@@ -1,21 +1,19 @@
-import EventEmitter, { EmitterMethod } from 'event-emitter';
+import EventEmitter from '../EventEmitter/EventEmitter';
 
 import Bar from './bar';
 
 import { IOptions, IPosition } from '../interfaces/interfaces';
 
-class View {
+class View extends EventEmitter {
   private element: JQuery;
 
   private bar: Bar;
 
   private $slider: JQuery;
 
-  private emit!: EmitterMethod;
-
-  public on!: EventListener;
-
   constructor(element: JQuery) {
+    super();
+
     this.element = element;
     this.$slider = this.initSlider();
     this.bar = new Bar(this.$slider);
@@ -52,9 +50,9 @@ class View {
   }
 
   private addEventEmitters() {
-    this.bar.on('click', this.emitBar);
+    this.bar.subscribe('click', this.emitBar);
 
-    this.bar.on('clickScale', this.emitScale);
+    this.bar.subscribe('clickScale', this.emitScale);
   }
 
   private emitBar = (position: IPosition) => {
@@ -73,7 +71,5 @@ class View {
     this.$slider.removeClass('slider_vertical');
   }
 }
-
-EventEmitter(View.prototype);
 
 export default View;

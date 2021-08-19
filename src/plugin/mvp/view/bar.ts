@@ -1,4 +1,4 @@
-import EventEmitter, { EmitterMethod, EventListener } from 'event-emitter';
+import EventEmitter from '../EventEmitter/EventEmitter';
 
 import Runner from './runner';
 import Range from './range';
@@ -6,7 +6,7 @@ import Scale from './scale';
 
 import { IPosition, IOptions } from '../interfaces/interfaces';
 
-class Bar {
+class Bar extends EventEmitter {
   private $slider: JQuery;
 
   private range: Range;
@@ -19,11 +19,9 @@ class Bar {
 
   private runnerTo: Runner;
 
-  private emit!: EmitterMethod;
-
-  public on!: EventListener;
-
   constructor($slider: JQuery) {
+    super();
+
     this.$slider = $slider;
     this.$bar = this.init();
     this.range = new Range(this.$bar);
@@ -97,11 +95,11 @@ class Bar {
   }
 
   private addEventEmitters() {
-    this.runnerFrom.on('click', this.clickRunnerFrom);
+    this.runnerFrom.subscribe('click', this.clickRunnerFrom);
 
-    this.runnerTo.on('click', this.clickRunnerTo);
+    this.runnerTo.subscribe('click', this.clickRunnerTo);
 
-    this.scale.on('clickScale', this.clickScale);
+    this.scale.subscribe('clickScale', this.clickScale);
   }
 
   private clickScale = (value: number) => {
@@ -124,7 +122,5 @@ class Bar {
     this.emit('click', { x, y, runnerName });
   }
 }
-
-EventEmitter(Bar.prototype);
 
 export default Bar;

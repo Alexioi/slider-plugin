@@ -36,11 +36,11 @@ class Range {
   }
 
   private initRange(): JQuery {
-    const range = `<div class='slider__range'></div>`;
+    const range = '<div class="slider__range"></div>';
 
     this.$bar.append(range);
 
-    return this.$bar.find(`.slider__range`);
+    return this.$bar.find('.slider__range');
   }
 }
 
