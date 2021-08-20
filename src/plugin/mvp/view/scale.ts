@@ -90,7 +90,7 @@ class Scale extends EventEmitter {
     this.$scale.on('click', this.clickScale);
   }
 
-  private clickScale = (event: MouseEvent) => {
+  private clickScale = (event: any) => {
     const value = Number(event.target.innerHTML);
 
     this.emit('clickScale', value);

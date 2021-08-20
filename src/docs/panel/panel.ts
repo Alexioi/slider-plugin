@@ -1,7 +1,7 @@
 import { IOptions } from '../../plugin/mvp/interfaces/interfaces';
 
 class Panel {
-  control: HTMLElement;
+  control: Element;
 
   slider: any;
 
@@ -25,7 +25,7 @@ class Panel {
 
   numberMarks!: HTMLInputElement;
 
-  constructor(control: HTMLElement, slider: any) {
+  constructor(control: Element, slider: any) {
     this.control = control;
     this.slider = slider;
 
@@ -44,9 +44,7 @@ class Panel {
     this.to = this.control.querySelector('.panel__input_name-to')!;
     this.step = this.control.querySelector('.panel__input_name-step')!;
     this.tip = this.control.querySelector('.panel__input_name-tip')!;
-    this.numberMarks = this.control.querySelector(
-      '.panel__input_name-number-marks'
-    )!;
+    this.numberMarks = this.control.querySelector('.panel__input_name-number-marks')!;
   }
 
   addEventHandler(): void {

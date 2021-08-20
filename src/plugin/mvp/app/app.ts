@@ -7,17 +7,19 @@ class App {
 
   private options: IOptions;
 
-  private presenter!: Presenter;
+  private presenter: Presenter;
 
   constructor(element: JQuery, options: IOptions) {
     this.element = element;
-    this.options = options || {};
+    this.options = options;
 
-    this.init();
+    this.presenter = this.init();
+
+    this.updateOptions(this.options);
   }
 
-  init(): void {
-    const defaultOptions: IOptions = {
+  init(): Presenter {
+    const defaultConfig: IOptions = {
       isRange: true,
       isVertical: false,
       hasTip: true,
@@ -29,7 +31,7 @@ class App {
       to: 70,
     };
 
-    this.presenter = new Presenter(this.element, this.options, defaultOptions);
+    return new Presenter(this.element, defaultConfig);
   }
 
   updateOptions(options: IOptions): void {

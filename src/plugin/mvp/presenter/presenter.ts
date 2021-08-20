@@ -10,13 +10,14 @@ class Presenter {
 
   private element: JQuery;
 
-  constructor(element: JQuery, options: IOptions, defaultOptions: IOptions) {
+  constructor(element: JQuery, options: IOptions) {
     this.element = element;
     this.view = new View(this.element);
-    this.model = new Model(defaultOptions);
+    this.model = new Model(options);
 
     this.addEventEmitters();
-    this.updateOptions(options);
+
+    this.model.updatedOptions();
   }
 
   public updateOptions(options: IOptions): void {
@@ -40,13 +41,9 @@ class Presenter {
       this.view.updatePositionTo(options)
     );
 
-    this.view.subscribe('clickScale', (value: number) =>
-      this.model.updateNearValue(value)
-    );
+    this.view.subscribe('clickScale', (value: number) => this.model.updateNearValue(value));
 
-    this.view.subscribe('click', (position: IPosition) =>
-      this.model.updateValue(position)
-    );
+    this.view.subscribe('click', (position: IPosition) => this.model.updateValue(position));
   }
 }
 

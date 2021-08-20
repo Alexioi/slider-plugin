@@ -86,7 +86,7 @@ class Runner extends EventEmitter {
     $(document).off('mousemove');
   };
 
-  private getPosition(event: MouseEvent) {
+  private getPosition(event: any) {
     const x = event.pageX;
     const y = event.pageY;
 

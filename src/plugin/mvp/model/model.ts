@@ -142,7 +142,7 @@ class Model extends EventEmitter {
     this.options.step = step;
   }
 
-  private updatedOptions() {
+  public updatedOptions(): void {
     this.emit('updateModelOptions', this.options);
   }
 
