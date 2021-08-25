@@ -1,7 +1,7 @@
 import Model from '../model/model';
 import View from '../view/view';
 
-import { IOptions, IPosition } from '../interfaces/interfaces';
+import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
 
 class Presenter {
   private view: View;
@@ -20,8 +20,8 @@ class Presenter {
     this.model.updatedOptions();
   }
 
-  public updateOptions(options: IOptions): void {
-    this.model.verifyAllOptions(options);
+  public updateOptions(config: IConfig): void {
+    this.model.verifyAllOptions(config);
   }
 
   public getOptions(): IOptions {

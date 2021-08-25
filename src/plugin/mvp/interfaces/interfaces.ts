@@ -1,3 +1,15 @@
+interface IConfig {
+  isRange?: boolean;
+  isVertical?: boolean;
+  hasTip?: boolean;
+  hasScale?: boolean;
+  step?: number;
+  min?: number;
+  max?: number;
+  from?: number;
+  to?: number;
+}
+
 interface IOptions {
   [index: string]: boolean | number;
   isRange: boolean;
@@ -29,4 +41,4 @@ interface IPosition {
   runnerName: string;
 }
 
-export { IOptions, IRunnerOptions, IPosition, IRangeOptions };
+export { IConfig, IOptions, IRunnerOptions, IPosition, IRangeOptions };

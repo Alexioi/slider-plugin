@@ -1,11 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   height: 100%;
 }
 
 .container {
-  gap: 20px;
-  margin: 20px;
   display: flex;
   flex-wrap: wrap;
-  height: 100%;
+  gap: 20px;
+  margin: 20px;
+  height: 900px;
 }

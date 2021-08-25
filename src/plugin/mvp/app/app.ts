@@ -1,21 +1,21 @@
 import Presenter from '../presenter/presenter';
 
-import { IOptions } from '../interfaces/interfaces';
+import { IOptions, IConfig } from '../interfaces/interfaces';
 
 class App {
   private element: JQuery;
 
-  private options: IOptions;
+  private config: IConfig | undefined;
 
   private presenter: Presenter;
 
-  constructor(element: JQuery, options: IOptions) {
+  constructor(element: JQuery, config: IConfig | undefined) {
     this.element = element;
-    this.options = options;
+    this.config = config;
 
     this.presenter = this.init();
 
-    this.updateOptions(this.options);
+    this.updateOptions(this.config);
   }
 
   init(): Presenter {
@@ -34,8 +34,12 @@ class App {
     return new Presenter(this.element, defaultConfig);
   }
 
-  updateOptions(options: IOptions): void {
-    this.presenter.updateOptions(options);
+  updateOptions(config: IConfig | undefined): void {
+    if (typeof config === 'undefined') {
+      return;
+    }
+
+    this.presenter.updateOptions(config);
   }
 
   getOptions(): IOptions {

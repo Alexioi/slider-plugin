@@ -1,23 +1,23 @@
 import './plugin.scss';
 
-import { IOptions } from './mvp/interfaces/interfaces';
+import { IConfig } from './mvp/interfaces/interfaces';
 
 import App from './mvp/app/app';
 
 declare global {
   interface JQuery {
-    slider: (options: IOptions) => JQuery[];
+    slider: (config?: IConfig) => JQuery[];
   }
 }
 
-$.fn.slider = function initSlider(options: IOptions) {
+$.fn.slider = function initSlider(config?: IConfig) {
   const apps = [];
 
   apps.push(
     this.each((i: number) => {
       const node = this.slice(i, i + 1);
 
-      const app = new App(node, options);
+      const app = new App(node, config);
 
       apps.push(app);
     })

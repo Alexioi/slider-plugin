@@ -21,7 +21,7 @@ class EventEmitter {
     );
   }
 
-  emit(eventName: string, args: any): void {
+  emit(eventName: string, args: unknown): void {
     const event = this.events[eventName];
 
     if (event) {

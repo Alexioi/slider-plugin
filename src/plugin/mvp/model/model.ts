@@ -1,6 +1,6 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 
-import { IOptions, IPosition } from '../interfaces/interfaces';
+import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
 
 class Model extends EventEmitter {
   options: IOptions;
@@ -21,7 +21,7 @@ class Model extends EventEmitter {
     from,
     to,
     step,
-  }: IOptions): void {
+  }: IConfig): void {
     this.verifyBoolean('isRange', isRange);
     this.verifyBoolean('isVertical', isVertical);
     this.verifyBoolean('hasTip', hasTip);
@@ -46,7 +46,7 @@ class Model extends EventEmitter {
     this.options[nameOfValue] = newValue;
   }
 
-  private verifyMinMax(newMin: number, newMax: number): void {
+  private verifyMinMax(newMin: number | undefined, newMax: number | undefined): void {
     const { min, max } = this.options;
 
     if (typeof newMin === 'undefined' && typeof newMax === 'undefined') {
@@ -84,7 +84,7 @@ class Model extends EventEmitter {
     }
   }
 
-  private verifyFromTo(newFrom: number, newTo: number): void {
+  private verifyFromTo(newFrom: number | undefined, newTo: number | undefined): void {
     const { min, max, from, to } = this.options;
 
     if (typeof newFrom === 'undefined' && typeof newTo === 'undefined') {
@@ -96,14 +96,14 @@ class Model extends EventEmitter {
       return;
     }
 
-    const isSliderInRange = newFrom > max || newFrom < min || newTo > max || newTo < min;
-
-    if (isSliderInRange) {
-      console.warn('From or To < min or > max');
-      return;
-    }
-
     if (typeof newFrom !== 'undefined' && typeof newTo !== 'undefined') {
+      const isSliderInRange = newFrom > max || newFrom < min || newTo > max || newTo < min;
+
+      if (isSliderInRange) {
+        console.warn('From or To < min or > max');
+        return;
+      }
+
       if (newFrom < newTo) {
         this.options.from = newFrom;
         this.options.to = newTo;
@@ -129,7 +129,7 @@ class Model extends EventEmitter {
     }
   }
 
-  private verifyStep(step: number): void {
+  private verifyStep(step: number | undefined): void {
     if (typeof step === 'undefined') {
       return;
     }
