@@ -32,6 +32,22 @@ class Panel {
     this.searchElements();
     this.addEventHandler();
     this.verifyInput();
+    this.attachCallback();
+  }
+
+  attachCallback(): void {
+    const control = this.control;
+
+    this.slider.updateOptions({
+      onChange: function (options: IOptions, control) {},
+    });
+  }
+
+  test() {
+    const options: IOptions = this.slider.getOptions();
+
+    this.from.value = String(options.from);
+    this.to.value = String(options.to);
   }
 
   searchElements(): void {

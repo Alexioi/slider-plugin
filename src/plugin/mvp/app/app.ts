@@ -14,6 +14,7 @@ class App {
     this.config = config;
 
     this.presenter = this.init();
+    this.addEventEmitters();
 
     this.updateOptions(this.config);
   }
@@ -34,16 +35,30 @@ class App {
     return new Presenter(this.element, defaultConfig);
   }
 
-  updateOptions(config: IConfig | undefined): void {
+  public updateOptions(config: IConfig | undefined): void {
     if (typeof config === 'undefined') {
       return;
     }
 
+    this.config = config;
+
     this.presenter.updateOptions(config);
   }
 
-  getOptions(): IOptions {
+  public getOptions(): IOptions {
     return this.presenter.getOptions();
+  }
+
+  private onChange(options: IOptions): void {
+    if (typeof this.config?.onChange === 'undefined') {
+      return;
+    }
+
+    this.config.onChange(options);
+  }
+
+  private addEventEmitters(): void {
+    this.presenter.subscribe('onChange', (options: IOptions) => this.onChange(options));
   }
 }
 

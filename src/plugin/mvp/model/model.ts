@@ -176,8 +176,9 @@ class Model extends EventEmitter {
     if (newValue !== this.options[runnerName]) {
       this.options[runnerName] = newValue;
 
-      this.emit('updateModelFrom', this.options);
-      this.emit('updateModelTo', this.options);
+      const emitName = `updateModel${runnerName.charAt(0).toUpperCase() + runnerName.slice(1)}`;
+
+      this.emit(emitName, this.options);
     }
   }
 

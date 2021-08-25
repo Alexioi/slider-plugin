@@ -8,6 +8,7 @@ interface IConfig {
   max?: number;
   from?: number;
   to?: number;
+  onChange?: Function;
 }
 
 interface IOptions {

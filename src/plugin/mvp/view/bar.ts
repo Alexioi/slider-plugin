@@ -61,13 +61,7 @@ class Bar extends EventEmitter {
     }
   }
 
-  public updatePositionFrom({
-    isVertical,
-    min,
-    max,
-    from,
-    to,
-  }: IOptions): void {
+  public updatePositionFrom({ isVertical, min, max, from, to }: IOptions): void {
     const value = from;
     const position = this.calculatePosition(value, min, max);
     const width = this.calculateWidth(from, to, min, max);

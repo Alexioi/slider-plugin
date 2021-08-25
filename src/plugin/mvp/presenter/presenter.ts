@@ -1,9 +1,11 @@
+import EventEmitter from '../EventEmitter/EventEmitter';
+
 import Model from '../model/model';
 import View from '../view/view';
 
 import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
 
-class Presenter {
+class Presenter extends EventEmitter {
   private view: View;
 
   private model: Model;
@@ -11,6 +13,8 @@ class Presenter {
   private element: JQuery;
 
   constructor(element: JQuery, options: IOptions) {
+    super();
+
     this.element = element;
     this.view = new View(this.element);
     this.model = new Model(options);
@@ -29,17 +33,20 @@ class Presenter {
   }
 
   private addEventEmitters(): void {
-    this.model.subscribe('updateModelOptions', (options: IOptions) =>
-      this.view.updateSlider(options)
-    );
+    this.model.subscribe('updateModelOptions', (options: IOptions) => {
+      this.view.updateSlider(options);
+      this.emit('onChange', options);
+    });
 
-    this.model.subscribe('updateModelFrom', (options: IOptions) =>
-      this.view.updatePositionFrom(options)
-    );
+    this.model.subscribe('updateModelFrom', (options: IOptions) => {
+      this.view.updatePositionFrom(options);
+      this.emit('onChange', options);
+    });
 
-    this.model.subscribe('updateModelTo', (options: IOptions) =>
-      this.view.updatePositionTo(options)
-    );
+    this.model.subscribe('updateModelTo', (options: IOptions) => {
+      this.view.updatePositionTo(options);
+      this.emit('onChange', options);
+    });
 
     this.view.subscribe('clickScale', (value: number) => this.model.updateNearValue(value));
 
