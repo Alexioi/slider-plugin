@@ -1,6 +1,6 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 
-import Bar from './bar';
+import Bar from './bar/bar';
 
 import { IOptions, IPosition } from '../interfaces/interfaces';
 
@@ -21,7 +21,7 @@ class View extends EventEmitter {
     this.addEventEmitters();
   }
 
-  public updateSlider(options: IOptions): void {
+  public update(options: IOptions): void {
     const { isVertical } = options;
 
     if (isVertical) {

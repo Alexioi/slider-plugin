@@ -1,8 +1,8 @@
-import EventEmitter from '../EventEmitter/EventEmitter';
+import EventEmitter from '../../../EventEmitter/EventEmitter';
 
-import { IRunnerOptions } from '../interfaces/interfaces';
+import { IRunnerOptions } from '../../../interfaces/interfaces';
 
-import Tip from './tip';
+import Tip from './tip/tip';
 
 class Runner extends EventEmitter {
   private $bar: JQuery;
@@ -20,7 +20,7 @@ class Runner extends EventEmitter {
   }
 
   public move({ value, isVertical, position }: IRunnerOptions): void {
-    this.tip.setValue(value);
+    this.tip.update(value);
 
     if (isVertical) {
       this.moveVertically(position);

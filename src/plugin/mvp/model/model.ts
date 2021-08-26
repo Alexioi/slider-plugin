@@ -183,20 +183,29 @@ class Model extends EventEmitter {
   }
 
   public updateNearValue(value: number): void {
-    const { from, to } = this.options;
+    const { isRange, from, to } = this.options;
 
     const diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
     const diffTo = Math.abs(Math.abs(to) - Math.abs(value));
 
-    if (diffFrom < diffTo) {
-      this.options.from = value;
-      this.emit('updateModelFrom', this.options);
-    }
-
-    if (diffTo <= diffFrom) {
+    if (!isRange || diffTo <= diffFrom) {
+      if (value < from) {
+        this.options.from = value;
+      }
       this.options.to = value;
       this.emit('updateModelTo', this.options);
+      return;
     }
+
+    // if (diffFrom < diffTo) {
+    this.options.from = value;
+    this.emit('updateModelFrom', this.options);
+    // }
+
+    // if (diffTo <= diffFrom) {
+    //   this.options.to = value;
+    //   this.emit('updateModelTo', this.options);
+    // }
   }
 
   private calculateValueDependingOnStep(value: number, newValue: number): number {
@@ -241,7 +250,12 @@ class Model extends EventEmitter {
   }
 
   private checkTo(to: number): number {
-    const { from, max } = this.options;
+    const { step, isRange, from, max, min } = this.options;
+
+    if (!isRange && to < from && to > min) {
+      this.options.from -= step;
+      return to;
+    }
 
     if (to < from) {
       return from;

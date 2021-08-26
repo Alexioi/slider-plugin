@@ -8,7 +8,7 @@ class Tip {
     this.$tip = this.init();
   }
 
-  public setValue(value: number): void {
+  public update(value: number): void {
     this.$tip.text(value);
   }
 

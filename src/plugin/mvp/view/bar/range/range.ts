@@ -1,4 +1,4 @@
-import { IRangeOptions } from '../interfaces/interfaces';
+import { IRangeOptions } from '../../../interfaces/interfaces';
 
 class Range {
   $bar: JQuery;
@@ -7,18 +7,18 @@ class Range {
 
   constructor($bar: JQuery) {
     this.$bar = $bar;
-    this.$range = this.initRange();
+    this.$range = this.init();
   }
 
   public move({ isVertical, position, width }: IRangeOptions): void {
     if (isVertical) {
-      this.moveVerticallyRange(position, width);
+      this.moveVertically(position, width);
     } else {
-      this.moveHorizontallyRange(position, width);
+      this.moveHorizontally(position, width);
     }
   }
 
-  private moveHorizontallyRange(position: number, width: number) {
+  private moveHorizontally(position: number, width: number) {
     this.$range.css({
       width: `${width}%`,
       height: '',
@@ -27,7 +27,7 @@ class Range {
     });
   }
 
-  private moveVerticallyRange(position: number, width: number) {
+  private moveVertically(position: number, width: number) {
     this.$range.css({
       width: '',
       height: `${width}%`,
@@ -36,7 +36,7 @@ class Range {
     });
   }
 
-  private initRange(): JQuery {
+  private init(): JQuery {
     const range = '<div class="slider__range"></div>';
 
     this.$bar.append(range);

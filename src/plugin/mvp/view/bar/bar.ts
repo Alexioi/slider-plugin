@@ -1,10 +1,10 @@
-import EventEmitter from '../EventEmitter/EventEmitter';
+import EventEmitter from '../../EventEmitter/EventEmitter';
 
-import Runner from './runner';
-import Range from './range';
-import Scale from './scale';
+import Runner from './runner/runner';
+import Range from './range/range';
+import Scale from './scale/scale';
 
-import { IPosition, IOptions } from '../interfaces/interfaces';
+import { IPosition, IOptions } from '../../interfaces/interfaces';
 
 class Bar extends EventEmitter {
   private $slider: JQuery;
@@ -70,11 +70,20 @@ class Bar extends EventEmitter {
     this.range.move({ isVertical, position, width });
   }
 
-  public updatePositionTo({ isVertical, min, max, from, to }: IOptions): void {
+  public updatePositionTo({ isRange, isVertical, min, max, from, to }: IOptions): void {
     const value = to;
     const position = this.calculatePosition(value, min, max);
-    const rangePosition = this.calculatePosition(from, min, max);
-    const width = this.calculateWidth(from, to, min, max);
+
+    let rangePosition: number;
+    let width: number;
+
+    if (isRange) {
+      rangePosition = this.calculatePosition(from, min, max);
+      width = this.calculateWidth(from, to, min, max);
+    } else {
+      rangePosition = this.calculatePosition(0, min, max);
+      width = this.calculateWidth(0, to, min, max);
+    }
 
     this.runnerTo.move({ isVertical, position, value });
     this.range.move({ isVertical, position: rangePosition, width });

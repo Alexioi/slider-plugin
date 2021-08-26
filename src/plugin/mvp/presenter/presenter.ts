@@ -34,7 +34,7 @@ class Presenter extends EventEmitter {
 
   private addEventEmitters(): void {
     this.model.subscribe('updateModelOptions', (options: IOptions) => {
-      this.view.updateSlider(options);
+      this.view.update(options);
       this.emit('onChange', options);
     });
 
