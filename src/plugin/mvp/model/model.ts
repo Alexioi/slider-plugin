@@ -197,15 +197,8 @@ class Model extends EventEmitter {
       return;
     }
 
-    // if (diffFrom < diffTo) {
     this.options.from = value;
     this.emit('updateModelFrom', this.options);
-    // }
-
-    // if (diffTo <= diffFrom) {
-    //   this.options.to = value;
-    //   this.emit('updateModelTo', this.options);
-    // }
   }
 
   private calculateValueDependingOnStep(value: number, newValue: number): number {

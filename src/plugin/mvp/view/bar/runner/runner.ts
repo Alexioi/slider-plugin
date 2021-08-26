@@ -45,6 +45,14 @@ class Runner extends EventEmitter {
     this.$runner.css({ display: '' });
   }
 
+  public addClassTarget(): void {
+    this.$runner.css({ 'z-index': 3 });
+  }
+
+  public removeClassTarget(): void {
+    this.$runner.css({ 'z-index': '' });
+  }
+
   private moveHorizontally(position: number) {
     this.$runner.css({ left: `${position}%`, top: '' });
   }

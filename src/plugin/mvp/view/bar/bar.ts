@@ -40,12 +40,16 @@ class Bar extends EventEmitter {
   }
 
   public update(options: IOptions): void {
-    const { hasTip, hasScale, isRange, isVertical, min, max } = options;
+    const { from, hasTip, hasScale, isRange, isVertical, min, max } = options;
 
     if (isRange) {
       this.runnerFrom.show();
     } else {
       this.runnerFrom.hide();
+    }
+
+    if ((from - min) / (max - min) > 0.5) {
+      this.runnerFrom.addClassTarget();
     }
 
     this.runnerFrom.update(hasTip);
@@ -111,10 +115,13 @@ class Bar extends EventEmitter {
 
   private clickRunnerFrom = (position: IPosition) => {
     this.calculatePercentageClicks(position, 'from');
+    this.runnerFrom.addClassTarget();
   };
 
   private clickRunnerTo = (position: IPosition) => {
     this.calculatePercentageClicks(position, 'to');
+
+    this.runnerFrom.removeClassTarget();
   };
 
   private calculatePercentageClicks(position: IPosition, runnerName: string) {
