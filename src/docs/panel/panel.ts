@@ -36,18 +36,14 @@ class Panel {
   }
 
   attachCallback(): void {
-    const control = this.control;
+    const that = this;
 
     this.slider.updateOptions({
-      onChange: function (options: IOptions, control) {},
+      onChange: function onChange(options: IOptions) {
+        that.from.value = String(options.from);
+        that.to.value = String(options.to);
+      },
     });
-  }
-
-  test() {
-    const options: IOptions = this.slider.getOptions();
-
-    this.from.value = String(options.from);
-    this.to.value = String(options.to);
   }
 
   searchElements(): void {

@@ -7,11 +7,14 @@ class App {
 
   private config: IConfig | undefined;
 
+  private methods: any;
+
   private presenter: Presenter;
 
   constructor(element: JQuery, config: IConfig | undefined) {
     this.element = element;
     this.config = config;
+    this.methods = { onChange: function onChange(options: IOptions) {} };
 
     this.presenter = this.init();
     this.addEventEmitters();
@@ -42,6 +45,10 @@ class App {
 
     this.config = config;
 
+    if (typeof this.config.onChange !== 'undefined') {
+      this.methods.onChange = this.config.onChange;
+    }
+
     this.presenter.updateOptions(config);
   }
 
@@ -50,11 +57,7 @@ class App {
   }
 
   private onChange(options: IOptions): void {
-    if (typeof this.config?.onChange === 'undefined') {
-      return;
-    }
-
-    this.config.onChange(options);
+    this.methods.onChange(options);
   }
 
   private addEventEmitters(): void {
