@@ -5,17 +5,14 @@ import Bar from './bar/bar';
 import { IOptions, IPosition } from '../interfaces/interfaces';
 
 class View extends EventEmitter {
-  private element: JQuery;
-
   private bar: Bar;
 
   private $slider: JQuery;
 
-  constructor(element: JQuery) {
+  constructor(element: HTMLElement) {
     super();
 
-    this.element = element;
-    this.$slider = this.initSlider();
+    this.$slider = this.init(element);
     this.bar = new Bar(this.$slider);
 
     this.addEventEmitters();
@@ -41,12 +38,13 @@ class View extends EventEmitter {
     this.bar.updatePositionTo(options);
   }
 
-  private initSlider(): JQuery {
+  private init(element: HTMLElement): JQuery {
     const slider = "<div class='slider'></div>";
+    const $element = $(element);
 
-    this.element.append(slider);
+    $element.append(slider);
 
-    return this.element.find('.slider');
+    return $element.find('.slider');
   }
 
   private addEventEmitters() {

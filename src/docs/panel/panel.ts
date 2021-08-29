@@ -25,7 +25,7 @@ class Panel {
 
   numberMarks!: HTMLInputElement;
 
-  constructor(control: Element, slider: any) {
+  constructor(control: Element, slider: JQuery) {
     this.control = control;
     this.slider = slider;
 
@@ -38,7 +38,7 @@ class Panel {
   attachCallback(): void {
     const that = this;
 
-    this.slider.updateOptions({
+    this.slider.update({
       onChange: function onChange(options: IOptions) {
         that.from.value = String(options.from);
         that.to.value = String(options.to);
@@ -74,9 +74,9 @@ class Panel {
 
   changeRange = (): void => {
     if (this.range.checked) {
-      this.slider.updateOptions({ isRange: true });
+      this.slider.update({ isRange: true });
     } else {
-      this.slider.updateOptions({ isRange: false });
+      this.slider.update({ isRange: false });
     }
 
     this.verifyInput();
@@ -84,9 +84,9 @@ class Panel {
 
   changeTip = (): void => {
     if (this.tip.checked) {
-      this.slider.updateOptions({ hasTip: true });
+      this.slider.update({ hasTip: true });
     } else {
-      this.slider.updateOptions({ hasTip: false });
+      this.slider.update({ hasTip: false });
     }
 
     this.verifyInput();
@@ -94,16 +94,16 @@ class Panel {
 
   changeNumberMarks = (): void => {
     const value = Number(this.numberMarks.value);
-    this.slider.updateOptions({ numberMarks: value });
+    this.slider.update({ numberMarks: value });
 
     this.verifyInput();
   };
 
   changeVertical = (): void => {
     if (this.vertical.checked) {
-      this.slider.updateOptions({ isVertical: true });
+      this.slider.update({ isVertical: true });
     } else {
-      this.slider.updateOptions({ isVertical: false });
+      this.slider.update({ isVertical: false });
     }
 
     this.verifyInput();
@@ -111,9 +111,9 @@ class Panel {
 
   changeScale = (): void => {
     if (this.scale.checked) {
-      this.slider.updateOptions({ hasScale: true });
+      this.slider.update({ hasScale: true });
     } else {
-      this.slider.updateOptions({ hasScale: false });
+      this.slider.update({ hasScale: false });
     }
 
     this.verifyInput();
@@ -121,35 +121,35 @@ class Panel {
 
   changeMin = (): void => {
     const value = Number(this.min.value);
-    this.slider.updateOptions({ min: value });
+    this.slider.update({ min: value });
 
     this.verifyInput();
   };
 
   changeMax = (): void => {
     const value = Number(this.max.value);
-    this.slider.updateOptions({ max: value });
+    this.slider.update({ max: value });
 
     this.verifyInput();
   };
 
   changeFrom = (): void => {
     const value = Number(this.from.value);
-    this.slider.updateOptions({ from: value });
+    this.slider.update({ from: value });
 
     this.verifyInput();
   };
 
   changeTo = (): void => {
     const value = Number(this.to.value);
-    this.slider.updateOptions({ to: value });
+    this.slider.update({ to: value });
 
     this.verifyInput();
   };
 
   changeStep = (): void => {
     const value = Number(this.step.value);
-    this.slider.updateOptions({ step: value });
+    this.slider.update({ step: value });
 
     this.verifyInput();
   };

@@ -1,4 +1,5 @@
 interface IConfig {
+  // [index: string]: boolean | number;
   isRange?: boolean;
   isVertical?: boolean;
   hasTip?: boolean;
@@ -9,6 +10,10 @@ interface IConfig {
   from?: number;
   to?: number;
   onChange?: Function;
+}
+
+interface ICallbacks {
+  onChange: Function;
 }
 
 interface IOptions {
@@ -42,4 +47,4 @@ interface IPosition {
   runnerName: string;
 }
 
-export { IConfig, IOptions, IRunnerOptions, IPosition, IRangeOptions };
+export { IConfig, ICallbacks, IOptions, IRunnerOptions, IPosition, IRangeOptions };

@@ -13,15 +13,11 @@ declare global {
 $.fn.slider = function initSlider(config?: IConfig) {
   const apps = [];
 
-  apps.push(
-    this.each((i: number) => {
-      const node = this.slice(i, i + 1);
+  this.each((i: number, node: HTMLElement) => {
+    const app = new App(node, config);
 
-      const app = new App(node, config);
-
-      apps.push(app);
-    })
-  );
+    apps.push(app);
+  });
 
   return apps;
 };

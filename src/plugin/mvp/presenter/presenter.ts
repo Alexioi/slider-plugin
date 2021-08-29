@@ -10,18 +10,13 @@ class Presenter extends EventEmitter {
 
   private model: Model;
 
-  private element: JQuery;
-
-  constructor(element: JQuery, options: IOptions) {
+  constructor(element: HTMLElement, options: IOptions) {
     super();
 
-    this.element = element;
-    this.view = new View(this.element);
+    this.view = new View(element);
     this.model = new Model(options);
 
-    this.addEventEmitters();
-
-    this.model.updatedOptions();
+    this.attachEventEmitters();
   }
 
   public updateOptions(config: IConfig): void {
@@ -32,7 +27,7 @@ class Presenter extends EventEmitter {
     return this.model.getOptions();
   }
 
-  private addEventEmitters(): void {
+  private attachEventEmitters(): void {
     this.model.subscribe('updateModelOptions', (options: IOptions) => {
       this.view.update(options);
       this.emit('onChange', options);

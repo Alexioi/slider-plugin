@@ -1,28 +1,44 @@
 import Presenter from '../presenter/presenter';
 
-import { IOptions, IConfig } from '../interfaces/interfaces';
+import { IOptions, IConfig, ICallbacks } from '../interfaces/interfaces';
 
 class App {
-  private element: JQuery;
-
-  private config: IConfig | undefined;
-
-  private methods: any;
+  private callbacks: ICallbacks;
 
   private presenter: Presenter;
 
-  constructor(element: JQuery, config: IConfig | undefined) {
-    this.element = element;
-    this.config = config;
-    this.methods = { onChange: function onChange(options: IOptions) {} };
+  constructor(element: HTMLElement, config: IConfig | undefined) {
+    this.callbacks = { onChange: function onChange() {} };
 
-    this.presenter = this.init();
-    this.addEventEmitters();
+    this.presenter = this.init(element);
+    this.attachEventEmitters();
 
-    this.updateOptions(this.config);
+    this.update(config);
   }
 
-  init(): Presenter {
+  public update(config: IConfig | undefined): void {
+    if (typeof config === 'undefined') {
+      return;
+    }
+
+    if (typeof config.onChange !== 'undefined') {
+      this.callbacks.onChange = config.onChange;
+    }
+
+    // for (let key in this.callbacks) {
+    //   if (typeof config[key] !== 'undefined') {
+    //     this.callbacks[key] = config[key];
+    //   }
+    // }
+
+    this.presenter.updateOptions(config);
+  }
+
+  public getOptions(): IOptions {
+    return this.presenter.getOptions();
+  }
+
+  private init(element: HTMLElement): Presenter {
     const defaultConfig: IOptions = {
       isRange: true,
       isVertical: false,
@@ -35,33 +51,11 @@ class App {
       to: 70,
     };
 
-    return new Presenter(this.element, defaultConfig);
+    return new Presenter(element, defaultConfig);
   }
 
-  public updateOptions(config: IConfig | undefined): void {
-    if (typeof config === 'undefined') {
-      return;
-    }
-
-    this.config = config;
-
-    if (typeof this.config.onChange !== 'undefined') {
-      this.methods.onChange = this.config.onChange;
-    }
-
-    this.presenter.updateOptions(config);
-  }
-
-  public getOptions(): IOptions {
-    return this.presenter.getOptions();
-  }
-
-  private onChange(options: IOptions): void {
-    this.methods.onChange(options);
-  }
-
-  private addEventEmitters(): void {
-    this.presenter.subscribe('onChange', (options: IOptions) => this.onChange(options));
+  private attachEventEmitters(): void {
+    this.presenter.subscribe('onChange', (options: IOptions) => this.callbacks.onChange(options));
   }
 }
 
