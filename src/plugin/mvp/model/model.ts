@@ -11,7 +11,7 @@ class Model extends EventEmitter {
     this.options = options;
   }
 
-  public verifyAllOptions({
+  public updateOptions({
     isRange,
     isVertical,
     hasTip,
@@ -22,128 +22,106 @@ class Model extends EventEmitter {
     to,
     step,
   }: IConfig): void {
-    this.verifyBoolean('isRange', isRange);
-    this.verifyBoolean('isVertical', isVertical);
-    this.verifyBoolean('hasTip', hasTip);
-    this.verifyBoolean('hasScale', hasScale);
-    this.verifyMinMax(min, max);
-    this.verifyFromTo(from, to);
-    this.verifyStep(step);
+    this.options.isRange = this.verifyBooleanOption('isRange', isRange);
+    this.options.isVertical = this.verifyBooleanOption('isVertical', isVertical);
+    this.options.hasTip = this.verifyBooleanOption('hasTip', hasTip);
+    this.options.hasScale = this.verifyBooleanOption('hasScale', hasScale);
+    [this.options.min, this.options.max] = this.verifyMinAndMax(min, max);
+    [this.options.from, this.options.to] = this.verifyFromAndTo(from, to);
+    this.options.step = this.verifyStep(step);
 
-    this.updatedOptions();
+    this.emit('updateModelOptions', this.options);
   }
 
-  private verifyBoolean(nameOfValue: string, newValue: boolean | undefined): void {
+  private verifyBooleanOption(nameOfValue: string, newValue: boolean | undefined): boolean {
+    const currentValue = this.options[nameOfValue];
+
     if (typeof newValue === 'undefined') {
-      return;
+      return <boolean>currentValue;
     }
 
     if (typeof newValue !== 'boolean') {
       console.warn(`${nameOfValue} is not boolean`);
-      return;
+      return <boolean>currentValue;
     }
 
-    this.options[nameOfValue] = newValue;
+    return newValue;
   }
 
-  private verifyMinMax(newMin: number | undefined, newMax: number | undefined): void {
+  private verifyMinAndMax(newMin: number | undefined, newMax: number | undefined): Array<number> {
     const { min, max } = this.options;
 
-    if (typeof newMin === 'undefined' && typeof newMax === 'undefined') {
-      return;
+    newMin = this.verifyNumberOption('min', newMin);
+    newMax = this.verifyNumberOption('max', newMax);
+
+    if (newMin < newMax) {
+      return [newMin, newMax];
     }
 
-    if (typeof newMin !== 'number' && typeof newMax !== 'number') {
-      console.warn('Min or Max is not number');
-      return;
+    if (min < newMax) {
+      console.warn('Min > Max');
+      return [min, newMax];
     }
 
-    if (typeof newMin !== 'undefined' && typeof newMax !== 'undefined') {
-      if (newMin < newMax) {
-        this.options.min = newMin;
-        this.options.max = newMax;
-      } else {
-        console.warn('Min >= Max');
-      }
-    }
-
-    if (typeof newMin === 'undefined' && typeof newMax !== 'undefined') {
-      if (min < newMax) {
-        this.options.max = newMax;
-      } else {
-        console.warn('Min >= Max');
-      }
-    }
-
-    if (typeof newMin !== 'undefined' && typeof newMax === 'undefined') {
-      if (newMin < max) {
-        this.options.min = newMin;
-      } else {
-        console.warn('Min >= Max');
-      }
-    }
+    return [min, max];
   }
 
-  private verifyFromTo(newFrom: number | undefined, newTo: number | undefined): void {
+  private verifyFromAndTo(newFrom: number | undefined, newTo: number | undefined): Array<number> {
     const { min, max, from, to } = this.options;
 
-    if (typeof newFrom === 'undefined' && typeof newTo === 'undefined') {
-      return;
+    newFrom = this.verifyNumberOption('from', newFrom);
+    newTo = this.verifyNumberOption('to', newTo);
+
+    if (newTo > max || newTo < min) {
+      newTo = to;
     }
 
-    if (typeof newFrom !== 'number' && typeof newTo !== 'number') {
-      console.warn('From or To is not number');
-      return;
+    if (to > max || to < min) {
+      newTo = max;
     }
 
-    if (typeof newFrom !== 'undefined' && typeof newTo !== 'undefined') {
-      const isSliderInRange = newFrom > max || newFrom < min || newTo > max || newTo < min;
-
-      if (isSliderInRange) {
-        console.warn('From or To < min or > max');
-        return;
-      }
-
-      if (newFrom < newTo) {
-        this.options.from = newFrom;
-        this.options.to = newTo;
-      } else {
-        console.warn('From >= To');
-      }
+    if (newFrom > max || newFrom < min) {
+      newFrom = from;
     }
 
-    if (typeof newFrom === 'undefined' && typeof newTo !== 'undefined') {
-      if (from < newTo) {
-        this.options.to = newTo;
-      } else {
-        console.warn('From >= To');
-      }
+    if (from > max || from < min) {
+      newFrom = min;
     }
 
-    if (typeof newFrom !== 'undefined' && typeof newTo === 'undefined') {
-      if (newFrom < to) {
-        this.options.from = newFrom;
-      } else {
-        console.warn('From >= To');
-      }
+    if (newFrom > newTo) {
+      newFrom = newTo;
     }
+
+    return [newFrom, newTo];
   }
 
-  private verifyStep(step: number | undefined): void {
-    if (typeof step === 'undefined') {
-      return;
+  private verifyNumberOption(nameOfValue: string, newValue: number | undefined): number {
+    const currentValue = this.options[nameOfValue];
+
+    if (typeof newValue === 'undefined') {
+      return <number>currentValue;
     }
 
-    if (typeof step !== 'number') {
-      console.warn('Step is not number');
-      return;
+    if (typeof newValue !== 'number') {
+      console.warn(`${nameOfValue} is not number`);
+      return <number>currentValue;
     }
 
-    this.options.step = step;
+    return newValue;
   }
 
-  public updatedOptions(): void {
-    this.emit('updateModelOptions', this.options);
+  private verifyStep(newStep: number | undefined): number {
+    const { min, max } = this.options;
+
+    const distanceBetweenMinAndMax = Math.abs(max - min);
+
+    newStep = this.verifyNumberOption('step', newStep);
+
+    if (newStep < distanceBetweenMinAndMax) {
+      return newStep;
+    }
+
+    return distanceBetweenMinAndMax;
   }
 
   public getOptions(): IOptions {

@@ -25,12 +25,12 @@ class Panel {
 
   numberMarks!: HTMLInputElement;
 
-  constructor(control: Element, slider: JQuery) {
+  constructor(control: Element, slider: any) {
     this.control = control;
     this.slider = slider;
 
     this.searchElements();
-    this.addEventHandler();
+    this.attachEventHandler();
     this.verifyInput();
     this.attachCallback();
   }
@@ -59,7 +59,7 @@ class Panel {
     this.numberMarks = this.control.querySelector('.panel__input_name-number-marks')!;
   }
 
-  addEventHandler(): void {
+  attachEventHandler(): void {
     this.vertical.addEventListener('click', this.changeVertical);
     this.scale.addEventListener('click', this.changeScale);
     this.tip.addEventListener('click', this.changeTip);

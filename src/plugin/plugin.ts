@@ -6,12 +6,12 @@ import App from './mvp/app/app';
 
 declare global {
   interface JQuery {
-    slider: (config?: IConfig) => JQuery[];
+    slider: (config?: IConfig) => Array<App>;
   }
 }
 
-$.fn.slider = function initSlider(config?: IConfig) {
-  const apps = [];
+$.fn.slider = function initSliders(config?: IConfig) {
+  const apps: Array<App> = [];
 
   this.each((i: number, node: HTMLElement) => {
     const app = new App(node, config);

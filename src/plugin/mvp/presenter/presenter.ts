@@ -20,7 +20,7 @@ class Presenter extends EventEmitter {
   }
 
   public updateOptions(config: IConfig): void {
-    this.model.verifyAllOptions(config);
+    this.model.updateOptions(config);
   }
 
   public getOptions(): IOptions {
