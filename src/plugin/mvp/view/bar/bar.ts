@@ -67,8 +67,8 @@ class Bar extends EventEmitter {
 
   public updatePositionFrom({ isVertical, min, max, from, to }: IOptions): void {
     const value = from;
-    const position = this.calculatePosition(value, min, max);
-    const width = this.calculateWidth(from, to, min, max);
+    const position = Bar.calculatePosition(value, min, max);
+    const width = Bar.calculateWidth(from, to, min, max);
 
     this.runnerFrom.move({ isVertical, position, value });
     this.range.move({ isVertical, position, width });
@@ -76,28 +76,28 @@ class Bar extends EventEmitter {
 
   public updatePositionTo({ isRange, isVertical, min, max, from, to }: IOptions): void {
     const value = to;
-    const position = this.calculatePosition(value, min, max);
+    const position = Bar.calculatePosition(value, min, max);
 
     let rangePosition: number;
     let width: number;
 
     if (isRange) {
-      rangePosition = this.calculatePosition(from, min, max);
-      width = this.calculateWidth(from, to, min, max);
+      rangePosition = Bar.calculatePosition(from, min, max);
+      width = Bar.calculateWidth(from, to, min, max);
     } else {
-      rangePosition = this.calculatePosition(0, min, max);
-      width = this.calculateWidth(0, to, min, max);
+      rangePosition = Bar.calculatePosition(0, min, max);
+      width = Bar.calculateWidth(0, to, min, max);
     }
 
     this.runnerTo.move({ isVertical, position, value });
     this.range.move({ isVertical, position: rangePosition, width });
   }
 
-  private calculatePosition(value: number, min: number, max: number) {
+  private static calculatePosition(value: number, min: number, max: number) {
     return ((value - min) / (max - min)) * 100;
   }
 
-  private calculateWidth(from: number, to: number, min: number, max: number) {
+  private static calculateWidth(from: number, to: number, min: number, max: number) {
     return ((to - from) / (max - min)) * 100;
   }
 

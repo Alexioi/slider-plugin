@@ -10,7 +10,7 @@ class App {
   constructor(element: HTMLElement, config: IConfig | undefined) {
     this.callbacks = { onChange: function onChange() {} };
 
-    this.presenter = this.init(element);
+    this.presenter = App.init(element);
     this.attachEventEmitters();
 
     this.update(config);
@@ -38,7 +38,7 @@ class App {
     return this.presenter.getOptions();
   }
 
-  private init(element: HTMLElement): Presenter {
+  private static init(element: HTMLElement): Presenter {
     const defaultConfig: IOptions = {
       isRange: true,
       isVertical: false,

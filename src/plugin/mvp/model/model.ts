@@ -41,15 +41,19 @@ class Model extends EventEmitter {
     }
 
     if (typeof newValue !== 'boolean') {
-      console.warn(`${nameOfValue} is not boolean`);
       return <boolean>currentValue;
     }
 
     return newValue;
   }
 
-  private verifyMinAndMax(newMin: number | undefined, newMax: number | undefined): Array<number> {
+  private verifyMinAndMax(
+    verifyingOfMin: number | undefined,
+    verifyingOfMax: number | undefined,
+  ): Array<number> {
     const { min, max } = this.options;
+    let newMin = verifyingOfMin;
+    let newMax = verifyingOfMax;
 
     newMin = this.verifyNumberOption('min', newMin);
     newMax = this.verifyNumberOption('max', newMax);
@@ -59,15 +63,19 @@ class Model extends EventEmitter {
     }
 
     if (min < newMax) {
-      console.warn('Min > Max');
       return [min, newMax];
     }
 
     return [min, max];
   }
 
-  private verifyFromAndTo(newFrom: number | undefined, newTo: number | undefined): Array<number> {
+  private verifyFromAndTo(
+    verifyingOfFrom: number | undefined,
+    verifyingOfTo: number | undefined,
+  ): Array<number> {
     const { min, max, from, to } = this.options;
+    let newFrom = verifyingOfFrom;
+    let newTo = verifyingOfTo;
 
     newFrom = this.verifyNumberOption('from', newFrom);
     newTo = this.verifyNumberOption('to', newTo);
@@ -103,15 +111,15 @@ class Model extends EventEmitter {
     }
 
     if (typeof newValue !== 'number') {
-      console.warn(`${nameOfValue} is not number`);
       return <number>currentValue;
     }
 
     return newValue;
   }
 
-  private verifyStep(newStep: number | undefined): number {
+  private verifyStep(verifyingOfStep: number | undefined): number {
     const { min, max } = this.options;
+    let newStep = verifyingOfStep;
 
     const distanceBetweenMinAndMax = Math.abs(max - min);
 
@@ -135,12 +143,12 @@ class Model extends EventEmitter {
 
     let newValue = (max - min) * percentageOfMaximum + min;
 
-    const isTo = runnerName === 'to',
-      oldValue = isTo ? to : from,
-      validFrom = this.checkFrom(newValue),
-      validTo = this.checkTo(newValue),
-      validValue = isTo ? validTo : validFrom,
-      isValidValue = newValue === validValue;
+    const isTo = runnerName === 'to';
+    const oldValue = isTo ? to : from;
+    const validFrom = this.checkFrom(newValue);
+    const validTo = this.checkTo(newValue);
+    const validValue = isTo ? validTo : validFrom;
+    const isValidValue = newValue === validValue;
 
     if (isValidValue) {
       newValue = this.calculateValueDependingOnStep(oldValue, newValue);

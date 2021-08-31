@@ -12,7 +12,7 @@ class View extends EventEmitter {
   constructor(element: HTMLElement) {
     super();
 
-    this.$slider = this.init(element);
+    this.$slider = View.init(element);
     this.bar = new Bar(this.$slider);
 
     this.addEventEmitters();
@@ -38,7 +38,7 @@ class View extends EventEmitter {
     this.bar.updatePositionTo(options);
   }
 
-  private init(element: HTMLElement): JQuery {
+  private static init(element: HTMLElement): JQuery {
     const slider = "<div class='slider'></div>";
     const $element = $(element);
 

@@ -85,7 +85,7 @@ class Runner extends EventEmitter {
   };
 
   private attachEventMouseMove = (): void => {
-    const position = this.getPosition(event);
+    const position = Runner.getPosition(event);
 
     this.emit('click', position);
   };
@@ -94,7 +94,7 @@ class Runner extends EventEmitter {
     $(document).off('mousemove');
   };
 
-  private getPosition(event: any) {
+  private static getPosition(event: any) {
     const x = event.pageX;
     const y = event.pageY;
 

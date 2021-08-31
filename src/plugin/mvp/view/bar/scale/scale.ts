@@ -55,10 +55,10 @@ class Scale extends EventEmitter {
 
     const step = difference / (countMarks - 1);
 
-    let value = min,
-      rate = 0,
-      left: number,
-      integerValue: number;
+    let value = min;
+    let rate = 0;
+    let left: number;
+    let integerValue: number;
 
     while (value <= max) {
       integerValue = Math.trunc(value);
