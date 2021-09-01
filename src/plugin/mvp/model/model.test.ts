@@ -13,8 +13,52 @@ describe('Model testing', () => {
     to: 70,
   });
 
-  test('update valid options', () => {
-    model.updateOptions({
+  test('update newMin > max', () => {
+    model.updateOptions({ min: 200 });
+
+    const { min } = model.getOptions();
+
+    expect(min).toEqual(0);
+  });
+
+  test('update newMin > newMax', () => {
+    model.updateOptions({ min: 200, max: 100 });
+
+    const { min, max } = model.getOptions();
+
+    expect(min).toEqual(0);
+    expect(max).toEqual(100);
+  });
+
+  test('update value from', () => {
+    model.updateValue({ x: 0.31, y: 0.31, runnerName: 'from' });
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(30);
+    expect(to).toEqual(70);
+  });
+
+  test('update value to', () => {
+    model.updateValue({ x: 0.79, y: 0.79, runnerName: 'to' });
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(30);
+    expect(to).toEqual(80);
+  });
+
+  test('update value to', () => {
+    model.updateNearValue(20);
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(20);
+    expect(to).toEqual(80);
+  });
+
+  test('update options', () => {
+    let options = {
       isRange: false,
       isVertical: true,
       hasTip: false,
@@ -24,18 +68,11 @@ describe('Model testing', () => {
       max: 1000,
       from: 400,
       to: 700,
-    });
-    const options = model.getOptions();
-    expect(options).toEqual({
-      isRange: false,
-      isVertical: true,
-      hasTip: false,
-      hasScale: false,
-      step: 15,
-      min: -100,
-      max: 1000,
-      from: 400,
-      to: 700,
-    });
+    };
+    model.updateOptions(options);
+
+    options = model.getOptions();
+
+    expect(options).toEqual(options);
   });
 });
