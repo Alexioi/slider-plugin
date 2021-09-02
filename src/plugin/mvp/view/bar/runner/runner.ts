@@ -1,3 +1,4 @@
+import { ENameOfEvent } from '../../../enums/enums';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 import { IRunnerOptions } from '../../../interfaces/interfaces';
@@ -87,7 +88,7 @@ class Runner extends EventEmitter {
   private attachEventMouseMove = (): void => {
     const position = Runner.getPosition(event);
 
-    this.emit('click', position);
+    this.emit(ENameOfEvent.ChangedRunnerPosition, position);
   };
 
   private attachEventMouseUp = (): void => {

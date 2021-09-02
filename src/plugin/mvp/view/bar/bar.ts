@@ -5,6 +5,7 @@ import Range from './range/range';
 import Scale from './scale/scale';
 
 import { IPosition, IOptions } from '../../interfaces/interfaces';
+import { ENameOfEvent, ENameOfRunner } from '../../enums/enums';
 
 class Bar extends EventEmitter {
   private $slider: JQuery;
@@ -102,25 +103,24 @@ class Bar extends EventEmitter {
   }
 
   private addEventEmitters() {
-    this.runnerFrom.subscribe('click', this.clickRunnerFrom);
+    this.runnerFrom.subscribe(ENameOfEvent.ChangedRunnerPosition, this.clickRunnerFrom);
 
-    this.runnerTo.subscribe('click', this.clickRunnerTo);
+    this.runnerTo.subscribe(ENameOfEvent.ChangedRunnerPosition, this.clickRunnerTo);
 
-    this.scale.subscribe('clickScale', this.clickScale);
+    this.scale.subscribe(ENameOfEvent.ClickScale, this.clickScale);
   }
 
   private clickScale = (value: number) => {
-    this.emit('clickScale', value);
+    this.emit(ENameOfEvent.ClickScale, value);
   };
 
   private clickRunnerFrom = (position: IPosition) => {
-    this.calculatePercentageClicks(position, 'from');
+    this.calculatePercentageClicks(position, ENameOfRunner.From);
     this.runnerFrom.addClassTarget();
   };
 
   private clickRunnerTo = (position: IPosition) => {
-    this.calculatePercentageClicks(position, 'to');
-
+    this.calculatePercentageClicks(position, ENameOfRunner.To);
     this.runnerFrom.removeClassTarget();
   };
 
@@ -129,7 +129,7 @@ class Bar extends EventEmitter {
 
     const y = (position.y - this.$bar.offset()!.top) / this.$bar.height()!;
 
-    this.emit('click', { x, y, runnerName });
+    this.emit(ENameOfEvent.ChangedRunnerPosition, { x, y, runnerName });
   }
 }
 

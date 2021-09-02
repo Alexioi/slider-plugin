@@ -4,6 +4,7 @@ import Model from '../model/model';
 import View from '../view/view';
 
 import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
+import { ENameOfEvent } from '../enums/enums';
 
 class Presenter extends EventEmitter {
   private view: View;
@@ -28,24 +29,28 @@ class Presenter extends EventEmitter {
   }
 
   private attachEventEmitters(): void {
-    this.model.subscribe('updateModelOptions', (options: IOptions) => {
+    this.model.subscribe(ENameOfEvent.UpdatedModelOptions, (options: IOptions) => {
       this.view.update(options);
       this.emit('onChange', options);
     });
 
-    this.model.subscribe('updateModelFrom', (options: IOptions) => {
+    this.model.subscribe(ENameOfEvent.UpdatedModelFrom, (options: IOptions) => {
       this.view.updatePositionFrom(options);
       this.emit('onChange', options);
     });
 
-    this.model.subscribe('updateModelTo', (options: IOptions) => {
+    this.model.subscribe(ENameOfEvent.UpdatedModelTo, (options: IOptions) => {
       this.view.updatePositionTo(options);
       this.emit('onChange', options);
     });
 
-    this.view.subscribe('clickScale', (value: number) => this.model.updateNearValue(value));
+    this.view.subscribe(ENameOfEvent.ClickScale, (value: number) => {
+      this.model.updateNearValue(value);
+    });
 
-    this.view.subscribe('click', (position: IPosition) => this.model.updateValue(position));
+    this.view.subscribe(ENameOfEvent.ChangedRunnerPosition, (position: IPosition) => {
+      this.model.updateValue(position);
+    });
   }
 }
 

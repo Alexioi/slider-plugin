@@ -1,6 +1,7 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 
 import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
+import { ENameOfEvent, ENameOfRunner } from '../enums/enums';
 
 class Model extends EventEmitter {
   options: IOptions;
@@ -30,7 +31,7 @@ class Model extends EventEmitter {
     [this.options.from, this.options.to] = this.verifyFromAndTo(from, to);
     this.options.step = this.verifyStep(step);
 
-    this.emit('updateModelOptions', this.options);
+    this.emit(ENameOfEvent.UpdatedModelOptions, this.options);
   }
 
   private verifyBooleanOption(nameOfValue: string, newValue: boolean | undefined): boolean {
@@ -143,7 +144,7 @@ class Model extends EventEmitter {
 
     let newValue = (max - min) * percentageOfMaximum + min;
 
-    const isTo = runnerName === 'to';
+    const isTo = runnerName === ENameOfRunner.To;
     const oldValue = isTo ? to : from;
     const validFrom = this.checkFrom(newValue);
     const validTo = this.checkTo(newValue);
@@ -160,9 +161,9 @@ class Model extends EventEmitter {
     }
 
     if (newValue !== this.options[runnerName]) {
-      this.options[runnerName] = newValue;
+      this.options[runnerName.toLowerCase()] = newValue;
 
-      const emitName = `updateModel${runnerName.charAt(0).toUpperCase() + runnerName.slice(1)}`;
+      const emitName = `UpdatedModel${runnerName}`;
 
       this.emit(emitName, this.options);
     }
@@ -179,12 +180,12 @@ class Model extends EventEmitter {
         this.options.from = value;
       }
       this.options.to = value;
-      this.emit('updateModelTo', this.options);
+      this.emit(ENameOfEvent.UpdatedModelTo, this.options);
       return;
     }
 
     this.options.from = value;
-    this.emit('updateModelFrom', this.options);
+    this.emit(ENameOfEvent.UpdatedModelFrom, this.options);
   }
 
   private calculateValueDependingOnStep(value: number, newValue: number): number {

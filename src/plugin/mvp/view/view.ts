@@ -3,6 +3,7 @@ import EventEmitter from '../EventEmitter/EventEmitter';
 import Bar from './bar/bar';
 
 import { IOptions, IPosition } from '../interfaces/interfaces';
+import { ENameOfEvent } from '../enums/enums';
 
 class View extends EventEmitter {
   private bar: Bar;
@@ -48,17 +49,17 @@ class View extends EventEmitter {
   }
 
   private addEventEmitters() {
-    this.bar.subscribe('click', this.emitBar);
+    this.bar.subscribe(ENameOfEvent.ChangedRunnerPosition, this.emitBar);
 
-    this.bar.subscribe('clickScale', this.emitScale);
+    this.bar.subscribe(ENameOfEvent.ClickScale, this.emitScale);
   }
 
   private emitBar = (position: IPosition) => {
-    this.emit('click', position);
+    this.emit(ENameOfEvent.ChangedRunnerPosition, position);
   };
 
   private emitScale = (value: number) => {
-    this.emit('clickScale', value);
+    this.emit(ENameOfEvent.ClickScale, value);
   };
 
   private addClassVertical() {

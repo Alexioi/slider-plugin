@@ -1,3 +1,4 @@
+import { ENameOfEvent } from '../../../enums/enums';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 class Scale extends EventEmitter {
@@ -93,7 +94,7 @@ class Scale extends EventEmitter {
   private clickScale = (event: any) => {
     const value = Number(event.target.innerHTML);
 
-    this.emit('clickScale', value);
+    this.emit(ENameOfEvent.ClickScale, value);
   };
 }
 
