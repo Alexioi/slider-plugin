@@ -49,13 +49,18 @@ class View extends EventEmitter {
   }
 
   private addEventEmitters() {
-    this.bar.subscribe(ENameOfEvent.ChangedRunnerPosition, this.emitBar);
+    this.bar.subscribe(ENameOfEvent.ChangedRunnerFromPosition, this.emitBarFrom);
+    this.bar.subscribe(ENameOfEvent.ChangedRunnerToPosition, this.emitBarTo);
 
     this.bar.subscribe(ENameOfEvent.ClickScale, this.emitScale);
   }
 
-  private emitBar = (position: IPosition) => {
-    this.emit(ENameOfEvent.ChangedRunnerPosition, position);
+  private emitBarFrom = (position: IPosition) => {
+    this.emit(ENameOfEvent.ChangedRunnerFromPosition, position);
+  };
+
+  private emitBarTo = (position: IPosition) => {
+    this.emit(ENameOfEvent.ChangedRunnerToPosition, position);
   };
 
   private emitScale = (value: number) => {

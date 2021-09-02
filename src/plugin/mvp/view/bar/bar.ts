@@ -5,7 +5,7 @@ import Range from './range/range';
 import Scale from './scale/scale';
 
 import { IPosition, IOptions } from '../../interfaces/interfaces';
-import { ENameOfEvent, ENameOfRunner } from '../../enums/enums';
+import { ENameOfEvent } from '../../enums/enums';
 
 class Bar extends EventEmitter {
   private $slider: JQuery;
@@ -115,21 +115,31 @@ class Bar extends EventEmitter {
   };
 
   private clickRunnerFrom = (position: IPosition) => {
-    this.calculatePercentageClicks(position, ENameOfRunner.From);
+    this.notifyPositionRunnerFrom(position);
     this.runnerFrom.addClassTarget();
   };
 
   private clickRunnerTo = (position: IPosition) => {
-    this.calculatePercentageClicks(position, ENameOfRunner.To);
+    this.notifyPositionRunnerTo(position);
     this.runnerFrom.removeClassTarget();
   };
 
-  private calculatePercentageClicks(position: IPosition, runnerName: string) {
+  private notifyPositionRunnerFrom(position: IPosition) {
+    const positionFrom = this.calculatePercentageClicks(position);
+    this.emit(ENameOfEvent.ChangedRunnerFromPosition, positionFrom);
+  }
+
+  private notifyPositionRunnerTo(position: IPosition) {
+    const positionTo = this.calculatePercentageClicks(position);
+    this.emit(ENameOfEvent.ChangedRunnerToPosition, positionTo);
+  }
+
+  private calculatePercentageClicks(position: IPosition): IPosition {
     const x = (position.x - this.$bar.offset()!.left) / this.$bar.width()!;
 
     const y = (position.y - this.$bar.offset()!.top) / this.$bar.height()!;
 
-    this.emit(ENameOfEvent.ChangedRunnerPosition, { x, y, runnerName });
+    return { x, y };
   }
 }
 

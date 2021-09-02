@@ -48,8 +48,12 @@ class Presenter extends EventEmitter {
       this.model.updateNearValue(value);
     });
 
-    this.view.subscribe(ENameOfEvent.ChangedRunnerPosition, (position: IPosition) => {
-      this.model.updateValue(position);
+    this.view.subscribe(ENameOfEvent.ChangedRunnerFromPosition, (position: IPosition) => {
+      this.model.calculateFromToPercentage(position);
+    });
+
+    this.view.subscribe(ENameOfEvent.ChangedRunnerToPosition, (position: IPosition) => {
+      this.model.calculateToToPercentage(position);
     });
   }
 }

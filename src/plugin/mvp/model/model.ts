@@ -1,7 +1,7 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 
 import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
-import { ENameOfEvent, ENameOfRunner } from '../enums/enums';
+import { ENameOfEvent } from '../enums/enums';
 
 class Model extends EventEmitter {
   options: IOptions;
@@ -34,6 +34,121 @@ class Model extends EventEmitter {
     this.emit(ENameOfEvent.UpdatedModelOptions, this.options);
   }
 
+  public getOptions(): IOptions {
+    return this.options;
+  }
+
+  public calculateFromToPercentage({ x, y }: IPosition): void {
+    const { isVertical, from, to, min, max } = this.options;
+
+    const percentageOfLength = isVertical ? y : x;
+    const lowerBoundForValue = 0;
+    const upperBoundForValue = Math.abs(to - min) / Math.abs(max - min);
+
+    if (percentageOfLength < lowerBoundForValue) {
+      this.updateFrom(min);
+      return;
+    }
+
+    if (percentageOfLength > upperBoundForValue) {
+      this.updateFrom(to);
+      return;
+    }
+
+    let newValue = (max - min) * percentageOfLength + min;
+    newValue = this.calculateValueDependingOnStep(from, newValue);
+
+    if (newValue < min) {
+      this.updateFrom(min);
+      return;
+    }
+
+    if (newValue > to) {
+      this.updateFrom(to);
+      return;
+    }
+
+    this.updateFrom(newValue);
+  }
+
+  public calculateToToPercentage({ x, y }: IPosition): void {
+    const { isRange, isVertical, from, to, min, max } = this.options;
+
+    const percentageOfLength = isVertical ? y : x;
+    const lowerBoundForValue = isRange ? Math.abs(from - min) / Math.abs(max - min) : 0;
+    const upperBoundForValue = 1;
+
+    if (percentageOfLength < lowerBoundForValue) {
+      if (isRange) {
+        this.updateTo(from);
+        return;
+      }
+
+      this.updateTo(min);
+      return;
+    }
+
+    if (percentageOfLength > upperBoundForValue) {
+      this.updateTo(max);
+      return;
+    }
+
+    let newValue = (max - min) * percentageOfLength + min;
+    newValue = this.calculateValueDependingOnStep(to, newValue);
+
+    if (isRange) {
+      if (newValue < from) {
+        this.updateFrom(from);
+        return;
+      }
+    }
+
+    if (!isRange) {
+      if (newValue < min) {
+        this.updateFrom(min);
+        return;
+      }
+    }
+
+    if (newValue > max) {
+      this.updateTo(max);
+      return;
+    }
+
+    this.updateTo(newValue);
+  }
+
+  private updateFrom(newValue: number): void {
+    this.options.from = newValue;
+
+    this.emit(ENameOfEvent.UpdatedModelFrom, this.options);
+  }
+
+  private updateTo(newValue: number): void {
+    this.options.to = newValue;
+
+    this.emit(ENameOfEvent.UpdatedModelTo, this.options);
+  }
+
+  public updateNearValue(value: number): void {
+    const { isRange, from, to } = this.options;
+
+    const diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
+    const diffTo = Math.abs(Math.abs(to) - Math.abs(value));
+
+    if (!isRange || diffTo <= diffFrom) {
+      if (value < from) {
+        this.options.from = value;
+      }
+      this.options.to = value;
+      this.emit(ENameOfEvent.UpdatedModelTo, this.options);
+      return;
+    }
+
+    this.options.from = value;
+    this.emit(ENameOfEvent.UpdatedModelFrom, this.options);
+  }
+
   private verifyBooleanOption(nameOfValue: string, newValue: boolean | undefined): boolean {
     const currentValue = this.options[nameOfValue];
 
@@ -43,6 +158,20 @@ class Model extends EventEmitter {
 
     if (typeof newValue !== 'boolean') {
       return <boolean>currentValue;
+    }
+
+    return newValue;
+  }
+
+  private verifyNumberOption(nameOfValue: string, newValue: number | undefined): number {
+    const currentValue = this.options[nameOfValue];
+
+    if (typeof newValue === 'undefined') {
+      return <number>currentValue;
+    }
+
+    if (typeof newValue !== 'number') {
+      return <number>currentValue;
     }
 
     return newValue;
@@ -104,20 +233,6 @@ class Model extends EventEmitter {
     return [newFrom, newTo];
   }
 
-  private verifyNumberOption(nameOfValue: string, newValue: number | undefined): number {
-    const currentValue = this.options[nameOfValue];
-
-    if (typeof newValue === 'undefined') {
-      return <number>currentValue;
-    }
-
-    if (typeof newValue !== 'number') {
-      return <number>currentValue;
-    }
-
-    return newValue;
-  }
-
   private verifyStep(verifyingOfStep: number | undefined): number {
     const { min, max } = this.options;
     let newStep = verifyingOfStep;
@@ -131,61 +246,6 @@ class Model extends EventEmitter {
     }
 
     return distanceBetweenMinAndMax;
-  }
-
-  public getOptions(): IOptions {
-    return this.options;
-  }
-
-  public updateValue({ x, y, runnerName }: IPosition): void {
-    const { isVertical, from, to, min, max } = this.options;
-
-    const percentageOfMaximum = isVertical ? y : x;
-
-    let newValue = (max - min) * percentageOfMaximum + min;
-
-    const isTo = runnerName === ENameOfRunner.To;
-    const oldValue = isTo ? to : from;
-    const validFrom = this.checkFrom(newValue);
-    const validTo = this.checkTo(newValue);
-    const validValue = isTo ? validTo : validFrom;
-    const isValidValue = newValue === validValue;
-
-    if (isValidValue) {
-      newValue = this.calculateValueDependingOnStep(oldValue, newValue);
-      newValue = isTo ? this.checkTo(newValue) : this.checkFrom(newValue);
-    }
-
-    if (!isValidValue) {
-      newValue = validValue;
-    }
-
-    if (newValue !== this.options[runnerName]) {
-      this.options[runnerName.toLowerCase()] = newValue;
-
-      const emitName = `UpdatedModel${runnerName}`;
-
-      this.emit(emitName, this.options);
-    }
-  }
-
-  public updateNearValue(value: number): void {
-    const { isRange, from, to } = this.options;
-
-    const diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
-    const diffTo = Math.abs(Math.abs(to) - Math.abs(value));
-
-    if (!isRange || diffTo <= diffFrom) {
-      if (value < from) {
-        this.options.from = value;
-      }
-      this.options.to = value;
-      this.emit(ENameOfEvent.UpdatedModelTo, this.options);
-      return;
-    }
-
-    this.options.from = value;
-    this.emit(ENameOfEvent.UpdatedModelFrom, this.options);
   }
 
   private calculateValueDependingOnStep(value: number, newValue: number): number {
