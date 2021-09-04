@@ -30,23 +30,23 @@ describe('Model testing', () => {
     expect(max).toEqual(100);
   });
 
-  // test('update value from', () => {
-  //   model.updateFromToPercentage({ x: 0.31, y: 0.31 });
+  test('update value from', () => {
+    model.calculateFromToPercentage({ x: 0.31, y: 0.31 });
 
-  //   const { from, to } = model.getOptions();
+    const { from, to } = model.getOptions();
 
-  //   expect(from).toEqual(30);
-  //   expect(to).toEqual(70);
-  // });
+    expect(from).toEqual(30);
+    expect(to).toEqual(70);
+  });
 
-  // test('update value to', () => {
-  //   model.updateValueToPercentage({ x: 0.79, y: 0.79 });
+  test('update value to', () => {
+    model.calculateToToPercentage({ x: 0.79, y: 0.79 });
 
-  //   const { from, to } = model.getOptions();
+    const { from, to } = model.getOptions();
 
-  //   expect(from).toEqual(30);
-  //   expect(to).toEqual(80);
-  // });
+    expect(from).toEqual(30);
+    expect(to).toEqual(80);
+  });
 
   test('update value to', () => {
     model.updateNearValue(20);

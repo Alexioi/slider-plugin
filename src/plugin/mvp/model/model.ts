@@ -248,64 +248,53 @@ class Model extends EventEmitter {
     return distanceBetweenMinAndMax;
   }
 
-  private calculateValueDependingOnStep(value: number, newValue: number): number {
+  private calculateValueDependingOnStep(oldValue: number, newValue: number): number {
     const { step } = this.options;
-    let x: number;
 
-    if (step === 0) {
-      return newValue;
-    }
+    const differenceValue = oldValue - newValue;
 
-    const differenceValue = newValue - value;
-
-    x = Math.abs(differenceValue) - (Math.abs(differenceValue) % step);
+    const newValueWithoutStep = oldValue - (differenceValue - (differenceValue % step));
 
     if (Math.abs(differenceValue) > step / 2) {
-      x += step;
+      const newValueWithStep =
+        differenceValue < 0 ? newValueWithoutStep + step : newValueWithoutStep - step;
+      return newValueWithStep;
     }
 
-    if (differenceValue > 0) {
-      return value + x;
-    }
-
-    if (differenceValue < 0) {
-      return value - x;
-    }
-
-    return newValue;
+    return newValueWithoutStep;
   }
 
-  private checkFrom(from: number): number {
+  private checkFrom(newFrom: number): number {
     const { to, min } = this.options;
 
-    if (from > to) {
+    if (newFrom > to) {
       return to;
     }
 
-    if (from < min) {
+    if (newFrom < min) {
       return min;
     }
 
-    return from;
+    return newFrom;
   }
 
-  private checkTo(to: number): number {
+  private checkTo(newTo: number): number {
     const { step, isRange, from, max, min } = this.options;
 
-    if (!isRange && to < from && to > min) {
+    if (!isRange && newTo < from && newTo > min) {
       this.options.from -= step;
-      return to;
+      return newTo;
     }
 
-    if (to < from) {
+    if (newTo < from) {
       return from;
     }
 
-    if (to > max) {
+    if (newTo > max) {
       return max;
     }
 
-    return to;
+    return newTo;
   }
 }
 
