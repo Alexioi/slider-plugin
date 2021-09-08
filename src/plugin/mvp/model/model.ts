@@ -38,84 +38,59 @@ class Model extends EventEmitter {
     return this.options;
   }
 
-  public calculateFromToPercentage({ x, y }: IPosition): void {
-    const { isVertical, from, to, min, max } = this.options;
+  public calculateFromUsingFraction({ x, y }: IPosition): void {
+    const { isVertical, from, min, max } = this.options;
 
     const percentageOfLength = isVertical ? y : x;
-    const lowerBoundForValue = 0;
-    const upperBoundForValue = Math.abs(to - min) / Math.abs(max - min);
-
-    if (percentageOfLength < lowerBoundForValue) {
-      this.updateFrom(min);
-      return;
-    }
-
-    if (percentageOfLength > upperBoundForValue) {
-      this.updateFrom(to);
-      return;
-    }
 
     let newValue = (max - min) * percentageOfLength + min;
+
+    newValue = this.checkFrom(newValue);
+
     newValue = this.calculateValueDependingOnStep(from, newValue);
 
-    if (newValue < min) {
-      this.updateFrom(min);
-      return;
-    }
+    newValue = this.checkFrom(newValue);
 
-    if (newValue > to) {
-      this.updateFrom(to);
-      return;
+    if (newValue !== from) {
+      this.updateFrom(newValue);
     }
-
-    this.updateFrom(newValue);
   }
 
-  public calculateToToPercentage({ x, y }: IPosition): void {
-    const { isRange, isVertical, from, to, min, max } = this.options;
+  public calculateToUsingFraction({ x, y }: IPosition): void {
+    const { isVertical, to, min, max } = this.options;
 
     const percentageOfLength = isVertical ? y : x;
-    const lowerBoundForValue = isRange ? Math.abs(from - min) / Math.abs(max - min) : 0;
-    const upperBoundForValue = 1;
-
-    if (percentageOfLength < lowerBoundForValue) {
-      if (isRange) {
-        this.updateTo(from);
-        return;
-      }
-
-      this.updateTo(min);
-      return;
-    }
-
-    if (percentageOfLength > upperBoundForValue) {
-      this.updateTo(max);
-      return;
-    }
 
     let newValue = (max - min) * percentageOfLength + min;
+
+    newValue = this.checkTo(newValue);
+
     newValue = this.calculateValueDependingOnStep(to, newValue);
 
-    if (isRange) {
-      if (newValue < from) {
-        this.updateFrom(from);
-        return;
-      }
+    newValue = this.checkTo(newValue);
+
+    if (newValue !== to) {
+      this.updateTo(newValue);
+    }
+  }
+
+  public updateNearValue(value: number): void {
+    const { isRange, from, to } = this.options;
+
+    const diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
+    const diffTo = Math.abs(Math.abs(to) - Math.abs(value));
+
+    if (diffTo <= diffFrom) {
+      this.updateTo(value);
+      return;
     }
 
     if (!isRange) {
-      if (newValue < min) {
-        this.updateFrom(min);
-        return;
-      }
-    }
-
-    if (newValue > max) {
-      this.updateTo(max);
+      this.updateTo(value);
       return;
     }
 
-    this.updateTo(newValue);
+    this.updateFrom(value);
   }
 
   private updateFrom(newValue: number): void {
@@ -128,25 +103,6 @@ class Model extends EventEmitter {
     this.options.to = newValue;
 
     this.emit(ENameOfEvent.UpdatedModelTo, this.options);
-  }
-
-  public updateNearValue(value: number): void {
-    const { isRange, from, to } = this.options;
-
-    const diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
-    const diffTo = Math.abs(Math.abs(to) - Math.abs(value));
-
-    if (!isRange || diffTo <= diffFrom) {
-      if (value < from) {
-        this.options.from = value;
-      }
-      this.options.to = value;
-      this.emit(ENameOfEvent.UpdatedModelTo, this.options);
-      return;
-    }
-
-    this.options.from = value;
-    this.emit(ENameOfEvent.UpdatedModelFrom, this.options);
   }
 
   private verifyBooleanOption(nameOfValue: string, newValue: boolean | undefined): boolean {
@@ -255,13 +211,15 @@ class Model extends EventEmitter {
 
     const newValueWithoutStep = oldValue - (differenceValue - (differenceValue % step));
 
-    if (Math.abs(differenceValue) > step / 2) {
-      const newValueWithStep =
-        differenceValue < 0 ? newValueWithoutStep + step : newValueWithoutStep - step;
-      return newValueWithStep;
+    if (Math.abs(differenceValue) < step / 2) {
+      return newValueWithoutStep;
     }
 
-    return newValueWithoutStep;
+    if (differenceValue < 0) {
+      return newValueWithoutStep + step;
+    }
+
+    return newValueWithoutStep - step;
   }
 
   private checkFrom(newFrom: number): number {
@@ -279,19 +237,18 @@ class Model extends EventEmitter {
   }
 
   private checkTo(newTo: number): number {
-    const { step, isRange, from, max, min } = this.options;
-
-    if (!isRange && newTo < from && newTo > min) {
-      this.options.from -= step;
-      return newTo;
-    }
-
-    if (newTo < from) {
-      return from;
-    }
+    const { isRange, from, max, min } = this.options;
 
     if (newTo > max) {
       return max;
+    }
+
+    if (newTo < min) {
+      return min;
+    }
+
+    if (isRange && newTo < from) {
+      return from;
     }
 
     return newTo;

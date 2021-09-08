@@ -1,64 +1,37 @@
 import Model from './model';
 
-describe('Model testing', () => {
-  const model = new Model({
+describe('Model', () => {
+  const defaultOptions = {
     isRange: true,
     isVertical: false,
     hasTip: true,
     hasScale: true,
     step: 10,
-    min: 0,
+    min: -100,
     max: 100,
-    from: 40,
-    to: 70,
+    from: -50,
+    to: 50,
+  };
+
+  const model = new Model(defaultOptions);
+
+  beforeEach(() => {
+    const newOptions = {
+      isRange: true,
+      isVertical: false,
+      hasTip: true,
+      hasScale: true,
+      step: 10,
+      min: -100,
+      max: 100,
+      from: -50,
+      to: 50,
+    };
+    model.updateOptions(newOptions);
   });
 
-  test('update newMin > max', () => {
-    model.updateOptions({ min: 200 });
-
-    const { min } = model.getOptions();
-
-    expect(min).toEqual(0);
-  });
-
-  test('update newMin > newMax', () => {
-    model.updateOptions({ min: 200, max: 100 });
-
-    const { min, max } = model.getOptions();
-
-    expect(min).toEqual(0);
-    expect(max).toEqual(100);
-  });
-
-  test('update value from', () => {
-    model.calculateFromToPercentage({ x: 0.31, y: 0.31 });
-
-    const { from, to } = model.getOptions();
-
-    expect(from).toEqual(30);
-    expect(to).toEqual(70);
-  });
-
-  test('update value to', () => {
-    model.calculateToToPercentage({ x: 0.79, y: 0.79 });
-
-    const { from, to } = model.getOptions();
-
-    expect(from).toEqual(30);
-    expect(to).toEqual(80);
-  });
-
-  test('update value to', () => {
-    model.updateNearValue(20);
-
-    const { from, to } = model.getOptions();
-
-    expect(from).toEqual(20);
-    expect(to).toEqual(80);
-  });
-
-  test('update options', () => {
-    let options = {
+  it('should update all options', () => {
+    const options = {
       isRange: false,
       isVertical: true,
       hasTip: false,
@@ -69,10 +42,55 @@ describe('Model testing', () => {
       from: 400,
       to: 700,
     };
+
     model.updateOptions(options);
 
-    options = model.getOptions();
+    const newOptions = model.getOptions();
 
-    expect(options).toEqual(options);
+    expect(newOptions).toEqual(options);
+  });
+
+  test('should not update min if new min > max', () => {
+    model.updateOptions({ min: 200 });
+
+    const { min } = model.getOptions();
+
+    expect(min).toEqual(-100);
+  });
+
+  test('should not update min if new min > new max and new min > max', () => {
+    model.updateOptions({ min: 200, max: 100 });
+
+    const { min, max } = model.getOptions();
+
+    expect(min).toEqual(-100);
+    expect(max).toEqual(100);
+  });
+
+  test('should update from by a fraction of the maximum length', () => {
+    model.calculateFromUsingFraction({ x: 0.31, y: 0.31 });
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(-30);
+    expect(to).toEqual(50);
+  });
+
+  test('should update to by a fraction of the maximum length', () => {
+    model.calculateToUsingFraction({ x: 0.79, y: 0.79 });
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(-50);
+    expect(to).toEqual(60);
+  });
+
+  test('should be updated to if to closer to the passed value than from', () => {
+    model.updateNearValue(20);
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(-50);
+    expect(to).toEqual(20);
   });
 });

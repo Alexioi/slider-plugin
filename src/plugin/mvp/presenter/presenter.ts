@@ -49,11 +49,11 @@ class Presenter extends EventEmitter {
     });
 
     this.view.subscribe(ENameOfEvent.ChangedRunnerFromPosition, (position: IPosition) => {
-      this.model.calculateFromToPercentage(position);
+      this.model.calculateFromUsingFraction(position);
     });
 
     this.view.subscribe(ENameOfEvent.ChangedRunnerToPosition, (position: IPosition) => {
-      this.model.calculateToToPercentage(position);
+      this.model.calculateToUsingFraction(position);
     });
   }
 }
