@@ -85,6 +85,15 @@ describe('Model', () => {
     expect(to).toEqual(60);
   });
 
+  test('should be updated from if to closer from the passed value than to', () => {
+    model.updateNearValue(-20);
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(-20);
+    expect(to).toEqual(50);
+  });
+
   test('should be updated to if to closer to the passed value than from', () => {
     model.updateNearValue(20);
 
@@ -92,5 +101,15 @@ describe('Model', () => {
 
     expect(from).toEqual(-50);
     expect(to).toEqual(20);
+  });
+
+  test('should be updated to if isRange = false', () => {
+    model.updateOptions({ isRange: false });
+    model.updateNearValue(-100);
+
+    const { from, to } = model.getOptions();
+
+    expect(from).toEqual(-50);
+    expect(to).toEqual(-100);
   });
 });

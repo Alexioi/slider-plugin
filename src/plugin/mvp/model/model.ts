@@ -77,8 +77,8 @@ class Model extends EventEmitter {
   public updateNearValue(value: number): void {
     const { isRange, from, to } = this.options;
 
-    const diffFrom = Math.abs(Math.abs(from) - Math.abs(value));
-    const diffTo = Math.abs(Math.abs(to) - Math.abs(value));
+    const diffFrom = Math.abs(from - value);
+    const diffTo = Math.abs(to - value);
 
     if (diffTo <= diffFrom) {
       this.updateTo(value);

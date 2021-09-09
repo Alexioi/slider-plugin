@@ -86,8 +86,8 @@ class Bar extends EventEmitter {
       rangePosition = Bar.calculatePosition(from, min, max);
       width = Bar.calculateWidth(from, to, min, max);
     } else {
-      rangePosition = Bar.calculatePosition(0, min, max);
-      width = Bar.calculateWidth(0, to, min, max);
+      rangePosition = Bar.calculatePosition(min, min, max);
+      width = Bar.calculateWidth(min, to, min, max);
     }
 
     this.runnerTo.move({ isVertical, position, value });

@@ -40,21 +40,17 @@ class Scale extends EventEmitter {
     max: number;
     isVertical: boolean;
   }): void {
-    let length: number;
+    const length = isVertical ? this.$bar.height()! : this.$bar.width()!;
 
-    if (isVertical) {
-      length = this.$bar.height()!;
-    } else {
-      length = this.$bar.width()!;
+    const countOfMarks = Math.floor(length / 100);
+
+    if (countOfMarks === 0) {
+      return;
     }
-
-    const countMarks = Math.floor(length! / 100);
-
-    if (countMarks === 0) return;
 
     const difference = Math.abs(max - min);
 
-    const step = difference / (countMarks - 1);
+    const step = difference / (countOfMarks - 1);
 
     let value = min;
     let rate = 0;
