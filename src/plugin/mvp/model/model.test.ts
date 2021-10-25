@@ -1,3 +1,4 @@
+import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from './model';
 
 describe('Model', () => {
@@ -13,7 +14,7 @@ describe('Model', () => {
     to: 50,
   };
 
-  const model = new Model(defaultOptions);
+  const model = new Model(defaultOptions, new EventEmitter());
 
   beforeEach(() => {
     const newOptions = {

@@ -4,10 +4,9 @@ import Runner from './runner/runner';
 import Range from './range/range';
 import Scale from './scale/scale';
 
-import { IPosition, IOptions } from '../../interfaces/interfaces';
-import { ENameOfEvent } from '../../enums/enums';
+import { IOptions } from '../../interfaces/interfaces';
 
-class Bar extends EventEmitter {
+class Bar {
   private $slider: JQuery;
 
   private range: Range;
@@ -20,16 +19,34 @@ class Bar extends EventEmitter {
 
   private runnerTo: Runner;
 
-  constructor($slider: JQuery) {
-    super();
+  private eventEmitter: EventEmitter;
 
+  private sliderWidth: number;
+
+  private sliderMargin: number;
+
+  constructor($slider: JQuery, eventEmitter: EventEmitter) {
     this.$slider = $slider;
     this.$bar = this.init();
+    this.sliderWidth = this.calculateSliderWidth();
+    this.sliderMargin = this.calculateSliderMargin();
+    this.eventEmitter = eventEmitter;
     this.range = new Range(this.$bar);
-    this.runnerFrom = new Runner(this.$bar);
-    this.runnerTo = new Runner(this.$bar);
-    this.scale = new Scale(this.$bar);
-    this.addEventEmitters();
+    this.runnerFrom = new Runner(
+      'from',
+      this.$bar,
+      this.eventEmitter,
+      this.sliderWidth,
+      this.sliderMargin,
+    );
+    this.runnerTo = new Runner(
+      'to',
+      this.$bar,
+      this.eventEmitter,
+      this.sliderWidth,
+      this.sliderMargin,
+    );
+    this.scale = new Scale(this.$bar, this.eventEmitter);
   }
 
   private init(): JQuery {
@@ -102,44 +119,12 @@ class Bar extends EventEmitter {
     return ((to - from) / (max - min)) * 100;
   }
 
-  private addEventEmitters() {
-    this.runnerFrom.subscribe(ENameOfEvent.ChangedRunnerPosition, this.clickRunnerFrom);
-
-    this.runnerTo.subscribe(ENameOfEvent.ChangedRunnerPosition, this.clickRunnerTo);
-
-    this.scale.subscribe(ENameOfEvent.ClickScale, this.clickScale);
+  private calculateSliderWidth() {
+    return this.$bar.width()!;
   }
 
-  private clickScale = (value: number) => {
-    this.emit(ENameOfEvent.ClickScale, value);
-  };
-
-  private clickRunnerFrom = (position: IPosition) => {
-    this.notifyPositionRunnerFrom(position);
-    this.runnerFrom.addClassTarget();
-  };
-
-  private clickRunnerTo = (position: IPosition) => {
-    this.notifyPositionRunnerTo(position);
-    this.runnerFrom.removeClassTarget();
-  };
-
-  private notifyPositionRunnerFrom(position: IPosition) {
-    const positionFrom = this.calculatePercentageClicks(position);
-    this.emit(ENameOfEvent.ChangedRunnerFromPosition, positionFrom);
-  }
-
-  private notifyPositionRunnerTo(position: IPosition) {
-    const positionTo = this.calculatePercentageClicks(position);
-    this.emit(ENameOfEvent.ChangedRunnerToPosition, positionTo);
-  }
-
-  private calculatePercentageClicks(position: IPosition): IPosition {
-    const x = (position.x - this.$bar.offset()!.left) / this.$bar.width()!;
-
-    const y = (position.y - this.$bar.offset()!.top) / this.$bar.height()!;
-
-    return { x, y };
+  private calculateSliderMargin() {
+    return this.$bar.offset()!.left;
   }
 }
 

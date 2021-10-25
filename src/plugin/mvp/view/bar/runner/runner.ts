@@ -5,16 +5,32 @@ import { IRunnerOptions } from '../../../interfaces/interfaces';
 
 import Tip from './tip/tip';
 
-class Runner extends EventEmitter {
+class Runner {
   private $bar: JQuery;
 
   private $runner: JQuery;
 
   private tip: Tip;
 
-  constructor($bar: JQuery) {
-    super();
+  private eventEmitter: EventEmitter;
 
+  private sliderWidth: number;
+
+  private sliderMargin: number;
+
+  private type: string;
+
+  constructor(
+    type: string,
+    $bar: JQuery,
+    eventEmitter: EventEmitter,
+    sliderWidth: number,
+    sliderMargin: number,
+  ) {
+    this.type = type;
+    this.eventEmitter = eventEmitter;
+    this.sliderWidth = sliderWidth;
+    this.sliderMargin = sliderMargin;
     this.$bar = $bar;
     this.$runner = this.init();
     this.tip = new Tip(this.$runner);
@@ -86,17 +102,23 @@ class Runner extends EventEmitter {
   };
 
   private attachEventMouseMove = (): void => {
-    const position = Runner.getPosition(event);
+    const position = this.getPosition(event);
 
-    this.emit(ENameOfEvent.ChangedRunnerPosition, position);
+    if (this.type === 'from') {
+      this.eventEmitter.emit(ENameOfEvent.ChangedRunnerFromPosition, position);
+    }
+
+    if (this.type === 'to') {
+      this.eventEmitter.emit(ENameOfEvent.ChangedRunnerToPosition, position);
+    }
   };
 
   private attachEventMouseUp = (): void => {
     $(document).off('mousemove');
   };
 
-  private static getPosition(event: any) {
-    const x = event.pageX;
+  private getPosition(event: any) {
+    const x = (event.x - this.sliderMargin) / this.sliderWidth;
     const y = event.pageY;
 
     return { x, y };

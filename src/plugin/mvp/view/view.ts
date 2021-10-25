@@ -2,21 +2,19 @@ import EventEmitter from '../EventEmitter/EventEmitter';
 
 import Bar from './bar/bar';
 
-import { IOptions, IPosition } from '../interfaces/interfaces';
-import { ENameOfEvent } from '../enums/enums';
+import { IOptions } from '../interfaces/interfaces';
 
-class View extends EventEmitter {
+class View {
   private bar: Bar;
 
   private $slider: JQuery;
 
-  constructor(element: HTMLElement) {
-    super();
+  private eventEmitter: EventEmitter;
 
+  constructor(element: HTMLElement, eventEmitter: EventEmitter) {
+    this.eventEmitter = eventEmitter;
     this.$slider = View.init(element);
-    this.bar = new Bar(this.$slider);
-
-    this.addEventEmitters();
+    this.bar = new Bar(this.$slider, this.eventEmitter);
   }
 
   public update(options: IOptions): void {
@@ -47,25 +45,6 @@ class View extends EventEmitter {
 
     return $element.find('.slider');
   }
-
-  private addEventEmitters() {
-    this.bar.subscribe(ENameOfEvent.ChangedRunnerFromPosition, this.emitBarFrom);
-    this.bar.subscribe(ENameOfEvent.ChangedRunnerToPosition, this.emitBarTo);
-
-    this.bar.subscribe(ENameOfEvent.ClickScale, this.emitScale);
-  }
-
-  private emitBarFrom = (position: IPosition) => {
-    this.emit(ENameOfEvent.ChangedRunnerFromPosition, position);
-  };
-
-  private emitBarTo = (position: IPosition) => {
-    this.emit(ENameOfEvent.ChangedRunnerToPosition, position);
-  };
-
-  private emitScale = (value: number) => {
-    this.emit(ENameOfEvent.ClickScale, value);
-  };
 
   private addClassVertical() {
     this.$slider.addClass('slider_vertical');

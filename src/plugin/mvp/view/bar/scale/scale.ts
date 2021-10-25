@@ -1,14 +1,15 @@
 import { ENameOfEvent } from '../../../enums/enums';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
-class Scale extends EventEmitter {
-  $bar: JQuery;
+class Scale {
+  private $bar: JQuery;
 
-  $scale: JQuery;
+  private $scale: JQuery;
 
-  constructor($bar: JQuery) {
-    super();
+  private eventEmitter: EventEmitter;
 
+  constructor($bar: JQuery, eventEmitter: EventEmitter) {
+    this.eventEmitter = eventEmitter;
     this.$bar = $bar;
     this.$scale = this.init();
 
@@ -90,7 +91,7 @@ class Scale extends EventEmitter {
   private clickScale = (event: any) => {
     const value = Number(event.target.innerHTML);
 
-    this.emit(ENameOfEvent.ClickScale, value);
+    this.eventEmitter.emit(ENameOfEvent.ClickScale, value);
   };
 }
 

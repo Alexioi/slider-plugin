@@ -6,16 +6,17 @@ import View from '../view/view';
 import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
 import { ENameOfEvent } from '../enums/enums';
 
-class Presenter extends EventEmitter {
+class Presenter {
   private view: View;
 
   private model: Model;
 
-  constructor(element: HTMLElement, options: IOptions) {
-    super();
+  private eventEmitter: EventEmitter;
 
-    this.view = new View(element);
-    this.model = new Model(options);
+  constructor(view: View, model: Model, eventEmitter: EventEmitter) {
+    this.view = view;
+    this.model = model;
+    this.eventEmitter = eventEmitter;
 
     this.attachEventEmitters();
   }
@@ -29,30 +30,30 @@ class Presenter extends EventEmitter {
   }
 
   private attachEventEmitters(): void {
-    this.model.subscribe(ENameOfEvent.UpdatedModelOptions, (options: IOptions) => {
+    this.eventEmitter.subscribe(ENameOfEvent.UpdatedModelOptions, (options: IOptions) => {
       this.view.update(options);
-      this.emit('onChange', options);
+      this.eventEmitter.emit('onChange', options);
     });
 
-    this.model.subscribe(ENameOfEvent.UpdatedModelFrom, (options: IOptions) => {
+    this.eventEmitter.subscribe(ENameOfEvent.UpdatedModelFrom, (options: IOptions) => {
       this.view.updatePositionFrom(options);
-      this.emit('onChange', options);
+      this.eventEmitter.emit('onChange', options);
     });
 
-    this.model.subscribe(ENameOfEvent.UpdatedModelTo, (options: IOptions) => {
+    this.eventEmitter.subscribe(ENameOfEvent.UpdatedModelTo, (options: IOptions) => {
       this.view.updatePositionTo(options);
-      this.emit('onChange', options);
+      this.eventEmitter.emit('onChange', options);
     });
 
-    this.view.subscribe(ENameOfEvent.ClickScale, (value: number) => {
+    this.eventEmitter.subscribe(ENameOfEvent.ClickScale, (value: number) => {
       this.model.updateNearValue(value);
     });
 
-    this.view.subscribe(ENameOfEvent.ChangedRunnerFromPosition, (position: IPosition) => {
+    this.eventEmitter.subscribe(ENameOfEvent.ChangedRunnerFromPosition, (position: IPosition) => {
       this.model.calculateFromUsingFraction(position);
     });
 
-    this.view.subscribe(ENameOfEvent.ChangedRunnerToPosition, (position: IPosition) => {
+    this.eventEmitter.subscribe(ENameOfEvent.ChangedRunnerToPosition, (position: IPosition) => {
       this.model.calculateToUsingFraction(position);
     });
   }

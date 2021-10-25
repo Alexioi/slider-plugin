@@ -1,16 +1,40 @@
+import EventEmitter from '../EventEmitter/EventEmitter';
+import Model from '../model/model';
+import View from '../view/view';
 import Presenter from '../presenter/presenter';
 
 import { IOptions, IConfig, ICallbacks } from '../interfaces/interfaces';
 
+const defaultConfig: IOptions = {
+  isRange: true,
+  isVertical: false,
+  hasTip: true,
+  hasScale: true,
+  step: 10,
+  min: 0,
+  max: 100,
+  from: 40,
+  to: 70,
+};
+
 class App {
   private callbacks: ICallbacks;
 
+  private model: Model;
+
+  private view: View;
+
   private presenter: Presenter;
+
+  private eventEmitter: EventEmitter;
 
   constructor(element: HTMLElement, config: IConfig | undefined) {
     this.callbacks = { onChange: function onChange() {} };
 
-    this.presenter = App.init(element);
+    this.eventEmitter = new EventEmitter();
+    this.model = new Model(defaultConfig, this.eventEmitter);
+    this.view = new View(element, this.eventEmitter);
+    this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
     this.attachEventEmitters();
 
     this.update(config);
@@ -25,12 +49,6 @@ class App {
       this.callbacks.onChange = config.onChange;
     }
 
-    // for (let key in this.callbacks) {
-    //   if (typeof config[key] !== 'undefined') {
-    //     this.callbacks[key] = config[key];
-    //   }
-    // }
-
     this.presenter.updateOptions(config);
   }
 
@@ -38,24 +56,10 @@ class App {
     return this.presenter.getOptions();
   }
 
-  private static init(element: HTMLElement): Presenter {
-    const defaultConfig: IOptions = {
-      isRange: true,
-      isVertical: false,
-      hasTip: true,
-      hasScale: true,
-      step: 10,
-      min: 0,
-      max: 100,
-      from: 40,
-      to: 70,
-    };
-
-    return new Presenter(element, defaultConfig);
-  }
-
   private attachEventEmitters(): void {
-    this.presenter.subscribe('onChange', (options: IOptions) => this.callbacks.onChange(options));
+    this.eventEmitter.subscribe('onChange', (options: IOptions) => {
+      this.callbacks.onChange(options);
+    });
   }
 }
 
