@@ -3,14 +3,14 @@ import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 import { IRunnerOptions } from '../../../interfaces/interfaces';
 
-import Tip from './tip/tip';
+// import Tip from './tip/tip';
 
 class Runner {
   private $bar: JQuery;
 
   private $runner: JQuery;
 
-  private tip: Tip;
+  // private tip: Tip;
 
   private eventEmitter: EventEmitter;
 
@@ -33,11 +33,11 @@ class Runner {
     this.sliderMargin = sliderMargin;
     this.$bar = $bar;
     this.$runner = this.init();
-    this.tip = new Tip(this.$runner);
+    // this.tip = new Tip(this.$runner);
   }
 
-  public move({ value, isVertical, position }: IRunnerOptions): void {
-    this.tip.update(value);
+  public move({ isVertical, position }: IRunnerOptions): void {
+    // this.tip.update(value);
 
     if (isVertical) {
       this.moveVertically(position);
@@ -46,13 +46,13 @@ class Runner {
     }
   }
 
-  public update(hasTip: boolean): void {
-    if (hasTip) {
-      this.tip.show();
-    } else {
-      this.tip.hide();
-    }
-  }
+  // public update(hasTip: boolean): void {
+  //   if (hasTip) {
+  //     this.tip.show();
+  //   } else {
+  //     this.tip.hide();
+  //   }
+  // }
 
   public hide(): void {
     this.$runner.css({ display: 'none' });

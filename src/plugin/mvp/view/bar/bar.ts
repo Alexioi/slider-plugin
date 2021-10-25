@@ -58,7 +58,7 @@ class Bar {
   }
 
   public update(options: IOptions): void {
-    const { from, hasTip, hasScale, isRange, isVertical, min, max } = options;
+    const { from, hasScale, isRange, isVertical, min, max } = options;
 
     if (isRange) {
       this.runnerFrom.show();
@@ -70,8 +70,8 @@ class Bar {
       this.runnerFrom.addClassTarget();
     }
 
-    this.runnerFrom.update(hasTip);
-    this.runnerTo.update(hasTip);
+    // this.runnerFrom.update(hasTip);
+    // this.runnerTo.update(hasTip);
 
     this.updatePositionFrom(options);
     this.updatePositionTo(options);

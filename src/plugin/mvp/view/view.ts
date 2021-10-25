@@ -3,9 +3,12 @@ import EventEmitter from '../EventEmitter/EventEmitter';
 import Bar from './bar/bar';
 
 import { IOptions } from '../interfaces/interfaces';
+import Tip from './Tip/Tip';
 
 class View {
   private bar: Bar;
+
+  private tip: Tip;
 
   private $slider: JQuery;
 
@@ -14,11 +17,13 @@ class View {
   constructor(element: HTMLElement, eventEmitter: EventEmitter) {
     this.eventEmitter = eventEmitter;
     this.$slider = View.init(element);
+    this.tip = new Tip(this.$slider, this.eventEmitter);
     this.bar = new Bar(this.$slider, this.eventEmitter);
   }
 
   public update(options: IOptions): void {
     const { isVertical } = options;
+    this.eventEmitter.emit('updateView', options);
 
     if (isVertical) {
       this.addClassVertical();

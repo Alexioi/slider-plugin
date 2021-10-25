@@ -1,9 +1,10 @@
-@use "sass:math";
+@use 'sass:math';
 
 $runnerWidth: 1.5rem;
 
 .slider {
   display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   width: 100%;
   padding: 40px;
@@ -68,6 +69,7 @@ $runnerWidth: 1.5rem;
     top: -150%;
     left: 50%;
     transform: translateX(-50%);
+    user-select: none;
   }
 
   &_vertical &__tip {
@@ -94,6 +96,7 @@ $runnerWidth: 1.5rem;
     cursor: pointer;
     position: absolute;
     transform: translateX(-50%);
+    user-select: none;
   }
 
   &_vertical &__mark {
