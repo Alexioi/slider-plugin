@@ -1,59 +1,58 @@
-import EventEmitter from '../../EventEmitter/EventEmitter';
+import './tip.scss';
+
 import { IOptions } from '../../interfaces/interfaces';
 import createElement from '../../lib/createElement';
 
 class Tip {
   private $slider: JQuery;
 
-  private $tipLine: JQuery;
+  private $tipLine!: JQuery;
 
-  private $tipFrom: JQuery;
+  private $tipFrom!: JQuery;
 
-  private $tipTo: JQuery;
+  private $tipTo!: JQuery;
 
-  private $tipBoth: JQuery;
+  private $tipBoth!: JQuery;
 
-  private eventEmitter: EventEmitter;
-
-  constructor($slider: JQuery, eventEmitter: EventEmitter) {
+  constructor($slider: JQuery) {
     this.$slider = $slider;
-    this.eventEmitter = eventEmitter;
 
-    this.$tipLine = createElement(this.$slider, 'div', 'slider__tip-line');
-    this.$tipFrom = createElement(this.$tipLine, 'span', 'slider__tip-from');
-    this.$tipBoth = createElement(this.$tipLine, 'span', 'slider__tip-both');
-    this.$tipTo = createElement(this.$tipLine, 'span', 'slider__tip-to');
-    this.attachEventEmitter();
+    this.init();
   }
 
-  private attachEventEmitter() {
-    this.eventEmitter.subscribe('updateView', this.update);
+  public update = (options: IOptions) => {
+    const { from, to, hasTip, isRange } = options;
 
-    this.eventEmitter.subscribe('changeFrom', this.changeFrom);
-  }
+    this.toggleDisplay(hasTip, isRange);
+    this.changeText(from, to);
+  };
 
-  private changeFrom = (options: IOptions) => {
+  public changeValue = (options: IOptions) => {
     const { from, to } = options;
 
     this.changeText(from, to);
   };
 
-  private update = (options: IOptions) => {
-    const { from, to, hasTip } = options;
-
-    if (hasTip) {
-      this.$tipLine.css({ display: 'block' });
-    } else {
-      this.$tipLine.css({ display: 'none' });
-    }
-
-    this.changeText(from, to);
-  };
+  private init() {
+    this.$tipLine = createElement(this.$slider, 'div', 'slider__tip-line');
+    this.$tipFrom = createElement(this.$tipLine, 'span', 'slider__tip-from');
+    this.$tipBoth = createElement(this.$tipLine, 'span', 'slider__tip-both');
+    this.$tipTo = createElement(this.$tipLine, 'span', 'slider__tip-to');
+  }
 
   private changeText(from: number, to: number) {
     this.$tipFrom.text(from);
     this.$tipTo.text(to);
     this.$tipBoth.text(`${from} - ${to}`);
+  }
+
+  private toggleDisplay(hasTip: boolean, isRange: boolean) {
+    const displayTip = hasTip ? 'block' : 'none';
+    const displayFromAndBoth = isRange ? 'inline' : 'none';
+
+    this.$tipLine.css({ display: displayTip });
+    this.$tipFrom.css({ display: displayFromAndBoth });
+    this.$tipBoth.css({ display: displayFromAndBoth });
   }
 }
 

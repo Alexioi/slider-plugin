@@ -14,7 +14,7 @@ $.fn.slider = function initSliders(config?: IConfig) {
   const apps: Array<App> = [];
 
   this.each((i: number, node: HTMLElement) => {
-    const app = new App(node, config);
+    const app = new App($(node), config);
 
     apps.push(app);
   });

@@ -4,6 +4,7 @@ import Bar from './bar/bar';
 
 import { IOptions } from '../interfaces/interfaces';
 import Tip from './Tip/Tip';
+import createElement from '../lib/createElement';
 
 class View {
   private bar: Bar;
@@ -14,16 +15,16 @@ class View {
 
   private eventEmitter: EventEmitter;
 
-  constructor(element: HTMLElement, eventEmitter: EventEmitter) {
+  constructor(element: JQuery, eventEmitter: EventEmitter) {
     this.eventEmitter = eventEmitter;
-    this.$slider = View.init(element);
-    this.tip = new Tip(this.$slider, this.eventEmitter);
+    this.$slider = createElement(element, 'div', 'slider');
+    this.tip = new Tip(this.$slider);
     this.bar = new Bar(this.$slider, this.eventEmitter);
   }
 
   public update(options: IOptions): void {
     const { isVertical } = options;
-    this.eventEmitter.emit('updateView', options);
+    this.tip.update(options);
 
     if (isVertical) {
       this.addClassVertical();
@@ -35,20 +36,13 @@ class View {
   }
 
   public updatePositionFrom(options: IOptions): void {
+    this.tip.changeValue(options);
     this.bar.updatePositionFrom(options);
   }
 
   public updatePositionTo(options: IOptions): void {
+    this.tip.changeValue(options);
     this.bar.updatePositionTo(options);
-  }
-
-  private static init(element: HTMLElement): JQuery {
-    const slider = "<div class='slider'></div>";
-    const $element = $(element);
-
-    $element.append(slider);
-
-    return $element.find('.slider');
   }
 
   private addClassVertical() {

@@ -10,7 +10,7 @@ class Model {
 
   constructor(options: IOptions, eventEmitter: EventEmitter) {
     this.eventEmitter = eventEmitter;
-    this.options = options;
+    this.options = { ...options };
   }
 
   public updateOptions({

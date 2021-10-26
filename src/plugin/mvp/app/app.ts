@@ -2,20 +2,8 @@ import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from '../model/model';
 import View from '../view/view';
 import Presenter from '../presenter/presenter';
-
 import { IOptions, IConfig, ICallbacks } from '../interfaces/interfaces';
-
-const defaultConfig: IOptions = {
-  isRange: true,
-  isVertical: false,
-  hasTip: true,
-  hasScale: true,
-  step: 10,
-  min: 0,
-  max: 100,
-  from: 40,
-  to: 70,
-};
+import sliderOptions from '../../sliderOptions/sliderOptions';
 
 class App {
   private callbacks: ICallbacks;
@@ -28,11 +16,11 @@ class App {
 
   private eventEmitter: EventEmitter;
 
-  constructor(element: HTMLElement, config: IConfig | undefined) {
-    this.callbacks = { onChange: function onChange() {} };
+  constructor(element: JQuery, config: IConfig | undefined) {
+    this.callbacks = { ...sliderOptions.callbacks };
 
     this.eventEmitter = new EventEmitter();
-    this.model = new Model(defaultConfig, this.eventEmitter);
+    this.model = new Model(sliderOptions.defaultConfig, this.eventEmitter);
     this.view = new View(element, this.eventEmitter);
     this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
     this.attachEventEmitters();
