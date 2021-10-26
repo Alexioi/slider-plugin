@@ -1,6 +1,6 @@
 import EventEmitter from '../../EventEmitter/EventEmitter';
 
-import Runner from './runner/runner';
+// import Runner from './runner/runner';
 import Range from './range/range';
 import Scale from './scale/scale';
 
@@ -15,9 +15,9 @@ class Bar {
 
   private $bar: JQuery;
 
-  private runnerFrom: Runner;
+  // private runnerFrom: Runner;
 
-  private runnerTo: Runner;
+  // private runnerTo: Runner;
 
   private eventEmitter: EventEmitter;
 
@@ -32,20 +32,20 @@ class Bar {
     this.sliderMargin = this.calculateSliderMargin();
     this.eventEmitter = eventEmitter;
     this.range = new Range(this.$bar);
-    this.runnerFrom = new Runner(
-      'from',
-      this.$bar,
-      this.eventEmitter,
-      this.sliderWidth,
-      this.sliderMargin,
-    );
-    this.runnerTo = new Runner(
-      'to',
-      this.$bar,
-      this.eventEmitter,
-      this.sliderWidth,
-      this.sliderMargin,
-    );
+    // this.runnerFrom = new Runner(
+    //   'from',
+    //   this.$bar,
+    //   this.eventEmitter,
+    //   this.sliderWidth,
+    //   this.sliderMargin,
+    // );
+    // this.runnerTo = new Runner(
+    //   'to',
+    //   this.$bar,
+    //   this.eventEmitter,
+    //   this.sliderWidth,
+    //   this.sliderMargin,
+    // );
     this.scale = new Scale(this.$bar, this.eventEmitter);
   }
 
@@ -58,20 +58,17 @@ class Bar {
   }
 
   public update(options: IOptions): void {
-    const { from, hasScale, isRange, isVertical, min, max } = options;
+    const { hasScale, isVertical, min, max } = options;
 
-    if (isRange) {
-      this.runnerFrom.show();
-    } else {
-      this.runnerFrom.hide();
-    }
+    // if (isRange) {
+    //   this.runnerFrom.show();
+    // } else {
+    //   this.runnerFrom.hide();
+    // }
 
-    if ((from - min) / (max - min) > 0.5) {
-      this.runnerFrom.addClassTarget();
-    }
-
-    // this.runnerFrom.update(hasTip);
-    // this.runnerTo.update(hasTip);
+    // if ((from - min) / (max - min) > 0.5) {
+    //   this.runnerFrom.addClassTarget();
+    // }
 
     this.updatePositionFrom(options);
     this.updatePositionTo(options);
@@ -88,13 +85,13 @@ class Bar {
     const position = Bar.calculatePosition(value, min, max);
     const width = Bar.calculateWidth(from, to, min, max);
 
-    this.runnerFrom.move({ isVertical, position, value });
+    // this.runnerFrom.move({ isVertical, position, value });
     this.range.move({ isVertical, position, width });
   }
 
   public updatePositionTo({ isRange, isVertical, min, max, from, to }: IOptions): void {
-    const value = to;
-    const position = Bar.calculatePosition(value, min, max);
+    // const value = to;
+    // const position = Bar.calculatePosition(value, min, max);
 
     let rangePosition: number;
     let width: number;
@@ -107,7 +104,7 @@ class Bar {
       width = Bar.calculateWidth(min, to, min, max);
     }
 
-    this.runnerTo.move({ isVertical, position, value });
+    // this.runnerTo.move({ isVertical, position, value });
     this.range.move({ isVertical, position: rangePosition, width });
   }
 

@@ -47,8 +47,8 @@ class Tip {
   }
 
   private toggleDisplay(hasTip: boolean, isRange: boolean) {
-    const displayTip = hasTip ? 'block' : 'none';
-    const displayFromAndBoth = isRange ? 'inline' : 'none';
+    const displayTip = hasTip ? '' : 'none';
+    const displayFromAndBoth = isRange ? '' : 'none';
 
     this.$tipLine.css({ display: displayTip });
     this.$tipFrom.css({ display: displayFromAndBoth });

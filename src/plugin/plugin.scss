@@ -4,10 +4,11 @@ $runnerWidth: 1.5rem;
 
 .slider {
   display: flex;
+  position: relative;
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  padding: 40px;
+  margin: 40px;
 
   &_vertical {
     width: auto;

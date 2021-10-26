@@ -37,11 +37,13 @@ class Presenter {
 
     this.eventEmitter.subscribe(ENameOfEvent.UpdatedModelFrom, (options: IOptions) => {
       this.view.updatePositionFrom(options);
+      this.view.updateValue(options);
       this.eventEmitter.emit('onChange', options);
     });
 
     this.eventEmitter.subscribe(ENameOfEvent.UpdatedModelTo, (options: IOptions) => {
       this.view.updatePositionTo(options);
+      this.view.updateValue(options);
       this.eventEmitter.emit('onChange', options);
     });
 

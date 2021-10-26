@@ -31,7 +31,6 @@ interface IOptions {
 interface IRunnerOptions {
   isVertical: boolean;
   position: number;
-  value: number;
 }
 
 interface IRangeOptions {

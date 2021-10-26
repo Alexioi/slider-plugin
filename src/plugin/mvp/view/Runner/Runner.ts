@@ -1,16 +1,13 @@
-import { ENameOfEvent } from '../../../enums/enums';
-import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { ENameOfEvent } from '../../enums/enums';
+import EventEmitter from '../../EventEmitter/EventEmitter';
 
-import { IRunnerOptions } from '../../../interfaces/interfaces';
-
-// import Tip from './tip/tip';
+import { IRunnerOptions } from '../../interfaces/interfaces';
+import createElement from '../../lib/createElement';
 
 class Runner {
-  private $bar: JQuery;
+  private $slider: JQuery;
 
   private $runner: JQuery;
-
-  // private tip: Tip;
 
   private eventEmitter: EventEmitter;
 
@@ -22,7 +19,7 @@ class Runner {
 
   constructor(
     type: string,
-    $bar: JQuery,
+    $slider: JQuery,
     eventEmitter: EventEmitter,
     sliderWidth: number,
     sliderMargin: number,
@@ -31,28 +28,23 @@ class Runner {
     this.eventEmitter = eventEmitter;
     this.sliderWidth = sliderWidth;
     this.sliderMargin = sliderMargin;
-    this.$bar = $bar;
-    this.$runner = this.init();
-    // this.tip = new Tip(this.$runner);
+    this.$slider = $slider;
+    this.$runner = createElement(
+      this.$slider,
+      'div',
+      'slider__runner',
+      `slider__runner_type-${this.type}`,
+    );
+    this.attachEvents();
   }
 
   public move({ isVertical, position }: IRunnerOptions): void {
-    // this.tip.update(value);
-
     if (isVertical) {
       this.moveVertically(position);
     } else {
       this.moveHorizontally(position);
     }
   }
-
-  // public update(hasTip: boolean): void {
-  //   if (hasTip) {
-  //     this.tip.show();
-  //   } else {
-  //     this.tip.hide();
-  //   }
-  // }
 
   public hide(): void {
     this.$runner.css({ display: 'none' });
@@ -78,22 +70,10 @@ class Runner {
     this.$runner.css({ top: `${position}%`, left: '' });
   }
 
-  private init(): JQuery {
-    const runner = "<div class='slider__runner'></div>";
+  private attachEvents() {
+    this.$runner.on('dragstart', false);
 
-    this.$bar.append(runner);
-
-    const $runner = this.$bar.find('.slider__runner').last();
-
-    this.attachEvents($runner);
-
-    return $runner;
-  }
-
-  private attachEvents(node: JQuery) {
-    node.on('dragstart', false);
-
-    node.on('mousedown', this.attachEventMouseDown);
+    this.$runner.on('mousedown', this.attachEventMouseDown);
   }
 
   private attachEventMouseDown = (): void => {
