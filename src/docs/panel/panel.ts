@@ -1,32 +1,30 @@
 import { IOptions } from '../../plugin/mvp/interfaces/interfaces';
 
 class Panel {
-  control: Element;
+  $element: JQuery;
 
   slider: any;
 
-  range!: HTMLInputElement;
+  $range!: JQuery;
 
-  vertical!: HTMLInputElement;
+  $vertical!: JQuery;
 
-  min!: HTMLInputElement;
+  $min!: JQuery;
 
-  max!: HTMLInputElement;
+  $max!: JQuery;
 
-  from!: HTMLInputElement;
+  $from!: JQuery;
 
-  to!: HTMLInputElement;
+  $to!: JQuery;
 
-  step!: HTMLInputElement;
+  $step!: JQuery;
 
-  tip!: HTMLInputElement;
+  $tip!: JQuery;
 
-  scale!: HTMLInputElement;
+  $scale!: JQuery;
 
-  numberMarks!: HTMLInputElement;
-
-  constructor(control: Element, slider: any) {
-    this.control = control;
+  constructor($element: JQuery, slider: any) {
+    this.$element = $element;
     this.slider = slider;
 
     this.searchElements();
@@ -40,115 +38,98 @@ class Panel {
 
     this.slider.update({
       onChange: function onChange(options: IOptions) {
-        that.from.value = String(options.from);
-        that.to.value = String(options.to);
+        that.$from.val(options.from);
+        that.$to.val(options.to);
       },
     });
   }
 
   searchElements(): void {
-    this.range = this.control.querySelector('.panel__input_name-range')!;
-    this.vertical = this.control.querySelector('.panel__input_name-vertical')!;
-    this.scale = this.control.querySelector('.panel__input_name-scale')!;
-    this.min = this.control.querySelector('.panel__input_name-min')!;
-    this.max = this.control.querySelector('.panel__input_name-max')!;
-    this.from = this.control.querySelector('.panel__input_name-from')!;
-    this.to = this.control.querySelector('.panel__input_name-to')!;
-    this.step = this.control.querySelector('.panel__input_name-step')!;
-    this.tip = this.control.querySelector('.panel__input_name-tip')!;
-    this.numberMarks = this.control.querySelector('.panel__input_name-number-marks')!;
+    this.$range = this.$element.find('.panel__input_name-range')!;
+    this.$vertical = this.$element.find('.panel__input_name-vertical')!;
+    this.$scale = this.$element.find('.panel__input_name-scale')!;
+    this.$min = this.$element.find('.panel__input_name-min')!;
+    this.$max = this.$element.find('.panel__input_name-max')!;
+    this.$from = this.$element.find('.panel__input_name-from')!;
+    this.$to = this.$element.find('.panel__input_name-to')!;
+    this.$step = this.$element.find('.panel__input_name-step')!;
+    this.$tip = this.$element.find('.panel__input_name-tip')!;
   }
 
   attachEventHandler(): void {
-    this.vertical.addEventListener('click', this.changeVertical);
-    this.scale.addEventListener('click', this.changeScale);
-    this.tip.addEventListener('click', this.changeTip);
-    this.min.addEventListener('change', this.changeMin);
-    this.max.addEventListener('change', this.changeMax);
-    this.from.addEventListener('change', this.changeFrom);
-    this.to.addEventListener('change', this.changeTo);
-    this.step.addEventListener('change', this.changeStep);
-
-    this.range.addEventListener('click', this.changeRange);
+    this.$vertical.on('click', this.changeVertical);
+    this.$scale.on('click', this.changeScale);
+    this.$tip.on('click', this.changeTip);
+    this.$min.on('change', this.changeMin);
+    this.$max.on('change', this.changeMax);
+    this.$from.on('change', this.changeFrom);
+    this.$to.on('change', this.changeTo);
+    this.$step.on('change', this.changeStep);
+    this.$range.on('click', this.changeRange);
   }
 
   changeRange = (): void => {
-    if (this.range.checked) {
-      this.slider.update({ isRange: true });
-    } else {
-      this.slider.update({ isRange: false });
-    }
+    const isRange = this.$range.prop('checked');
+
+    this.slider.update({ isRange });
 
     this.verifyInput();
   };
 
   changeTip = (): void => {
-    if (this.tip.checked) {
-      this.slider.update({ hasTip: true });
-    } else {
-      this.slider.update({ hasTip: false });
-    }
+    const hasTip = this.$tip.prop('checked');
 
-    this.verifyInput();
-  };
-
-  changeNumberMarks = (): void => {
-    const value = Number(this.numberMarks.value);
-    this.slider.update({ numberMarks: value });
+    this.slider.update({ hasTip });
 
     this.verifyInput();
   };
 
   changeVertical = (): void => {
-    if (this.vertical.checked) {
-      this.slider.update({ isVertical: true });
-    } else {
-      this.slider.update({ isVertical: false });
-    }
+    const isVertical = this.$vertical.prop('checked');
+
+    this.slider.update({ isVertical });
 
     this.verifyInput();
   };
 
   changeScale = (): void => {
-    if (this.scale.checked) {
-      this.slider.update({ hasScale: true });
-    } else {
-      this.slider.update({ hasScale: false });
-    }
+    const hasScale = this.$scale.prop('checked');
+
+    this.slider.update({ hasScale });
 
     this.verifyInput();
   };
 
   changeMin = (): void => {
-    const value = Number(this.min.value);
+    const value = Number(this.$min.val());
     this.slider.update({ min: value });
 
     this.verifyInput();
   };
 
   changeMax = (): void => {
-    const value = Number(this.max.value);
+    const value = Number(this.$max.val());
     this.slider.update({ max: value });
 
     this.verifyInput();
   };
 
   changeFrom = (): void => {
-    const value = Number(this.from.value);
+    const value = Number(this.$from.val());
     this.slider.update({ from: value });
 
     this.verifyInput();
   };
 
   changeTo = (): void => {
-    const value = Number(this.to.value);
+    const value = Number(this.$to.val());
     this.slider.update({ to: value });
 
     this.verifyInput();
   };
 
   changeStep = (): void => {
-    const value = Number(this.step.value);
+    const value = Number(this.$step.val());
     this.slider.update({ step: value });
 
     this.verifyInput();
@@ -157,15 +138,15 @@ class Panel {
   verifyInput(): void {
     const options: IOptions = this.slider.getOptions();
 
-    this.range.checked = options.isRange;
-    this.vertical.checked = options.isVertical;
-    this.min.value = String(options.min);
-    this.max.value = String(options.max);
-    this.from.value = String(options.from);
-    this.to.value = String(options.to);
-    this.step.value = String(options.step);
-    this.tip.checked = options.hasTip;
-    this.scale.checked = options.hasScale;
+    this.$range.prop('checked', options.isRange);
+    this.$vertical.prop('checked', options.isVertical);
+    this.$min.val(options.min);
+    this.$max.val(options.max);
+    this.$from.val(options.from);
+    this.$to.val(options.to);
+    this.$step.val(options.step);
+    this.$tip.prop('checked', options.hasTip);
+    this.$scale.prop('checked', options.hasScale);
   }
 }
 

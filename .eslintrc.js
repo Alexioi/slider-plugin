@@ -1,5 +1,6 @@
-module.exports = {
-  extends: ['airbnb-base', 'airbnb-typescript/base'],
+export default {
+  plugins: ['fsd'],
+  extends: ['airbnb-base', 'airbnb-typescript/base', 'plugin:fsd/all'],
   parserOptions: {
     project: './tsconfig.json',
   },
