@@ -6,18 +6,10 @@ import App from './mvp/app/app';
 
 declare global {
   interface JQuery {
-    slider: (config?: IConfig) => Array<App>;
+    slider: (config?: IConfig) => JQuery<App>;
   }
 }
 
 $.fn.slider = function initSliders(config?: IConfig) {
-  const apps: Array<App> = [];
-
-  this.each((i: number, node: HTMLElement) => {
-    const app = new App($(node), config);
-
-    apps.push(app);
-  });
-
-  return apps;
+  return this.map((i: number, node: HTMLElement) => new App($(node), config));
 };

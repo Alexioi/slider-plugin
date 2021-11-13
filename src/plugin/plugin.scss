@@ -41,19 +41,7 @@ $runnerWidth: 1.5rem;
     width: 100%;
   }
 
-  &__runner {
-    box-sizing: border-box;
-    position: absolute;
-    z-index: 2;
-    top: -(math.div($runnerWidth, 3));
-    border: 2px solid white;
-    height: $runnerWidth;
-    width: $runnerWidth;
-    border-radius: 50%;
-    background-color: green;
-    transform: translateX(-50%);
-    cursor: pointer;
-  }
+
 
   &_vertical &__runner {
     right: -(math.div($runnerWidth, 3));

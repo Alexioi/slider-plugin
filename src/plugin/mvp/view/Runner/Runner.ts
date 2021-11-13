@@ -1,7 +1,9 @@
+import './runner.scss';
+
 import { ENameOfEvent } from '../../enums/enums';
 import EventEmitter from '../../EventEmitter/EventEmitter';
 
-import { IRunnerOptions } from '../../interfaces/interfaces';
+import { IRunnerOptions, IOptions } from '../../interfaces/interfaces';
 import createElement from '../../lib/createElement';
 
 class Runner {
@@ -11,30 +13,15 @@ class Runner {
 
   private eventEmitter: EventEmitter;
 
-  private sliderWidth: number;
-
-  private sliderMargin: number;
-
   private type: string;
 
-  constructor(
-    type: string,
-    $slider: JQuery,
-    eventEmitter: EventEmitter,
-    sliderWidth: number,
-    sliderMargin: number,
-  ) {
+  private sliderCharacterization = { length: 0, offset: 0 };
+
+  constructor(type: string, $slider: JQuery, eventEmitter: EventEmitter) {
     this.type = type;
     this.eventEmitter = eventEmitter;
-    this.sliderWidth = sliderWidth;
-    this.sliderMargin = sliderMargin;
     this.$slider = $slider;
-    this.$runner = createElement(
-      this.$slider,
-      'div',
-      'slider__runner',
-      `slider__runner_type-${this.type}`,
-    );
+    this.$runner = createElement(this.$slider, 'div', 'slider__runner');
     this.attachEvents();
   }
 
@@ -44,6 +31,11 @@ class Runner {
     } else {
       this.moveHorizontally(position);
     }
+  }
+
+  public setSliderCharacterization(sliderCharacterization: { length: number; offset: number }) {
+    this.sliderCharacterization = sliderCharacterization;
+    console.log(sliderCharacterization);
   }
 
   public hide(): void {
@@ -60,6 +52,20 @@ class Runner {
 
   public removeClassTarget(): void {
     this.$runner.css({ 'z-index': '' });
+  }
+
+  private calculateSliderCharacterization({ isVertical }: IOptions) {
+    if (isVertical) {
+      const length = this.$slider.height()!;
+      const offset = this.$slider.offset()!.top;
+
+      return { length, offset };
+    }
+
+    const length = this.$slider.width()!;
+    const offset = this.$slider.offset()!.left;
+
+    return { length, offset };
   }
 
   private moveHorizontally(position: number) {
@@ -98,8 +104,10 @@ class Runner {
   };
 
   private getPosition(event: any) {
-    const x = (event.x - this.sliderMargin) / this.sliderWidth;
-    const y = event.pageY;
+    const { length, offset } = this.sliderCharacterization;
+
+    const x = (event.x - offset) / length;
+    const y = (event.y - offset) / length;
 
     return { x, y };
   }

@@ -14,10 +14,6 @@ class View {
 
   private $slider: JQuery;
 
-  private sliderWidth: number;
-
-  private sliderMargin: number;
-
   private runnerFrom: Runner;
 
   private runnerTo: Runner;
@@ -26,30 +22,16 @@ class View {
 
   constructor(element: JQuery, eventEmitter: EventEmitter) {
     this.eventEmitter = eventEmitter;
-
     this.$slider = createElement(element, 'div', 'slider');
-    this.sliderWidth = this.calculateSliderWidth();
-    this.sliderMargin = this.calculateSliderMargin();
     this.tip = new Tip(this.$slider);
     this.bar = new Bar(this.$slider, this.eventEmitter);
-    this.runnerFrom = new Runner(
-      'from',
-      this.$slider,
-      this.eventEmitter,
-      this.sliderWidth,
-      this.sliderMargin,
-    );
-    this.runnerTo = new Runner(
-      'to',
-      this.$slider,
-      this.eventEmitter,
-      this.sliderWidth,
-      this.sliderMargin,
-    );
+    this.runnerFrom = new Runner('from', this.$slider, this.eventEmitter);
+    this.runnerTo = new Runner('to', this.$slider, this.eventEmitter);
   }
 
   public update(options: IOptions): void {
     const { isVertical } = options;
+
     this.tip.update(options);
 
     if (isVertical) {
@@ -57,6 +39,10 @@ class View {
     } else {
       this.removeClassVertical();
     }
+    const sliderCharacterization = this.calculateSliderCharacterization(options);
+
+    this.runnerFrom.setSliderCharacterization(sliderCharacterization);
+    this.runnerTo.setSliderCharacterization(sliderCharacterization);
 
     this.bar.update(options);
 
@@ -89,12 +75,18 @@ class View {
     this.$slider.removeClass('slider_vertical');
   }
 
-  private calculateSliderWidth() {
-    return this.$slider.width()!;
-  }
+  private calculateSliderCharacterization({ isVertical }: IOptions) {
+    if (isVertical) {
+      const length = this.$slider.height()!;
+      const offset = this.$slider.offset()!.top;
 
-  private calculateSliderMargin() {
-    return this.$slider.offset()!.left;
+      return { length, offset };
+    }
+
+    const length = this.$slider.width()!;
+    const offset = this.$slider.offset()!.left;
+
+    return { length, offset };
   }
 
   private static calculatePosition(value: number, min: number, max: number) {

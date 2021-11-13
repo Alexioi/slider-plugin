@@ -1,0 +1,17 @@
+@use 'sass:math';
+
+.slider {
+  &__runner {
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 2;
+    top: -(math.div(1.5rem, 3));
+    border: 2px solid white;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background-color: green;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+}
