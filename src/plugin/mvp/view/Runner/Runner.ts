@@ -3,25 +3,23 @@ import './runner.scss';
 import { ENameOfEvent } from '../../enums/enums';
 import EventEmitter from '../../EventEmitter/EventEmitter';
 
-import { IRunnerOptions, IOptions } from '../../interfaces/interfaces';
+import { IRunnerOptions } from '../../interfaces/interfaces';
 import createElement from '../../lib/createElement';
 
 class Runner {
-  private $slider: JQuery;
-
   private $runner: JQuery;
 
   private eventEmitter: EventEmitter;
 
   private type: string;
 
-  private sliderCharacterization = { length: 0, offset: 0 };
+  private $slider: JQuery;
 
   constructor(type: string, $slider: JQuery, eventEmitter: EventEmitter) {
     this.type = type;
-    this.eventEmitter = eventEmitter;
     this.$slider = $slider;
-    this.$runner = createElement(this.$slider, 'div', 'slider__runner');
+    this.eventEmitter = eventEmitter;
+    this.$runner = createElement($slider, 'div', 'slider__runner');
     this.attachEvents();
   }
 
@@ -31,11 +29,6 @@ class Runner {
     } else {
       this.moveHorizontally(position);
     }
-  }
-
-  public setSliderCharacterization(sliderCharacterization: { length: number; offset: number }) {
-    this.sliderCharacterization = sliderCharacterization;
-    console.log(sliderCharacterization);
   }
 
   public hide(): void {
@@ -52,20 +45,6 @@ class Runner {
 
   public removeClassTarget(): void {
     this.$runner.css({ 'z-index': '' });
-  }
-
-  private calculateSliderCharacterization({ isVertical }: IOptions) {
-    if (isVertical) {
-      const length = this.$slider.height()!;
-      const offset = this.$slider.offset()!.top;
-
-      return { length, offset };
-    }
-
-    const length = this.$slider.width()!;
-    const offset = this.$slider.offset()!.left;
-
-    return { length, offset };
   }
 
   private moveHorizontally(position: number) {
@@ -103,11 +82,20 @@ class Runner {
     $(document).off('mousemove');
   };
 
-  private getPosition(event: any) {
-    const { length, offset } = this.sliderCharacterization;
+  private calculateSliderCharacterization() {
+    const height = this.$slider.height()!;
+    const left = this.$slider.offset()!.left;
+    const top = this.$slider.offset()!.top;
+    const width = this.$slider.width()!;
 
-    const x = (event.x - offset) / length;
-    const y = (event.y - offset) / length;
+    return { height, width, left, top };
+  }
+
+  private getPosition(event: any) {
+    const { height, width, left, top } = this.calculateSliderCharacterization();
+
+    const x = (event.x - left) / width;
+    const y = (event.y - top) / height;
 
     return { x, y };
   }

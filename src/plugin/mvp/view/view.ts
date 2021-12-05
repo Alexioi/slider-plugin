@@ -32,38 +32,31 @@ class View {
   public update(options: IOptions): void {
     const { isVertical } = options;
 
-    this.tip.update(options);
-
     if (isVertical) {
       this.addClassVertical();
     } else {
       this.removeClassVertical();
     }
-    const sliderCharacterization = this.calculateSliderCharacterization(options);
-
-    this.runnerFrom.setSliderCharacterization(sliderCharacterization);
-    this.runnerTo.setSliderCharacterization(sliderCharacterization);
 
     this.bar.update(options);
 
     this.updateValue(options);
   }
 
-  public updateValue({ from, to, min, max, isVertical }: IOptions) {
+  public updateValue({ from, to, min, max, isVertical, hasTip, isRange }: IOptions) {
     const leftPosition = View.calculatePosition(from, min, max);
     const rightPosition = View.calculatePosition(to, min, max);
 
+    this.tip.update({ from, to, hasTip, isRange }, leftPosition, rightPosition);
     this.runnerFrom.move({ isVertical, position: leftPosition });
     this.runnerTo.move({ isVertical, position: rightPosition });
   }
 
   public updatePositionFrom(options: IOptions): void {
-    this.tip.changeValue(options);
     this.bar.updatePositionFrom(options);
   }
 
   public updatePositionTo(options: IOptions): void {
-    this.tip.changeValue(options);
     this.bar.updatePositionTo(options);
   }
 
@@ -73,20 +66,6 @@ class View {
 
   private removeClassVertical() {
     this.$slider.removeClass('slider_vertical');
-  }
-
-  private calculateSliderCharacterization({ isVertical }: IOptions) {
-    if (isVertical) {
-      const length = this.$slider.height()!;
-      const offset = this.$slider.offset()!.top;
-
-      return { length, offset };
-    }
-
-    const length = this.$slider.width()!;
-    const offset = this.$slider.offset()!.left;
-
-    return { length, offset };
   }
 
   private static calculatePosition(value: number, min: number, max: number) {
