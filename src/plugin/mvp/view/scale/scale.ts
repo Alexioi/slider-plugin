@@ -1,5 +1,5 @@
-import { ENameOfEvent } from '../../../enums/enums';
-import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { ENameOfEvent } from '../../enums/enums';
+import EventEmitter from '../../EventEmitter/EventEmitter';
 
 class Scale {
   private $bar: JQuery;

@@ -3,7 +3,6 @@ import './runner.scss';
 import { ENameOfEvent } from '../../enums/enums';
 import EventEmitter from '../../EventEmitter/EventEmitter';
 
-import { IRunnerOptions } from '../../interfaces/interfaces';
 import createElement from '../../lib/createElement';
 
 class Runner {
@@ -13,29 +12,42 @@ class Runner {
 
   private type: string;
 
-  private $slider: JQuery;
+  private $barContainer: JQuery;
 
-  constructor(type: string, $slider: JQuery, eventEmitter: EventEmitter) {
+  private isVertical?: boolean;
+
+  constructor(type: string, $barContainer: JQuery, eventEmitter: EventEmitter) {
     this.type = type;
-    this.$slider = $slider;
+    this.$barContainer = $barContainer;
     this.eventEmitter = eventEmitter;
-    this.$runner = createElement($slider, 'div', 'slider__runner');
+    this.$runner = createElement($barContainer, 'div', 'slider__runner');
     this.attachEvents();
   }
 
-  public move({ isVertical, position }: IRunnerOptions): void {
-    if (isVertical) {
-      this.moveVertically(position);
+  public update(isVertical: boolean, isRange: boolean, position: number) {
+    this.isVertical = isVertical;
+    if (!isRange && this.type === 'from') {
+      this.hide();
     } else {
-      this.moveHorizontally(position);
+      this.show();
+    }
+
+    this.move({ position });
+  }
+
+  public move({ position }: { position: number }): void {
+    if (this.isVertical) {
+      this.$runner.css({ top: `${position}%`, left: '' });
+    } else {
+      this.$runner.css({ left: `${position}%`, top: '' });
     }
   }
 
-  public hide(): void {
+  private hide(): void {
     this.$runner.css({ display: 'none' });
   }
 
-  public show(): void {
+  private show(): void {
     this.$runner.css({ display: '' });
   }
 
@@ -45,14 +57,6 @@ class Runner {
 
   public removeClassTarget(): void {
     this.$runner.css({ 'z-index': '' });
-  }
-
-  private moveHorizontally(position: number) {
-    this.$runner.css({ left: `${position}%`, top: '' });
-  }
-
-  private moveVertically(position: number) {
-    this.$runner.css({ top: `${position}%`, left: '' });
   }
 
   private attachEvents() {
@@ -83,10 +87,10 @@ class Runner {
   };
 
   private calculateSliderCharacterization() {
-    const height = this.$slider.height()!;
-    const left = this.$slider.offset()!.left;
-    const top = this.$slider.offset()!.top;
-    const width = this.$slider.width()!;
+    const height = this.$barContainer.height()!;
+    const left = this.$barContainer.offset()!.left;
+    const top = this.$barContainer.offset()!.top;
+    const width = this.$barContainer.width()!;
 
     return { height, width, left, top };
   }
@@ -94,8 +98,8 @@ class Runner {
   private getPosition(event: any) {
     const { height, width, left, top } = this.calculateSliderCharacterization();
 
-    const x = (event.x - left) / width;
-    const y = (event.y - top) / height;
+    const x = (event.clientX - left) / width;
+    const y = (event.clientY - top) / height;
 
     return { x, y };
   }
