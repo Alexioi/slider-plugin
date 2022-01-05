@@ -5,6 +5,7 @@ import Tip from './Tip/Tip';
 import createElement from '../lib/createElement';
 import Runner from './Runner/Runner';
 import Range from './Range/Range';
+import Scale from './Scale/Scale';
 
 class View {
   private $barContainer: JQuery;
@@ -19,6 +20,8 @@ class View {
 
   private runnerTo: Runner;
 
+  private scale: Scale;
+
   constructor(element: JQuery, eventEmitter: EventEmitter) {
     this.$slider = createElement(element, 'div', 'slider');
     this.$barContainer = this.createBarContainer();
@@ -26,6 +29,7 @@ class View {
     this.range = new Range(this.$barContainer);
     this.runnerFrom = new Runner('from', this.$barContainer, eventEmitter);
     this.runnerTo = new Runner('to', this.$barContainer, eventEmitter);
+    this.scale = new Scale(this.$slider, eventEmitter);
   }
 
   private createBarContainer() {
@@ -37,7 +41,7 @@ class View {
   }
 
   public update(options: IOptions): void {
-    const { isVertical, isRange, from, to, min, max } = options;
+    const { isVertical, isRange, from, to, min, max, hasScale } = options;
     const leftPosition = View.calculatePosition(from, min, max);
     const rightPosition = View.calculatePosition(to, min, max);
 
@@ -50,6 +54,7 @@ class View {
     this.runnerFrom.update(isVertical, isRange, leftPosition);
     this.runnerTo.update(isVertical, isRange, rightPosition);
     this.range.update({ isVertical, leftPosition, rightPosition });
+    this.scale.update({ hasScale, isVertical, min, max });
   }
 
   public updatePositionFrom(options: IOptions): void {
