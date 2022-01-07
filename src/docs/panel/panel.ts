@@ -57,80 +57,28 @@ class Panel {
   }
 
   attachEventHandler(): void {
-    this.$vertical.on('click', this.changeVertical);
-    this.$scale.on('click', this.changeScale);
-    this.$tip.on('click', this.changeTip);
-    this.$min.on('change', this.changeMin);
-    this.$max.on('change', this.changeMax);
-    this.$from.on('change', this.changeFrom);
-    this.$to.on('change', this.changeTo);
-    this.$step.on('change', this.changeStep);
-    this.$range.on('click', this.changeRange);
+    this.$range.on('click', this.changeCheckboxValue.bind(this, this.$range, 'isRange'));
+    this.$vertical.on('click', this.changeCheckboxValue.bind(this, this.$vertical, 'isVertical'));
+    this.$tip.on('click', this.changeCheckboxValue.bind(this, this.$tip, 'hasTip'));
+    this.$scale.on('click', this.changeCheckboxValue.bind(this, this.$scale, 'hasScale'));
+    this.$min.on('change', this.changeTextValue.bind(this, this.$min, 'min'));
+    this.$max.on('change', this.changeTextValue.bind(this, this.$max, 'max'));
+    this.$from.on('change', this.changeTextValue.bind(this, this.$from, 'from'));
+    this.$to.on('change', this.changeTextValue.bind(this, this.$to, 'to'));
+    this.$step.on('change', this.changeTextValue.bind(this, this.$step, 'step'));
   }
 
-  changeRange = (): void => {
-    const isRange = this.$range.prop('checked');
+  changeCheckboxValue($node: JQuery, option: string) {
+    const value = $node.prop('checked');
 
-    this.slider.update({ isRange });
-
-    this.verifyInput();
-  };
-
-  changeTip = (): void => {
-    const hasTip = this.$tip.prop('checked');
-
-    this.slider.update({ hasTip });
+    this.slider.update({ [option]: value });
 
     this.verifyInput();
-  };
+  }
 
-  changeVertical = (): void => {
-    const isVertical = this.$vertical.prop('checked');
-
-    this.slider.update({ isVertical });
-
-    this.verifyInput();
-  };
-
-  changeScale = (): void => {
-    const hasScale = this.$scale.prop('checked');
-
-    this.slider.update({ hasScale });
-
-    this.verifyInput();
-  };
-
-  changeMin = (): void => {
-    const value = Number(this.$min.val());
-    this.slider.update({ min: value });
-
-    this.verifyInput();
-  };
-
-  changeMax = (): void => {
-    const value = Number(this.$max.val());
-    this.slider.update({ max: value });
-
-    this.verifyInput();
-  };
-
-  changeFrom = (): void => {
-    const value = Number(this.$from.val());
-    this.slider.update({ from: value });
-
-    this.verifyInput();
-  };
-
-  changeTo = (): void => {
-    const value = Number(this.$to.val());
-    this.slider.update({ to: value });
-
-    this.verifyInput();
-  };
-
-  changeStep = (): void => {
-    const value = Number(this.$step.val());
-    this.slider.update({ step: value });
+  changeTextValue = ($node: JQuery, option: string): void => {
+    const value = Number($node.val());
+    this.slider.update({ [option]: value });
 
     this.verifyInput();
   };

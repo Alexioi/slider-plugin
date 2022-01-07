@@ -8,7 +8,7 @@
     "deploy": "npm run build && gh-pages -d dist",
     "eslint": "eslint . --ext .ts",
     "test": "jest",
-    "server": "webpack serve --open --mode=development"
+    "server": "webpack serve --mode=development"
   },
   "keywords": [],
   "author": "",
@@ -43,8 +43,5 @@
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
-  },
-  "dependencies": {
-    "jquery": "^3.6.0"
   }
 }
