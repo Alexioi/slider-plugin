@@ -6,7 +6,6 @@
   "scripts": {
     "build": "webpack --mode=production",
     "deploy": "npm run build && gh-pages -d dist",
-    "eslint": "eslint . --ext .ts",
     "test": "jest",
     "server": "webpack serve --mode=development"
   },

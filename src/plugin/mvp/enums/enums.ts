@@ -1,4 +1,4 @@
-enum ENameOfEvent {
+enum ENamesOfEvents {
   UpdatedModelFrom = 'UpdatedModelFrom',
   UpdatedModelTo = 'UpdatedModelTo',
   UpdatedModelOptions = 'UpdatedModelOptions',
@@ -8,4 +8,4 @@ enum ENameOfEvent {
   ChangedRunnerToPosition = 'ChangedRunnerToPosition',
 }
 
-export { ENameOfEvent };
+export { ENamesOfEvents };

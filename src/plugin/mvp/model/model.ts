@@ -1,13 +1,11 @@
-import EventEmitter from '../EventEmitter/EventEmitter';
-
-import { ENameOfEvent } from '../enums/enums';
+import { ENamesOfEvents } from '../enums/enums';
 
 class Model {
   private options: IOptions;
 
-  private eventEmitter: EventEmitter;
+  private eventEmitter: IEventEmitter;
 
-  constructor(options: IOptions, eventEmitter: EventEmitter) {
+  constructor(options: IOptions, eventEmitter: IEventEmitter) {
     this.eventEmitter = eventEmitter;
     this.options = { ...options };
   }
@@ -31,7 +29,7 @@ class Model {
     [this.options.from, this.options.to] = this.verifyFromAndTo(from, to);
     this.options.step = this.verifyStep(step);
 
-    this.eventEmitter.emit(ENameOfEvent.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
   }
 
   public getOptions(): IOptions {
@@ -96,13 +94,13 @@ class Model {
   private updateFrom(newValue: number): void {
     this.options.from = newValue;
 
-    this.eventEmitter.emit(ENameOfEvent.UpdatedModelFrom, this.options);
+    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelFrom, this.options);
   }
 
   private updateTo(newValue: number): void {
     this.options.to = newValue;
 
-    this.eventEmitter.emit(ENameOfEvent.UpdatedModelTo, this.options);
+    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelTo, this.options);
   }
 
   private verifyBooleanOption(nameOfValue: string, newValue: boolean | undefined): boolean {

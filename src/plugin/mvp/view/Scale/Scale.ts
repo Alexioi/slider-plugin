@@ -1,5 +1,5 @@
-import { ENameOfEvent } from '../../enums/enums';
-import EventEmitter from '../../EventEmitter/EventEmitter';
+import { ENamesOfEvents } from '../../enums/enums';
+
 import createElement from '../../lib/createElement';
 
 class Scale {
@@ -7,9 +7,9 @@ class Scale {
 
   private $scale: JQuery;
 
-  private eventEmitter: EventEmitter;
+  private eventEmitter: IEventEmitter;
 
-  constructor($slider: JQuery, eventEmitter: EventEmitter) {
+  constructor($slider: JQuery, eventEmitter: IEventEmitter) {
     this.eventEmitter = eventEmitter;
 
     this.$scale = createElement($slider, 'div', 'slider__scale');
@@ -62,7 +62,7 @@ class Scale {
   private clickScale = (event: any) => {
     const value = Number(event.target.innerHTML);
 
-    this.eventEmitter.emit(ENameOfEvent.ClickScale, value);
+    this.eventEmitter.emit(ENamesOfEvents.ClickScale, value);
   };
 }
 

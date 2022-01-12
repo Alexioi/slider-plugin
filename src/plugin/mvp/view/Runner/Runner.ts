@@ -1,14 +1,13 @@
 import './runner.scss';
 
-import { ENameOfEvent } from '../../enums/enums';
-import EventEmitter from '../../EventEmitter/EventEmitter';
+import { ENamesOfEvents } from '../../enums/enums';
 
 import createElement from '../../lib/createElement';
 
 class Runner {
   private $runner: JQuery;
 
-  private eventEmitter: EventEmitter;
+  private eventEmitter: IEventEmitter;
 
   private type: string;
 
@@ -16,7 +15,7 @@ class Runner {
 
   private isVertical?: boolean;
 
-  constructor(type: string, $barContainer: JQuery, eventEmitter: EventEmitter) {
+  constructor(type: string, $barContainer: JQuery, eventEmitter: IEventEmitter) {
     this.type = type;
     this.$barContainer = $barContainer;
     this.eventEmitter = eventEmitter;
@@ -74,11 +73,11 @@ class Runner {
     const position = this.getPosition(event);
 
     if (this.type === 'from') {
-      this.eventEmitter.emit(ENameOfEvent.ChangedRunnerFromPosition, position);
+      this.eventEmitter.emit(ENamesOfEvents.ChangedRunnerFromPosition, position);
     }
 
     if (this.type === 'to') {
-      this.eventEmitter.emit(ENameOfEvent.ChangedRunnerToPosition, position);
+      this.eventEmitter.emit(ENamesOfEvents.ChangedRunnerToPosition, position);
     }
   };
 

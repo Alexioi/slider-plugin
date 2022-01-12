@@ -1,5 +1,3 @@
-import EventEmitter from '../EventEmitter/EventEmitter';
-
 import Tip from './Tip/Tip';
 import createElement from '../lib/createElement';
 import Runner from './Runner/Runner';
@@ -21,7 +19,7 @@ class View {
 
   private scale: Scale;
 
-  constructor(element: JQuery, eventEmitter: EventEmitter) {
+  constructor(element: JQuery, eventEmitter: IEventEmitter) {
     this.$slider = createElement(element, 'div', 'slider');
     this.$barContainer = this.createBarContainer();
     this.tip = new Tip(this.$slider);

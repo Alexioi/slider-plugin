@@ -1,4 +1,4 @@
-class EventEmitter {
+class EventEmitter implements IEventEmitter {
   private events: {
     [key: string]: ((args: any) => void)[];
   };
@@ -7,7 +7,7 @@ class EventEmitter {
     this.events = {};
   }
 
-  subscribe(eventName: string, callback: (args: any) => void): void {
+  public subscribe(eventName: string, callback: (args: any) => void): void {
     if (!this.events[eventName]) {
       this.events[eventName] = [];
     }
@@ -15,13 +15,13 @@ class EventEmitter {
     this.events[eventName].push(callback);
   }
 
-  unsubscribe(eventName: string, callback: (args: any) => void): void {
+  public unsubscribe(eventName: string, callback: (args: any) => void): void {
     this.events[eventName] = this.events[eventName].filter(
       (eventCallback) => callback !== eventCallback,
     );
   }
 
-  emit(eventName: string, args: unknown): void {
+  public emit(eventName: string, args: unknown): void {
     const event = this.events[eventName];
 
     if (event) {
