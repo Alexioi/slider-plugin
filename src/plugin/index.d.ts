@@ -1,4 +1,10 @@
-interface IConfig {
+/// <reference types="JQuery" />
+
+declare interface JQuery {
+  slider: (config?: IConfig) => JQuery<IApp>;
+}
+
+declare interface IConfig {
   isRange?: boolean;
   isVertical?: boolean;
   hasTip?: boolean;
@@ -11,11 +17,11 @@ interface IConfig {
   onChange?: Function;
 }
 
-interface ICallbacks {
+declare interface ICallbacks {
   onChange: Function;
 }
 
-interface IOptions {
+declare interface IOptions {
   [index: string]: boolean | number;
   isRange: boolean;
   isVertical: boolean;
@@ -28,20 +34,18 @@ interface IOptions {
   to: number;
 }
 
-interface IRunnerOptions {
+declare interface IRunnerOptions {
   isVertical: boolean;
   position: number;
 }
 
-interface IRangeOptions {
+declare interface IRangeOptions {
   isVertical: boolean;
   position: number;
   width: number;
 }
 
-interface IPosition {
+declare interface IPosition {
   x: number;
   y: number;
 }
-
-export { IConfig, ICallbacks, IOptions, IRunnerOptions, IPosition, IRangeOptions };

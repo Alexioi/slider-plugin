@@ -1,6 +1,5 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 
-import { IOptions } from '../interfaces/interfaces';
 import Tip from './Tip/Tip';
 import createElement from '../lib/createElement';
 import Runner from './Runner/Runner';

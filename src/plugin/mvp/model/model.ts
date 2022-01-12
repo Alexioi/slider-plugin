@@ -1,6 +1,5 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 
-import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
 import { ENameOfEvent } from '../enums/enums';
 
 class Model {

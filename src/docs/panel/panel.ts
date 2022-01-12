@@ -1,9 +1,9 @@
-import { IOptions } from '../../plugin/mvp/interfaces/interfaces';
+import './panel.scss';
 
 class Panel {
   $element: JQuery;
 
-  slider: any;
+  slider: IApp;
 
   $range!: JQuery;
 
@@ -23,9 +23,11 @@ class Panel {
 
   $scale!: JQuery;
 
-  constructor($element: JQuery, slider: any) {
+  constructor($element: JQuery, slider: IApp, config: any) {
     this.$element = $element;
     this.slider = slider;
+
+    this.slider.update(config);
 
     this.searchElements();
     this.attachEventHandler();
@@ -45,15 +47,15 @@ class Panel {
   }
 
   searchElements(): void {
-    this.$range = this.$element.find('.panel__input_name-range')!;
-    this.$vertical = this.$element.find('.panel__input_name-vertical')!;
-    this.$scale = this.$element.find('.panel__input_name-scale')!;
-    this.$min = this.$element.find('.panel__input_name-min')!;
-    this.$max = this.$element.find('.panel__input_name-max')!;
-    this.$from = this.$element.find('.panel__input_name-from')!;
-    this.$to = this.$element.find('.panel__input_name-to')!;
-    this.$step = this.$element.find('.panel__input_name-step')!;
-    this.$tip = this.$element.find('.panel__input_name-tip')!;
+    this.$range = this.$element.find('.panel__input_name-range');
+    this.$vertical = this.$element.find('.panel__input_name-vertical');
+    this.$scale = this.$element.find('.panel__input_name-scale');
+    this.$min = this.$element.find('.panel__input_name-min');
+    this.$max = this.$element.find('.panel__input_name-max');
+    this.$from = this.$element.find('.panel__input_name-from');
+    this.$to = this.$element.find('.panel__input_name-to');
+    this.$step = this.$element.find('.panel__input_name-step');
+    this.$tip = this.$element.find('.panel__input_name-tip');
   }
 
   attachEventHandler(): void {

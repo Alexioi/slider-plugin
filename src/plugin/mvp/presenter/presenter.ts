@@ -3,7 +3,6 @@ import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from '../model/model';
 import View from '../view/view';
 
-import { IConfig, IOptions, IPosition } from '../interfaces/interfaces';
 import { ENameOfEvent } from '../enums/enums';
 
 class Presenter {
