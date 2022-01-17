@@ -1,10 +1,21 @@
 .slider {
-  &__tip-line {
-    height: 25px;
-    user-select: none;
+  &__tip-line &__tip {
+    top: -35px;
+    transform: translateX(-50%);
+  }
+
+  &__tip-line_vertical &__tip {
+    left: 25px;
+    transform: translateY(-50%);
   }
 
   &__tip {
     position: absolute;
+    white-space: nowrap;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 2px;
+    background-color: green;
+    user-select: none;
   }
 }

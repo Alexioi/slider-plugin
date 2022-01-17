@@ -26,16 +26,6 @@ $runnerWidth: 1.5rem;
     position: relative;
   }
 
-  // &__bar {
-  //   box-sizing: border-box;
-  //   width: 100%;
-  //   height: $runnerWidth * 0.5;
-  //   border: 1px solid black;
-  //   background-color: #999;
-  //   border-radius: 3px;
-  //   position: relative;
-  // }
-
   &_vertical &__bar-container {
     width: $runnerWidth * 0.5;
     height: 100%;
@@ -56,25 +46,6 @@ $runnerWidth: 1.5rem;
   &_vertical &__runner {
     right: -(math.div($runnerWidth, 3));
     transform: translateY(-50%);
-  }
-
-  &__tip {
-    line-height: 16px;
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 2px;
-    position: absolute;
-    background-color: green;
-    top: -150%;
-    left: 50%;
-    transform: translateX(-50%);
-    user-select: none;
-  }
-
-  &_vertical &__tip {
-    transform: translateY(-50%);
-    top: 50%;
-    left: 150%;
   }
 
   &__scale {

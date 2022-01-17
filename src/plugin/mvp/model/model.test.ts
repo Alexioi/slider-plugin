@@ -17,21 +17,10 @@ describe('Model', () => {
   const model = new Model(defaultOptions, new EventEmitter());
 
   beforeEach(() => {
-    const newOptions = {
-      isRange: true,
-      isVertical: false,
-      hasTip: true,
-      hasScale: true,
-      step: 10,
-      min: -100,
-      max: 100,
-      from: -50,
-      to: 50,
-    };
-    model.updateOptions(newOptions);
+    model.updateOptions(defaultOptions);
   });
 
-  it('should update all options', () => {
+  test('should update all options', () => {
     const options = {
       isRange: false,
       isVertical: true,
