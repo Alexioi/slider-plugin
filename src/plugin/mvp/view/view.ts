@@ -48,7 +48,11 @@ class View {
       this.removeClassVertical();
     }
 
-    this.tip.update({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
+    if (hasTip) {
+      this.tip.render({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
+    } else {
+      this.tip.destroy();
+    }
 
     this.runnerFrom.update(isVertical, isRange, leftPosition);
     this.runnerTo.update(isVertical, isRange, rightPosition);
@@ -61,7 +65,11 @@ class View {
     const leftPosition = View.calculatePosition(from, min, max);
     const rightPosition = View.calculatePosition(to, min, max);
 
-    this.tip.update({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
+    if (hasTip) {
+      this.tip.render({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
+    } else {
+      this.tip.destroy();
+    }
 
     this.runnerFrom.move({ position: leftPosition });
     this.range.move({ leftPosition, rightPosition });
@@ -72,7 +80,11 @@ class View {
     const leftPosition = View.calculatePosition(from, min, max);
     const rightPosition = View.calculatePosition(to, min, max);
 
-    this.tip.update({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
+    if (hasTip) {
+      this.tip.render({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
+    } else {
+      this.tip.destroy();
+    }
 
     this.runnerTo.move({ position: rightPosition });
     this.range.move({ leftPosition, rightPosition });
