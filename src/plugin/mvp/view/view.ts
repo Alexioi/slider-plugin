@@ -56,7 +56,11 @@ class View {
 
     this.runnerFrom.update(isVertical, isRange, leftPosition);
     this.runnerTo.update(isVertical, isRange, rightPosition);
-    this.range.update({ isVertical, leftPosition, rightPosition });
+    if (isRange) {
+      this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
+    } else {
+      this.range.render({ isVertical, positions: [rightPosition] });
+    }
     this.scale.update({ hasScale, isVertical, min, max });
   }
 
@@ -72,7 +76,11 @@ class View {
     }
 
     this.runnerFrom.move({ position: leftPosition });
-    this.range.move({ leftPosition, rightPosition });
+    if (isRange) {
+      this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
+    } else {
+      this.range.render({ isVertical, positions: [rightPosition] });
+    }
   }
 
   public updatePositionTo(options: IOptions): void {
@@ -87,7 +95,11 @@ class View {
     }
 
     this.runnerTo.move({ position: rightPosition });
-    this.range.move({ leftPosition, rightPosition });
+    if (isRange) {
+      this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
+    } else {
+      this.range.render({ isVertical, positions: [rightPosition] });
+    }
   }
 
   private addClassVertical() {

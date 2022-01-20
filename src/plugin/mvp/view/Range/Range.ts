@@ -1,42 +1,55 @@
-import createElement from '../../lib/createElement';
-
 class Range {
+  private $barContainer: JQuery;
+
   private $range: JQuery;
 
-  private isVertical?: boolean;
+  private isRender = false;
+
+  private isRenderVerticalView = false;
 
   constructor($barContainer: JQuery) {
-    this.$range = createElement($barContainer, 'div', 'slider__range');
+    this.$barContainer = $barContainer;
+    this.$range = $('<div>', { class: 'slider__range' });
   }
 
-  public update({ isVertical, leftPosition, rightPosition }: any) {
-    if (this.isVertical) {
+  public render({ isVertical, positions }: any) {
+    if (!this.isRender) {
+      this.$barContainer.append(this.$range);
+
+      this.isRender = true;
+    }
+
+    if (isVertical && !this.isRenderVerticalView) {
       this.$range.css({
         top: '',
         bottom: '',
       });
-    } else {
+
+      this.isRenderVerticalView = true;
+    }
+
+    if (!isVertical && this.isRenderVerticalView) {
       this.$range.css({
         left: '',
         right: '',
       });
+
+      this.isRenderVerticalView = false;
     }
 
-    this.isVertical = isVertical;
+    const startPosition = positions.length === 1 ? '0%' : `${positions[0]}%`;
+    const finishPosition =
+      positions.length === 1 ? `${100 - positions[0]}%` : `${100 - positions[1]}%`;
 
-    this.move({ leftPosition, rightPosition });
-  }
-
-  public move({ leftPosition, rightPosition }: any): void {
-    if (this.isVertical) {
+    if (this.isRenderVerticalView) {
       this.$range.css({
-        top: `${leftPosition}%`,
-        bottom: `${100 - rightPosition}%`,
+        top: startPosition,
+        bottom: finishPosition,
       });
     } else {
       this.$range.css({
-        left: `${leftPosition}%`,
-        right: `${100 - rightPosition}%`,
+        left: startPosition,
+        right: finishPosition,
       });
     }
   }
