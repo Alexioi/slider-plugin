@@ -1,5 +1,3 @@
-import './plugin.scss';
-
 import App from './mvp/app/app';
 
 $.fn.slider = function initSliders(config?: IConfig) {

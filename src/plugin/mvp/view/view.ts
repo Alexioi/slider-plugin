@@ -1,3 +1,5 @@
+import './view.scss';
+
 import Tip from './Tip/Tip';
 import createElement from '../lib/createElement';
 import Runner from './Runner/Runner';

@@ -1,0 +1,26 @@
+.slider {
+  &__scale {
+    position: relative;
+    top: 150%;
+  }
+
+  &_vertical &__scale {
+    display: flex;
+    justify-content: end;
+    height: 100%;
+    top: 0;
+    right: 200%;
+  }
+
+  &__mark {
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    transform: translateX(-50%);
+    user-select: none;
+  }
+
+  &_vertical &__mark {
+    transform: translateY(-50%);
+  }
+}

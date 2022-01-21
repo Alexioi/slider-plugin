@@ -1,3 +1,5 @@
+import './range.scss';
+
 class Range {
   private $barContainer: JQuery;
 

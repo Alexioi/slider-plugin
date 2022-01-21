@@ -2,7 +2,7 @@ import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from '../model/model';
 import View from '../view/view';
 import Presenter from '../presenter/presenter';
-import sliderOptions from '../../sliderOptions/sliderOptions';
+import sliderOptions from './sliderOptions';
 
 class App implements IApp {
   private callbacks: ICallbacks;

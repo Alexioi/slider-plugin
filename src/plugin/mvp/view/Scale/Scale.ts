@@ -1,3 +1,5 @@
+import './scale.scss';
+
 import { ENamesOfEvents } from '../../enums/enums';
 
 import createElement from '../../lib/createElement';

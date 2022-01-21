@@ -1,5 +1,7 @@
 @use 'sass:math';
 
+$runnerWidth: 1.5rem;
+
 .slider {
   &__runner {
     box-sizing: border-box;
@@ -13,5 +15,10 @@
     background-color: green;
     transform: translateX(-50%);
     cursor: pointer;
+  }
+
+  &_vertical &__runner {
+    right: -(math.div($runnerWidth, 3));
+    transform: translateY(-50%);
   }
 }

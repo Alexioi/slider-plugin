@@ -1,0 +1,13 @@
+.slider {
+  &__range {
+    position: absolute;
+    border-radius: 3px;
+    background-color: green;
+    height: 100%;
+  }
+
+  &_vertical &__range {
+    width: 100%;
+    height: auto;
+  }
+}
