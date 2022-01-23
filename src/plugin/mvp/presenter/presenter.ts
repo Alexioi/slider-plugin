@@ -28,19 +28,17 @@ class Presenter {
 
   private attachEventEmitters(): void {
     this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelOptions, (options: IOptions) => {
-      this.view.update(options);
+      this.view.render(options);
       this.eventEmitter.emit('onChange', options);
     });
 
     this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelFrom, (options: IOptions) => {
-      this.view.updatePositionFrom(options);
-
+      this.view.render(options);
       this.eventEmitter.emit('onChange', options);
     });
 
     this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelTo, (options: IOptions) => {
-      this.view.updatePositionTo(options);
-
+      this.view.render(options);
       this.eventEmitter.emit('onChange', options);
     });
 

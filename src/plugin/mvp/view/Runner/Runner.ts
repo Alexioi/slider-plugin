@@ -2,8 +2,6 @@ import './runner.scss';
 
 import { ENamesOfEvents } from '../../enums/enums';
 
-import createElement from '../../lib/createElement';
-
 class Runner {
   private $runner: JQuery;
 
@@ -13,55 +11,37 @@ class Runner {
 
   private $barContainer: JQuery;
 
-  private isVertical?: boolean;
+  private isRender = false;
 
   constructor(type: string, $barContainer: JQuery, eventEmitter: IEventEmitter) {
     this.type = type;
     this.$barContainer = $barContainer;
     this.eventEmitter = eventEmitter;
-    this.$runner = createElement($barContainer, 'div', 'slider__runner');
-    this.attachEvents();
+    this.$runner = $('<div>', { class: 'slider__runner' });
   }
 
-  public update(isVertical: boolean, isRange: boolean, position: number) {
-    this.isVertical = isVertical;
-    if (!isRange && this.type === 'from') {
-      this.hide();
-    } else {
-      this.show();
+  public render({ position, isVertical }: any) {
+    if (!this.isRender) {
+      this.$barContainer.append(this.$runner);
+      this.$runner.on('dragstart', false);
+      this.$runner.on('mousedown', this.attachEventMouseDown);
+      this.isRender = true;
     }
 
-    this.move({ position });
-  }
-
-  public move({ position }: { position: number }): void {
-    if (this.isVertical) {
+    if (isVertical) {
       this.$runner.css({ top: `${position}%`, left: '' });
     } else {
       this.$runner.css({ left: `${position}%`, top: '' });
     }
   }
 
-  private hide(): void {
-    this.$runner.css({ display: 'none' });
-  }
-
-  private show(): void {
-    this.$runner.css({ display: '' });
-  }
-
-  public addClassTarget(): void {
-    this.$runner.css({ 'z-index': 3 });
-  }
-
-  public removeClassTarget(): void {
-    this.$runner.css({ 'z-index': '' });
-  }
-
-  private attachEvents() {
-    this.$runner.on('dragstart', false);
-
-    this.$runner.on('mousedown', this.attachEventMouseDown);
+  public destroy() {
+    if (this.isRender) {
+      this.$runner.off('dragstart', 'mousedown');
+      this.$runner.off('mousedown', this.attachEventMouseDown);
+      this.$runner.detach();
+      this.isRender = false;
+    }
   }
 
   private attachEventMouseDown = (): void => {

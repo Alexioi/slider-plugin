@@ -39,7 +39,7 @@ class View {
     return this.$slider.find('.slider__bar-container');
   }
 
-  public update(options: IOptions): void {
+  public render(options: IOptions): void {
     const { isVertical, isRange, from, to, min, max, hasScale, hasTip } = options;
     const leftPosition = View.calculatePosition(from, min, max);
     const rightPosition = View.calculatePosition(to, min, max);
@@ -56,52 +56,16 @@ class View {
       this.tip.destroy();
     }
 
-    this.runnerFrom.update(isVertical, isRange, leftPosition);
-    this.runnerTo.update(isVertical, isRange, rightPosition);
     if (isRange) {
+      this.runnerFrom.render({ position: leftPosition, isVertical });
       this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
     } else {
+      this.runnerFrom.destroy();
       this.range.render({ isVertical, positions: [rightPosition] });
     }
+
+    this.runnerTo.render({ position: rightPosition, isVertical });
     this.scale.update({ hasScale, isVertical, min, max });
-  }
-
-  public updatePositionFrom(options: IOptions): void {
-    const { from, min, max, to, hasTip, isRange, isVertical } = options;
-    const leftPosition = View.calculatePosition(from, min, max);
-    const rightPosition = View.calculatePosition(to, min, max);
-
-    if (hasTip) {
-      this.tip.render({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
-    } else {
-      this.tip.destroy();
-    }
-
-    this.runnerFrom.move({ position: leftPosition });
-    if (isRange) {
-      this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
-    } else {
-      this.range.render({ isVertical, positions: [rightPosition] });
-    }
-  }
-
-  public updatePositionTo(options: IOptions): void {
-    const { from, to, hasTip, isRange, min, max, isVertical } = options;
-    const leftPosition = View.calculatePosition(from, min, max);
-    const rightPosition = View.calculatePosition(to, min, max);
-
-    if (hasTip) {
-      this.tip.render({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
-    } else {
-      this.tip.destroy();
-    }
-
-    this.runnerTo.move({ position: rightPosition });
-    if (isRange) {
-      this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
-    } else {
-      this.range.render({ isVertical, positions: [rightPosition] });
-    }
   }
 
   private addClassVertical() {
