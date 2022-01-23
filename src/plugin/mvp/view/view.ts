@@ -1,7 +1,6 @@
 import './view.scss';
 
 import Tip from './Tip/Tip';
-import createElement from '../lib/createElement';
 import Runner from './Runner/Runner';
 import Range from './Range/Range';
 import Scale from './Scale/Scale';
@@ -22,7 +21,8 @@ class View {
   private scale: Scale;
 
   constructor(element: JQuery, eventEmitter: IEventEmitter) {
-    this.$slider = createElement(element, 'div', 'slider');
+    this.$slider = $('<div>', { class: 'slider' });
+    element.append(this.$slider);
     this.tip = new Tip(this.$slider);
     this.$barContainer = this.createBarContainer();
     this.range = new Range(this.$barContainer);
@@ -65,7 +65,7 @@ class View {
     }
 
     this.runnerTo.render({ position: rightPosition, isVertical });
-    this.scale.update({ hasScale, isVertical, min, max });
+    this.scale.render({ min, max, isVertical });
   }
 
   private addClassVertical() {

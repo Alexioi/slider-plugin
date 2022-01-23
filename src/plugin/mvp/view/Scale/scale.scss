@@ -5,11 +5,8 @@
   }
 
   &_vertical &__scale {
-    display: flex;
-    justify-content: end;
-    height: 100%;
+    left: -350%;
     top: 0;
-    right: 200%;
   }
 
   &__mark {
