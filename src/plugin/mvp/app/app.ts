@@ -1,6 +1,6 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from '../model/model';
-import View from '../view/view';
+import View from '../view/Main/view';
 import Presenter from '../presenter/presenter';
 import sliderOptions from './sliderOptions';
 

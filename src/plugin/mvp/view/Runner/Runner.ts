@@ -20,7 +20,7 @@ class Runner {
     this.$runner = $('<div>', { class: 'slider__runner' });
   }
 
-  public render({ position, isVertical }: any) {
+  public render({ position, isVertical, zIndex }: any) {
     if (!this.isRender) {
       this.$barContainer.append(this.$runner);
       this.$runner.on('dragstart', false);
@@ -32,6 +32,12 @@ class Runner {
       this.$runner.css({ top: `${position}%`, left: '' });
     } else {
       this.$runner.css({ left: `${position}%`, top: '' });
+    }
+
+    if (zIndex) {
+      this.$runner.css({ zIndex: 3 });
+    } else {
+      this.$runner.css({ zIndex: 2 });
     }
   }
 

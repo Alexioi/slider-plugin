@@ -1,5 +1,5 @@
 import Model from '../model/model';
-import View from '../view/view';
+import View from '../view/Main/view';
 
 import { ENamesOfEvents } from '../enums/enums';
 
@@ -33,12 +33,12 @@ class Presenter {
     });
 
     this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelFrom, (options: IOptions) => {
-      this.view.render(options);
+      this.view.render(options, 'from');
       this.eventEmitter.emit('onChange', options);
     });
 
     this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelTo, (options: IOptions) => {
-      this.view.render(options);
+      this.view.render(options, 'to');
       this.eventEmitter.emit('onChange', options);
     });
 

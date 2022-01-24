@@ -1,9 +1,9 @@
 import './view.scss';
 
-import Tip from './Tip/Tip';
-import Runner from './Runner/Runner';
-import Range from './Range/Range';
-import Scale from './Scale/Scale';
+import Tip from '../Tip/Tip';
+import Runner from '../Runner/Runner';
+import Range from '../Range/Range';
+import Scale from '../Scale/Scale';
 
 class View {
   private $barContainer: JQuery;
@@ -39,7 +39,7 @@ class View {
     return this.$slider.find('.slider__bar-container');
   }
 
-  public render(options: IOptions): void {
+  public render(options: IOptions, whichRunnerChanged?: 'from' | 'to'): void {
     const { isVertical, isRange, from, to, min, max, hasScale, hasTip } = options;
     const leftPosition = View.calculatePosition(from, min, max);
     const rightPosition = View.calculatePosition(to, min, max);
@@ -56,15 +56,29 @@ class View {
       this.tip.destroy();
     }
 
+    let zIndexFrom: boolean, zIndexTO: boolean;
+
     if (isRange) {
-      this.runnerFrom.render({ position: leftPosition, isVertical });
+      if (whichRunnerChanged === 'from') {
+        zIndexFrom = true;
+        zIndexTO = false;
+      }
+
+      if (whichRunnerChanged === 'to') {
+        zIndexFrom = false;
+        zIndexTO = true;
+      }
+
+      this.runnerFrom.render({ position: leftPosition, isVertical, zIndex: zIndexFrom });
       this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
     } else {
+      zIndexFrom = false;
+      zIndexTO = true;
       this.runnerFrom.destroy();
       this.range.render({ isVertical, positions: [rightPosition] });
     }
 
-    this.runnerTo.render({ position: rightPosition, isVertical });
+    this.runnerTo.render({ position: rightPosition, isVertical, zIndex: zIndexTO });
 
     if (hasScale) {
       this.scale.render({ min, max, isVertical });
