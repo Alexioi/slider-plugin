@@ -65,7 +65,12 @@ class View {
     }
 
     this.runnerTo.render({ position: rightPosition, isVertical });
-    this.scale.render({ min, max, isVertical });
+
+    if (hasScale) {
+      this.scale.render({ min, max, isVertical });
+    } else {
+      this.scale.destroy();
+    }
   }
 
   private addClassVertical() {

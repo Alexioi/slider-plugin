@@ -19,41 +19,43 @@ class Scale {
     this.eventEmitter = eventEmitter;
     this.$slider = $slider;
     this.$scale = $('<div>', { class: 'slider__scale' });
-
-    this.attachEvents();
   }
 
   public render({ min, max, isVertical }: any) {
     if (!this.isRender) {
       this.$scale = $('<div>', { class: 'slider__scale' });
       this.$slider.append(this.$scale);
-
+      this.attachEvents();
       this.isRender = true;
-    }
-
-    while (this.marks.length < this.countOfMarks) {
-      this.marks.push(
-        $('<span>', {
-          class: 'slider__mark',
-        }),
-      );
+    } else {
+      this.marks.length = 0;
+      this.$scale.empty();
     }
 
     const difference = Math.abs(max - min);
 
-    this.marks.forEach(($element, i) => {
-      const percent = (100 * i) / (this.marks.length - 1);
+    while (this.marks.length < this.countOfMarks) {
+      const percent = (100 * this.marks.length) / (this.countOfMarks - 1);
       const text = min + (difference * percent) / 100;
-      const style = isVertical ? 'top' : 'left';
+      const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
 
-      $element.css({ [style]: `${percent}%` });
-      $element.text(text);
-      this.$scale.append($element);
-    });
+      this.marks.push(
+        $('<span>', {
+          class: 'slider__mark',
+          text,
+          style,
+        }),
+      );
+      this.$scale.append(this.marks[this.marks.length - 1]);
+    }
   }
 
-  public removeMarks(): void {
-    this.$scale.empty();
+  public destroy() {
+    if (this.isRender) {
+      this.marks.length = 0;
+      this.$scale.remove();
+      this.isRender = false;
+    }
   }
 
   private attachEvents() {
