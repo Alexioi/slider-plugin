@@ -1,9 +1,9 @@
 import './view.scss';
 
-import Tip from '../Tip/Tip';
-import Runner from '../Runner/Runner';
-import Range from '../Range/Range';
-import Scale from '../Scale/Scale';
+import Tip from './Tip/Tip';
+import Runner from './Runner/Runner';
+import Range from './Range/Range';
+import Scale from './Scale/Scale';
 
 class View {
   private $barContainer: JQuery;
@@ -56,24 +56,12 @@ class View {
       this.tip.destroy();
     }
 
-    let zIndexFrom: boolean, zIndexTO: boolean;
+    const [zIndexFrom, zIndexTO] = this.getRunnerZIndex(isRange, leftPosition, whichRunnerChanged);
 
     if (isRange) {
-      if (whichRunnerChanged === 'from') {
-        zIndexFrom = true;
-        zIndexTO = false;
-      }
-
-      if (whichRunnerChanged === 'to') {
-        zIndexFrom = false;
-        zIndexTO = true;
-      }
-
       this.runnerFrom.render({ position: leftPosition, isVertical, zIndex: zIndexFrom });
       this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
     } else {
-      zIndexFrom = false;
-      zIndexTO = true;
       this.runnerFrom.destroy();
       this.range.render({ isVertical, positions: [rightPosition] });
     }
@@ -85,6 +73,26 @@ class View {
     } else {
       this.scale.destroy();
     }
+  }
+
+  private getRunnerZIndex(
+    isRange: boolean,
+    leftPosition: number,
+    whichRunnerChanged?: 'from' | 'to',
+  ): boolean[] {
+    if (typeof whichRunnerChanged === 'undefined' && leftPosition > 50) {
+      return [true, false];
+    }
+
+    if (!isRange) {
+      return [false, true];
+    }
+
+    if (whichRunnerChanged === 'from') {
+      return [true, false];
+    }
+
+    return [false, true];
   }
 
   private addClassVertical() {

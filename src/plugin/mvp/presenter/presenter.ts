@@ -1,6 +1,3 @@
-import Model from '../model/model';
-import View from '../view/Main/view';
-
 import { ENamesOfEvents } from '../enums/enums';
 
 class Presenter {
