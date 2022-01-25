@@ -31,11 +31,25 @@ class Scale {
     }
 
     const difference = Math.abs(max - min);
-    const countOfMarks = Math.floor(Number(this.$scale.width()) / 50);
+
+    const oneSymbolLength = 15;
+
+    const numberOfSymbolAfterComma = String(step).includes('.')
+      ? String(step).split('.').pop()!.length
+      : 0;
+
+    const symbolsLength =
+      String(min).length > String(max).length
+        ? oneSymbolLength * (numberOfSymbolAfterComma + String(min).length)
+        : oneSymbolLength * (numberOfSymbolAfterComma + String(max).length);
+
+    const scaleLength = isVertical ? Number(this.$scale.height()) : Number(this.$scale.width());
+
+    const countOfMarks = Math.floor(scaleLength / symbolsLength);
 
     while (this.marks.length < countOfMarks) {
       const percent = (100 * this.marks.length) / (countOfMarks - 1);
-      const text = min + (difference * percent) / 100;
+      const text = (min + (difference * percent) / 100).toFixed(numberOfSymbolAfterComma);
       const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
 
       this.marks.push(
