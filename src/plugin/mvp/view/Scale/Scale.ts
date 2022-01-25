@@ -11,8 +11,6 @@ class Scale {
 
   private isRender = false;
 
-  private countOfMarks = 11;
-
   private marks: JQuery[] = [];
 
   constructor($slider: JQuery, eventEmitter: IEventEmitter) {
@@ -21,7 +19,7 @@ class Scale {
     this.$scale = $('<div>', { class: 'slider__scale' });
   }
 
-  public render({ min, max, isVertical }: any) {
+  public render({ min, max, isVertical, step }: any) {
     if (!this.isRender) {
       this.$scale = $('<div>', { class: 'slider__scale' });
       this.$slider.append(this.$scale);
@@ -33,9 +31,10 @@ class Scale {
     }
 
     const difference = Math.abs(max - min);
+    const countOfMarks = Math.floor(Number(this.$scale.width()) / 50);
 
-    while (this.marks.length < this.countOfMarks) {
-      const percent = (100 * this.marks.length) / (this.countOfMarks - 1);
+    while (this.marks.length < countOfMarks) {
+      const percent = (100 * this.marks.length) / (countOfMarks - 1);
       const text = min + (difference * percent) / 100;
       const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
 

@@ -34,17 +34,6 @@ declare interface IOptions {
   to: number;
 }
 
-declare interface IRunnerOptions {
-  isVertical: boolean;
-  position: number;
-}
-
-declare interface IRangeOptions {
-  isVertical: boolean;
-  position: number;
-  width: number;
-}
-
 declare interface IPosition {
   x: number;
   y: number;
