@@ -2,7 +2,7 @@ import './scale.scss';
 
 import { ENamesOfEvents } from '../../enums/enums';
 
-class Scale {
+class Scale implements IScale {
   private $slider: JQuery;
 
   private $scale: JQuery;
@@ -19,11 +19,11 @@ class Scale {
     this.$scale = $('<div>', { class: 'slider__scale' });
   }
 
-  public render({ min, max, isVertical, step }: any) {
+  public render({ min, max, isVertical, step }: IScaleOptions): void {
     if (!this.isRender) {
       this.$scale = $('<div>', { class: 'slider__scale' });
       this.$slider.append(this.$scale);
-      this.attachEvents();
+      this.attachEventsHandler();
       this.isRender = true;
     } else {
       this.marks.length = 0;
@@ -49,7 +49,7 @@ class Scale {
 
     while (this.marks.length < countOfMarks) {
       const percent = (100 * this.marks.length) / (countOfMarks - 1);
-      const text = (min + (difference * percent) / 100).toFixed(numberOfSymbolAfterComma);
+      const text = Number((min + (difference * percent) / 100).toFixed(numberOfSymbolAfterComma));
       const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
 
       this.marks.push(
@@ -63,7 +63,7 @@ class Scale {
     }
   }
 
-  public destroy() {
+  public destroy(): void {
     if (this.isRender) {
       this.marks.length = 0;
       this.$scale.remove();
@@ -71,12 +71,14 @@ class Scale {
     }
   }
 
-  private attachEvents() {
+  private attachEventsHandler() {
     this.$scale.on('click', this.clickScale);
   }
 
-  private clickScale = (event: any) => {
-    const value = Number(event.target.innerHTML);
+  private clickScale = (event: Event) => {
+    const target = <HTMLElement>event.target;
+
+    const value = Number(target.innerHTML);
 
     this.eventEmitter.emit(ENamesOfEvents.ClickScale, value);
   };
