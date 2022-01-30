@@ -1,6 +1,6 @@
 import './tip.scss';
 
-class Tip {
+class Tip implements ITip {
   private $slider: JQuery;
 
   private $tipLine: JQuery;
@@ -25,11 +25,7 @@ class Tip {
     this.$tipTo = $('<span>', { class: 'slider__tip' });
   }
 
-  public render(
-    { from, to, isRange, isVertical }: any,
-    leftPosition: number,
-    rightPosition: number,
-  ) {
+  public render({ from, to, isRange, isVertical, leftPosition, rightPosition }: ITipOptions) {
     if (!this.isRenderTip) {
       this.$slider.prepend(this.$tipLine);
       this.$tipLine.append(this.$tipTo);

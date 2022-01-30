@@ -1,11 +1,18 @@
 .slider {
+  &__tip-line {
+    height: 35px;
+  }
+
   &__tip-line &__tip {
-    top: -35px;
     transform: translateX(-50%);
   }
 
+  &__tip-line_vertical {
+    height: 100%;
+  }
+
   &__tip-line_vertical &__tip {
-    right: 35px;
+    right: 30px;
     transform: translateY(-50%);
   }
 

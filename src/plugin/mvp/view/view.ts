@@ -55,7 +55,7 @@ class View {
     }
 
     if (hasTip) {
-      this.tip.render({ from, to, hasTip, isRange, isVertical }, leftPosition, rightPosition);
+      this.tip.render({ from, to, isRange, isVertical, leftPosition, rightPosition });
     } else {
       this.tip.destroy();
     }
