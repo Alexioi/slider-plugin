@@ -2,7 +2,7 @@ import './runner.scss';
 
 import { ENamesOfEvents } from '../../enums/enums';
 
-class Runner {
+class Runner implements IRunner {
   private $runner: JQuery;
 
   private eventEmitter: IEventEmitter;
@@ -20,7 +20,7 @@ class Runner {
     this.$runner = $('<div>', { class: 'slider__runner' });
   }
 
-  public render({ position, isVertical, zIndex }: any) {
+  public render({ position, isVertical, zIndex }: IRunnerOptions) {
     if (!this.isRender) {
       this.$barContainer.append(this.$runner);
       this.$runner.on('dragstart', false);
@@ -56,7 +56,7 @@ class Runner {
   };
 
   private attachEventMouseMove = (): void => {
-    const position = this.getPosition(event);
+    const position = this.getPosition(<MouseEvent>event);
 
     if (this.type === 'from') {
       this.eventEmitter.emit(ENamesOfEvents.ChangedRunnerFromPosition, position);
@@ -80,7 +80,7 @@ class Runner {
     return { height, width, left, top };
   }
 
-  private getPosition(event: any) {
+  private getPosition(event: MouseEvent) {
     const { height, width, left, top } = this.calculateSliderCharacterization();
 
     const x = (event.clientX - left) / width;
