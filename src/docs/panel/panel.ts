@@ -23,19 +23,22 @@ class Panel {
 
   $scale!: JQuery;
 
-  constructor($element: JQuery, slider: IApp, config: any) {
+  constructor($element: JQuery, slider: IApp, config: IConfig) {
     this.$element = $element;
     this.slider = slider;
 
-    this.slider.update(config);
+    this.init(config);
+  }
 
+  private init(config: IConfig) {
+    this.slider.update(config);
     this.searchElements();
-    this.attachEventHandler();
-    this.verifyInput();
+    this.attachEventHandlers();
+    this.verifyInputs();
     this.attachCallback();
   }
 
-  attachCallback(): void {
+  private attachCallback(): void {
     const that = this;
 
     this.slider.update({
@@ -46,7 +49,7 @@ class Panel {
     });
   }
 
-  searchElements(): void {
+  private searchElements(): void {
     this.$range = this.$element.find('.panel__input_name-range');
     this.$vertical = this.$element.find('.panel__input_name-vertical');
     this.$scale = this.$element.find('.panel__input_name-scale');
@@ -58,7 +61,7 @@ class Panel {
     this.$tip = this.$element.find('.panel__input_name-tip');
   }
 
-  attachEventHandler(): void {
+  private attachEventHandlers(): void {
     this.$range.on('click', this.changeCheckboxValue.bind(this, this.$range, 'isRange'));
     this.$vertical.on('click', this.changeCheckboxValue.bind(this, this.$vertical, 'isVertical'));
     this.$tip.on('click', this.changeCheckboxValue.bind(this, this.$tip, 'hasTip'));
@@ -70,22 +73,22 @@ class Panel {
     this.$step.on('change', this.changeTextValue.bind(this, this.$step, 'step'));
   }
 
-  changeCheckboxValue($node: JQuery, option: string) {
+  private changeCheckboxValue($node: JQuery, option: string) {
     const value = $node.prop('checked');
 
     this.slider.update({ [option]: value });
 
-    this.verifyInput();
+    this.verifyInputs();
   }
 
-  changeTextValue = ($node: JQuery, option: string): void => {
+  private changeTextValue = ($node: JQuery, option: string): void => {
     const value = Number($node.val());
     this.slider.update({ [option]: value });
 
-    this.verifyInput();
+    this.verifyInputs();
   };
 
-  verifyInput(): void {
+  private verifyInputs(): void {
     const options: IOptions = this.slider.getOptions();
 
     this.$range.prop('checked', options.isRange);
