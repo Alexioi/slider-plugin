@@ -1,13 +1,13 @@
 import { ENamesOfEvents } from '../enums/enums';
 
 class Presenter {
-  private view: View;
+  private view: IView;
 
   private model: Model;
 
   private eventEmitter: IEventEmitter;
 
-  constructor(view: View, model: Model, eventEmitter: IEventEmitter) {
+  constructor(view: IView, model: Model, eventEmitter: IEventEmitter) {
     this.view = view;
     this.model = model;
     this.eventEmitter = eventEmitter;

@@ -5,7 +5,7 @@ import Runner from './Runner/Runner';
 import Range from './Range/Range';
 import Scale from './Scale/Scale';
 
-class View {
+class View implements IView {
   private node: JQuery;
 
   private $barContainer: JQuery;

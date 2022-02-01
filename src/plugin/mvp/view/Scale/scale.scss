@@ -1,7 +1,7 @@
 .slider {
   &__scale {
     position: relative;
-    margin-top: 10px;
+    margin-top: 5px;
   }
 
   &_vertical &__scale {
@@ -10,11 +10,11 @@
   }
 
   &__mark {
-    font-weight: bold;
     cursor: pointer;
     position: absolute;
     transform: translateX(-50%);
     user-select: none;
+    color: rgb(31, 32, 65);
   }
 
   &_vertical &__mark {

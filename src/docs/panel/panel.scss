@@ -2,39 +2,34 @@
   display: flex;
   min-width: 500px;
   width: calc(50% - 20px);
-  height: calc(50% - 20px);
   flex-grow: 1;
   border: 2px solid gray;
   border-radius: 4px;
-  background-color: burlywood;
+  background-color: white;
 
   &__example {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
+    padding: 40px;
   }
 
   &__control {
     display: flex;
-    width: 200px;
-    flex-wrap: wrap;
+    flex-direction: column;
     padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    gap: 15px;
     border-right: 2px solid gray;
   }
 
   &__label {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 50px;
+    width: 150px;
+    justify-content: space-between;
   }
 
   &__input {
-    width: 100%;
+    width: 90px;
   }
 }

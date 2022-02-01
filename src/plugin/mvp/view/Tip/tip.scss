@@ -19,10 +19,11 @@
   &__tip {
     position: absolute;
     white-space: nowrap;
-    border: 1px solid black;
+    border: 1px solid rgba(31, 32, 65, 0.25);
     border-radius: 3px;
     padding: 2px;
-    background-color: green;
+    background: linear-gradient(180deg, #6fcf97 0%, #66d2ea 100%);
+    color: rgb(31, 32, 65);
     user-select: none;
   }
 }

@@ -8,7 +8,6 @@ $runnerWidth: 1.5rem;
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  margin: 40px;
 
   &_vertical {
     flex-direction: row;
@@ -20,8 +19,7 @@ $runnerWidth: 1.5rem;
     box-sizing: border-box;
     width: 100%;
     height: $runnerWidth * 0.5;
-    border: 1px solid black;
-    background-color: #999;
+    border: 1px solid rgba(31, 32, 65, 0.25);
     border-radius: 3px;
     position: relative;
   }
