@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   plugins: ['fsd'],
   extends: ['airbnb-base', 'airbnb-typescript/base', 'plugin:fsd/all'],
   parserOptions: {

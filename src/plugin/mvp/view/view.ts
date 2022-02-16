@@ -60,7 +60,7 @@ class View implements IView {
       this.tip.destroy();
     }
 
-    const [zIndexFrom, zIndexTO] = this.getRunnerZIndex(isRange, leftPosition, whichRunnerChanged);
+    const [zIndexFrom, zIndexTO] = View.getRunnerZIndex(isRange, leftPosition, whichRunnerChanged);
 
     if (isRange) {
       this.runnerFrom.render({ position: leftPosition, isVertical, zIndex: zIndexFrom });
@@ -79,7 +79,7 @@ class View implements IView {
     }
   }
 
-  private getRunnerZIndex(
+  private static getRunnerZIndex(
     isRange: boolean,
     leftPosition: number,
     whichRunnerChanged?: 'from' | 'to',

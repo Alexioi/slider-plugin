@@ -72,10 +72,7 @@ class Runner implements IRunner {
   };
 
   private calculateSliderCharacterization() {
-    const height = this.$barContainer.height()!;
-    const left = this.$barContainer.offset()!.left;
-    const top = this.$barContainer.offset()!.top;
-    const width = this.$barContainer.width()!;
+    const { height, width, left, top } = this.$barContainer[0].getBoundingClientRect();
 
     return { height, width, left, top };
   }
