@@ -71,14 +71,8 @@ class Runner implements IRunner {
     $(document).off('mousemove');
   };
 
-  private calculateSliderCharacterization() {
-    const { height, width, left, top } = this.$barContainer[0].getBoundingClientRect();
-
-    return { height, width, left, top };
-  }
-
   private getPosition(event: MouseEvent) {
-    const { height, width, left, top } = this.calculateSliderCharacterization();
+    const { height, width, left, top } = this.$barContainer[0].getBoundingClientRect();
 
     const x = (event.clientX - left) / width;
     const y = (event.clientY - top) / height;

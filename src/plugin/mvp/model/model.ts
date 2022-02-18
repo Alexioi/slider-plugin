@@ -205,19 +205,26 @@ class Model {
   private calculateValueDependingOnStep(oldValue: number, newValue: number): number {
     const { step } = this.options;
 
-    const differenceValue = oldValue - newValue;
+    const differenceValue = Math.abs(newValue - oldValue);
 
-    const newValueWithoutStep = oldValue - (differenceValue - (differenceValue % step));
+    const stepRemainderOfDivision = differenceValue % step;
 
-    if (Math.abs(differenceValue) < step / 2) {
-      return newValueWithoutStep;
+    if (differenceValue < step / 2) {
+      return oldValue;
     }
 
-    if (differenceValue < 0) {
-      return newValueWithoutStep + step;
+    if (stepRemainderOfDivision < step / 2) {
+      if (newValue > oldValue) {
+        return newValue - stepRemainderOfDivision;
+      }
+      return newValue + stepRemainderOfDivision;
     }
 
-    return newValueWithoutStep - step;
+    if (newValue > oldValue) {
+      return newValue - stepRemainderOfDivision + step;
+    }
+
+    return newValue + stepRemainderOfDivision - step;
   }
 
   private checkFrom(newFrom: number): number {
