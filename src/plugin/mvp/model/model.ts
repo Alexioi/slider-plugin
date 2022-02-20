@@ -164,29 +164,25 @@ class Model {
   }
 
   public calculateFromUsingFraction({ x, y }: IPosition): void {
-    const { isVertical, from, min, max } = this.options;
+    const { isVertical, min, max } = this.options;
 
     const percentageOfLength = isVertical ? y : x;
 
-    let newValue = (max - min) * percentageOfLength + min;
+    const newValue = (max - min) * percentageOfLength + min;
 
-    newValue = this.calculateValueDependingOnStep(from, newValue);
-
-    this.verifyFrom(newValue);
+    this.changeValueDependingOnStep(newValue, 'from');
 
     this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
   }
 
   public calculateToUsingFraction({ x, y }: IPosition): void {
-    const { isVertical, to, min, max } = this.options;
+    const { isVertical, min, max } = this.options;
 
     const percentageOfLength = isVertical ? y : x;
 
-    let newValue = (max - min) * percentageOfLength + min;
+    const newValue = (max - min) * percentageOfLength + min;
 
-    newValue = this.calculateValueDependingOnStep(to, newValue);
-
-    this.verifyTo(newValue);
+    this.changeValueDependingOnStep(newValue, 'to');
 
     this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
   }
@@ -243,29 +239,48 @@ class Model {
     this.options.step = distanceBetweenMinAndMax;
   }
 
-  private calculateValueDependingOnStep(oldValue: number, newValue: number): number {
-    const { step } = this.options;
+  private changeValueDependingOnStep(newValue: number, valueName: 'from' | 'to'): void {
+    const { step, min, max, from, to, isRange } = this.options;
+
+    const minimum = valueName === 'from' || !isRange ? min : from;
+    const maximum = valueName === 'from' ? to : max;
+
+    const oldValue = this.options[valueName];
 
     const differenceValue = Math.abs(newValue - oldValue);
 
     const stepRemainderOfDivision = differenceValue % step;
 
+    if (newValue < minimum) {
+      this.options[valueName] = minimum;
+      return;
+    }
+
+    if (newValue > maximum) {
+      this.options[valueName] = maximum;
+      return;
+    }
+
     if (differenceValue < step / 2) {
-      return oldValue;
+      this.options[valueName] = oldValue;
+      return;
     }
 
     if (stepRemainderOfDivision < step / 2) {
       if (newValue > oldValue) {
-        return newValue - stepRemainderOfDivision;
+        this.options[valueName] = newValue - stepRemainderOfDivision;
+        return;
       }
-      return newValue + stepRemainderOfDivision;
+      this.options[valueName] = newValue + stepRemainderOfDivision;
+      return;
     }
 
     if (newValue > oldValue) {
-      return newValue - stepRemainderOfDivision + step;
+      this.options[valueName] = newValue - stepRemainderOfDivision + step;
+      return;
     }
 
-    return newValue + stepRemainderOfDivision - step;
+    this.options[valueName] = newValue + stepRemainderOfDivision - step;
   }
 }
 

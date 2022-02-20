@@ -25,8 +25,8 @@ const configs = [
     step: 10,
     min: 100,
     max: 200,
-    from: -50,
-    to: 40,
+    from: 100,
+    to: 150,
   },
   {
     isRange: true,
@@ -52,6 +52,6 @@ const configs = [
   },
 ];
 
-$('.panel__control').each((i, node) => {
+$('.js-panel__control').each((i, node) => {
   new Panel($(node), slider[i], configs[i]);
 });
