@@ -1,3 +1,4 @@
+import helpers from '../../helpers/helpers';
 import { ENamesOfEvents } from '../enums/enums';
 
 class Model {
@@ -10,26 +11,152 @@ class Model {
     this.options = { ...options };
   }
 
-  public updateOptions({
-    isRange,
-    isVertical,
-    hasTip,
-    hasScale,
-    min,
-    max,
-    from,
-    to,
-    step,
-  }: IConfig): void {
-    this.options.isRange = this.verifyBooleanOption('isRange', isRange);
-    this.options.isVertical = this.verifyBooleanOption('isVertical', isVertical);
-    this.options.hasTip = this.verifyBooleanOption('hasTip', hasTip);
-    this.options.hasScale = this.verifyBooleanOption('hasScale', hasScale);
-    [this.options.min, this.options.max] = this.verifyMinAndMax(min, max);
-    [this.options.from, this.options.to] = this.verifyFromAndTo(from, to);
-    this.options.step = this.verifyStep(step);
+  public updateOptions(config: IConfig): void {
+    this.verifyOption(config);
 
     this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+  }
+
+  private verifyOption(config: IConfig): void {
+    const { isRange, isVertical, hasTip, hasScale, min, max, from, to, step } = config;
+
+    if (typeof isRange === 'boolean') {
+      this.options.isRange = isRange;
+    }
+
+    if (typeof isVertical === 'boolean') {
+      this.options.isVertical = isVertical;
+    }
+
+    if (typeof hasTip === 'boolean') {
+      this.options.hasTip = hasTip;
+    }
+
+    if (typeof hasScale === 'boolean') {
+      this.options.hasScale = hasScale;
+    }
+
+    if (typeof max !== 'undefined') {
+      this.verifyMax(max, min);
+    }
+
+    if (typeof min !== 'undefined') {
+      this.verifyMin(min);
+    }
+
+    if (typeof to !== 'undefined') {
+      this.verifyTo(to, from);
+    }
+
+    if (typeof from !== 'undefined') {
+      this.verifyFrom(from);
+    }
+
+    if (typeof step !== 'undefined') {
+      this.verifyStep(step);
+    }
+  }
+
+  private verifyTo(newTo: number, newFrom?: number): void {
+    if (!helpers.isNumber(newTo)) {
+      return;
+    }
+
+    const { max } = this.options;
+
+    if (newTo > max) {
+      this.options.to = max;
+      return;
+    }
+
+    const { isRange } = this.options;
+
+    if (!isRange) {
+      const { min } = this.options;
+
+      if (newTo < min) {
+        this.options.to = min;
+        return;
+      }
+
+      this.options.to = newTo;
+      return;
+    }
+
+    const { from } = this.options;
+
+    if (!helpers.isNumber(newFrom)) {
+      if (newTo < from) {
+        this.options.to = from;
+        return;
+      }
+      this.options.to = newTo;
+      return;
+    }
+
+    if (<number>newFrom < from) {
+      if (newTo < from) {
+        this.options.to = from;
+        return;
+      }
+      this.options.to = newTo;
+      return;
+    }
+
+    if (newTo < <number>newFrom) {
+      this.options.to = <number>newFrom;
+      return;
+    }
+
+    this.options.to = newTo;
+  }
+
+  private verifyMax(newMax: number, newMin?: number): void {
+    if (!helpers.isNumber(newMax)) {
+      return;
+    }
+
+    const min = helpers.isNumber(newMin) ? <number>newMin : this.options.min;
+
+    if (newMax <= min) {
+      return;
+    }
+
+    this.options.max = newMax;
+  }
+
+  private verifyMin(newMin: number): void {
+    if (!helpers.isNumber(newMin)) {
+      return;
+    }
+
+    const { max } = this.options;
+
+    if (newMin > max) {
+      return;
+    }
+
+    this.options.min = newMin;
+  }
+
+  private verifyFrom(newFrom: number): void {
+    if (!helpers.isNumber(newFrom)) {
+      return;
+    }
+
+    const { min, to } = this.options;
+
+    if (newFrom > to) {
+      this.options.from = to;
+      return;
+    }
+
+    if (newFrom < min) {
+      this.options.from = min;
+      return;
+    }
+
+    this.options.from = newFrom;
   }
 
   public getOptions(): IOptions {
@@ -43,15 +170,11 @@ class Model {
 
     let newValue = (max - min) * percentageOfLength + min;
 
-    newValue = this.checkFrom(newValue);
-
     newValue = this.calculateValueDependingOnStep(from, newValue);
 
-    newValue = this.checkFrom(newValue);
+    this.verifyFrom(newValue);
 
-    if (newValue !== from) {
-      this.updateFrom(newValue);
-    }
+    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
   }
 
   public calculateToUsingFraction({ x, y }: IPosition): void {
@@ -61,15 +184,11 @@ class Model {
 
     let newValue = (max - min) * percentageOfLength + min;
 
-    newValue = this.checkTo(newValue);
-
     newValue = this.calculateValueDependingOnStep(to, newValue);
 
-    newValue = this.checkTo(newValue);
+    this.verifyTo(newValue);
 
-    if (newValue !== to) {
-      this.updateTo(newValue);
-    }
+    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
   }
 
   public updateNearValue(value: number): void {
@@ -103,103 +222,25 @@ class Model {
     this.eventEmitter.emit(ENamesOfEvents.UpdatedModelTo, this.options);
   }
 
-  private verifyBooleanOption(nameOfValue: string, newValue: boolean | undefined): boolean {
-    const currentValue = this.options[nameOfValue];
-
-    if (typeof newValue === 'undefined') {
-      return <boolean>currentValue;
-    }
-
-    if (typeof newValue !== 'boolean') {
-      return <boolean>currentValue;
-    }
-
-    return newValue;
-  }
-
-  private verifyNumberOption(nameOfValue: string, newValue: number | undefined): number {
-    const currentValue = this.options[nameOfValue];
-
-    if (typeof newValue === 'undefined') {
-      return <number>currentValue;
-    }
-
-    if (typeof newValue !== 'number') {
-      return <number>currentValue;
-    }
-
-    return newValue;
-  }
-
-  private verifyMinAndMax(
-    verifyingOfMin: number | undefined,
-    verifyingOfMax: number | undefined,
-  ): Array<number> {
+  private verifyStep(newStep: number): void {
     const { min, max } = this.options;
-    let newMin = verifyingOfMin;
-    let newMax = verifyingOfMax;
 
-    newMin = this.verifyNumberOption('min', newMin);
-    newMax = this.verifyNumberOption('max', newMax);
-
-    if (newMin < newMax) {
-      return [newMin, newMax];
+    if (!helpers.isNumber(String(newStep))) {
+      return;
     }
 
-    if (min < newMax) {
-      return [min, newMax];
+    if (newStep <= 0) {
+      return;
     }
 
-    return [min, max];
-  }
-
-  private verifyFromAndTo(
-    verifyingOfFrom: number | undefined,
-    verifyingOfTo: number | undefined,
-  ): Array<number> {
-    const { min, max, from, to } = this.options;
-    let newFrom = verifyingOfFrom;
-    let newTo = verifyingOfTo;
-
-    newFrom = this.verifyNumberOption('from', newFrom);
-    newTo = this.verifyNumberOption('to', newTo);
-
-    if (newTo > max || newTo < min) {
-      newTo = to;
-    }
-
-    if (to > max || to < min) {
-      newTo = max;
-    }
-
-    if (newFrom > max || newFrom < min) {
-      newFrom = from;
-    }
-
-    if (from > max || from < min) {
-      newFrom = min;
-    }
-
-    if (newFrom > newTo) {
-      newFrom = newTo;
-    }
-
-    return [newFrom, newTo];
-  }
-
-  private verifyStep(verifyingOfStep: number | undefined): number {
-    const { min, max } = this.options;
-    let newStep = verifyingOfStep;
-
-    const distanceBetweenMinAndMax = Math.abs(max - min);
-
-    newStep = this.verifyNumberOption('step', newStep);
+    const distanceBetweenMinAndMax = max - min;
 
     if (newStep < distanceBetweenMinAndMax) {
-      return newStep;
+      this.options.step = Number(newStep);
+      return;
     }
 
-    return distanceBetweenMinAndMax;
+    this.options.step = distanceBetweenMinAndMax;
   }
 
   private calculateValueDependingOnStep(oldValue: number, newValue: number): number {
@@ -225,38 +266,6 @@ class Model {
     }
 
     return newValue + stepRemainderOfDivision - step;
-  }
-
-  private checkFrom(newFrom: number): number {
-    const { to, min } = this.options;
-
-    if (newFrom > to) {
-      return to;
-    }
-
-    if (newFrom < min) {
-      return min;
-    }
-
-    return newFrom;
-  }
-
-  private checkTo(newTo: number): number {
-    const { isRange, from, max, min } = this.options;
-
-    if (newTo > max) {
-      return max;
-    }
-
-    if (newTo < min) {
-      return min;
-    }
-
-    if (isRange && newTo < from) {
-      return from;
-    }
-
-    return newTo;
   }
 }
 

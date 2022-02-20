@@ -38,12 +38,16 @@ class Scale implements IScale {
       ? String(step).split('.').pop()!.length
       : 0;
 
-    const symbolsLength =
-      String(min).length > String(max).length
-        ? oneSymbolLength * (numberOfSymbolAfterComma + String(min).length)
-        : oneSymbolLength * (numberOfSymbolAfterComma + String(max).length);
+    const lengthMin = String(min).length;
+    const lengthMax = String(max).length;
 
-    const scaleLength = isVertical ? Number(this.$scale.height()) : Number(this.$scale.width());
+    const maximumSymbolLength = lengthMin > lengthMax ? lengthMin : lengthMax;
+
+    const symbolsLength = oneSymbolLength * (numberOfSymbolAfterComma + maximumSymbolLength);
+
+    const scaleLength = isVertical
+      ? this.$scale[0].getBoundingClientRect().height
+      : this.$scale[0].getBoundingClientRect().width;
 
     const countOfMarks = Math.floor(scaleLength / symbolsLength);
 
@@ -75,12 +79,10 @@ class Scale implements IScale {
     this.$scale.on('click', this.clickScale);
   }
 
-  private clickScale = (event: Event) => {
-    const target = <HTMLElement>event.target;
+  private clickScale = (event: { target: HTMLElement }) => {
+    const { innerHTML } = event.target;
 
-    const value = Number(target.innerHTML);
-
-    this.eventEmitter.emit(ENamesOfEvents.ClickScale, value);
+    this.eventEmitter.emit(ENamesOfEvents.ClickScale, innerHTML);
   };
 }
 

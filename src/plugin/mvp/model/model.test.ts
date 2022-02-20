@@ -62,7 +62,7 @@ describe('Model', () => {
 
     const { from, to } = model.getOptions();
 
-    expect(from).toEqual(-30);
+    expect(from).toEqual(-40);
     expect(to).toEqual(50);
   });
 
