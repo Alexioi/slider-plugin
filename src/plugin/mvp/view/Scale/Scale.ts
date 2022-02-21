@@ -1,6 +1,6 @@
 import './scale.scss';
 
-import { ENamesOfEvents } from '../../enums/enums';
+import ENamesOfEvents from '../../enums/enums';
 
 class Scale implements IScale {
   private $slider: JQuery;

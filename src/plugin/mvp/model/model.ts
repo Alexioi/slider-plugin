@@ -1,7 +1,7 @@
 import helpers from '../../helpers/helpers';
-import { ENamesOfEvents } from '../enums/enums';
+import ENamesOfEvents from '../enums/enums';
 
-class Model {
+class Model implements IModel {
   private options: IOptions;
 
   private eventEmitter: IEventEmitter;
@@ -36,153 +36,63 @@ class Model {
       this.options.hasScale = hasScale;
     }
 
-    if (typeof max !== 'undefined') {
-      this.verifyMax(max, min);
-    }
+    this.verifyMinAndMax(min, max);
+    this.verifyFromAndTo(from, to);
 
-    if (typeof min !== 'undefined') {
-      this.verifyMin(min);
-    }
-
-    if (typeof to !== 'undefined') {
-      this.verifyTo(to, from);
-    }
-
-    if (typeof from !== 'undefined') {
-      this.verifyFrom(from);
-    }
-
-    if (typeof step !== 'undefined') {
-      this.verifyStep(step);
-    }
+    this.verifyStep(step);
   }
 
-  private verifyTo(newTo: number, newFrom?: number): void {
-    if (!helpers.isNumber(newTo)) {
+  private verifyMinAndMax(firstValue: number | undefined, secondValue: number | undefined): void {
+    const { min, max } = this.options;
+
+    const newMin = helpers.isNumber(firstValue) ? <number>firstValue : min;
+    const newMax = helpers.isNumber(secondValue) ? <number>secondValue : max;
+
+    if (newMin < newMax) {
+      this.options.min = newMin;
+      this.options.max = newMax;
       return;
     }
 
-    const { max } = this.options;
-
-    if (newTo > max) {
-      this.options.to = max;
-      return;
-    }
-
-    const { isRange } = this.options;
-
-    if (!isRange) {
-      const { min } = this.options;
-
-      if (newTo < min) {
-        this.options.to = min;
-        return;
-      }
-
-      this.options.to = newTo;
-      return;
-    }
-
-    const { from } = this.options;
-
-    if (!helpers.isNumber(newFrom)) {
-      if (newTo < from) {
-        this.options.to = from;
-        return;
-      }
-      this.options.to = newTo;
-      return;
-    }
-
-    if (<number>newFrom < from) {
-      if (newTo < from) {
-        this.options.to = from;
-        return;
-      }
-      this.options.to = newTo;
-      return;
-    }
-
-    if (newTo < <number>newFrom) {
-      this.options.to = <number>newFrom;
-      return;
-    }
-
-    this.options.to = newTo;
+    this.options.min = newMax;
+    this.options.max = newMin;
   }
 
-  private verifyMax(newMax: number, newMin?: number): void {
-    if (!helpers.isNumber(newMax)) {
+  private verifyFromAndTo(firstValue: number | undefined, secondValue: number | undefined): void {
+    const { min, max, from, to } = this.options;
+
+    const newFrom = helpers.isNumber(firstValue) ? <number>firstValue : from;
+    const newTo = helpers.isNumber(secondValue) ? <number>secondValue : to;
+
+    if (newFrom < newTo) {
+      this.options.from = newFrom > min ? newFrom : min;
+      this.options.to = newTo < max ? newTo : max;
       return;
     }
 
-    const min = helpers.isNumber(newMin) ? <number>newMin : this.options.min;
-
-    if (newMax <= min) {
-      return;
-    }
-
-    this.options.max = newMax;
-  }
-
-  private verifyMin(newMin: number): void {
-    if (!helpers.isNumber(newMin)) {
-      return;
-    }
-
-    const { max } = this.options;
-
-    if (newMin > max) {
-      return;
-    }
-
-    this.options.min = newMin;
-  }
-
-  private verifyFrom(newFrom: number): void {
-    if (!helpers.isNumber(newFrom)) {
-      return;
-    }
-
-    const { min, to } = this.options;
-
-    if (newFrom > to) {
-      this.options.from = to;
-      return;
-    }
-
-    if (newFrom < min) {
-      this.options.from = min;
-      return;
-    }
-
-    this.options.from = newFrom;
+    this.options.from = newTo > min ? newTo : min;
+    this.options.to = newFrom < max ? newFrom : max;
   }
 
   public getOptions(): IOptions {
     return this.options;
   }
 
-  public calculateFromUsingFraction({ x, y }: IPosition): void {
+  public calculateValueUsingFraction({
+    position,
+    type,
+  }: {
+    position: IPosition;
+    type: 'from' | 'to';
+  }): void {
     const { isVertical, min, max } = this.options;
+    const { x, y } = position;
 
     const percentageOfLength = isVertical ? y : x;
 
     const newValue = (max - min) * percentageOfLength + min;
 
-    this.changeValueDependingOnStep(newValue, 'from');
-
-    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
-  }
-
-  public calculateToUsingFraction({ x, y }: IPosition): void {
-    const { isVertical, min, max } = this.options;
-
-    const percentageOfLength = isVertical ? y : x;
-
-    const newValue = (max - min) * percentageOfLength + min;
-
-    this.changeValueDependingOnStep(newValue, 'to');
+    this.changeValueDependingOnStep(newValue, type);
 
     this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
   }
@@ -218,20 +128,20 @@ class Model {
     this.eventEmitter.emit(ENamesOfEvents.UpdatedModelTo, this.options);
   }
 
-  private verifyStep(newStep: number): void {
+  private verifyStep(newStep: number | undefined): void {
     const { min, max } = this.options;
 
     if (!helpers.isNumber(String(newStep))) {
       return;
     }
 
-    if (newStep <= 0) {
+    if (<number>newStep <= 0) {
       return;
     }
 
     const distanceBetweenMinAndMax = max - min;
 
-    if (newStep < distanceBetweenMinAndMax) {
+    if (<number>newStep < distanceBetweenMinAndMax) {
       this.options.step = Number(newStep);
       return;
     }
@@ -272,6 +182,16 @@ class Model {
         return;
       }
       this.options[valueName] = newValue + stepRemainderOfDivision;
+      return;
+    }
+
+    if (newValue + stepRemainderOfDivision - step < minimum) {
+      this.options[valueName] = minimum;
+      return;
+    }
+
+    if (newValue - stepRemainderOfDivision + step > maximum) {
+      this.options[valueName] = maximum;
       return;
     }
 

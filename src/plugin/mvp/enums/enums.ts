@@ -8,4 +8,4 @@ enum ENamesOfEvents {
   ChangedRunnerToPosition = 'ChangedRunnerToPosition',
 }
 
-export { ENamesOfEvents };
+export default ENamesOfEvents;

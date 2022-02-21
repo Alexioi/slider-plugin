@@ -7,7 +7,7 @@ import sliderOptions from './sliderOptions';
 class App implements IApp {
   private callbacks: ICallbacks;
 
-  private model: Model;
+  private model: IModel;
 
   private view: View;
 

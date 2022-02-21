@@ -1,13 +1,13 @@
-import { ENamesOfEvents } from '../enums/enums';
+import ENamesOfEvents from '../enums/enums';
 
 class Presenter {
   private view: IView;
 
-  private model: Model;
+  private model: IModel;
 
   private eventEmitter: IEventEmitter;
 
-  constructor(view: IView, model: Model, eventEmitter: IEventEmitter) {
+  constructor(view: IView, model: IModel, eventEmitter: IEventEmitter) {
     this.view = view;
     this.model = model;
     this.eventEmitter = eventEmitter;
@@ -43,13 +43,12 @@ class Presenter {
       this.model.updateNearValue(value);
     });
 
-    this.eventEmitter.subscribe(ENamesOfEvents.ChangedRunnerFromPosition, (position: IPosition) => {
-      this.model.calculateFromUsingFraction(position);
-    });
-
-    this.eventEmitter.subscribe(ENamesOfEvents.ChangedRunnerToPosition, (position: IPosition) => {
-      this.model.calculateToUsingFraction(position);
-    });
+    this.eventEmitter.subscribe(
+      ENamesOfEvents.ChangedRunnerPosition,
+      ({ position, type }: { position: IPosition; type: 'from' | 'to' }) => {
+        this.model.calculateValueUsingFraction({ position, type });
+      },
+    );
   }
 }
 

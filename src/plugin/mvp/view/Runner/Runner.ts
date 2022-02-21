@@ -1,6 +1,6 @@
 import './runner.scss';
 
-import { ENamesOfEvents } from '../../enums/enums';
+import ENamesOfEvents from '../../enums/enums';
 
 class Runner implements IRunner {
   private $runner: JQuery;
@@ -58,13 +58,9 @@ class Runner implements IRunner {
   private attachEventMouseMove = (): void => {
     const position = this.getPosition(<MouseEvent>event);
 
-    if (this.type === 'from') {
-      this.eventEmitter.emit(ENamesOfEvents.ChangedRunnerFromPosition, position);
-    }
+    const { type } = this;
 
-    if (this.type === 'to') {
-      this.eventEmitter.emit(ENamesOfEvents.ChangedRunnerToPosition, position);
-    }
+    this.eventEmitter.emit(ENamesOfEvents.ChangedRunnerPosition, { position, type });
   };
 
   private attachEventMouseUp = (): void => {
