@@ -17,6 +17,45 @@ class Model implements IModel {
     this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
   }
 
+  public getOptions(): IOptions {
+    return this.options;
+  }
+
+  public calculateValueUsingFraction({ position, type }: IElementPosition): void {
+    const { isVertical, min, max } = this.options;
+    const { x, y } = position;
+
+    const percentageOfLength = isVertical ? y : x;
+
+    const newValue = (max - min) * percentageOfLength + min;
+
+    this.changeValueDependingOnStep(newValue, type);
+
+    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+  }
+
+  public updateNearValue(newValue: number): void {
+    const { isRange, from, to } = this.options;
+
+    const diffFrom = Math.abs(from - newValue);
+    const diffTo = Math.abs(to - newValue);
+
+    if (!isRange) {
+      this.options.to = newValue;
+      this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+      return;
+    }
+
+    if (diffTo <= diffFrom) {
+      this.options.to = newValue;
+      this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+      return;
+    }
+
+    this.options.from = newValue;
+    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+  }
+
   private verifyOption(config: IConfig): void {
     const { isRange, isVertical, hasTip, hasScale, min, max, from, to, step } = config;
 
@@ -72,60 +111,6 @@ class Model implements IModel {
 
     this.options.from = newTo > min ? newTo : min;
     this.options.to = newFrom < max ? newFrom : max;
-  }
-
-  public getOptions(): IOptions {
-    return this.options;
-  }
-
-  public calculateValueUsingFraction({
-    position,
-    type,
-  }: {
-    position: IPosition;
-    type: 'from' | 'to';
-  }): void {
-    const { isVertical, min, max } = this.options;
-    const { x, y } = position;
-
-    const percentageOfLength = isVertical ? y : x;
-
-    const newValue = (max - min) * percentageOfLength + min;
-
-    this.changeValueDependingOnStep(newValue, type);
-
-    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
-  }
-
-  public updateNearValue(value: number): void {
-    const { isRange, from, to } = this.options;
-
-    const diffFrom = Math.abs(from - value);
-    const diffTo = Math.abs(to - value);
-
-    if (diffTo <= diffFrom) {
-      this.updateTo(value);
-      return;
-    }
-
-    if (!isRange) {
-      this.updateTo(value);
-      return;
-    }
-
-    this.updateFrom(value);
-  }
-
-  private updateFrom(newValue: number): void {
-    this.options.from = newValue;
-
-    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelFrom, this.options);
-  }
-
-  private updateTo(newValue: number): void {
-    this.options.to = newValue;
-
-    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelTo, this.options);
   }
 
   private verifyStep(newStep: number | undefined): void {

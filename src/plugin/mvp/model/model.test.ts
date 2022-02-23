@@ -1,7 +1,7 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from './model';
 
-describe('Model', () => {
+describe('Mодель', () => {
   const defaultOptions = {
     isRange: true,
     isVertical: false,
@@ -20,7 +20,7 @@ describe('Model', () => {
     model.updateOptions(defaultOptions);
   });
 
-  test('should update all options', () => {
+  test('должна изменять все опции', () => {
     const options = {
       isRange: false,
       isVertical: true,

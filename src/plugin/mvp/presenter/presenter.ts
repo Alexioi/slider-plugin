@@ -24,32 +24,37 @@ class Presenter {
   }
 
   private attachEventEmitters(): void {
-    this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelOptions, (options: IOptions) => {
-      this.view.render(options);
-      this.eventEmitter.emit('onChange', options);
-    });
+    this.eventEmitter.subscribe(
+      ENamesOfEvents.UpdatedModelOptions,
+      this.notifyViewUpdatedModelOptions,
+    );
 
-    this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelFrom, (options: IOptions) => {
-      this.view.render(options, 'from');
-      this.eventEmitter.emit('onChange', options);
-    });
-
-    this.eventEmitter.subscribe(ENamesOfEvents.UpdatedModelTo, (options: IOptions) => {
-      this.view.render(options, 'to');
-      this.eventEmitter.emit('onChange', options);
-    });
-
-    this.eventEmitter.subscribe(ENamesOfEvents.ClickScale, (value: number) => {
-      this.model.updateNearValue(value);
-    });
+    this.eventEmitter.subscribe(ENamesOfEvents.ClickScale, this.notifyModelClickedScale);
 
     this.eventEmitter.subscribe(
       ENamesOfEvents.ChangedRunnerPosition,
-      ({ position, type }: { position: IPosition; type: 'from' | 'to' }) => {
-        this.model.calculateValueUsingFraction({ position, type });
-      },
+      this.notifyModelAboutChangedRunnerPosition,
     );
   }
+
+  private notifyModelClickedScale = (value: number) => {
+    this.model.updateNearValue(value);
+  };
+
+  private notifyViewUpdatedModelOptions = (options: IOptions) => {
+    this.view.render(options);
+    this.eventEmitter.emit('onChange', options);
+  };
+
+  private notifyModelAboutChangedRunnerPosition = ({
+    position,
+    type,
+  }: {
+    position: IPosition;
+    type: 'from' | 'to';
+  }) => {
+    this.model.calculateValueUsingFraction({ position, type });
+  };
 }
 
 export default Presenter;

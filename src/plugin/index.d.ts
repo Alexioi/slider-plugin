@@ -33,8 +33,3 @@ declare interface IOptions {
   from: number;
   to: number;
 }
-
-declare interface IPosition {
-  x: number;
-  y: number;
-}

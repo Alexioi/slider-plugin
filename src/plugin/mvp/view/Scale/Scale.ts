@@ -79,10 +79,10 @@ class Scale implements IScale {
     this.$scale.on('click', this.clickScale);
   }
 
-  private clickScale = (event: { target: HTMLElement }) => {
+  private clickScale = (event: { target: HTMLSpanElement }) => {
     const { innerHTML } = event.target;
 
-    this.eventEmitter.emit(ENamesOfEvents.ClickScale, innerHTML);
+    this.eventEmitter.emit(ENamesOfEvents.ClickScale, Number(innerHTML));
   };
 }
 
