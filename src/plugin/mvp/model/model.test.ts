@@ -1,7 +1,7 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from './model';
 
-describe('Mодель', () => {
+describe('Модель', () => {
   const defaultOptions = {
     isRange: true,
     isVertical: false,
@@ -20,7 +20,7 @@ describe('Mодель', () => {
     model.updateOptions(defaultOptions);
   });
 
-  test('должна изменять все опции', () => {
+  test('должна изменять все валидные опции', () => {
     const options = {
       isRange: false,
       isVertical: true,
@@ -40,22 +40,64 @@ describe('Mодель', () => {
     expect(newOptions).toEqual(options);
   });
 
-  test('should not update min if new min > max', () => {
-    model.updateOptions({ min: 200 });
+  test('должна изменять часть валидных опции', () => {
+    const options = {
+      isRange: false,
+      max: 700,
+    };
 
-    const { min } = model.getOptions();
+    model.updateOptions(options);
 
-    expect(min).toEqual(-100);
+    const { isRange, max } = model.getOptions();
+
+    expect(isRange).toEqual(options.isRange);
+    expect(max).toEqual(options.max);
   });
 
-  test('should not update min if new min > new max and new min > max', () => {
-    model.updateOptions({ min: 200, max: 100 });
+  test('должна менять только валидные данные', () => {
+    const options = {
+      isRange: 'false',
+      isVertical: 1,
+      hasTip: '',
+      hasScale: true,
+      step: 15,
+      min: true,
+      max: '',
+      from: 'f',
+      to: 70,
+    };
+    // @ts-ignore
+    model.updateOptions(options);
 
-    const { min, max } = model.getOptions();
+    const { isRange, isVertical, hasScale, hasTip, step, max, min, to, from } = model.getOptions();
 
-    expect(min).toEqual(-100);
-    expect(max).toEqual(100);
+    expect(isRange).not.toEqual(options.isRange);
+    expect(isVertical).not.toEqual(options.isVertical);
+    expect(hasTip).not.toEqual(options.hasTip);
+    expect(hasScale).toEqual(options.hasScale);
+    expect(step).toEqual(options.step);
+    expect(min).not.toEqual(options.min);
+    expect(max).not.toEqual(options.max);
+    expect(from).not.toEqual(options.from);
+    expect(to).toEqual(options.to);
   });
+
+  // test('should not update min if new min > max', () => {
+  //   model.updateOptions({ min: 200 });
+
+  //   const { min } = model.getOptions();
+
+  //   expect(min).toEqual(-100);
+  // });
+
+  // test('should not update min if new min > new max and new min > max', () => {
+  //   model.updateOptions({ min: 200, max: 100 });
+
+  //   const { min, max } = model.getOptions();
+
+  //   expect(min).toEqual(-100);
+  //   expect(max).toEqual(100);
+  // });
 
   // test('should update from by a fraction of the maximum length', () => {
   //   model.calculateValueUsingFraction({ x: 0.31, y: 0.31 });
@@ -75,31 +117,31 @@ describe('Mодель', () => {
   //   expect(to).toEqual(60);
   // });
 
-  test('should be updated from if to closer from the passed value than to', () => {
-    model.updateNearValue(-20);
+  // test('should be updated from if to closer from the passed value than to', () => {
+  //   model.updateNearValue(-20);
 
-    const { from, to } = model.getOptions();
+  //   const { from, to } = model.getOptions();
 
-    expect(from).toEqual(-20);
-    expect(to).toEqual(50);
-  });
+  //   expect(from).toEqual(-20);
+  //   expect(to).toEqual(50);
+  // });
 
-  test('should be updated to if to closer to the passed value than from', () => {
-    model.updateNearValue(20);
+  // test('should be updated to if to closer to the passed value than from', () => {
+  //   model.updateNearValue(20);
 
-    const { from, to } = model.getOptions();
+  //   const { from, to } = model.getOptions();
 
-    expect(from).toEqual(-50);
-    expect(to).toEqual(20);
-  });
+  //   expect(from).toEqual(-50);
+  //   expect(to).toEqual(20);
+  // });
 
-  test('should be updated to if isRange = false', () => {
-    model.updateOptions({ isRange: false });
-    model.updateNearValue(-100);
+  // test('should be updated to if isRange = false', () => {
+  //   model.updateOptions({ isRange: false });
+  //   model.updateNearValue(-100);
 
-    const { from, to } = model.getOptions();
+  //   const { from, to } = model.getOptions();
 
-    expect(from).toEqual(-50);
-    expect(to).toEqual(-100);
-  });
+  //   expect(from).toEqual(-50);
+  //   expect(to).toEqual(-100);
+  // });
 });
