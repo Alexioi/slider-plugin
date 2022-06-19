@@ -1,7 +1,7 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
-import Model from '../model/model';
-import View from '../view/view';
-import Presenter from '../presenter/presenter';
+import Model from '../mvp/model/model';
+import View from '../mvp/view/view';
+import Presenter from '../mvp/presenter/presenter';
 import sliderOptions from './sliderOptions';
 
 class App implements IApp {

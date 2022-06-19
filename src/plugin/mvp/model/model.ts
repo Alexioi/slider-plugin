@@ -1,5 +1,5 @@
 import helpers from '../../helpers/helpers';
-import ENamesOfEvents from '../enums/enums';
+import ENamesOfEvents from '../../enums/enums';
 
 class Model implements IModel {
   private options: IOptions;

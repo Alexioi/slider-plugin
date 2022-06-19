@@ -1,6 +1,6 @@
 import './runner.scss';
 
-import ENamesOfEvents from '../../enums/enums';
+import ENamesOfEvents from '../../../enums/enums';
 
 class Runner implements IRunner {
   private $runner: JQuery;
@@ -12,6 +12,8 @@ class Runner implements IRunner {
   private $barContainer: JQuery;
 
   private isRender = false;
+
+  private isMobile = false;
 
   constructor(type: string, $barContainer: JQuery, eventEmitter: IEventEmitter) {
     this.type = type;
@@ -27,6 +29,9 @@ class Runner implements IRunner {
       this.$runner.on('mousedown', this.attachEventMouseDown);
       this.isRender = true;
     }
+
+    // @ts-ignore
+    this.isMobile = navigator.userAgentData.mobile;
 
     if (isVertical) {
       this.$runner.css({ top: `${position}%`, left: '' });
@@ -51,7 +56,12 @@ class Runner implements IRunner {
   }
 
   private attachEventMouseDown = (): void => {
-    $(document).on('mousemove', this.attachEventMouseMove);
+    if (this.isMobile) {
+      $(document).on('touchmove', this.attachEventMouseMove);
+    } else {
+      $(document).on('mousemove', this.attachEventMouseMove);
+    }
+
     $(document).on('mouseup', this.attachEventMouseUp);
   };
 
@@ -67,11 +77,14 @@ class Runner implements IRunner {
     $(document).off('mousemove');
   };
 
-  private getPosition(event: MouseEvent) {
+  private getPosition(event: Event) {
     const { height, width, left, top } = this.$barContainer[0].getBoundingClientRect();
 
-    const x = (event.clientX - left) / width;
-    const y = (event.clientY - top) / height;
+    // @ts-ignore
+    const { clientX, clientY } = this.isMobile ? event.touches[0] : event;
+
+    const x = (clientX - left) / width;
+    const y = (clientY - top) / height;
 
     return { x, y };
   }

@@ -1,4 +1,4 @@
-import ENamesOfEvents from '../enums/enums';
+import ENamesOfEvents from '../../enums/enums';
 
 class Presenter {
   private view: IView;
