@@ -1,6 +1,5 @@
 import './scale.scss';
-
-import ENamesOfEvents from '../../../enums/enums';
+import enums from '../../../enums/enums';
 
 class Scale implements IScale {
   private $slider: JQuery;
@@ -82,7 +81,7 @@ class Scale implements IScale {
   private clickScale = (event: { target: HTMLSpanElement }) => {
     const { innerHTML } = event.target;
 
-    this.eventEmitter.emit(ENamesOfEvents.ClickScale, Number(innerHTML));
+    this.eventEmitter.emit(enums.EventNames.ClickScale, Number(innerHTML));
   };
 }
 

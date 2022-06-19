@@ -1,5 +1,5 @@
 import helpers from '../../helpers/helpers';
-import ENamesOfEvents from '../../enums/enums';
+import enums from '../../enums/enums';
 
 class Model implements IModel {
   private options: IOptions;
@@ -14,7 +14,7 @@ class Model implements IModel {
   public updateOptions(config: IConfig): void {
     this.verifyOption(config);
 
-    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
   }
 
   public getOptions(): IOptions {
@@ -31,7 +31,7 @@ class Model implements IModel {
 
     this.changeValueDependingOnStep(newValue, type);
 
-    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
   }
 
   public updateNearValue(newValue: number): void {
@@ -42,18 +42,18 @@ class Model implements IModel {
 
     if (!isRange) {
       this.options.to = newValue;
-      this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+      this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
       return;
     }
 
     if (diffTo <= diffFrom) {
       this.options.to = newValue;
-      this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+      this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
       return;
     }
 
     this.options.from = newValue;
-    this.eventEmitter.emit(ENamesOfEvents.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
   }
 
   private verifyOption(config: IConfig): void {

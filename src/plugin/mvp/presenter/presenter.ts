@@ -1,4 +1,4 @@
-import ENamesOfEvents from '../../enums/enums';
+import enums from '../../enums/enums';
 
 class Presenter {
   private view: IView;
@@ -25,14 +25,14 @@ class Presenter {
 
   private attachEventEmitters(): void {
     this.eventEmitter.subscribe(
-      ENamesOfEvents.UpdatedModelOptions,
+      enums.EventNames.UpdatedModelOptions,
       this.notifyViewUpdatedModelOptions,
     );
 
-    this.eventEmitter.subscribe(ENamesOfEvents.ClickScale, this.notifyModelClickedScale);
+    this.eventEmitter.subscribe(enums.EventNames.ClickScale, this.notifyModelClickedScale);
 
     this.eventEmitter.subscribe(
-      ENamesOfEvents.ChangedRunnerPosition,
+      enums.EventNames.ChangedRunnerPosition,
       this.notifyModelAboutChangedRunnerPosition,
     );
   }
