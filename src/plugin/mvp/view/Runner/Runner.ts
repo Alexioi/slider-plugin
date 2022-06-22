@@ -31,7 +31,7 @@ class Runner implements IRunner {
     }
 
     // @ts-ignore
-    this.isMobile = navigator.userAgentData.mobile;
+    // this.isMobile = navigator.userAgentData.mobile;
 
     if (isVertical) {
       this.$runner.css({ top: `${position}%`, left: '' });

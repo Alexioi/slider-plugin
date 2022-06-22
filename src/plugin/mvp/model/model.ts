@@ -1,4 +1,3 @@
-import helpers from '../../helpers/helpers';
 import enums from '../../enums/enums';
 
 class Model implements IModel {
@@ -84,8 +83,14 @@ class Model implements IModel {
   private verifyMinAndMax(firstValue: number | undefined, secondValue: number | undefined): void {
     const { min, max } = this.options;
 
-    const newMin = helpers.isNumber(firstValue) ? <number>firstValue : min;
-    const newMax = helpers.isNumber(secondValue) ? <number>secondValue : max;
+    const intFirstValue = parseInt(String(firstValue), 10);
+    const intSecondValue = parseInt(String(secondValue), 10);
+
+    const isRealIntFirstValue = !isNaN(intFirstValue) || isFinite(intFirstValue);
+    const isRealIntSecondValue = !isNaN(intSecondValue) || isFinite(intSecondValue);
+
+    const newMin = isRealIntFirstValue ? intFirstValue : min;
+    const newMax = isRealIntSecondValue ? intSecondValue : max;
 
     if (newMin < newMax) {
       this.options.min = newMin;
@@ -100,8 +105,14 @@ class Model implements IModel {
   private verifyFromAndTo(firstValue: number | undefined, secondValue: number | undefined): void {
     const { min, max, from, to } = this.options;
 
-    const newFrom = helpers.isNumber(firstValue) ? <number>firstValue : from;
-    const newTo = helpers.isNumber(secondValue) ? <number>secondValue : to;
+    const intFirstValue = parseInt(String(firstValue), 10);
+    const intSecondValue = parseInt(String(secondValue), 10);
+
+    const isRealIntFirstValue = !isNaN(intFirstValue) || isFinite(intFirstValue);
+    const isRealIntSecondValue = !isNaN(intSecondValue) || isFinite(intSecondValue);
+
+    const newFrom = isRealIntFirstValue ? intFirstValue : from;
+    const newTo = isRealIntSecondValue ? intSecondValue : to;
 
     if (newFrom < newTo) {
       this.options.from = newFrom > min ? newFrom : min;
@@ -116,18 +127,22 @@ class Model implements IModel {
   private verifyStep(newStep: number | undefined): void {
     const { min, max } = this.options;
 
-    if (!helpers.isNumber(String(newStep))) {
+    const intNewStep = parseInt(String(newStep), 10);
+
+    const isRealIntNewStep = !isNaN(intNewStep) || isFinite(intNewStep);
+
+    if (!isRealIntNewStep) {
       return;
     }
 
-    if (<number>newStep <= 0) {
+    if (intNewStep <= 0) {
       return;
     }
 
     const distanceBetweenMinAndMax = max - min;
 
-    if (<number>newStep < distanceBetweenMinAndMax) {
-      this.options.step = Number(newStep);
+    if (intNewStep < distanceBetweenMinAndMax) {
+      this.options.step = intNewStep;
       return;
     }
 
