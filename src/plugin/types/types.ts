@@ -76,4 +76,5 @@ export {
   IElementPosition,
   IRunnerOptions,
   IRangeOptions,
+  IPosition,
 };
