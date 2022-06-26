@@ -26,13 +26,15 @@ class View implements IView {
 
   constructor(node: JQuery, eventEmitter: IEventEmitter) {
     this.node = node;
+
     this.$slider = $('<div>', { class: 'slider' });
+
     this.$barContainer = $('<div>', { class: 'slider__bar-container' });
     this.tip = new Tip(this.$slider);
     this.range = new Range(this.$barContainer);
+    this.scale = new Scale(this.$slider, eventEmitter);
     this.runnerFrom = new Runner('from', this.$barContainer, eventEmitter);
     this.runnerTo = new Runner('to', this.$barContainer, eventEmitter);
-    this.scale = new Scale(this.$slider, eventEmitter);
   }
 
   public render(

@@ -4,74 +4,55 @@ import enums from '../../../enums/enums';
 class Scale implements IScale {
   private $slider: JQuery;
 
-  private $scale: JQuery;
-
   private eventEmitter: IEventEmitter;
 
-  private isRender = false;
-
-  private marks: JQuery[] = [];
+  private $scale!: JQuery;
 
   constructor($slider: JQuery, eventEmitter: IEventEmitter) {
-    this.eventEmitter = eventEmitter;
     this.$slider = $slider;
-    this.$scale = $('<div>', { class: 'slider__scale' });
+    this.eventEmitter = eventEmitter;
+
+    this.init();
   }
 
-  public render({ min, max, isVertical, step }: IScaleOptions): void {
-    if (!this.isRender) {
-      this.$scale = $('<div>', { class: 'slider__scale' });
-      this.$slider.append(this.$scale);
-      this.attachEventsHandler();
-      this.isRender = true;
-    } else {
-      this.marks.length = 0;
-      this.$scale.empty();
-    }
+  private init() {
+    this.$scale = $('<div>', { class: 'slider__scale' });
+    this.$slider.append(this.$scale);
+    this.attachEventsHandler();
+  }
 
-    const difference = Math.abs(max - min);
+  public render({ min, max, isVertical }: IScaleOptions): void {
+    this.$scale.empty();
+    this.$scale.show();
 
-    const oneSymbolLength = 15;
+    const scaleLength = isVertical ? this.$scale[0].offsetHeight : this.$scale[0].offsetWidth;
+    const scalePercents = Scale.getScalePercents(scaleLength);
 
-    const numberOfSymbolAfterComma = String(step).includes('.')
-      ? String(step).split('.').pop()!.length
-      : 0;
+    const differenceMaxAndMin = Math.abs(max - min);
 
-    const lengthMin = String(min).length;
-    const lengthMax = String(max).length;
+    const scaleParameters = scalePercents.map((percent) => {
+      const text = min + (differenceMaxAndMin * percent) / 100;
 
-    const maximumSymbolLength = lengthMin > lengthMax ? lengthMin : lengthMax;
+      return { percent, text };
+    });
 
-    const symbolsLength = oneSymbolLength * (numberOfSymbolAfterComma + maximumSymbolLength);
+    scaleParameters.forEach((parameter) => {
+      const { percent, text } = parameter;
 
-    const scaleLength = isVertical
-      ? this.$scale[0].getBoundingClientRect().height
-      : this.$scale[0].getBoundingClientRect().width;
-
-    const countOfMarks = Math.floor(scaleLength / symbolsLength);
-
-    while (this.marks.length < countOfMarks) {
-      const percent = (100 * this.marks.length) / (countOfMarks - 1);
-      const text = Number((min + (difference * percent) / 100).toFixed(numberOfSymbolAfterComma));
       const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
 
-      this.marks.push(
+      this.$scale.append(
         $('<span>', {
           class: 'slider__mark',
           text,
           style,
         }),
       );
-      this.$scale.append(this.marks[this.marks.length - 1]);
-    }
+    });
   }
 
   public destroy(): void {
-    if (this.isRender) {
-      this.marks.length = 0;
-      this.$scale.remove();
-      this.isRender = false;
-    }
+    this.$scale.hide();
   }
 
   private attachEventsHandler() {
@@ -83,6 +64,22 @@ class Scale implements IScale {
 
     this.eventEmitter.emit(enums.EventNames.ClickScale, Number(innerHTML));
   };
+
+  private static getScalePercents(sliderLength: number): number[] {
+    if (sliderLength > 800) {
+      return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    }
+
+    if (sliderLength > 500) {
+      return [0, 20, 40, 60, 80, 100];
+    }
+
+    if (sliderLength > 300) {
+      return [0, 33, 66, 100];
+    }
+
+    return [0, 100];
+  }
 }
 
 export default Scale;

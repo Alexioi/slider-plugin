@@ -4,5 +4,10 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  rules: { 'object-curly-newline': 'off', 'no-new': 'off', 'no-restricted-globals': 'off' },
+  rules: {
+    'object-curly-newline': 'off',
+    'no-new': 'off',
+    'no-restricted-globals': 'off',
+    'arrow-body-style': 'off',
+  },
 };
