@@ -3,12 +3,3 @@ declare interface ITip {
 
   public destroy(): void;
 }
-
-declare interface ITipOptions {
-  from: number;
-  to: number;
-  isRange: boolean;
-  isVertical: boolean;
-  leftPosition: number;
-  rightPosition: number;
-}
