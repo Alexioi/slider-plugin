@@ -1,17 +1,22 @@
 import enums from '../../enums/enums';
+import Validator from './validator/Validator';
+import sliderOptions from '../../app/sliderOptions';
 
 class Model implements IModel {
   private options: IOptions;
 
   private eventEmitter: IEventEmitter;
 
-  constructor(options: IOptions, eventEmitter: IEventEmitter) {
+  private validator: Validator;
+
+  constructor(eventEmitter: IEventEmitter) {
     this.eventEmitter = eventEmitter;
-    this.options = { ...options };
+    this.options = { ...sliderOptions.defaultConfig };
+    this.validator = new Validator(this.options);
   }
 
   public updateOptions(config: IConfig): void {
-    this.verifyOption(config);
+    this.validator.validateOptions(config);
 
     this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
   }
@@ -53,100 +58,6 @@ class Model implements IModel {
 
     this.options.from = newValue;
     this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
-  }
-
-  private verifyOption(config: IConfig): void {
-    const { isRange, isVertical, hasTip, hasScale, min, max, from, to, step } = config;
-
-    if (typeof isRange === 'boolean') {
-      this.options.isRange = isRange;
-    }
-
-    if (typeof isVertical === 'boolean') {
-      this.options.isVertical = isVertical;
-    }
-
-    if (typeof hasTip === 'boolean') {
-      this.options.hasTip = hasTip;
-    }
-
-    if (typeof hasScale === 'boolean') {
-      this.options.hasScale = hasScale;
-    }
-
-    this.verifyMinAndMax(min, max);
-    this.verifyFromAndTo(from, to);
-
-    this.verifyStep(step);
-  }
-
-  private verifyMinAndMax(firstValue: number | undefined, secondValue: number | undefined): void {
-    const { min, max } = this.options;
-
-    const intFirstValue = parseInt(String(firstValue), 10);
-    const intSecondValue = parseInt(String(secondValue), 10);
-
-    const isRealIntFirstValue = !isNaN(intFirstValue) || isFinite(intFirstValue);
-    const isRealIntSecondValue = !isNaN(intSecondValue) || isFinite(intSecondValue);
-
-    const newMin = isRealIntFirstValue ? intFirstValue : min;
-    const newMax = isRealIntSecondValue ? intSecondValue : max;
-
-    if (newMin < newMax) {
-      this.options.min = newMin;
-      this.options.max = newMax;
-      return;
-    }
-
-    this.options.min = newMax;
-    this.options.max = newMin;
-  }
-
-  private verifyFromAndTo(firstValue: number | undefined, secondValue: number | undefined): void {
-    const { min, max, from, to } = this.options;
-
-    const intFirstValue = parseInt(String(firstValue), 10);
-    const intSecondValue = parseInt(String(secondValue), 10);
-
-    const isRealIntFirstValue = !isNaN(intFirstValue) || isFinite(intFirstValue);
-    const isRealIntSecondValue = !isNaN(intSecondValue) || isFinite(intSecondValue);
-
-    const newFrom = isRealIntFirstValue ? intFirstValue : from;
-    const newTo = isRealIntSecondValue ? intSecondValue : to;
-
-    if (newFrom < newTo) {
-      this.options.from = newFrom > min ? newFrom : min;
-      this.options.to = newTo < max ? newTo : max;
-      return;
-    }
-
-    this.options.from = newTo > min ? newTo : min;
-    this.options.to = newFrom < max ? newFrom : max;
-  }
-
-  private verifyStep(newStep: number | undefined): void {
-    const { min, max } = this.options;
-
-    const intNewStep = parseInt(String(newStep), 10);
-
-    const isRealIntNewStep = !isNaN(intNewStep) || isFinite(intNewStep);
-
-    if (!isRealIntNewStep) {
-      return;
-    }
-
-    if (intNewStep <= 0) {
-      return;
-    }
-
-    const distanceBetweenMinAndMax = max - min;
-
-    if (intNewStep < distanceBetweenMinAndMax) {
-      this.options.step = intNewStep;
-      return;
-    }
-
-    this.options.step = distanceBetweenMinAndMax;
   }
 
   private changeValueDependingOnStep(newValue: number, valueName: 'from' | 'to'): void {

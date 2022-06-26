@@ -19,7 +19,7 @@ class App implements IApp {
     this.callbacks = { ...sliderOptions.callbacks };
 
     this.eventEmitter = new EventEmitter();
-    this.model = new Model(sliderOptions.defaultConfig, this.eventEmitter);
+    this.model = new Model(this.eventEmitter);
     this.view = new View(element, this.eventEmitter);
     this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
     this.attachEventEmitters();

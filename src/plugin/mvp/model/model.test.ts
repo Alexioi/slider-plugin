@@ -14,7 +14,7 @@ describe('Модель', () => {
     to: 50,
   };
 
-  const model = new Model(defaultOptions, new EventEmitter());
+  const model = new Model(new EventEmitter());
 
   beforeEach(() => {
     model.updateOptions(defaultOptions);
