@@ -1,13 +1,17 @@
-import enums from '../../enums/enums';
+import EventNames from '../../types/enums';
+import View from '../view/view';
+import Model from '../model/model';
+import EventEmitter from '../../EventEmitter/EventEmitter';
+import { IConfig, IOptions, IPosition } from '../../types/types';
 
 class Presenter {
-  private view: IView;
+  private view: View;
 
-  private model: IModel;
+  private model: Model;
 
-  private eventEmitter: IEventEmitter;
+  private eventEmitter: EventEmitter;
 
-  constructor(view: IView, model: IModel, eventEmitter: IEventEmitter) {
+  constructor(view: View, model: Model, eventEmitter: EventEmitter) {
     this.view = view;
     this.model = model;
     this.eventEmitter = eventEmitter;
@@ -24,15 +28,12 @@ class Presenter {
   }
 
   private attachEventEmitters(): void {
-    this.eventEmitter.subscribe(
-      enums.EventNames.UpdatedModelOptions,
-      this.notifyViewUpdatedModelOptions,
-    );
+    this.eventEmitter.subscribe(EventNames.UpdatedModelOptions, this.notifyViewUpdatedModelOptions);
 
-    this.eventEmitter.subscribe(enums.EventNames.ClickScale, this.notifyModelClickedScale);
+    this.eventEmitter.subscribe(EventNames.ClickScale, this.notifyModelClickedScale);
 
     this.eventEmitter.subscribe(
-      enums.EventNames.ChangedRunnerPosition,
+      EventNames.ChangedRunnerPosition,
       this.notifyModelAboutChangedRunnerPosition,
     );
   }

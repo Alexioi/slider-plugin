@@ -1,14 +1,17 @@
 import './scale.scss';
-import enums from '../../../enums/enums';
+import EventNames from '../../../types/enums';
 
-class Scale implements IScale {
+import { IScaleOptions } from '../../../types/types';
+import EventEmitter from '../../../EventEmitter/EventEmitter';
+
+class Scale {
   private $slider: JQuery;
 
-  private eventEmitter: IEventEmitter;
+  private eventEmitter: EventEmitter;
 
   private $scale!: JQuery;
 
-  constructor($slider: JQuery, eventEmitter: IEventEmitter) {
+  constructor($slider: JQuery, eventEmitter: EventEmitter) {
     this.$slider = $slider;
     this.eventEmitter = eventEmitter;
 
@@ -62,7 +65,7 @@ class Scale implements IScale {
   private clickScale = (event: { target: HTMLSpanElement }) => {
     const { innerHTML } = event.target;
 
-    this.eventEmitter.emit(enums.EventNames.ClickScale, Number(innerHTML));
+    this.eventEmitter.emit(EventNames.ClickScale, Number(innerHTML));
   };
 
   private static getScalePercents(sliderLength: number): number[] {

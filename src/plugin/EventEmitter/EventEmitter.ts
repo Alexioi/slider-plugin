@@ -1,4 +1,4 @@
-class EventEmitter implements IEventEmitter {
+class EventEmitter {
   private events: {
     [key: string]: ((args: any) => void)[];
   };

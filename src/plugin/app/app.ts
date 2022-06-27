@@ -3,11 +3,12 @@ import Model from '../mvp/model/model';
 import View from '../mvp/view/view';
 import Presenter from '../mvp/presenter/presenter';
 import sliderOptions from './sliderOptions';
+import { IConfig, ICallbacks, IOptions } from '../types/types';
 
-class App implements IApp {
+class App {
   private callbacks: ICallbacks;
 
-  private model: IModel;
+  private model: Model;
 
   private view: View;
 

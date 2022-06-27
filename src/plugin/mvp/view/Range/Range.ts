@@ -1,6 +1,8 @@
 import './range.scss';
 
-class Range implements IRange {
+import { IRangeOptions } from '../../../types/types';
+
+class Range {
   private $barContainer: JQuery;
 
   private $range: JQuery;
@@ -18,9 +20,10 @@ class Range implements IRange {
       this.isRender = true;
     }
 
-    const startPosition = positions.length === 1 ? '0%' : `${positions[0]}%`;
-    const finishPosition =
-      positions.length === 1 ? `${100 - positions[0]}%` : `${100 - positions[1]}%`;
+    const isRange = positions.length === 1;
+
+    const startPosition = isRange ? '0%' : `${positions[0]}%`;
+    const finishPosition = isRange ? `${100 - positions[0]}%` : `${100 - positions[1]}%`;
 
     if (isVertical) {
       this.$range.css({

@@ -1,5 +1,6 @@
 import EventEmitter from '../../EventEmitter/EventEmitter';
 import Model from './model';
+import { IElementPosition } from '../../types/types';
 
 describe('Модель', () => {
   const defaultOptions = {

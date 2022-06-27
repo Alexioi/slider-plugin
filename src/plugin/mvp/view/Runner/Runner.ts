@@ -1,11 +1,14 @@
 import './runner.scss';
 
-import enums from '../../../enums/enums';
+import { IRunnerOptions } from '../../../types/types';
 
-class Runner implements IRunner {
+import EventNames from '../../../types/enums';
+import EventEmitter from '../../../EventEmitter/EventEmitter';
+
+class Runner {
   private $runner: JQuery;
 
-  private eventEmitter: IEventEmitter;
+  private eventEmitter: EventEmitter;
 
   private type: string;
 
@@ -15,7 +18,7 @@ class Runner implements IRunner {
 
   private isMobile = false;
 
-  constructor(type: string, $barContainer: JQuery, eventEmitter: IEventEmitter) {
+  constructor(type: string, $barContainer: JQuery, eventEmitter: EventEmitter) {
     this.type = type;
     this.$barContainer = $barContainer;
     this.eventEmitter = eventEmitter;
@@ -70,7 +73,7 @@ class Runner implements IRunner {
 
     const { type } = this;
 
-    this.eventEmitter.emit(enums.EventNames.ChangedRunnerPosition, { position, type });
+    this.eventEmitter.emit(EventNames.ChangedRunnerPosition, { position, type });
   };
 
   private attachEventMouseUp = (): void => {

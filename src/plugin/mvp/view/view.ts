@@ -1,11 +1,14 @@
 import './view.scss';
 
+import { IOptions } from '../../types/types';
+
 import Tip from './Tip/Tip';
 import Runner from './Runner/Runner';
 import Range from './Range/Range';
 import Scale from './Scale/Scale';
+import EventEmitter from '../../EventEmitter/EventEmitter';
 
-class View implements IView {
+class View {
   private node: JQuery;
 
   private $barContainer: JQuery;
@@ -24,7 +27,7 @@ class View implements IView {
 
   private isRender = false;
 
-  constructor(node: JQuery, eventEmitter: IEventEmitter) {
+  constructor(node: JQuery, eventEmitter: EventEmitter) {
     this.node = node;
 
     this.$slider = $('<div>', { class: 'slider' });

@@ -1,9 +1,11 @@
 import './panel.scss';
+import App from '../../plugin/app/app';
+import { IConfig, IOptions } from '../../plugin/types/types';
 
 class Panel {
   $element: JQuery;
 
-  slider: IApp;
+  slider: App;
 
   $range!: JQuery;
 
@@ -23,7 +25,7 @@ class Panel {
 
   $scale!: JQuery;
 
-  constructor($element: JQuery, slider: IApp, config: IConfig) {
+  constructor($element: JQuery, slider: App, config: IConfig) {
     this.$element = $element;
     this.slider = slider;
 

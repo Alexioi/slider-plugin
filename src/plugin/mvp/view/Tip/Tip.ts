@@ -1,6 +1,8 @@
 import './tip.scss';
 
-class Tip implements ITip {
+import { ITipOptions } from '../../../types/types';
+
+class Tip {
   private $slider: JQuery;
 
   private $tipLine: JQuery;

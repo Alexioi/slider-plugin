@@ -1,15 +1,17 @@
-import enums from '../../enums/enums';
+import EventNames from '../../types/enums';
 import Validator from './validator/Validator';
 import sliderOptions from '../../app/sliderOptions';
+import EventEmitter from '../../EventEmitter/EventEmitter';
+import { IOptions, IConfig, IElementPosition } from '../../types/types';
 
-class Model implements IModel {
+class Model {
   private options: IOptions;
 
-  private eventEmitter: IEventEmitter;
+  private eventEmitter: EventEmitter;
 
   private validator: Validator;
 
-  constructor(eventEmitter: IEventEmitter) {
+  constructor(eventEmitter: EventEmitter) {
     this.eventEmitter = eventEmitter;
     this.options = { ...sliderOptions.defaultConfig };
     this.validator = new Validator(this.options);
@@ -18,7 +20,7 @@ class Model implements IModel {
   public updateOptions(config: IConfig): void {
     this.validator.validateOptions(config);
 
-    this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
   }
 
   public getOptions(): IOptions {
@@ -35,7 +37,7 @@ class Model implements IModel {
 
     this.changeValueDependingOnStep(newValue, type);
 
-    this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
   }
 
   public updateNearValue(newValue: number): void {
@@ -46,18 +48,18 @@ class Model implements IModel {
 
     if (!isRange) {
       this.options.to = newValue;
-      this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
+      this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
       return;
     }
 
     if (diffTo <= diffFrom) {
       this.options.to = newValue;
-      this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
+      this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
       return;
     }
 
     this.options.from = newValue;
-    this.eventEmitter.emit(enums.EventNames.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
   }
 
   private changeValueDependingOnStep(newValue: number, valueName: 'from' | 'to'): void {
