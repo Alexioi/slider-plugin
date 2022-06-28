@@ -41,7 +41,7 @@ class View {
   }
 
   public render(
-    { isVertical, isRange, from, to, min, max, hasScale, hasTip, step }: IOptions,
+    { isVertical, isRange, from, to, min, max, hasScale, hasTip }: IOptions,
     whichRunnerChanged?: 'from' | 'to',
   ): void {
     if (!this.isRender) {
@@ -78,7 +78,7 @@ class View {
     this.runnerTo.render({ position: rightPosition, isVertical, zIndex: zIndexTO });
 
     if (hasScale) {
-      this.scale.render({ min, max, isVertical, step });
+      this.scale.render({ min, max, isVertical });
     } else {
       this.scale.destroy();
     }

@@ -1,13 +1,15 @@
 import './scale.scss';
+import { isEqual } from 'lodash';
 import EventNames from '../../../types/enums';
-
-import { IScaleOptions } from '../../../types/types';
+import { IMarkParameters, IScaleOptions } from '../../../types/types';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 class Scale {
   private $slider: JQuery;
 
   private eventEmitter: EventEmitter;
+
+  private scaleOptions!: IScaleOptions;
 
   private $scale!: JQuery;
 
@@ -18,52 +20,55 @@ class Scale {
     this.init();
   }
 
-  private init() {
-    this.$scale = $('<div>', { class: 'slider__scale' });
-    this.$slider.append(this.$scale);
-    this.attachEventsHandler();
-  }
+  public render({ min, max, isVertical }: IScaleOptions, isRedraw = false): void {
+    const isDraw = !isEqual({ min, max, isVertical }, this.scaleOptions) || isRedraw;
 
-  public render({ min, max, isVertical }: IScaleOptions): void {
+    if (!isDraw) {
+      return;
+    }
+
+    this.scaleOptions = { min, max, isVertical };
     this.$scale.empty();
     this.$scale.show();
 
-    const scaleLength = isVertical ? this.$scale[0].offsetHeight : this.$scale[0].offsetWidth;
-    const scalePercents = Scale.getScalePercents(scaleLength);
+    const scaleParameters = this.getScaleParameters();
 
-    const differenceMaxAndMin = Math.abs(max - min);
-
-    const scaleParameters = scalePercents.map((percent) => {
-      const text = min + (differenceMaxAndMin * percent) / 100;
-
-      return { percent, text };
-    });
-
-    scaleParameters.forEach((parameter) => {
-      const { percent, text } = parameter;
-
-      const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
-
-      this.$scale.append(
-        $('<span>', {
-          class: 'slider__mark',
-          text,
-          style,
-        }),
-      );
-    });
+    this.draw(scaleParameters);
   }
 
   public destroy(): void {
     this.$scale.hide();
   }
 
-  private attachEventsHandler() {
-    this.$scale.on('click', this.clickScale);
+  private init(): void {
+    this.$scale = $('<div>', { class: 'slider__scale' });
+    this.$slider.append(this.$scale);
+    this.attachEventsHandler();
   }
 
-  private clickScale = (event: { target: HTMLSpanElement }) => {
-    const { innerHTML } = event.target;
+  private draw(parameters: IMarkParameters[]): void {
+    const { isVertical } = this.scaleOptions;
+
+    parameters.forEach((parameter) => {
+      const { percent, text } = parameter;
+      const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
+      const $mark = $('<span>', { class: 'slider__mark', text, style });
+
+      this.$scale.append($mark);
+    });
+  }
+
+  private attachEventsHandler(): void {
+    this.$scale.on('click', this.clickScale);
+    $(window).on('resize', this.handlerResizeScale);
+  }
+
+  private handlerResizeScale = (): void => {
+    this.render(this.scaleOptions, true);
+  };
+
+  private clickScale = ({ target }: { target: HTMLSpanElement }): void => {
+    const { innerHTML } = target;
 
     this.eventEmitter.emit(EventNames.ClickScale, Number(innerHTML));
   };
@@ -82,6 +87,23 @@ class Scale {
     }
 
     return [0, 100];
+  }
+
+  private getScaleParameters(): IMarkParameters[] {
+    const { max, min, isVertical } = this.scaleOptions;
+    const { offsetHeight, offsetWidth } = this.$scale[0];
+    const scaleLength = isVertical ? offsetHeight : offsetWidth;
+    const scalePercents = Scale.getScalePercents(scaleLength);
+
+    const differenceMaxAndMin = Math.abs(max - min);
+
+    const scaleParameters = scalePercents.map((percent) => {
+      const text = (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, '');
+
+      return { percent, text };
+    });
+
+    return scaleParameters;
   }
 }
 

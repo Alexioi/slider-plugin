@@ -41,7 +41,6 @@ interface IScaleOptions {
   min: number;
   max: number;
   isVertical: boolean;
-  step: number;
 }
 
 interface IRunnerOptions {
@@ -67,6 +66,11 @@ interface IRangeOptions {
   positions: number[];
 }
 
+interface IMarkParameters {
+  percent: number;
+  text: string;
+}
+
 export {
   IConfig,
   ICallbacks,
@@ -77,4 +81,5 @@ export {
   IRunnerOptions,
   IRangeOptions,
   IPosition,
+  IMarkParameters,
 };
