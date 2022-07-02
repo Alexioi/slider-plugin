@@ -9,15 +9,15 @@ import Scale from './Scale/Scale';
 import EventEmitter from '../../EventEmitter/EventEmitter';
 
 class View {
-  private node: JQuery;
+  private root: HTMLElement;
 
-  private $barContainer: JQuery;
+  private barContainer: HTMLDivElement;
 
   private range: Range;
 
   private tip: Tip;
 
-  private $slider: JQuery;
+  private slider: HTMLDivElement;
 
   private runnerFrom: Runner;
 
@@ -27,17 +27,20 @@ class View {
 
   private isRender = false;
 
-  constructor(node: JQuery, eventEmitter: EventEmitter) {
-    this.node = node;
+  constructor(node: HTMLElement, eventEmitter: EventEmitter) {
+    this.root = node;
 
-    this.$slider = $('<div>', { class: 'slider' });
+    this.slider = document.createElement('div');
+    this.slider.classList.add('slider');
 
-    this.$barContainer = $('<div>', { class: 'slider__bar-container' });
-    this.tip = new Tip(this.$slider);
-    this.range = new Range(this.$barContainer);
-    this.scale = new Scale(this.$slider, eventEmitter);
-    this.runnerFrom = new Runner('from', this.$barContainer, eventEmitter);
-    this.runnerTo = new Runner('to', this.$barContainer, eventEmitter);
+    this.barContainer = document.createElement('div');
+    this.barContainer.classList.add('slider__bar-container');
+
+    this.tip = new Tip(this.slider);
+    this.range = new Range(this.barContainer);
+    this.scale = new Scale(this.slider, eventEmitter);
+    this.runnerFrom = new Runner('from', this.barContainer, eventEmitter);
+    this.runnerTo = new Runner('to', this.barContainer, eventEmitter);
   }
 
   public render(
@@ -45,8 +48,9 @@ class View {
     whichRunnerChanged?: 'from' | 'to',
   ): void {
     if (!this.isRender) {
-      this.node.append(this.$slider);
-      this.$slider.append(this.$barContainer);
+      this.root.appendChild(this.slider);
+      this.slider.appendChild(this.barContainer);
+
       this.isRender = true;
     }
 
@@ -105,11 +109,11 @@ class View {
   }
 
   private addClassVertical() {
-    this.$slider.addClass('slider_vertical');
+    this.slider.classList.add('slider_vertical');
   }
 
   private removeClassVertical() {
-    this.$slider.removeClass('slider_vertical');
+    this.slider.classList.remove('slider_vertical');
   }
 
   private static calculatePosition(value: number, min: number, max: number): number {

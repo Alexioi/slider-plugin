@@ -16,12 +16,12 @@ class App {
 
   private eventEmitter: EventEmitter;
 
-  constructor(element: JQuery, config: IConfig | undefined) {
+  constructor(node: HTMLElement, config?: IConfig) {
     this.callbacks = { ...sliderOptions.callbacks };
 
     this.eventEmitter = new EventEmitter();
     this.model = new Model(this.eventEmitter);
-    this.view = new View(element, this.eventEmitter);
+    this.view = new View(node, this.eventEmitter);
     this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
     this.attachEventEmitters();
 

@@ -8,5 +8,5 @@ declare global {
 }
 
 $.fn.slider = function initSliders(config?: IConfig) {
-  return this.map((i: number, node: HTMLElement) => new App($(node), config));
+  return this.map((i: number, node: HTMLElement) => new App(node, config));
 };

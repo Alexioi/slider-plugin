@@ -6,57 +6,47 @@ import EventNames from '../../../types/enums';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 class Runner {
-  private $runner: JQuery;
+  private runner: HTMLDivElement;
 
   private eventEmitter: EventEmitter;
 
   private type: string;
 
-  private $barContainer: JQuery;
-
-  private isRender = false;
+  private root: HTMLDivElement;
 
   private isMobile = false;
 
-  constructor(type: string, $barContainer: JQuery, eventEmitter: EventEmitter) {
+  constructor(type: string, node: HTMLDivElement, eventEmitter: EventEmitter) {
     this.type = type;
-    this.$barContainer = $barContainer;
+    this.root = node;
     this.eventEmitter = eventEmitter;
-    this.$runner = $('<div>', { class: 'slider__runner' });
+    this.runner = document.createElement('div');
+    this.runner.classList.add('slider__runner');
   }
 
-  public render({ position, isVertical, zIndex }: IRunnerOptions) {
-    if (!this.isRender) {
-      this.$barContainer.append(this.$runner);
-      this.$runner.on('dragstart', false);
-      this.$runner.on('mousedown', this.attachEventMouseDown);
-      this.isRender = true;
-    }
+  public static disableDragstart = () => {
+    return false;
+  };
 
-    // @ts-ignore
-    // this.isMobile = navigator.userAgentData.mobile;
+  public render({ position, isVertical, zIndex }: IRunnerOptions) {
+    this.root.appendChild(this.runner);
+    this.runner.addEventListener('dragstart', Runner.disableDragstart);
+    this.runner.addEventListener('mousedown', this.attachEventMouseDown);
 
     if (isVertical) {
-      this.$runner.css({ top: `${position}%`, left: '' });
+      this.runner.style.cssText = `top:${position}%`;
     } else {
-      this.$runner.css({ left: `${position}%`, top: '' });
+      this.runner.style.cssText = `left:${position}%`;
     }
 
     if (zIndex) {
-      this.$runner.css({ zIndex: 3 });
+      this.runner.style.cssText += 'z-index: 3';
     } else {
-      this.$runner.css({ zIndex: 2 });
+      this.runner.style.cssText += 'z-index: 2';
     }
   }
 
-  public destroy() {
-    if (this.isRender) {
-      this.$runner.off('dragstart', 'mousedown');
-      this.$runner.off('mousedown', this.attachEventMouseDown);
-      this.$runner.detach();
-      this.isRender = false;
-    }
-  }
+  public destroy() {}
 
   private attachEventMouseDown = (): void => {
     if (this.isMobile) {
@@ -81,7 +71,7 @@ class Runner {
   };
 
   private getPosition(event: Event) {
-    const { height, width, left, top } = this.$barContainer[0].getBoundingClientRect();
+    const { height, width, left, top } = this.root.getBoundingClientRect();
 
     // @ts-ignore
     const { clientX, clientY } = this.isMobile ? event.touches[0] : event;

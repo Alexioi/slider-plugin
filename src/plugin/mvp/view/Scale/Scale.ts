@@ -13,8 +13,8 @@ class Scale {
 
   private $scale!: JQuery;
 
-  constructor($slider: JQuery, eventEmitter: EventEmitter) {
-    this.$slider = $slider;
+  constructor(node: HTMLDivElement, eventEmitter: EventEmitter) {
+    this.$slider = $(node);
     this.eventEmitter = eventEmitter;
 
     this.init();

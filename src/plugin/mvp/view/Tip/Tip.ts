@@ -19,8 +19,8 @@ class Tip {
 
   private isRenderVerticalTip = false;
 
-  constructor($slider: JQuery) {
-    this.$slider = $slider;
+  constructor(node: HTMLDivElement) {
+    this.$slider = $(node);
     this.$tipLine = $('<div>', { class: 'slider__tip-line' });
     this.$tipFrom = $('<span>', { class: 'slider__tip' });
     this.$tipBoth = $('<span>', { class: 'slider__tip' });
