@@ -4,83 +4,57 @@ import { IRunnerOptions } from '../../../types/types';
 
 import EventNames from '../../../types/enums';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
+import SubView from '../SubView/SubView';
 
-class Runner {
+class Runner extends SubView {
   private runner: HTMLDivElement;
-
-  private eventEmitter: EventEmitter;
 
   private type: string;
 
-  private root: HTMLDivElement;
-
-  private isMobile = false;
-
   constructor(type: string, node: HTMLDivElement, eventEmitter: EventEmitter) {
+    super(node, eventEmitter);
+
     this.type = type;
-    this.root = node;
-    this.eventEmitter = eventEmitter;
+
     this.runner = document.createElement('div');
     this.runner.classList.add('slider__runner');
   }
 
-  public static disableDragstart = () => {
-    return false;
-  };
-
   public render({ position, isVertical, zIndex }: IRunnerOptions) {
     this.root.appendChild(this.runner);
-    this.runner.addEventListener('dragstart', Runner.disableDragstart);
-    this.runner.addEventListener('mousedown', this.attachEventMouseDown);
 
-    if (isVertical) {
-      this.runner.style.cssText = `top:${position}%`;
-    } else {
-      this.runner.style.cssText = `left:${position}%`;
-    }
+    this.runner.addEventListener('pointerdown', this.attachEventMouseDown);
 
-    if (zIndex) {
-      this.runner.style.cssText += 'z-index: 3';
-    } else {
-      this.runner.style.cssText += 'z-index: 2';
-    }
+    let styleRunner = isVertical ? `top:${position}%;` : `left:${position}%;`;
+
+    styleRunner += zIndex ? 'z-index: 3;' : 'z-index: 2;';
+
+    this.runner.style.cssText = styleRunner;
   }
 
-  public destroy() {}
+  public destroy() {
+    this.runner.remove();
+  }
 
   private attachEventMouseDown = (): void => {
-    if (this.isMobile) {
-      $(document).on('touchmove', this.attachEventMouseMove);
-    } else {
-      $(document).on('mousemove', this.attachEventMouseMove);
-    }
+    document.addEventListener('pointermove', this.attachEventMouseMove.bind(this));
 
-    $(document).on('mouseup', this.attachEventMouseUp);
+    document.addEventListener('pointerup', this.attachEventMouseUp.bind(this));
   };
 
-  private attachEventMouseMove = (): void => {
-    const position = this.getPosition(<MouseEvent>event);
+  private attachEventMouseMove(event: PointerEvent): void {
+    event.preventDefault();
+    this.runner.ondragstart = () => false;
+    const position = SubView.getPosition(this.root, event);
 
     const { type } = this;
 
     this.eventEmitter.emit(EventNames.ChangedRunnerPosition, { position, type });
-  };
+  }
 
   private attachEventMouseUp = (): void => {
-    $(document).off('mousemove');
+    document.removeEventListener('pointermove', this.attachEventMouseMove.bind(this));
   };
-
-  private getPosition(event: Event) {
-    const { height, width, left, top } = this.root.getBoundingClientRect();
-
-    // @ts-ignore
-    const { clientX, clientY } = this.isMobile ? event.touches[0] : event;
-
-    const x = (clientX - left) / width;
-    const y = (clientY - top) / height;
-
-    return { x, y };
-  }
 }
 
 export default Runner;
