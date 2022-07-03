@@ -21,7 +21,8 @@ class App {
 
     this.eventEmitter = new EventEmitter();
     this.model = new Model(this.eventEmitter);
-    this.view = new View(node, this.eventEmitter);
+    const options = this.model.getOptions();
+    this.view = new View(node, this.eventEmitter, options);
     this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
     this.attachEventEmitters();
 

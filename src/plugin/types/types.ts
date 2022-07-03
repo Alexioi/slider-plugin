@@ -43,12 +43,6 @@ interface IScaleOptions {
   isVertical: boolean;
 }
 
-interface IRunnerOptions {
-  position: number;
-  isVertical: boolean;
-  zIndex: boolean;
-}
-
 interface IPosition {
   x: number;
   y: number;
@@ -71,6 +65,10 @@ interface IMarkParameters {
   text: string;
 }
 
+interface ITarget {
+  value: 'from' | 'to';
+}
+
 export {
   IConfig,
   ICallbacks,
@@ -78,8 +76,8 @@ export {
   ITipOptions,
   IScaleOptions,
   IElementPosition,
-  IRunnerOptions,
   IRangeOptions,
   IPosition,
   IMarkParameters,
+  ITarget,
 };
