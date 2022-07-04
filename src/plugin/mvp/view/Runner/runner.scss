@@ -7,14 +7,15 @@ $runnerWidth: 1.5rem;
     box-sizing: border-box;
     position: absolute;
     z-index: 2;
-    top: -(math.div(1.5rem, 3));
+    top: -(math.div($runnerWidth, 3));
     border: 2px solid white;
-    height: 1.5rem;
-    width: 1.5rem;
+    height: $runnerWidth;
+    width: $runnerWidth;
     border-radius: 50%;
     background: linear-gradient(180deg, #6fcf97 0%, #66d2ea 100%);
     transform: translateX(-50%);
     cursor: pointer;
+    touch-action: none;
   }
 
   &_vertical &__runner {

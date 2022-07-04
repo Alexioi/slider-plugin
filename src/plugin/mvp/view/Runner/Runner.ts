@@ -28,11 +28,6 @@ class Runner extends SubView {
     this.init();
   }
 
-  private init() {
-    this.runner = SubView.getElement('slider__runner');
-    this.runner.addEventListener('pointerdown', this.attachEventOnMouseDown.bind(this));
-  }
-
   public render(position: number) {
     const { isVertical } = this.options;
     const { target, type } = this;
@@ -50,28 +45,30 @@ class Runner extends SubView {
     this.runner.remove();
   }
 
-  private attachEventOnMouseDown(): void {
-    const onMouseMove = (event: PointerEvent) => {
-      event.preventDefault();
+  private init() {
+    this.runner = SubView.getElement('slider__runner');
+    this.runner.addEventListener('pointerdown', this.attachEventOnPointerDown.bind(this));
+  }
+
+  private attachEventOnPointerDown(): void {
+    const onPointerMove = (pointerEvent: PointerEvent) => {
+      pointerEvent.preventDefault();
       this.runner.ondragstart = () => false;
 
       const { type } = this;
-
       this.target.value = type;
 
-      const position = SubView.getPosition(this.root, event);
-
+      const position = SubView.getPosition(this.root, pointerEvent);
       this.eventEmitter.emit(EventNames.ChangedRunnerPosition, { position, type });
     };
 
-    const onMouseUp = () => {
-      document.removeEventListener('pointermove', onMouseMove);
-      document.removeEventListener('pointerup', onMouseUp);
+    const onPointerUp = (): void => {
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
     };
 
-    document.addEventListener('pointermove', onMouseMove);
-
-    document.addEventListener('pointerup', onMouseUp);
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
   }
 }
 
