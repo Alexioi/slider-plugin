@@ -14,6 +14,15 @@ abstract class SubView {
     this.eventEmitter = eventEmitter;
   }
 
+  protected calculatePosition(value: number): string {
+    const { min, max, isVertical } = this.options;
+    const percent = ((value - min) / (max - min)) * 100;
+    if (isVertical) {
+      return `top:${percent}%;`;
+    }
+    return `left:${percent}%;`;
+  }
+
   protected static getElement(className: string): HTMLDivElement {
     const node = document.createElement('div');
     node.classList.add(className);

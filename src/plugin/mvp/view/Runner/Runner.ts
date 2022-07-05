@@ -28,15 +28,18 @@ class Runner extends SubView {
     this.init();
   }
 
-  public render(position: number) {
-    const { isVertical } = this.options;
+  public render() {
     const { target, type } = this;
 
     this.root.appendChild(this.runner);
 
-    let styleRunner = isVertical ? `top:${position}%;` : `left:${position}%;`;
+    if (target.value === type) {
+      this.runner.classList.add('slider__runner_targeted');
+    } else {
+      this.runner.classList.remove('slider__runner_targeted');
+    }
 
-    styleRunner += target.value === type ? 'z-index: 3;' : 'z-index: 2;';
+    const styleRunner = this.calculatePosition(this.options[type]);
 
     this.runner.style.cssText = styleRunner;
   }

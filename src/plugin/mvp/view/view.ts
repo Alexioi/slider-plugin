@@ -85,14 +85,14 @@ class View {
     }
 
     if (isRange) {
-      this.runnerFrom.render(leftPosition);
+      this.runnerFrom.render();
       this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
     } else {
       this.runnerFrom.destroy();
       this.range.render({ isVertical, positions: [rightPosition] });
     }
 
-    this.runnerTo.render(rightPosition);
+    this.runnerTo.render();
 
     if (hasScale) {
       this.scale.render({ min, max, isVertical });
