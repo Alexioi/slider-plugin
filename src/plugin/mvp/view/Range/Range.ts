@@ -1,36 +1,35 @@
 import './range.scss';
 
-import { IRangeOptions } from '../../../types/types';
+import { IOptions } from '../../../types/types';
+import SubView from '../SubView/SubView';
+import EventEmitter from '../../../EventEmitter/EventEmitter';
 
-class Range {
-  private root: HTMLDivElement;
+class Range extends SubView {
+  private range!: HTMLDivElement;
 
-  private range: HTMLDivElement;
+  constructor(node: HTMLDivElement, options: IOptions, eventEmitter: EventEmitter) {
+    super(node, options, eventEmitter);
 
-  private isRender = false;
-
-  constructor(node: HTMLDivElement) {
-    this.root = node;
-    this.range = document.createElement('div');
-    this.range.classList.add('slider__range');
+    this.init();
   }
 
-  public render({ isVertical, positions }: IRangeOptions): void {
-    if (!this.isRender) {
-      this.root.appendChild(this.range);
-      this.isRender = true;
-    }
+  public render(): void {
+    const { isVertical, isRange, from, to } = this.options;
 
-    const isRange = positions.length === 1;
+    this.root.appendChild(this.range);
 
-    const startPosition = isRange ? '0%' : `${positions[0]}%`;
-    const finishPosition = isRange ? `${100 - positions[0]}%` : `${100 - positions[1]}%`;
+    const startPercent = isRange ? this.calculatePercent(from) : 0;
+    const finishPercent = this.calculatePercent(to);
 
     if (isVertical) {
-      this.range.style.cssText = `top: ${startPosition};bottom: ${finishPosition}`;
+      this.range.style.cssText = `top: ${startPercent}%; bottom: ${100 - finishPercent}%`;
     } else {
-      this.range.style.cssText = `left: ${startPosition};right: ${finishPosition}`;
+      this.range.style.cssText = `left: ${startPercent}%; right: ${100 - finishPercent}%`;
     }
+  }
+
+  private init(): void {
+    this.range = SubView.getElement('slider__range');
   }
 }
 

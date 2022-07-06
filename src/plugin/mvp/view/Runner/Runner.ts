@@ -28,8 +28,9 @@ class Runner extends SubView {
     this.init();
   }
 
-  public render() {
+  public render(): void {
     const { target, type } = this;
+    const { isVertical } = this.options;
 
     this.root.appendChild(this.runner);
 
@@ -39,22 +40,23 @@ class Runner extends SubView {
       this.runner.classList.remove('slider__runner_targeted');
     }
 
-    const styleRunner = this.calculatePosition(this.options[type]);
+    const percent = this.calculatePercent(this.options[type]);
+    const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
 
     this.runner.style.cssText = styleRunner;
   }
 
-  public destroy() {
+  public destroy(): void {
     this.runner.remove();
   }
 
-  private init() {
+  private init(): void {
     this.runner = SubView.getElement('slider__runner');
     this.runner.addEventListener('pointerdown', this.attachEventOnPointerDown.bind(this));
   }
 
   private attachEventOnPointerDown(): void {
-    const onPointerMove = (pointerEvent: PointerEvent) => {
+    const onPointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
       this.runner.ondragstart = () => false;
 

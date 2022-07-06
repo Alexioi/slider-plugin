@@ -46,7 +46,7 @@ class View {
     this.barContainer.classList.add('slider__bar-container');
 
     this.tip = new Tip(this.slider);
-    this.range = new Range(this.barContainer);
+    this.range = new Range(this.barContainer, this.options, eventEmitter);
     this.scale = new Scale(this.slider, eventEmitter);
     this.runnerFrom = new Runner(
       this.barContainer,
@@ -86,11 +86,11 @@ class View {
 
     if (isRange) {
       this.runnerFrom.render();
-      this.range.render({ isVertical, positions: [leftPosition, rightPosition] });
     } else {
       this.runnerFrom.destroy();
-      this.range.render({ isVertical, positions: [rightPosition] });
     }
+
+    this.range.render();
 
     this.runnerTo.render();
 
