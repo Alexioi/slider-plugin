@@ -1,35 +1,22 @@
 import './scale.scss';
-import { isEqual } from 'lodash';
 import EventNames from '../../../types/enums';
-import { IMarkParameters, IScaleOptions } from '../../../types/types';
+import { IMarkParameters, IOptions } from '../../../types/types';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
+import SubView from '../SubView/SubView';
 
-class Scale {
-  private $slider: JQuery;
+class Scale extends SubView {
+  private scale!: HTMLDivElement;
 
-  private eventEmitter: EventEmitter;
-
-  private scaleOptions!: IScaleOptions;
-
-  private $scale!: JQuery;
-
-  constructor(node: HTMLDivElement, eventEmitter: EventEmitter) {
-    this.$slider = $(node);
-    this.eventEmitter = eventEmitter;
+  constructor(node: HTMLDivElement, options: IOptions, eventEmitter: EventEmitter) {
+    super(node, options, eventEmitter);
 
     this.init();
   }
 
-  public render({ min, max, isVertical }: IScaleOptions, isRedraw = false): void {
-    const isDraw = !isEqual({ min, max, isVertical }, this.scaleOptions) || isRedraw;
+  public render(): void {
+    this.deleteMarks();
 
-    if (!isDraw) {
-      return;
-    }
-
-    this.scaleOptions = { min, max, isVertical };
-    this.$scale.empty();
-    this.$scale.show();
+    this.root.appendChild(this.scale);
 
     const scaleParameters = this.getScaleParameters();
 
@@ -37,41 +24,48 @@ class Scale {
   }
 
   public destroy(): void {
-    this.$scale.hide();
+    this.scale.remove();
   }
 
   private init(): void {
-    this.$scale = $('<div>', { class: 'slider__scale' });
-    this.$slider.append(this.$scale);
-    this.attachEventsHandler();
+    this.scale = SubView.getElement('slider__scale');
+    this.scale.addEventListener('pointerdown', this.clickScale.bind(this));
+    window.addEventListener('resize', this.handlerResizeScale.bind(this));
+  }
+
+  private deleteMarks(): void {
+    while (this.scale.firstChild) {
+      this.scale.removeChild(this.scale.firstChild);
+    }
   }
 
   private draw(parameters: IMarkParameters[]): void {
-    const { isVertical } = this.scaleOptions;
+    const { isVertical } = this.options;
 
     parameters.forEach((parameter) => {
       const { percent, text } = parameter;
       const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
-      const $mark = $('<span>', { class: 'slider__mark', text, style });
+      const mark = document.createElement('span');
+      mark.classList.add('slider__mark');
+      mark.style.cssText = style;
+      mark.innerText = text;
 
-      this.$scale.append($mark);
+      this.scale.appendChild(mark);
     });
   }
 
-  private attachEventsHandler(): void {
-    this.$scale.on('click', this.clickScale);
-    $(window).on('resize', this.handlerResizeScale);
+  private handlerResizeScale(): void {
+    this.render();
   }
 
-  private handlerResizeScale = (): void => {
-    this.render(this.scaleOptions, true);
-  };
+  private clickScale(pointerEvent: PointerEvent): void {
+    // @ts-ignore
+    const { innerHTML } = pointerEvent.target;
 
-  private clickScale = ({ target }: { target: HTMLSpanElement }): void => {
-    const { innerHTML } = target;
-
-    this.eventEmitter.emit(EventNames.ClickScale, Number(innerHTML));
-  };
+    if (innerHTML) {
+      this.eventEmitter.emit(EventNames.ClickScale, Number(innerHTML));
+    }
+  }
 
   private static getScalePercents(sliderLength: number): number[] {
     if (sliderLength > 800) {
@@ -90,8 +84,8 @@ class Scale {
   }
 
   private getScaleParameters(): IMarkParameters[] {
-    const { max, min, isVertical } = this.scaleOptions;
-    const { offsetHeight, offsetWidth } = this.$scale[0];
+    const { max, min, isVertical } = this.options;
+    const { offsetHeight, offsetWidth } = this.scale;
     const scaleLength = isVertical ? offsetHeight : offsetWidth;
     const scalePercents = Scale.getScalePercents(scaleLength);
 

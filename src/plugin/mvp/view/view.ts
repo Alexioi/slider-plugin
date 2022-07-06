@@ -47,7 +47,7 @@ class View {
 
     this.tip = new Tip(this.slider);
     this.range = new Range(this.barContainer, this.options, eventEmitter);
-    this.scale = new Scale(this.slider, eventEmitter);
+    this.scale = new Scale(this.slider, this.options, eventEmitter);
     this.runnerFrom = new Runner(
       this.barContainer,
       this.options,
@@ -95,7 +95,7 @@ class View {
     this.runnerTo.render();
 
     if (hasScale) {
-      this.scale.render({ min, max, isVertical });
+      this.scale.render();
     } else {
       this.scale.destroy();
     }
