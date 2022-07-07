@@ -7,6 +7,8 @@ import sliderOptions from '../../../app/sliderOptions';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 import { ITarget } from '../../../types/types';
 
+jest.mock('../../../EventEmitter/EventEmitter');
+
 const node = document.createElement('div');
 const eventEmitter = new EventEmitter();
 const state = { ...sliderOptions.defaultConfig };
@@ -15,6 +17,10 @@ const target: ITarget = { value: 'to' };
 const runner = new Runner(node, state, eventEmitter, 'from', target);
 runner.render();
 const runnerNode = node.querySelector('div');
+
+const eventPointerDown = new Event('pointerdown');
+const eventPointerMove = new Event('pointermove');
+const eventPointerUp = new Event('pointerup');
 
 describe('Ползунок', () => {
   test('должен отображаться с нужным классом', () => {
@@ -43,7 +49,33 @@ describe('Ползунок', () => {
     expect(runnerNode?.style.top).toEqual('40%');
   });
 
-  test('должен должен удаляться со страницы при уничтожении', () => {
+  test('должен не отправлять событие в event emitter, если не было перемещение курсора', () => {
+    runnerNode?.dispatchEvent(eventPointerDown);
+    document.dispatchEvent(eventPointerUp);
+
+    // @ts-ignore
+    const mockEventEmitterInstance = EventEmitter.mock.instances[0];
+    const mockEmit = mockEventEmitterInstance.emit;
+
+    expect(mockEmit.mock.calls[0]).toBeUndefined();
+  });
+
+  test('должен вызывать событие в event emitter, если было перемещение курсора и менять таргет', () => {
+    target.value = 'to';
+    runnerNode?.dispatchEvent(eventPointerDown);
+    document.dispatchEvent(eventPointerMove);
+
+    // @ts-ignore
+    const mockEventEmitterInstance = EventEmitter.mock.instances[0];
+    const mockEmit = mockEventEmitterInstance.emit;
+
+    expect(mockEmit.mock.calls[0]).toEqual([
+      'ChangedRunnerPosition',
+      { position: { x: NaN, y: NaN }, type: 'from' },
+    ]);
+  });
+
+  test('должен удаляться со страницы при уничтожении', () => {
     runner.destroy();
     const emptyNode = node.querySelector('div');
 
