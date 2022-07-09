@@ -85,8 +85,8 @@ class Tip extends SubView {
       return;
     }
 
-    const positionTipTo = this.tipTo.getBoundingClientRect();
     const positionTipFrom = this.tipFrom.getBoundingClientRect();
+    const positionTipTo = this.tipTo.getBoundingClientRect();
 
     const isTipFromOverlapsTipTo = isVertical
       ? positionTipFrom.y + positionTipFrom.height >= positionTipTo.y
