@@ -28,21 +28,6 @@ interface IOptions {
   to: number;
 }
 
-interface ITipOptions {
-  from: number;
-  to: number;
-  isRange: boolean;
-  isVertical: boolean;
-  leftPosition: number;
-  rightPosition: number;
-}
-
-interface IScaleOptions {
-  min: number;
-  max: number;
-  isVertical: boolean;
-}
-
 interface IPosition {
   x: number;
   y: number;
@@ -55,11 +40,6 @@ interface IElementPosition {
   position: IPosition;
 }
 
-interface IRangeOptions {
-  isVertical: boolean;
-  positions: number[];
-}
-
 interface IMarkParameters {
   percent: number;
   text: string;
@@ -69,15 +49,4 @@ interface ITarget {
   value: 'from' | 'to';
 }
 
-export {
-  IConfig,
-  ICallbacks,
-  IOptions,
-  ITipOptions,
-  IScaleOptions,
-  IElementPosition,
-  IRangeOptions,
-  IPosition,
-  IMarkParameters,
-  ITarget,
-};
+export { IConfig, ICallbacks, IOptions, IElementPosition, IPosition, IMarkParameters, ITarget };
