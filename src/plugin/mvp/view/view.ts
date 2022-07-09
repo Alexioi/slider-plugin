@@ -45,7 +45,7 @@ class View {
     this.barContainer = document.createElement('div');
     this.barContainer.classList.add('slider__bar-container');
 
-    this.tip = new Tip(this.slider);
+    this.tip = new Tip(this.slider, this.options, eventEmitter);
     this.range = new Range(this.barContainer, this.options, eventEmitter);
     this.scale = new Scale(this.slider, this.options, eventEmitter);
     this.runnerFrom = new Runner(
@@ -59,7 +59,7 @@ class View {
   }
 
   public render(options: IOptions): void {
-    const { isVertical, isRange, from, to, min, max, hasScale, hasTip } = options;
+    const { isVertical, isRange, hasScale, hasTip } = options;
 
     this.options = options;
     if (!this.isRender) {
@@ -69,9 +69,6 @@ class View {
       this.isRender = true;
     }
 
-    const leftPosition = View.calculatePosition(from, min, max);
-    const rightPosition = View.calculatePosition(to, min, max);
-
     if (isVertical) {
       this.addClassVertical();
     } else {
@@ -79,7 +76,7 @@ class View {
     }
 
     if (hasTip) {
-      this.tip.render({ from, to, isRange, isVertical, leftPosition, rightPosition });
+      this.tip.render();
     } else {
       this.tip.destroy();
     }
@@ -107,10 +104,6 @@ class View {
 
   private removeClassVertical() {
     this.slider.classList.remove('slider_vertical');
-  }
-
-  private static calculatePosition(value: number, min: number, max: number): number {
-    return ((value - min) / (max - min)) * 100;
   }
 }
 

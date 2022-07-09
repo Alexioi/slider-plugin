@@ -1,137 +1,104 @@
 import './tip.scss';
 
-import { ITipOptions } from '../../../types/types';
+import { IOptions } from '../../../types/types';
+import SubView from '../SubView/SubView';
+import EventEmitter from '../../../EventEmitter/EventEmitter';
 
-class Tip {
-  private $slider: JQuery;
+class Tip extends SubView {
+  private tipLine!: HTMLDivElement;
 
-  private $tipLine: JQuery;
+  private tipFrom!: HTMLSpanElement;
 
-  private $tipFrom: JQuery;
+  private tipTo!: HTMLSpanElement;
 
-  private $tipTo: JQuery;
+  private tipBoth!: HTMLSpanElement;
 
-  private $tipBoth: JQuery;
+  constructor(node: HTMLDivElement, options: IOptions, eventEmitter: EventEmitter) {
+    super(node, options, eventEmitter);
 
-  private isRenderTip = false;
-
-  private isRenderRangeTip = false;
-
-  private isRenderVerticalTip = false;
-
-  constructor(node: HTMLDivElement) {
-    this.$slider = $(node);
-    this.$tipLine = $('<div>', { class: 'slider__tip-line' });
-    this.$tipFrom = $('<span>', { class: 'slider__tip' });
-    this.$tipBoth = $('<span>', { class: 'slider__tip' });
-    this.$tipTo = $('<span>', { class: 'slider__tip' });
+    this.init();
   }
 
-  public render({ from, to, isRange, isVertical, leftPosition, rightPosition }: ITipOptions) {
-    if (!this.isRenderTip) {
-      this.$slider.prepend(this.$tipLine);
-      this.$tipLine.append(this.$tipTo);
-      this.isRenderTip = true;
+  private init() {
+    this.tipLine = SubView.getElement('slider__tip-line');
+    this.tipFrom = SubView.getElement('slider__tip');
+    this.tipBoth = SubView.getElement('slider__tip');
+    this.tipTo = SubView.getElement('slider__tip');
+  }
+
+  public render() {
+    const { isVertical } = this.options;
+
+    this.root.appendChild(this.tipLine);
+    this.tipLine.appendChild(this.tipFrom);
+    this.tipLine.appendChild(this.tipBoth);
+    this.tipLine.appendChild(this.tipTo);
+    this.changeText();
+    this.changePosition();
+
+    if (isVertical) {
+      this.tipLine.classList.add('slider__tip-line_vertical');
+    } else {
+      this.tipLine.classList.remove('slider__tip-line_vertical');
     }
 
-    if (isRange && !this.isRenderRangeTip) {
-      this.$tipLine.append(this.$tipFrom);
-      this.$tipLine.append(this.$tipBoth);
-      this.isRenderRangeTip = true;
-    }
-
-    if (!isRange && this.isRenderRangeTip) {
-      this.$tipFrom.remove();
-      this.$tipBoth.remove();
-      this.isRenderRangeTip = false;
-    }
-
-    if (isVertical && !this.isRenderVerticalTip) {
-      this.$tipLine.addClass('slider__tip-line_vertical');
-      this.isRenderVerticalTip = true;
-    }
-
-    if (!isVertical && this.isRenderVerticalTip) {
-      this.$tipLine.removeClass('slider__tip-line_vertical');
-      this.isRenderVerticalTip = false;
-    }
-
-    this.changePosition(leftPosition, rightPosition);
     this.toggleDisplay();
-    this.changeText(from, to);
   }
 
   public destroy() {
-    if (this.isRenderTip === false) {
-      return;
-    }
-
-    this.$tipFrom.remove();
-    this.$tipBoth.remove();
-    this.$tipTo.remove();
-    this.$tipLine.remove();
-    this.isRenderRangeTip = false;
-    this.isRenderTip = false;
+    this.tipLine.remove();
   }
 
-  private changePosition(leftPosition: number, rightPosition: number) {
-    const positionRightTip = this.isRenderVerticalTip
-      ? { left: '', top: `${rightPosition}%` }
-      : { left: `${rightPosition}%`, top: '' };
+  private changePosition() {
+    const { isVertical, from, to } = this.options;
+    const leftPosition = this.calculatePercent(from);
+    const rightPosition = this.calculatePercent(to);
 
-    this.$tipTo.css(positionRightTip);
+    const positionRightTip = isVertical ? `top: ${rightPosition}%;` : `left: ${rightPosition}%;`;
 
-    if (!this.isRenderRangeTip) {
-      return;
-    }
+    const positionLeftTip = isVertical ? `top: ${leftPosition}%;` : `left: ${leftPosition}%;`;
 
-    const positionLeftTip = this.isRenderVerticalTip
-      ? { left: '', top: `${leftPosition}%` }
-      : { left: `${leftPosition}%`, top: '' };
+    const positionBothTip = isVertical
+      ? `top: ${(leftPosition + rightPosition) / 2}%;`
+      : `left: ${(leftPosition + rightPosition) / 2}%;`;
 
-    const positionBothTip = this.isRenderVerticalTip
-      ? { left: '', top: `${(leftPosition + rightPosition) / 2}%` }
-      : { left: `${(leftPosition + rightPosition) / 2}%`, top: '' };
-
-    this.$tipFrom.css(positionLeftTip);
-    this.$tipBoth.css(positionBothTip);
+    this.tipFrom.style.cssText = positionLeftTip;
+    this.tipBoth.style.cssText = positionBothTip;
+    this.tipTo.style.cssText = positionRightTip;
   }
 
-  private changeText(from: number, to: number) {
-    this.$tipTo.text(to);
+  private changeText() {
+    const { from, to } = this.options;
+    const bothText = from === to ? String(to) : `${from} - ${to}`;
 
-    if (!this.isRenderRangeTip) {
-      return;
-    }
-
-    const bothText = from === to ? to : `${from} - ${to}`;
-
-    this.$tipFrom.text(from);
-    this.$tipBoth.text(bothText);
+    this.tipFrom.innerText = String(from);
+    this.tipTo.innerText = String(to);
+    this.tipBoth.innerText = bothText;
   }
 
   private toggleDisplay() {
-    if (!this.isRenderRangeTip) {
+    const { isRange, isVertical } = this.options;
+
+    if (!isRange) {
+      this.tipFrom.remove();
+      this.tipBoth.remove();
       return;
     }
 
-    const positionTipTo = this.$tipTo[0].getBoundingClientRect();
-    const positionTipFrom = this.$tipFrom[0].getBoundingClientRect();
+    const positionTipTo = this.tipTo.getBoundingClientRect();
+    const positionTipFrom = this.tipFrom.getBoundingClientRect();
 
-    const isTipFromOverlapsTipTo = this.isRenderVerticalTip
+    const isTipFromOverlapsTipTo = isVertical
       ? positionTipFrom.y + positionTipFrom.height >= positionTipTo.y
       : positionTipFrom.x + positionTipFrom.width >= positionTipTo.x;
 
     if (isTipFromOverlapsTipTo) {
-      this.$tipFrom.css({ visibility: 'hidden' });
-      this.$tipTo.css({ visibility: 'hidden' });
-      this.$tipBoth.css({ visibility: '' });
+      this.tipFrom.remove();
+      this.tipTo.remove();
       return;
     }
 
-    this.$tipFrom.css({ visibility: '' });
-    this.$tipTo.css({ visibility: '' });
-    this.$tipBoth.css({ visibility: 'hidden' });
+    this.tipBoth.remove();
   }
 }
 
