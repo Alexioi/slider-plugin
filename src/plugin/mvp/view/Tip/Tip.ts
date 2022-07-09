@@ -19,17 +19,10 @@ class Tip extends SubView {
     this.init();
   }
 
-  private init() {
-    this.tipLine = SubView.getElement('slider__tip-line');
-    this.tipFrom = SubView.getElement('slider__tip');
-    this.tipBoth = SubView.getElement('slider__tip');
-    this.tipTo = SubView.getElement('slider__tip');
-  }
-
   public render() {
     const { isVertical } = this.options;
 
-    this.root.appendChild(this.tipLine);
+    this.root.insertAdjacentElement('afterbegin', this.tipLine);
     this.tipLine.appendChild(this.tipFrom);
     this.tipLine.appendChild(this.tipBoth);
     this.tipLine.appendChild(this.tipTo);
@@ -47,6 +40,13 @@ class Tip extends SubView {
 
   public destroy() {
     this.tipLine.remove();
+  }
+
+  private init() {
+    this.tipLine = SubView.getElement('slider__tip-line');
+    this.tipFrom = SubView.getElement('slider__tip');
+    this.tipBoth = SubView.getElement('slider__tip');
+    this.tipTo = SubView.getElement('slider__tip');
   }
 
   private changePosition() {
