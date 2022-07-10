@@ -16,6 +16,12 @@ type EventObject =
     }
   | { eventName: 'onChange'; eventArguments: IOptions };
 
+type EventOfNames =
+  | EventNames.UpdatedModelOptions
+  | EventNames.ChangedRunnerPosition
+  | EventNames.ClickScale
+  | 'onChange';
+
 class EventEmitter {
   private events: {
     [key: string]: ((args: any) => void)[];
@@ -25,7 +31,7 @@ class EventEmitter {
     this.events = {};
   }
 
-  public subscribe(eventName: string, callback: (args: any) => void): void {
+  public subscribe(eventName: EventOfNames, callback: (args: any) => void): void {
     if (!this.events[eventName]) {
       this.events[eventName] = [];
     }
@@ -33,7 +39,7 @@ class EventEmitter {
     this.events[eventName].push(callback);
   }
 
-  public unsubscribe(eventName: string, callback: (args: any) => void): void {
+  public unsubscribe(eventName: EventOfNames, callback: (args: any) => void): void {
     this.events[eventName] = this.events[eventName].filter(
       (eventCallback) => callback !== eventCallback,
     );
