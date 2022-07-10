@@ -1,3 +1,21 @@
+import EventNames from '../types/enums';
+import { IElementPosition, IOptions } from '../types/types';
+
+type EventObject =
+  | {
+      eventName: EventNames.UpdatedModelOptions;
+      eventArguments: IOptions;
+    }
+  | {
+      eventName: EventNames.ChangedRunnerPosition;
+      eventArguments: IElementPosition;
+    }
+  | {
+      eventName: EventNames.ClickScale;
+      eventArguments: number;
+    }
+  | { eventName: 'onChange'; eventArguments: IOptions };
+
 class EventEmitter {
   private events: {
     [key: string]: ((args: any) => void)[];
@@ -21,11 +39,11 @@ class EventEmitter {
     );
   }
 
-  public emit(eventName: string, args: unknown): void {
+  public emit({ eventName, eventArguments }: EventObject): void {
     const event = this.events[eventName];
 
     if (event) {
-      event.forEach((callback) => callback.call(null, args));
+      event.forEach((callback) => callback.call(null, eventArguments));
     }
   }
 }

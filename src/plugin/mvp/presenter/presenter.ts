@@ -44,7 +44,7 @@ class Presenter {
 
   private notifyViewUpdatedModelOptions = (options: IOptions) => {
     this.view.render(options);
-    this.eventEmitter.emit('onChange', options);
+    this.eventEmitter.emit({ eventName: 'onChange', eventArguments: options });
   };
 
   private notifyModelAboutChangedRunnerPosition = ({ position, type }: IElementPosition) => {

@@ -9,5 +9,6 @@ module.exports = {
     'no-new': 'off',
     'no-restricted-globals': 'off',
     'arrow-body-style': 'off',
+    '@typescript-eslint/indent': 'off',
   },
 };

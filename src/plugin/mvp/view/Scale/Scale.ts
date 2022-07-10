@@ -63,7 +63,7 @@ class Scale extends SubView {
     const intInnerHtml = Number(innerHTML);
 
     if (!isNaN(intInnerHtml)) {
-      this.eventEmitter.emit(EventNames.ClickScale, intInnerHtml);
+      this.eventEmitter.emit({ eventName: EventNames.ClickScale, eventArguments: intInnerHtml });
     }
   }
 

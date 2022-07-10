@@ -70,8 +70,7 @@ describe('Ползунок', () => {
     const mockEmit = mockEventEmitterInstance.emit;
 
     expect(mockEmit.mock.calls[0]).toEqual([
-      'ChangedRunnerPosition',
-      { position: NaN, type: 'from' },
+      { eventName: 'ChangedRunnerPosition', eventArguments: { position: NaN, type: 'from' } },
     ]);
   });
 

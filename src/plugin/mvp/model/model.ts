@@ -20,7 +20,10 @@ class Model {
   public updateOptions(config: IConfig): void {
     this.validator.validateOptions(config);
 
-    this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit({
+      eventName: EventNames.UpdatedModelOptions,
+      eventArguments: this.options,
+    });
   }
 
   public getOptions(): IOptions {
@@ -34,7 +37,10 @@ class Model {
 
     this.changeValueDependingOnStep(newValue, type);
 
-    this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit({
+      eventName: EventNames.UpdatedModelOptions,
+      eventArguments: this.options,
+    });
   }
 
   public updateNearValue(newValue: number): void {
@@ -45,18 +51,27 @@ class Model {
 
     if (!isRange) {
       this.options.to = newValue;
-      this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
+      this.eventEmitter.emit({
+        eventName: EventNames.UpdatedModelOptions,
+        eventArguments: this.options,
+      });
       return;
     }
 
     if (diffTo <= diffFrom) {
       this.options.to = newValue;
-      this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
+      this.eventEmitter.emit({
+        eventName: EventNames.UpdatedModelOptions,
+        eventArguments: this.options,
+      });
       return;
     }
 
     this.options.from = newValue;
-    this.eventEmitter.emit(EventNames.UpdatedModelOptions, this.options);
+    this.eventEmitter.emit({
+      eventName: EventNames.UpdatedModelOptions,
+      eventArguments: this.options,
+    });
   }
 
   private changeValueDependingOnStep(newValue: number, valueName: 'from' | 'to'): void {
