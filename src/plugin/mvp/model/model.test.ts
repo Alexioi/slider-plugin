@@ -85,7 +85,7 @@ describe('Модель', () => {
 
   test('должна менять значение from при получение позиции бегунка меньше минимума', () => {
     const elementPosition: IElementPosition = {
-      position: { x: -1, y: 0 },
+      position: -1,
       type: 'from',
     };
 
@@ -98,7 +98,7 @@ describe('Модель', () => {
 
   test('должна менять значение from при получение позиции бегунка больше минимума и меньше максимума', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 0.5, y: 0 },
+      position: 0.5,
       type: 'from',
     };
 
@@ -111,7 +111,7 @@ describe('Модель', () => {
 
   test('должна менять значение from при получение позиции бегунка больше to', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 0.9, y: 0 },
+      position: 0.9,
       type: 'from',
     };
 
@@ -124,7 +124,7 @@ describe('Модель', () => {
 
   test('должна менять значение from при получение позиции бегунка больше max', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 2, y: 0 },
+      position: 2,
       type: 'from',
     };
 
@@ -137,7 +137,7 @@ describe('Модель', () => {
 
   test('должна менять значение to при получение позиции бегунка больше max', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 2, y: 0 },
+      position: 2,
       type: 'to',
     };
 
@@ -150,7 +150,7 @@ describe('Модель', () => {
 
   test('должна менять значение to при получение позиции бегунка больше минимума и меньше максимума', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 0.8, y: 0 },
+      position: 0.8,
       type: 'to',
     };
 
@@ -163,7 +163,7 @@ describe('Модель', () => {
 
   test('должна менять значение to при получение позиции бегунка меньше from', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 0.1, y: 0 },
+      position: 0.1,
       type: 'to',
     };
 
@@ -176,7 +176,7 @@ describe('Модель', () => {
 
   test('должна менять значение to при получение позиции бегунка меньше min', () => {
     const elementPosition: IElementPosition = {
-      position: { x: -1, y: 0 },
+      position: -1,
       type: 'to',
     };
 
@@ -195,7 +195,7 @@ describe('Модель', () => {
     model.updateOptions(options);
 
     const elementPosition: IElementPosition = {
-      position: { x: -1, y: 0 },
+      position: -1,
       type: 'to',
     };
 
@@ -208,7 +208,7 @@ describe('Модель', () => {
 
   test('должна не менять значение to при получение позиции бегунка отличающегося меньше чем на пол шага', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 0.77, y: 0 },
+      position: 0.77,
       type: 'to',
     };
 
@@ -221,7 +221,7 @@ describe('Модель', () => {
 
   test('должна менять значение to при получение позиции бегунка отличающегося больше чем на пол шага', () => {
     const elementPosition: IElementPosition = {
-      position: { x: 0.78, y: 0 },
+      position: 0.78,
       type: 'to',
     };
 

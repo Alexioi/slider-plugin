@@ -28,16 +28,11 @@ interface IOptions {
   to: number;
 }
 
-interface IPosition {
-  x: number;
-  y: number;
-}
-
 type TypeNameRunners = 'from' | 'to';
 
 interface IElementPosition {
   type: TypeNameRunners;
-  position: IPosition;
+  position: number;
 }
 
 interface IMarkParameters {
@@ -46,7 +41,7 @@ interface IMarkParameters {
 }
 
 interface ITarget {
-  value: 'from' | 'to';
+  value: TypeNameRunners;
 }
 
-export { IConfig, ICallbacks, IOptions, IElementPosition, IPosition, IMarkParameters, ITarget };
+export { IConfig, ICallbacks, IOptions, IElementPosition, IMarkParameters, ITarget };

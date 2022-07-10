@@ -71,7 +71,7 @@ describe('Ползунок', () => {
 
     expect(mockEmit.mock.calls[0]).toEqual([
       'ChangedRunnerPosition',
-      { position: { x: NaN, y: NaN }, type: 'from' },
+      { position: NaN, type: 'from' },
     ]);
   });
 

@@ -63,7 +63,7 @@ class Runner extends SubView {
       const { type } = this;
       this.target.value = type;
 
-      const position = SubView.getPosition(this.root, pointerEvent);
+      const position = this.getPosition(this.root, pointerEvent);
       this.eventEmitter.emit(EventNames.ChangedRunnerPosition, { position, type });
     };
 

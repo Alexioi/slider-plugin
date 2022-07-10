@@ -2,7 +2,7 @@ import EventNames from '../../types/enums';
 import View from '../view/View';
 import Model from '../model/model';
 import EventEmitter from '../../EventEmitter/EventEmitter';
-import { IConfig, IOptions, IPosition } from '../../types/types';
+import { IConfig, IElementPosition, IOptions } from '../../types/types';
 
 class Presenter {
   private view: View;
@@ -47,13 +47,7 @@ class Presenter {
     this.eventEmitter.emit('onChange', options);
   };
 
-  private notifyModelAboutChangedRunnerPosition = ({
-    position,
-    type,
-  }: {
-    position: IPosition;
-    type: 'from' | 'to';
-  }) => {
+  private notifyModelAboutChangedRunnerPosition = ({ position, type }: IElementPosition) => {
     this.model.calculateValueUsingFraction({ position, type });
   };
 }

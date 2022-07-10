@@ -28,12 +28,9 @@ class Model {
   }
 
   public calculateValueUsingFraction({ position, type }: IElementPosition): void {
-    const { isVertical, min, max } = this.options;
-    const { x, y } = position;
+    const { min, max } = this.options;
 
-    const percentageOfLength = isVertical ? y : x;
-
-    const newValue = (max - min) * percentageOfLength + min;
+    const newValue = (max - min) * position + min;
 
     this.changeValueDependingOnStep(newValue, type);
 

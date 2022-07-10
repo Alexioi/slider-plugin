@@ -1,4 +1,4 @@
-import { IOptions, IPosition } from '../../../types/types';
+import { IOptions } from '../../../types/types';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 abstract class SubView {
@@ -27,15 +27,17 @@ abstract class SubView {
     return node;
   }
 
-  protected static getPosition(node: HTMLElement, event: PointerEvent): IPosition {
+  protected getPosition(node: HTMLElement, event: PointerEvent): number {
+    const { isVertical } = this.options;
     const { height, width, left, top } = node.getBoundingClientRect();
 
     const { clientX, clientY } = event;
 
-    const x = (clientX - left) / width;
-    const y = (clientY - top) / height;
+    if (isVertical) {
+      return (clientY - top) / height;
+    }
 
-    return { x, y };
+    return (clientX - left) / width;
   }
 }
 
