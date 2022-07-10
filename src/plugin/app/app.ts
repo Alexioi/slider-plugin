@@ -1,6 +1,6 @@
 import EventEmitter from '../EventEmitter/EventEmitter';
 import Model from '../mvp/model/model';
-import View from '../mvp/view/view';
+import View from '../mvp/view/View';
 import Presenter from '../mvp/presenter/presenter';
 import sliderOptions from './sliderOptions';
 import { IConfig, ICallbacks, IOptions } from '../types/types';
@@ -22,7 +22,7 @@ class App {
     this.eventEmitter = new EventEmitter();
     this.model = new Model(this.eventEmitter);
     const options = this.model.getOptions();
-    this.view = new View(node, this.eventEmitter, options);
+    this.view = new View(node, options, this.eventEmitter);
     this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
     this.attachEventEmitters();
 

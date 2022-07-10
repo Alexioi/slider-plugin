@@ -1,5 +1,5 @@
 import EventNames from '../../types/enums';
-import View from '../view/view';
+import View from '../view/View';
 import Model from '../model/model';
 import EventEmitter from '../../EventEmitter/EventEmitter';
 import { IConfig, IOptions, IPosition } from '../../types/types';

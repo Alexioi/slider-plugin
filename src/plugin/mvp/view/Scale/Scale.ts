@@ -59,11 +59,11 @@ class Scale extends SubView {
   }
 
   private clickScale(pointerEvent: PointerEvent): void {
-    // @ts-ignore
-    const { innerHTML } = pointerEvent.target;
+    const { innerHTML } = <HTMLElement>pointerEvent.target;
+    const intInnerHtml = Number(innerHTML);
 
-    if (innerHTML) {
-      this.eventEmitter.emit(EventNames.ClickScale, Number(innerHTML));
+    if (!isNaN(intInnerHtml)) {
+      this.eventEmitter.emit(EventNames.ClickScale, intInnerHtml);
     }
   }
 
