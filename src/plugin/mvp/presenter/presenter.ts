@@ -36,6 +36,10 @@ class Presenter {
       EventNames.ChangedRunnerPosition,
       this.notifyModelAboutChangedRunnerPosition,
     );
+
+    this.eventEmitter.subscribe('ChangedRunnerPositionStepUp', () => {
+      this.model.updateValueToByStep();
+    });
   }
 
   private notifyModelClickedScale = (value: number) => {

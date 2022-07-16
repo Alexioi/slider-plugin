@@ -1,26 +1,30 @@
 import EventNames from '../types/enums';
-import { IElementPosition, IOptions } from '../types/types';
+import { IElementPosition, IOptions, ITarget } from '../types/types';
 
 type EventObject =
   | {
-      eventName: EventNames.UpdatedModelOptions;
+      eventName: 'UpdatedModelOptions';
       eventArguments: IOptions;
     }
   | {
-      eventName: EventNames.ChangedRunnerPosition;
+      eventName: 'ChangedRunnerPosition';
       eventArguments: IElementPosition;
     }
   | {
-      eventName: EventNames.ClickScale;
+      eventName: 'ClickScale';
       eventArguments: number;
     }
-  | { eventName: 'onChange'; eventArguments: IOptions };
+  | { eventName: 'onChange'; eventArguments: IOptions }
+  | { eventName: 'ChangedRunnerPositionStepUp'; eventArguments: ITarget }
+  | { eventName: 'ChangedRunnerPositionStepDown'; eventArguments: ITarget };
 
 type EventOfNames =
   | EventNames.UpdatedModelOptions
   | EventNames.ChangedRunnerPosition
   | EventNames.ClickScale
-  | 'onChange';
+  | 'onChange'
+  | 'ChangedRunnerPositionStepUp'
+  | 'ChangedRunnerPositionStepDown';
 
 class EventEmitter {
   private events: {

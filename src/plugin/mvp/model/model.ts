@@ -74,6 +74,40 @@ class Model {
     });
   }
 
+  public updateValueToByStep(): void {
+    const { step, to, max } = this.options;
+
+    const newValue = to + step;
+
+    if (newValue > max) {
+      this.options.to = max;
+    } else {
+      this.options.to = newValue;
+    }
+
+    this.eventEmitter.emit({
+      eventName: 'UpdatedModelOptions',
+      eventArguments: this.options,
+    });
+  }
+
+  public updateValueFromByStep(): void {
+    const { step, to, min } = this.options;
+
+    const newValue = to + step;
+
+    if (newValue > min) {
+      this.options.from = min;
+    } else {
+      this.options.from = newValue;
+    }
+
+    this.eventEmitter.emit({
+      eventName: 'UpdatedModelOptions',
+      eventArguments: this.options,
+    });
+  }
+
   private changeValueDependingOnStep(newValue: number, valueName: 'from' | 'to'): void {
     const { step, min, max, from, to, isRange } = this.options;
 

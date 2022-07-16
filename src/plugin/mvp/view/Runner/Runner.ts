@@ -36,6 +36,7 @@ class Runner extends SubView {
 
     if (target.value === type) {
       this.runner.classList.add('slider__runner_targeted');
+      this.runner.focus();
     } else {
       this.runner.classList.remove('slider__runner_targeted');
     }
@@ -52,7 +53,32 @@ class Runner extends SubView {
 
   private init(): void {
     this.runner = SubView.getElement('slider__runner');
+    this.runner.setAttribute('tabindex', '0');
     this.runner.addEventListener('pointerdown', this.attachEventOnPointerDown.bind(this));
+    this.runner.addEventListener('keydown', this.attachEventOnPressingKeyboard.bind(this));
+  }
+
+  private attachEventOnPressingKeyboard(keyboardEvent: KeyboardEvent): void {
+    const { code } = keyboardEvent;
+    const { type } = this;
+
+    if (code === 'ArrowUp' || code === 'ArrowRight') {
+      keyboardEvent.preventDefault();
+      this.target.value = type;
+      this.eventEmitter.emit({
+        eventName: 'ChangedRunnerPositionStepUp',
+        eventArguments: { value: type },
+      });
+    }
+
+    if (code === 'ArrowDown' || code === 'ArrowLeft') {
+      keyboardEvent.preventDefault();
+      this.target.value = type;
+      this.eventEmitter.emit({
+        eventName: 'ChangedRunnerPositionStepDown',
+        eventArguments: { value: type },
+      });
+    }
   }
 
   private attachEventOnPointerDown(): void {
