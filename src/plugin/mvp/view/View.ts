@@ -29,7 +29,7 @@ class View {
 
   private scale!: Scale;
 
-  private target: ITarget = { value: 'from' };
+  private target: ITarget = { valueIndex: 0 };
 
   constructor(node: HTMLElement, options: IOptions, eventEmitter: EventEmitter) {
     this.root = node;
@@ -85,8 +85,8 @@ class View {
     this.tip = new Tip(slider, options, eventEmitter);
     this.range = new Range(barContainer, options, eventEmitter);
     this.scale = new Scale(slider, options, eventEmitter);
-    this.runnerFrom = new Runner(barContainer, options, eventEmitter, 'from', target);
-    this.runnerTo = new Runner(barContainer, options, eventEmitter, 'to', target);
+    this.runnerFrom = new Runner(barContainer, options, eventEmitter, 0, target);
+    this.runnerTo = new Runner(barContainer, options, eventEmitter, 1, target);
 
     this.root.appendChild(this.slider);
     this.slider.appendChild(this.barContainer);
@@ -101,11 +101,11 @@ class View {
   }
 
   private switchTarget(): void {
-    const { from, max, min } = this.options;
+    const { values, max, min } = this.options;
 
-    const isToTarget = from < (max - min) / 2;
+    const isToTarget = values[0] < (max - min) / 2;
 
-    this.target.value = isToTarget ? 'to' : 'from';
+    this.target.valueIndex = isToTarget ? 1 : 0;
   }
 }
 

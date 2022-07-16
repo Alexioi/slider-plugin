@@ -17,7 +17,7 @@ type EventObject =
   | { eventName: 'ChangedRunnerPositionStepUp'; eventArguments: ITarget }
   | { eventName: 'ChangedRunnerPositionStepDown'; eventArguments: ITarget };
 
-type EventOfNames =
+type EventNames =
   | 'UpdatedModelOptions'
   | 'ChangedRunnerPosition'
   | 'ClickScale'
@@ -34,7 +34,7 @@ class EventEmitter {
     this.events = {};
   }
 
-  public subscribe(eventName: EventOfNames, callback: (args: any) => void): void {
+  public subscribe(eventName: EventNames, callback: (args: any) => void): void {
     if (!this.events[eventName]) {
       this.events[eventName] = [];
     }
@@ -42,7 +42,7 @@ class EventEmitter {
     this.events[eventName].push(callback);
   }
 
-  public unsubscribe(eventName: EventOfNames, callback: (args: any) => void): void {
+  public unsubscribe(eventName: EventNames, callback: (args: any) => void): void {
     this.events[eventName] = this.events[eventName].filter(
       (eventCallback) => callback !== eventCallback,
     );

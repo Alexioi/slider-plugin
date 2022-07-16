@@ -50,8 +50,8 @@ class Presenter {
     this.eventEmitter.emit({ eventName: 'onChange', eventArguments: options });
   };
 
-  private notifyModelAboutChangedRunnerPosition = ({ position, type }: IElementPosition) => {
-    this.model.calculateValueUsingFraction({ position, type });
+  private notifyModelAboutChangedRunnerPosition = ({ position, valueIndex }: IElementPosition) => {
+    this.model.calculateValueUsingFraction({ position, valueIndex });
   };
 }
 

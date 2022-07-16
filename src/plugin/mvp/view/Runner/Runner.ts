@@ -8,7 +8,7 @@ import SubView from '../SubView/SubView';
 class Runner extends SubView {
   private runner!: HTMLDivElement;
 
-  private type: 'from' | 'to';
+  private valueIndex: 0 | 1;
 
   private target: ITarget;
 
@@ -16,31 +16,31 @@ class Runner extends SubView {
     node: HTMLDivElement,
     options: IOptions,
     eventEmitter: EventEmitter,
-    type: 'from' | 'to',
+    valueIndex: 0 | 1,
     target: ITarget,
   ) {
     super(node, options, eventEmitter);
 
-    this.type = type;
+    this.valueIndex = valueIndex;
     this.target = target;
 
     this.init();
   }
 
   public render(): void {
-    const { target, type } = this;
+    const { target, valueIndex: typeIndex } = this;
     const { isVertical } = this.options;
 
     this.root.appendChild(this.runner);
 
-    if (target.value === type) {
+    if (target.valueIndex === typeIndex) {
       this.runner.classList.add('slider__runner_targeted');
       this.runner.focus();
     } else {
       this.runner.classList.remove('slider__runner_targeted');
     }
 
-    const percent = this.calculatePercent(this.options[type]);
+    const percent = this.calculatePercent(this.options.values[typeIndex]);
     const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
 
     this.runner.style.cssText = styleRunner;
@@ -59,23 +59,23 @@ class Runner extends SubView {
 
   private attachEventOnPressingKeyboard(keyboardEvent: KeyboardEvent): void {
     const { code } = keyboardEvent;
-    const { type } = this;
+    const { valueIndex } = this;
 
     if (code === 'ArrowUp' || code === 'ArrowRight') {
       keyboardEvent.preventDefault();
-      this.target.value = type;
+      this.target.valueIndex = valueIndex;
       this.eventEmitter.emit({
         eventName: 'ChangedRunnerPositionStepUp',
-        eventArguments: { value: type },
+        eventArguments: { valueIndex },
       });
     }
 
     if (code === 'ArrowDown' || code === 'ArrowLeft') {
       keyboardEvent.preventDefault();
-      this.target.value = type;
+      this.target.valueIndex = valueIndex;
       this.eventEmitter.emit({
         eventName: 'ChangedRunnerPositionStepDown',
-        eventArguments: { value: type },
+        eventArguments: { valueIndex },
       });
     }
   }
@@ -85,14 +85,14 @@ class Runner extends SubView {
       pointerEvent.preventDefault();
       this.runner.ondragstart = () => false;
 
-      const { type } = this;
-      this.target.value = type;
+      const { valueIndex: typeIndex } = this;
+      this.target.valueIndex = typeIndex;
 
       const position = this.getPosition(this.root, pointerEvent);
 
       this.eventEmitter.emit({
         eventName: 'ChangedRunnerPosition',
-        eventArguments: { position, type },
+        eventArguments: { position, valueIndex: typeIndex },
       });
     };
 

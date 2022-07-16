@@ -50,9 +50,9 @@ class Tip extends SubView {
   }
 
   private changePosition() {
-    const { isVertical, from, to } = this.options;
-    const leftPosition = this.calculatePercent(from);
-    const rightPosition = this.calculatePercent(to);
+    const { isVertical, values } = this.options;
+    const leftPosition = this.calculatePercent(values[0]);
+    const rightPosition = this.calculatePercent(values[1]);
 
     const positionRightTip = isVertical ? `top: ${rightPosition}%;` : `left: ${rightPosition}%;`;
 
@@ -68,11 +68,11 @@ class Tip extends SubView {
   }
 
   private changeText() {
-    const { from, to } = this.options;
-    const bothText = from === to ? String(to) : `${from} - ${to}`;
+    const { values } = this.options;
+    const bothText = values[0] === values[1] ? String(values[1]) : `${values[0]} - ${values[1]}`;
 
-    this.tipFrom.innerText = String(from);
-    this.tipTo.innerText = String(to);
+    this.tipFrom.innerText = String(values[0]);
+    this.tipTo.innerText = String(values[1]);
     this.tipBoth.innerText = bothText;
   }
 

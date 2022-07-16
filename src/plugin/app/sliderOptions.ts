@@ -7,8 +7,7 @@ const sliderOptions = {
     step: 10,
     min: 0,
     max: 100,
-    from: 40,
-    to: 70,
+    values: [40, 70],
   },
   callbacks: { onChange: () => {} },
 };

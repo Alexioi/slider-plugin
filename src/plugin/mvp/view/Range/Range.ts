@@ -14,12 +14,12 @@ class Range extends SubView {
   }
 
   public render(): void {
-    const { isVertical, isRange, from, to } = this.options;
+    const { isVertical, isRange, values } = this.options;
 
     this.root.appendChild(this.range);
 
-    const startPercent = isRange ? this.calculatePercent(from) : 0;
-    const finishPercent = this.calculatePercent(to);
+    const startPercent = isRange ? this.calculatePercent(values[0]) : 0;
+    const finishPercent = this.calculatePercent(values[1]);
 
     if (isVertical) {
       this.range.style.cssText = `top: ${startPercent}%; bottom: ${100 - finishPercent}%`;

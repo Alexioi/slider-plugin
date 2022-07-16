@@ -12,9 +12,9 @@ jest.mock('../../../EventEmitter/EventEmitter');
 const node = document.createElement('div');
 const eventEmitter = new EventEmitter();
 const state = { ...sliderOptions.defaultConfig };
-const target: ITarget = { value: 'to' };
+const target: ITarget = { valueIndex: 1 };
 
-const runner = new Runner(node, state, eventEmitter, 'from', target);
+const runner = new Runner(node, state, eventEmitter, 0, target);
 runner.render();
 const runnerNode = node.querySelector('div');
 
@@ -36,7 +36,7 @@ describe('Ползунок', () => {
   });
 
   test('должен содержать класса targeted, если выбран этот ползунок', () => {
-    target.value = 'from';
+    target.valueIndex = 0;
     runner.render();
 
     expect(runnerNode?.classList.contains('slider__runner_targeted')).toBeTruthy();
@@ -61,7 +61,7 @@ describe('Ползунок', () => {
   });
 
   test('должен вызывать событие в event emitter, если было перемещение курсора и менять таргет', () => {
-    target.value = 'to';
+    target.valueIndex = 1;
     runnerNode?.dispatchEvent(eventPointerDown);
     document.dispatchEvent(eventPointerMove);
 
@@ -70,7 +70,7 @@ describe('Ползунок', () => {
     const mockEmit = mockEventEmitterInstance.emit;
 
     expect(mockEmit.mock.calls[0]).toEqual([
-      { eventName: 'ChangedRunnerPosition', eventArguments: { position: NaN, type: 'from' } },
+      { eventName: 'ChangedRunnerPosition', eventArguments: { position: NaN, valueIndex: 0 } },
     ]);
   });
 

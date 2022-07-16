@@ -11,8 +11,7 @@ describe('Модель', () => {
     step: 10,
     min: -100,
     max: 100,
-    from: -50,
-    to: 50,
+    values: [-50, 50],
   };
 
   const model = new Model(new EventEmitter());
@@ -30,8 +29,7 @@ describe('Модель', () => {
       step: 15,
       min: -100,
       max: 1000,
-      from: 400,
-      to: 700,
+      values: [400, 700],
     };
 
     model.updateOptions(options);
@@ -64,13 +62,12 @@ describe('Модель', () => {
       step: 15,
       min: true,
       max: '',
-      from: 'f',
-      to: 70,
+      values: ['f', 70],
     };
     // @ts-ignore
     model.updateOptions(options);
 
-    const { isRange, isVertical, hasScale, hasTip, step, max, min, to, from } = model.getOptions();
+    const { isRange, isVertical, hasScale, hasTip, step, max, min, values } = model.getOptions();
 
     expect(isRange).not.toEqual(options.isRange);
     expect(isVertical).not.toEqual(options.isVertical);
@@ -79,112 +76,112 @@ describe('Модель', () => {
     expect(step).toEqual(options.step);
     expect(min).not.toEqual(options.min);
     expect(max).not.toEqual(options.max);
-    expect(from).not.toEqual(options.from);
-    expect(to).toEqual(options.to);
+    expect(values[0]).not.toEqual(options.values[0]);
+    expect(values[1]).toEqual(options.values[1]);
   });
 
   test('должна менять значение from при получение позиции бегунка меньше минимума', () => {
     const elementPosition: IElementPosition = {
       position: -1,
-      type: 'from',
+      valueIndex: 0,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { from } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(from).toEqual(-100);
+    expect(values[0]).toEqual(-100);
   });
 
   test('должна менять значение from при получение позиции бегунка больше минимума и меньше максимума', () => {
     const elementPosition: IElementPosition = {
       position: 0.5,
-      type: 'from',
+      valueIndex: 0,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { from } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(from).toEqual(0);
+    expect(values[0]).toEqual(0);
   });
 
   test('должна менять значение from при получение позиции бегунка больше to', () => {
     const elementPosition: IElementPosition = {
       position: 0.9,
-      type: 'from',
+      valueIndex: 0,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { from } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(from).toEqual(50);
+    expect(values[0]).toEqual(50);
   });
 
   test('должна менять значение from при получение позиции бегунка больше max', () => {
     const elementPosition: IElementPosition = {
       position: 2,
-      type: 'from',
+      valueIndex: 0,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { from } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(from).toEqual(50);
+    expect(values[0]).toEqual(50);
   });
 
   test('должна менять значение to при получение позиции бегунка больше max', () => {
     const elementPosition: IElementPosition = {
       position: 2,
-      type: 'to',
+      valueIndex: 1,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(100);
+    expect(values[1]).toEqual(100);
   });
 
   test('должна менять значение to при получение позиции бегунка больше минимума и меньше максимума', () => {
     const elementPosition: IElementPosition = {
       position: 0.8,
-      type: 'to',
+      valueIndex: 1,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(60);
+    expect(values[1]).toEqual(60);
   });
 
   test('должна менять значение to при получение позиции бегунка меньше from', () => {
     const elementPosition: IElementPosition = {
       position: 0.1,
-      type: 'to',
+      valueIndex: 1,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(-50);
+    expect(values[1]).toEqual(-50);
   });
 
   test('должна менять значение to при получение позиции бегунка меньше min', () => {
     const elementPosition: IElementPosition = {
       position: -1,
-      type: 'to',
+      valueIndex: 1,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(-50);
+    expect(values[1]).toEqual(-50);
   });
 
   test('должна менять значение to при получение позиции бегунка меньше from, если слайдер имеет один бегунок', () => {
@@ -196,55 +193,55 @@ describe('Модель', () => {
 
     const elementPosition: IElementPosition = {
       position: -1,
-      type: 'to',
+      valueIndex: 1,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(-100);
+    expect(values[1]).toEqual(-100);
   });
 
   test('должна не менять значение to при получение позиции бегунка отличающегося меньше чем на пол шага', () => {
     const elementPosition: IElementPosition = {
       position: 0.77,
-      type: 'to',
+      valueIndex: 1,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(50);
+    expect(values[1]).toEqual(50);
   });
 
   test('должна менять значение to при получение позиции бегунка отличающегося больше чем на пол шага', () => {
     const elementPosition: IElementPosition = {
       position: 0.78,
-      type: 'to',
+      valueIndex: 1,
     };
 
     model.calculateValueUsingFraction(elementPosition);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(60);
+    expect(values[1]).toEqual(60);
   });
 
-  test('должна менять значение to если это значение ближе к текущему to, чем текущие from', () => {
+  it('должна менять значение to если это значение ближе к текущему to, чем текущие from', () => {
     model.updateNearValue(70);
 
-    const { to } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(to).toEqual(70);
+    expect(values[1]).toEqual(70);
   });
 
-  test('должна менять значение from если это значение ближе к текущему from, чем текущие to', () => {
+  it('должна менять значение from если это значение ближе к текущему from, чем текущие to', () => {
     model.updateNearValue(-30);
 
-    const { from } = model.getOptions();
+    const { values } = model.getOptions();
 
-    expect(from).toEqual(-30);
+    expect(values[0]).toEqual(-30);
   });
 });

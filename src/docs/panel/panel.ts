@@ -45,8 +45,8 @@ class Panel {
 
     this.slider.update({
       onChange: function onChange(options: IOptions) {
-        that.$from.val(options.from);
-        that.$to.val(options.to);
+        that.$from.val(options.values[0]);
+        that.$to.val(options.values[1]);
       },
     });
   }
@@ -97,8 +97,8 @@ class Panel {
     this.$vertical.prop('checked', options.isVertical);
     this.$min.val(options.min);
     this.$max.val(options.max);
-    this.$from.val(options.from);
-    this.$to.val(options.to);
+    this.$from.val(options.values[0]);
+    this.$to.val(options.values[1]);
     this.$step.val(options.step);
     this.$tip.prop('checked', options.hasTip);
     this.$scale.prop('checked', options.hasScale);

@@ -6,8 +6,7 @@ interface IConfig {
   step?: number;
   min?: number;
   max?: number;
-  from?: number;
-  to?: number;
+  values?: number[];
   onChange?: Function;
 }
 
@@ -16,7 +15,6 @@ interface ICallbacks {
 }
 
 interface IOptions {
-  [index: string]: boolean | number;
   isRange: boolean;
   isVertical: boolean;
   hasTip: boolean;
@@ -24,14 +22,13 @@ interface IOptions {
   step: number;
   min: number;
   max: number;
-  from: number;
-  to: number;
+  values: number[];
 }
 
-type TypeNameRunners = 'from' | 'to';
+type ValuesIndex = 0 | 1;
 
 interface IElementPosition {
-  type: TypeNameRunners;
+  valueIndex: ValuesIndex;
   position: number;
 }
 
@@ -41,7 +38,7 @@ interface IMarkParameters {
 }
 
 interface ITarget {
-  value: TypeNameRunners;
+  valueIndex: ValuesIndex;
 }
 
 export { IConfig, ICallbacks, IOptions, IElementPosition, IMarkParameters, ITarget };

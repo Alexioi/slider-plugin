@@ -8,7 +8,7 @@ class Validator {
   }
 
   public validateOptions(config: IConfig) {
-    const { isRange, isVertical, hasTip, hasScale, step, min, max, from, to } = config;
+    const { isRange, isVertical, hasTip, hasScale, step, min, max, values } = config;
 
     if (typeof isRange === 'boolean') {
       this.options.isRange = isRange;
@@ -27,15 +27,15 @@ class Validator {
     }
 
     this.verifyMinAndMax(min, max);
-    this.verifyFromAndTo(from, to);
+    this.verifyFromAndTo(values);
     this.verifyStep(step);
   }
 
-  private verifyMinAndMax(firstValue: number | undefined, secondValue: number | undefined): void {
+  private verifyMinAndMax(firstValue?: number, secondValue?: number): void {
     const { min, max } = this.options;
 
-    const intFirstValue = Validator.makeNumber(firstValue, min);
-    const intSecondValue = Validator.makeNumber(secondValue, max);
+    const intFirstValue = Validator.makeNumber(min, firstValue);
+    const intSecondValue = Validator.makeNumber(max, secondValue);
 
     if (intFirstValue === intSecondValue) {
       return;
@@ -51,26 +51,26 @@ class Validator {
     this.options.max = intFirstValue;
   }
 
-  private verifyFromAndTo(firstValue: number | undefined, secondValue: number | undefined): void {
-    const { min, max, from, to } = this.options;
+  private verifyFromAndTo(newValues?: number[]): void {
+    const { min, max, values } = this.options;
 
-    const intFirstValue = Validator.makeNumber(firstValue, from);
-    const intSecondValue = Validator.makeNumber(secondValue, to);
+    const intFirstValue = Validator.makeNumber(values[0], newValues?.[0]);
+    const intSecondValue = Validator.makeNumber(values[1], newValues?.[1]);
 
     if (intFirstValue < intSecondValue) {
-      this.options.from = intFirstValue > min ? intFirstValue : min;
-      this.options.to = intSecondValue < max ? intSecondValue : max;
+      this.options.values[0] = intFirstValue > min ? intFirstValue : min;
+      this.options.values[1] = intSecondValue < max ? intSecondValue : max;
       return;
     }
 
-    this.options.from = intSecondValue > min ? intSecondValue : min;
-    this.options.to = intFirstValue < max ? intFirstValue : max;
+    this.options.values[0] = intSecondValue > min ? intSecondValue : min;
+    this.options.values[1] = intFirstValue < max ? intFirstValue : max;
   }
 
   private verifyStep(newStep: number | undefined): void {
     const { min, max, step } = this.options;
 
-    const intNewStep = Validator.makeNumber(newStep, step);
+    const intNewStep = Validator.makeNumber(step, newStep);
 
     if (intNewStep < 1) {
       return;
@@ -86,7 +86,7 @@ class Validator {
     this.options.step = distanceBetweenMinAndMax;
   }
 
-  private static makeNumber(value: any, number: number): number {
+  private static makeNumber(number: number, value: any): number {
     if (/^(-|\+)?([0-9]+)$/.test(value)) {
       return Number(value);
     }
