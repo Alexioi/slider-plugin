@@ -1,5 +1,4 @@
 import './scale.scss';
-import EventNames from '../../../types/enums';
 import { IMarkParameters, IOptions } from '../../../types/types';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 import SubView from '../SubView/SubView';
@@ -63,7 +62,7 @@ class Scale extends SubView {
     const intInnerHtml = Number(innerHTML);
 
     if (!isNaN(intInnerHtml)) {
-      this.eventEmitter.emit({ eventName: EventNames.ClickScale, eventArguments: intInnerHtml });
+      this.eventEmitter.emit({ eventName: 'ClickScale', eventArguments: intInnerHtml });
     }
   }
 

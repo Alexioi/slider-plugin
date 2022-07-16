@@ -1,4 +1,3 @@
-import EventNames from '../../types/enums';
 import Validator from './validator/Validator';
 import sliderOptions from '../../app/sliderOptions';
 import EventEmitter from '../../EventEmitter/EventEmitter';
@@ -21,7 +20,7 @@ class Model {
     this.validator.validateOptions(config);
 
     this.eventEmitter.emit({
-      eventName: EventNames.UpdatedModelOptions,
+      eventName: 'UpdatedModelOptions',
       eventArguments: this.options,
     });
   }
@@ -38,7 +37,7 @@ class Model {
     this.changeValueDependingOnStep(newValue, type);
 
     this.eventEmitter.emit({
-      eventName: EventNames.UpdatedModelOptions,
+      eventName: 'UpdatedModelOptions',
       eventArguments: this.options,
     });
   }
@@ -52,7 +51,7 @@ class Model {
     if (!isRange) {
       this.options.to = newValue;
       this.eventEmitter.emit({
-        eventName: EventNames.UpdatedModelOptions,
+        eventName: 'UpdatedModelOptions',
         eventArguments: this.options,
       });
       return;
@@ -61,7 +60,7 @@ class Model {
     if (diffTo <= diffFrom) {
       this.options.to = newValue;
       this.eventEmitter.emit({
-        eventName: EventNames.UpdatedModelOptions,
+        eventName: 'UpdatedModelOptions',
         eventArguments: this.options,
       });
       return;
@@ -69,7 +68,7 @@ class Model {
 
     this.options.from = newValue;
     this.eventEmitter.emit({
-      eventName: EventNames.UpdatedModelOptions,
+      eventName: 'UpdatedModelOptions',
       eventArguments: this.options,
     });
   }

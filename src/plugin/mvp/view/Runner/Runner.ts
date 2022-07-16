@@ -2,7 +2,6 @@ import './runner.scss';
 
 import { IOptions, ITarget } from '../../../types/types';
 
-import EventNames from '../../../types/enums';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 import SubView from '../SubView/SubView';
 
@@ -92,7 +91,7 @@ class Runner extends SubView {
       const position = this.getPosition(this.root, pointerEvent);
 
       this.eventEmitter.emit({
-        eventName: EventNames.ChangedRunnerPosition,
+        eventName: 'ChangedRunnerPosition',
         eventArguments: { position, type },
       });
     };

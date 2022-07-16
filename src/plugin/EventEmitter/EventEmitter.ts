@@ -1,4 +1,3 @@
-import EventNames from '../types/enums';
 import { IElementPosition, IOptions, ITarget } from '../types/types';
 
 type EventObject =
@@ -19,9 +18,9 @@ type EventObject =
   | { eventName: 'ChangedRunnerPositionStepDown'; eventArguments: ITarget };
 
 type EventOfNames =
-  | EventNames.UpdatedModelOptions
-  | EventNames.ChangedRunnerPosition
-  | EventNames.ClickScale
+  | 'UpdatedModelOptions'
+  | 'ChangedRunnerPosition'
+  | 'ClickScale'
   | 'onChange'
   | 'ChangedRunnerPositionStepUp'
   | 'ChangedRunnerPositionStepDown';

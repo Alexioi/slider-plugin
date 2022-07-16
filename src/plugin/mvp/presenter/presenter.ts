@@ -1,4 +1,3 @@
-import EventNames from '../../types/enums';
 import View from '../view/View';
 import Model from '../model/model';
 import EventEmitter from '../../EventEmitter/EventEmitter';
@@ -28,12 +27,12 @@ class Presenter {
   }
 
   private attachEventEmitters(): void {
-    this.eventEmitter.subscribe(EventNames.UpdatedModelOptions, this.notifyViewUpdatedModelOptions);
+    this.eventEmitter.subscribe('UpdatedModelOptions', this.notifyViewUpdatedModelOptions);
 
-    this.eventEmitter.subscribe(EventNames.ClickScale, this.notifyModelClickedScale);
+    this.eventEmitter.subscribe('ClickScale', this.notifyModelClickedScale);
 
     this.eventEmitter.subscribe(
-      EventNames.ChangedRunnerPosition,
+      'ChangedRunnerPosition',
       this.notifyModelAboutChangedRunnerPosition,
     );
 
