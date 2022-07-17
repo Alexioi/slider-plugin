@@ -14,8 +14,7 @@ const configs = [
     step: 10,
     min: -100,
     max: 100,
-    from: -50,
-    to: 40,
+    values: [-50, 40],
   },
   {
     isRange: true,
@@ -25,8 +24,7 @@ const configs = [
     step: 10,
     min: 100,
     max: 200,
-    from: 100,
-    to: 150,
+    values: [100, 150],
   },
   {
     isRange: true,
@@ -36,8 +34,7 @@ const configs = [
     step: 10,
     min: -100,
     max: 100,
-    from: -50,
-    to: 40,
+    values: [-50, 40],
   },
   {
     isRange: true,
@@ -47,8 +44,7 @@ const configs = [
     step: 10,
     min: -100,
     max: 100,
-    from: -50,
-    to: 40,
+    values: [-50, 40],
   },
 ];
 

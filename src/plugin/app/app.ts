@@ -20,8 +20,8 @@ class App {
     this.callbacks = { ...sliderOptions.callbacks };
 
     this.eventEmitter = new EventEmitter();
-    this.model = new Model(this.eventEmitter);
-    const options = this.model.getOptions();
+    const options = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));
+    this.model = new Model(options, this.eventEmitter);
     this.view = new View(node, options, this.eventEmitter);
     this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
     this.attachEventEmitters();
@@ -29,7 +29,7 @@ class App {
     this.update(config);
   }
 
-  public update(config: IConfig | undefined): void {
+  public update(config?: IConfig): void {
     if (typeof config === 'undefined') {
       return;
     }

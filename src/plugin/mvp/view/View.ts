@@ -40,23 +40,15 @@ class View {
   }
 
   public render(options: IOptions): void {
-    this.switchTarget();
+    this.switchTarget(options);
     this.changeValues(options);
-    const { isVertical, hasScale, hasTip } = options;
+    const { isVertical, hasScale } = options;
 
     if (isVertical) {
       this.slider.classList.add('slider_vertical');
     } else {
       this.slider.classList.remove('slider_vertical');
     }
-
-    if (hasTip) {
-      this.tip.render();
-    } else {
-      this.tip.destroy();
-    }
-
-    this.range.render();
 
     if (hasScale) {
       this.scale.render();
@@ -67,7 +59,15 @@ class View {
 
   public changeValues(options: IOptions): void {
     this.options = options;
-    const { isRange } = options;
+    const { isRange, hasTip } = options;
+
+    if (hasTip) {
+      this.tip.render();
+    } else {
+      this.tip.destroy();
+    }
+
+    this.range.render();
 
     if (isRange) {
       this.runnerFrom.render();
@@ -100,8 +100,8 @@ class View {
     this.barContainer.classList.add('slider__bar-container');
   }
 
-  private switchTarget(): void {
-    const { values, max, min } = this.options;
+  private switchTarget(options: IOptions): void {
+    const { values, max, min } = options;
 
     const isToTarget = values[0] < (max - min) / 2;
 

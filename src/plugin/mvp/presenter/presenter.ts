@@ -15,7 +15,8 @@ class Presenter {
     this.model = model;
     this.eventEmitter = eventEmitter;
 
-    this.attachEventEmitters();
+    this.attachEventEmittersToModel();
+    this.attachEventEmittersToView();
   }
 
   public updateOptions(config: IConfig): void {
@@ -26,33 +27,39 @@ class Presenter {
     return this.model.getOptions();
   }
 
-  private attachEventEmitters(): void {
-    this.eventEmitter.subscribe('UpdatedModelOptions', this.notifyViewUpdatedModelOptions);
+  private attachEventEmittersToModel(): void {
+    const notifyModelClickedScale = (value: number) => {
+      this.model.updateNearValue(value);
+    };
 
-    this.eventEmitter.subscribe('ClickScale', this.notifyModelClickedScale);
+    const notifyModelAboutChangedRunnerPosition = ({ position, valueIndex }: IElementPosition) => {
+      this.model.calculateValueUsingFraction({ position, valueIndex });
+    };
 
-    this.eventEmitter.subscribe(
-      'ChangedRunnerPosition',
-      this.notifyModelAboutChangedRunnerPosition,
-    );
+    this.eventEmitter.subscribe('ClickScale', notifyModelClickedScale);
+
+    this.eventEmitter.subscribe('ChangedRunnerPosition', notifyModelAboutChangedRunnerPosition);
 
     this.eventEmitter.subscribe('ChangedRunnerPositionStepUp', () => {
       this.model.updateValueToByStep();
     });
   }
 
-  private notifyModelClickedScale = (value: number) => {
-    this.model.updateNearValue(value);
-  };
+  private attachEventEmittersToView(): void {
+    const notifyViewUpdatedModelOptions = (options: IOptions): void => {
+      this.view.render(options);
+      this.eventEmitter.emit({ eventName: 'onChange', eventArguments: options });
+    };
 
-  private notifyViewUpdatedModelOptions = (options: IOptions) => {
-    this.view.render(options);
-    this.eventEmitter.emit({ eventName: 'onChange', eventArguments: options });
-  };
+    const notifyViewUpdatedModelValues = (options: IOptions): void => {
+      this.view.changeValues(options);
+      this.eventEmitter.emit({ eventName: 'onChange', eventArguments: options });
+    };
 
-  private notifyModelAboutChangedRunnerPosition = ({ position, valueIndex }: IElementPosition) => {
-    this.model.calculateValueUsingFraction({ position, valueIndex });
-  };
+    this.eventEmitter.subscribe('UpdatedModelOptions', notifyViewUpdatedModelOptions);
+
+    this.eventEmitter.subscribe('UpdatedModelValues', notifyViewUpdatedModelValues);
+  }
 }
 
 export default Presenter;

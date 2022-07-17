@@ -27,7 +27,7 @@ class Validator {
     }
 
     this.verifyMinAndMax(min, max);
-    this.verifyFromAndTo(values);
+    this.verifyValues(values);
     this.verifyStep(step);
   }
 
@@ -51,7 +51,7 @@ class Validator {
     this.options.max = intFirstValue;
   }
 
-  private verifyFromAndTo(newValues?: number[]): void {
+  private verifyValues(newValues?: number[]): void {
     const { min, max, values } = this.options;
 
     const intFirstValue = Validator.makeNumber(values[0], newValues?.[0]);

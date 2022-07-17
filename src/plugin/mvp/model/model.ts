@@ -1,5 +1,5 @@
 import Validator from './validator/Validator';
-import sliderOptions from '../../app/sliderOptions';
+
 import EventEmitter from '../../EventEmitter/EventEmitter';
 import { IOptions, IConfig, IElementPosition } from '../../types/types';
 
@@ -10,9 +10,9 @@ class Model {
 
   private validator!: Validator;
 
-  constructor(eventEmitter: EventEmitter) {
+  constructor(options: IOptions, eventEmitter: EventEmitter) {
     this.eventEmitter = eventEmitter;
-    this.options = { ...sliderOptions.defaultConfig };
+    this.options = options;
     this.validator = new Validator(this.options);
   }
 
@@ -37,7 +37,7 @@ class Model {
     this.changeValueDependingOnStep(newValue, valueIndex);
 
     this.eventEmitter.emit({
-      eventName: 'UpdatedModelOptions',
+      eventName: 'UpdatedModelValues',
       eventArguments: this.options,
     });
   }
@@ -51,7 +51,7 @@ class Model {
     if (!isRange) {
       this.options.values[1] = newValue;
       this.eventEmitter.emit({
-        eventName: 'UpdatedModelOptions',
+        eventName: 'UpdatedModelValues',
         eventArguments: this.options,
       });
       return;
@@ -60,7 +60,7 @@ class Model {
     if (diffTo <= diffFrom) {
       this.options.values[1] = newValue;
       this.eventEmitter.emit({
-        eventName: 'UpdatedModelOptions',
+        eventName: 'UpdatedModelValues',
         eventArguments: this.options,
       });
       return;
@@ -68,7 +68,7 @@ class Model {
 
     this.options.values[0] = newValue;
     this.eventEmitter.emit({
-      eventName: 'UpdatedModelOptions',
+      eventName: 'UpdatedModelValues',
       eventArguments: this.options,
     });
   }
@@ -85,7 +85,7 @@ class Model {
     }
 
     this.eventEmitter.emit({
-      eventName: 'UpdatedModelOptions',
+      eventName: 'UpdatedModelValues',
       eventArguments: this.options,
     });
   }
@@ -102,7 +102,7 @@ class Model {
     }
 
     this.eventEmitter.emit({
-      eventName: 'UpdatedModelOptions',
+      eventName: 'UpdatedModelValues',
       eventArguments: this.options,
     });
   }

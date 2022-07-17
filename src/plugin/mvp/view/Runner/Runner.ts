@@ -85,14 +85,15 @@ class Runner extends SubView {
       pointerEvent.preventDefault();
       this.runner.ondragstart = () => false;
 
-      const { valueIndex: typeIndex } = this;
-      this.target.valueIndex = typeIndex;
+      const { valueIndex } = this;
+
+      this.target.valueIndex = valueIndex;
 
       const position = this.getPosition(this.root, pointerEvent);
 
       this.eventEmitter.emit({
         eventName: 'ChangedRunnerPosition',
-        eventArguments: { position, valueIndex: typeIndex },
+        eventArguments: { position, valueIndex },
       });
     };
 

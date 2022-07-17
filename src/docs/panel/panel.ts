@@ -84,24 +84,32 @@ class Panel {
   }
 
   private changeTextValue = ($node: JQuery, option: string): void => {
-    const value = Number($node.val());
-    this.slider.update({ [option]: value });
+    if (option === 'from' || option === 'to') {
+      const valueFrom = Number(this.$from.val());
+      const valueTo = Number(this.$to.val());
+
+      this.slider.update({ values: [valueFrom, valueTo] });
+    } else {
+      const value = Number($node.val());
+      this.slider.update({ [option]: value });
+    }
 
     this.verifyInputs();
   };
 
   private verifyInputs(): void {
-    const options: IOptions = this.slider.getOptions();
+    const option = this.slider.getOptions();
+    const { isRange, isVertical, values, min, max, hasScale, hasTip, step } = option;
 
-    this.$range.prop('checked', options.isRange);
-    this.$vertical.prop('checked', options.isVertical);
-    this.$min.val(options.min);
-    this.$max.val(options.max);
-    this.$from.val(options.values[0]);
-    this.$to.val(options.values[1]);
-    this.$step.val(options.step);
-    this.$tip.prop('checked', options.hasTip);
-    this.$scale.prop('checked', options.hasScale);
+    this.$range.prop('checked', isRange);
+    this.$vertical.prop('checked', isVertical);
+    this.$min.val(min);
+    this.$max.val(max);
+    this.$from.val(values[0]);
+    this.$to.val(values[1]);
+    this.$step.val(step);
+    this.$tip.prop('checked', hasTip);
+    this.$scale.prop('checked', hasScale);
   }
 }
 

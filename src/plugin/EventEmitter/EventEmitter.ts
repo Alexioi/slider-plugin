@@ -6,6 +6,10 @@ type EventObject =
       eventArguments: IOptions;
     }
   | {
+      eventName: 'UpdatedModelValues';
+      eventArguments: IOptions;
+    }
+  | {
       eventName: 'ChangedRunnerPosition';
       eventArguments: IElementPosition;
     }
@@ -19,6 +23,7 @@ type EventObject =
 
 type EventNames =
   | 'UpdatedModelOptions'
+  | 'UpdatedModelValues'
   | 'ChangedRunnerPosition'
   | 'ClickScale'
   | 'onChange'
