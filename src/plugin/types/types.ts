@@ -27,6 +27,8 @@ interface IOptions {
 
 type ValuesIndex = 0 | 1;
 
+type TouchRoute = 'up' | 'down';
+
 interface IElementPosition {
   valueIndex: ValuesIndex;
   position: number;
@@ -41,4 +43,18 @@ interface ITarget {
   valueIndex: ValuesIndex;
 }
 
-export { IConfig, ICallbacks, IOptions, IElementPosition, IMarkParameters, ITarget };
+interface IElementTouch {
+  valueIndex: ValuesIndex;
+  touchRoute: TouchRoute;
+}
+
+export {
+  IConfig,
+  ICallbacks,
+  IOptions,
+  IElementPosition,
+  IMarkParameters,
+  ITarget,
+  IElementTouch,
+  TouchRoute,
+};

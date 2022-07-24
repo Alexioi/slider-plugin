@@ -1,6 +1,6 @@
 import './runner.scss';
 
-import { IOptions, ITarget } from '../../../types/types';
+import { IOptions, ITarget, TouchRoute } from '../../../types/types';
 
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 import SubView from '../SubView/SubView';
@@ -61,22 +61,21 @@ class Runner extends SubView {
     const { code } = keyboardEvent;
     const { valueIndex } = this;
 
-    if (code === 'ArrowUp' || code === 'ArrowRight') {
+    const onClickArrow = (touchRoute: TouchRoute): void => {
       keyboardEvent.preventDefault();
       this.target.valueIndex = valueIndex;
       this.eventEmitter.emit({
-        eventName: 'ChangedRunnerPositionStepUp',
-        eventArguments: { valueIndex },
+        eventName: 'ChangedRunnerPositionStep',
+        eventArguments: { valueIndex, touchRoute },
       });
+    };
+
+    if (code === 'ArrowUp' || code === 'ArrowRight') {
+      onClickArrow('up');
     }
 
     if (code === 'ArrowDown' || code === 'ArrowLeft') {
-      keyboardEvent.preventDefault();
-      this.target.valueIndex = valueIndex;
-      this.eventEmitter.emit({
-        eventName: 'ChangedRunnerPositionStepDown',
-        eventArguments: { valueIndex },
-      });
+      onClickArrow('down');
     }
   }
 

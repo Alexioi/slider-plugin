@@ -1,7 +1,7 @@
 import View from '../view/View';
 import Model from '../model/model';
 import EventEmitter from '../../EventEmitter/EventEmitter';
-import { IConfig, IElementPosition, IOptions } from '../../types/types';
+import { IConfig, IElementPosition, IOptions, IElementTouch } from '../../types/types';
 
 class Presenter {
   private view: View;
@@ -36,13 +36,15 @@ class Presenter {
       this.model.calculateValueUsingFraction({ position, valueIndex });
     };
 
+    const notifyModelAboutTouchValue = ({ valueIndex, touchRoute }: IElementTouch) => {
+      this.model.updateValueByStep({ valueIndex, touchRoute });
+    };
+
     this.eventEmitter.subscribe('ClickScale', notifyModelClickedScale);
 
     this.eventEmitter.subscribe('ChangedRunnerPosition', notifyModelAboutChangedRunnerPosition);
 
-    this.eventEmitter.subscribe('ChangedRunnerPositionStepUp', () => {
-      this.model.updateValueToByStep();
-    });
+    this.eventEmitter.subscribe('ChangedRunnerPositionStep', notifyModelAboutTouchValue);
   }
 
   private attachEventEmittersToView(): void {

@@ -1,4 +1,4 @@
-import { IElementPosition, IOptions, ITarget } from '../types/types';
+import { IElementPosition, IElementTouch, IOptions } from '../types/types';
 
 type EventObject =
   | {
@@ -18,8 +18,7 @@ type EventObject =
       eventArguments: number;
     }
   | { eventName: 'onChange'; eventArguments: IOptions }
-  | { eventName: 'ChangedRunnerPositionStepUp'; eventArguments: ITarget }
-  | { eventName: 'ChangedRunnerPositionStepDown'; eventArguments: ITarget };
+  | { eventName: 'ChangedRunnerPositionStep'; eventArguments: IElementTouch };
 
 type EventNames =
   | 'UpdatedModelOptions'
@@ -27,8 +26,7 @@ type EventNames =
   | 'ChangedRunnerPosition'
   | 'ClickScale'
   | 'onChange'
-  | 'ChangedRunnerPositionStepUp'
-  | 'ChangedRunnerPositionStepDown';
+  | 'ChangedRunnerPositionStep';
 
 class EventEmitter {
   private events: {

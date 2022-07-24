@@ -1,7 +1,7 @@
 import Validator from './validator/Validator';
 
 import EventEmitter from '../../EventEmitter/EventEmitter';
-import { IOptions, IConfig, IElementPosition } from '../../types/types';
+import { IOptions, IConfig, IElementPosition, IElementTouch } from '../../types/types';
 
 class Model {
   private options: IOptions;
@@ -30,9 +30,7 @@ class Model {
   }
 
   public calculateValueUsingFraction({ position, valueIndex }: IElementPosition): void {
-    const { min, max } = this.options;
-
-    const newValue = (max - min) * position + min;
+    const newValue = this.getNewValueUsingFraction(position);
 
     this.changeValueDependingOnStep(newValue, valueIndex);
 
@@ -42,69 +40,70 @@ class Model {
     });
   }
 
+  public calculateNearValueUsingFraction(position: number): void {
+    const newValue = this.getNewValueUsingFraction(position);
+
+    const nearValueId = this.getNearValueId(newValue);
+
+    this.changeValueDependingOnStep(newValue, nearValueId);
+
+    this.eventEmitter.emit({
+      eventName: 'UpdatedModelValues',
+      eventArguments: this.options,
+    });
+  }
+
   public updateNearValue(newValue: number): void {
+    const nearValueId = this.getNearValueId(newValue);
+
+    this.options.values[nearValueId] = newValue;
+    this.eventEmitter.emit({
+      eventName: 'UpdatedModelValues',
+      eventArguments: this.options,
+    });
+  }
+
+  public updateValueByStep({ valueIndex, touchRoute }: IElementTouch): void {
+    const { step, values } = this.options;
+
+    const newValue = touchRoute === 'up' ? values[valueIndex] + step : values[valueIndex] - step;
+    const [minimum, maximum] = this.getMinimumAndMaximum(valueIndex);
+
+    if (newValue < minimum) {
+      this.options.values[valueIndex] = minimum;
+    } else if (newValue > maximum) {
+      this.options.values[valueIndex] = maximum;
+    } else {
+      this.options.values[valueIndex] = newValue;
+    }
+
+    this.eventEmitter.emit({
+      eventName: 'UpdatedModelValues',
+      eventArguments: this.options,
+    });
+  }
+
+  private getNearValueId(newValue: number): 0 | 1 {
     const { isRange, values } = this.options;
+
+    if (!isRange) {
+      return 1;
+    }
 
     const diffFrom = Math.abs(values[0] - newValue);
     const diffTo = Math.abs(values[1] - newValue);
 
-    if (!isRange) {
-      this.options.values[1] = newValue;
-      this.eventEmitter.emit({
-        eventName: 'UpdatedModelValues',
-        eventArguments: this.options,
-      });
-      return;
+    if (diffFrom < diffTo) {
+      return 0;
     }
 
-    if (diffTo <= diffFrom) {
-      this.options.values[1] = newValue;
-      this.eventEmitter.emit({
-        eventName: 'UpdatedModelValues',
-        eventArguments: this.options,
-      });
-      return;
-    }
-
-    this.options.values[0] = newValue;
-    this.eventEmitter.emit({
-      eventName: 'UpdatedModelValues',
-      eventArguments: this.options,
-    });
+    return 1;
   }
 
-  public updateValueToByStep(): void {
-    const { step, values, max } = this.options;
+  private getNewValueUsingFraction(position: number): number {
+    const { min, max } = this.options;
 
-    const newValue = values[1] + step;
-
-    if (newValue > max) {
-      this.options.values[1] = max;
-    } else {
-      this.options.values[1] = newValue;
-    }
-
-    this.eventEmitter.emit({
-      eventName: 'UpdatedModelValues',
-      eventArguments: this.options,
-    });
-  }
-
-  public updateValueFromByStep(): void {
-    const { step, values, min } = this.options;
-
-    const newValue = values[1] + step;
-
-    if (newValue > min) {
-      this.options.values[0] = min;
-    } else {
-      this.options.values[0] = newValue;
-    }
-
-    this.eventEmitter.emit({
-      eventName: 'UpdatedModelValues',
-      eventArguments: this.options,
-    });
+    return (max - min) * position + min;
   }
 
   private getMinimumAndMaximum(valueIndex: number): number[] {
