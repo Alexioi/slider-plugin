@@ -20,7 +20,7 @@ class App {
     this.callbacks = { ...sliderOptions.callbacks };
 
     this.eventEmitter = new EventEmitter();
-    const options = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));
+    const options: IOptions = JSON.parse(JSON.stringify({ ...sliderOptions.defaultConfig }));
     this.model = new Model(options, this.eventEmitter);
     this.view = new View(node, options, this.eventEmitter);
     this.presenter = new Presenter(this.view, this.model, this.eventEmitter);

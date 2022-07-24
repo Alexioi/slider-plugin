@@ -38,17 +38,17 @@ class Validator {
     const intSecondValue = Validator.makeNumber(max, secondValue);
 
     if (intFirstValue === intSecondValue) {
-      return;
-    }
-
-    if (intFirstValue < intSecondValue) {
       this.options.min = intFirstValue;
-      this.options.max = intSecondValue;
+      this.options.max = intSecondValue + 1;
       return;
     }
 
-    this.options.min = intSecondValue;
-    this.options.max = intFirstValue;
+    const [newMin, newMax] = [intFirstValue, intSecondValue].sort((a, b) => {
+      return a - b;
+    });
+
+    this.options.min = newMin;
+    this.options.max = newMax;
   }
 
   private verifyValues(newValues?: number[]): void {
@@ -57,28 +57,27 @@ class Validator {
     const intFirstValue = Validator.makeNumber(values[0], newValues?.[0]);
     const intSecondValue = Validator.makeNumber(values[1], newValues?.[1]);
 
-    if (intFirstValue < intSecondValue) {
-      this.options.values[0] = intFirstValue > min ? intFirstValue : min;
-      this.options.values[1] = intSecondValue < max ? intSecondValue : max;
-      return;
-    }
+    const [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort((a, b) => {
+      return a - b;
+    });
 
-    this.options.values[0] = intSecondValue > min ? intSecondValue : min;
-    this.options.values[1] = intFirstValue < max ? intFirstValue : max;
+    this.options.values[0] = newFirstValue > min ? newFirstValue : min;
+    this.options.values[1] = newSecondValue < max ? newSecondValue : max;
   }
 
   private verifyStep(newStep: number | undefined): void {
     const { min, max, step } = this.options;
 
-    const intNewStep = Validator.makeNumber(step, newStep);
+    const intNewStep = Math.round(Validator.makeNumber(step, newStep));
 
-    if (intNewStep < 1) {
+    if (intNewStep <= 1) {
+      this.options.step = 1;
       return;
     }
 
     const distanceBetweenMinAndMax = max - min;
 
-    if (step < distanceBetweenMinAndMax) {
+    if (intNewStep < distanceBetweenMinAndMax) {
       this.options.step = intNewStep;
       return;
     }
@@ -87,7 +86,7 @@ class Validator {
   }
 
   private static makeNumber(number: number, value: any): number {
-    if (/^(-|\+)?([0-9]+)$/.test(value)) {
+    if (/^(-|\+)?([0-9]+)?(\.|,)?([0-9]+)$/.test(value)) {
       return Number(value);
     }
     return number;

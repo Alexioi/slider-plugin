@@ -4,11 +4,11 @@ import EventEmitter from '../../EventEmitter/EventEmitter';
 import { IOptions, IConfig, IElementPosition } from '../../types/types';
 
 class Model {
-  private options!: IOptions;
+  private options: IOptions;
 
   private eventEmitter: EventEmitter;
 
-  private validator!: Validator;
+  private validator: Validator;
 
   constructor(options: IOptions, eventEmitter: EventEmitter) {
     this.eventEmitter = eventEmitter;
