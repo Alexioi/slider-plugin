@@ -3,15 +3,13 @@
 $runnerWidth: 1.5rem;
 
 .slider {
-  display: flex;
   position: relative;
-  flex-direction: column;
   box-sizing: border-box;
   width: 100%;
 
   &_vertical {
-    flex-direction: row;
-    width: auto;
+    display: flex;
+    flex-basis: 0;
     height: 100%;
   }
 

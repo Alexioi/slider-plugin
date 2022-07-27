@@ -6,7 +6,7 @@ $runnerWidth: 1.5rem;
   &__runner {
     box-sizing: border-box;
     position: absolute;
-    z-index: 2;
+    z-index: 10;
     top: -(math.div($runnerWidth, 3));
     border: 2px solid white;
     height: $runnerWidth;
@@ -18,7 +18,7 @@ $runnerWidth: 1.5rem;
     touch-action: none;
 
     &_targeted {
-      z-index: 10;
+      z-index: 20;
     }
   }
 

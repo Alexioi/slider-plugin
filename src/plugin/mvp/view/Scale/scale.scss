@@ -1,12 +1,14 @@
 .slider {
   &__scale {
-    position: relative;
+    position: absolute;
+    width: 100%;
     margin-top: 5px;
   }
 
   &_vertical &__scale {
-    margin-left: 10px;
+    margin-left: 20px;
     margin-top: 0;
+    height: 100%;
   }
 
   &__mark {
