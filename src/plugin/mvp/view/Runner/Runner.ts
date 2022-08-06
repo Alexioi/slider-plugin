@@ -12,6 +12,8 @@ class Runner extends SubView {
 
   private target: ITarget;
 
+  private isRender = false;
+
   constructor(
     node: HTMLDivElement,
     options: IOptions,
@@ -31,11 +33,13 @@ class Runner extends SubView {
     const { target, valueIndex: typeIndex } = this;
     const { isVertical } = this.options;
 
-    this.root.appendChild(this.runner);
+    if (!this.isRender) {
+      this.root.appendChild(this.runner);
+      this.isRender = true;
+    }
 
     if (target.valueIndex === typeIndex) {
       this.runner.classList.add('slider__runner_targeted');
-      this.runner.focus();
     } else {
       this.runner.classList.remove('slider__runner_targeted');
     }
@@ -48,6 +52,7 @@ class Runner extends SubView {
 
   public destroy(): void {
     this.runner.remove();
+    this.isRender = false;
   }
 
   private init(): void {
