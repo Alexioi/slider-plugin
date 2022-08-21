@@ -7,7 +7,7 @@
     "build": "webpack --mode=production",
     "deploy": "cross-env NODE_isDocs=true npm run build && gh-pages -d dist/docs",
     "test": "jest",
-    "server": "webpack serve --mode=development"
+    "server": "cross-env NODE_isDocs=true webpack serve --mode=development"
   },
   "keywords": [],
   "author": "",

@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDocs = process.env.NODE_isDocs;
 
-const entry = isDocs ? './src/docs/docs.ts' : './src/plugin/app/app.ts';
+const entry = isDocs ? './src/docs/docs.ts' : './src/plugin/plugin.ts';
 
 const plugins = isDocs
   ? [
