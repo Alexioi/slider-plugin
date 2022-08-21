@@ -2,11 +2,31 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const isDocs = process.env.NODE_isDocs;
+
+const entry = isDocs ? './src/docs/docs.ts' : './src/plugin/app/app.ts';
+
+const plugins = isDocs
+  ? [
+      new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: './src/docs/page/docs.pug',
+      }),
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+      }),
+    ]
+  : [
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+      }),
+    ];
+
 module.exports = {
-  entry: { 'docs/docs': './src/docs/docs.ts', 'plugin/plugin': './src/plugin/app/app.ts' },
+  entry,
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: isDocs ? path.resolve(__dirname, 'dist/docs') : path.resolve(__dirname, 'dist/plugin'),
   },
   module: {
     rules: [
@@ -28,15 +48,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      filename: 'docs/index.html',
-      template: './src/docs/page/docs.pug',
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
-  ],
+  plugins,
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
