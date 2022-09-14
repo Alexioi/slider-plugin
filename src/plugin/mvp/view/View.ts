@@ -90,6 +90,8 @@ class View {
 
     this.root.appendChild(this.slider);
     this.slider.appendChild(this.barContainer);
+
+    this.render(options);
   }
 
   private createElements(): void {
