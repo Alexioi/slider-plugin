@@ -33,9 +33,9 @@ describe('Вид', () => {
 
   test('должен вызывать рендеринг шкалы и значений над бегунками', () => {
     // @ts-ignore
-    expect(Scale.mock.instances[0].render.mock.calls.length).toEqual(1);
+    expect(Scale.mock.instances[0].render.mock.calls.length).toEqual(2);
     // @ts-ignore
-    expect(Tip.mock.instances[0].render.mock.calls.length).toEqual(1);
+    expect(Tip.mock.instances[0].render.mock.calls.length).toEqual(2);
   });
 
   test('должен содержать дополнительный класс для вертикального вида', () => {
