@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const isDocs = process.env.NODE_isDocs;
 
@@ -11,6 +12,14 @@ const plugins = isDocs
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: './src/docs/page/docs.pug',
+      }),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, './src/docs/favicon'),
+            to: path.resolve(__dirname, './dist/docs/favicon'),
+          },
+        ],
       }),
       new MiniCssExtractPlugin({
         filename: '[name].css',
