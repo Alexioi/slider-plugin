@@ -1,16 +1,6 @@
-mixin panel(options)
-  -
-    const items = [
-      {header: 'Range:', name: 'range', type: 'checkbox'},
-      {header: 'Vertical:', name: 'vertical', type: 'checkbox'},
-      {header: 'Tip:', name: 'tip', type: 'checkbox'},
-      {header: 'Scale:', name: 'scale', type: 'checkbox'},
-      {header: 'Min:', name: 'min', type: 'number'},
-      {header: 'Max:', name: 'max', type: 'number'},
-      {header: 'From:', name: 'from', type: 'number'},
-      {header: 'To:', name: 'to', type: 'number'},
-      {header: 'Step:', name: 'step', type: 'number'},
-    ]
+mixin panel()
+
+  - const {items} = require('../panel/data.json')
 
   .panel
     .js-panel__control.panel__control
