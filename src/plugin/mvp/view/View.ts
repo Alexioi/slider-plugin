@@ -41,7 +41,7 @@ class View {
 
   public render(options: IOptions): void {
     this.switchTarget(options);
-    this.changeValues(options);
+
     const { isVertical, hasScale } = options;
 
     if (isVertical) {
@@ -55,6 +55,8 @@ class View {
     } else {
       this.scale.destroy();
     }
+
+    this.changeValues(options);
   }
 
   public changeValues(options: IOptions): void {
@@ -102,9 +104,7 @@ class View {
     this.barContainer.classList.add('slider__bar-container');
   }
 
-  private switchTarget(options: IOptions): void {
-    const { values, max, min } = options;
-
+  private switchTarget({ values, max, min }: IOptions): void {
     const isToTarget = values[0] < (max - min) / 2;
 
     this.target.valueIndex = isToTarget ? 1 : 0;
