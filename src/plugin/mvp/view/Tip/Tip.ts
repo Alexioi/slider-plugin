@@ -3,6 +3,12 @@ import './tip.scss';
 import { IOptions } from '../../../types/types';
 import SubView from '../SubView/SubView';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { ITarget } from '../../../types/types';
+
+type tipNode = {
+  node: HTMLSpanElement;
+  valueIndex?: 0 | 1;
+};
 
 class Tip extends SubView {
   private tipLine!: HTMLDivElement;
@@ -13,8 +19,17 @@ class Tip extends SubView {
 
   private tipBoth!: HTMLSpanElement;
 
-  constructor(node: HTMLDivElement, options: IOptions, eventEmitter: EventEmitter) {
+  private target: ITarget;
+
+  constructor(
+    node: HTMLDivElement,
+    options: IOptions,
+    eventEmitter: EventEmitter,
+    target: ITarget,
+  ) {
     super(node, options, eventEmitter);
+
+    this.target = target;
 
     this.init();
   }
@@ -47,6 +62,21 @@ class Tip extends SubView {
     this.tipFrom = SubView.getElement('slider__tip');
     this.tipBoth = SubView.getElement('slider__tip');
     this.tipTo = SubView.getElement('slider__tip');
+
+    this.tipFrom.addEventListener(
+      'pointerdown',
+      this.attachEventOnPointerDown.bind(this, { node: this.tipFrom, valueIndex: 0 }),
+    );
+
+    this.tipTo.addEventListener(
+      'pointerdown',
+      this.attachEventOnPointerDown.bind(this, { node: this.tipTo, valueIndex: 1 }),
+    );
+
+    this.tipBoth.addEventListener(
+      'pointerdown',
+      this.attachEventOnPointerDown.bind(this, { node: this.tipBoth }),
+    );
   }
 
   private changePosition() {
@@ -99,6 +129,34 @@ class Tip extends SubView {
     }
 
     this.tipBoth.remove();
+  }
+
+  private attachEventOnPointerDown({ node, valueIndex }: tipNode): void {
+    const onPointerMove = (pointerEvent: PointerEvent): void => {
+      pointerEvent.preventDefault();
+      node.ondragstart = () => false;
+
+      const position = this.getPosition(this.root, pointerEvent);
+
+      if (typeof valueIndex === 'undefined') {
+        return;
+      }
+
+      this.target.valueIndex = valueIndex;
+
+      this.eventEmitter.emit({
+        eventName: 'ChangedRunnerPosition',
+        eventArguments: { position, valueIndex },
+      });
+    };
+
+    const onPointerUp = (): void => {
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+    };
+
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
   }
 }
 

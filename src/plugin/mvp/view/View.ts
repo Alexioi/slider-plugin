@@ -84,7 +84,7 @@ class View {
     this.createElements();
     const { eventEmitter, slider, barContainer, options, target } = this;
 
-    this.tip = new Tip(slider, options, eventEmitter);
+    this.tip = new Tip(slider, options, eventEmitter, target);
     this.range = new Range(barContainer, options, eventEmitter);
     this.scale = new Scale(slider, options, eventEmitter);
     this.runnerFrom = new Runner(barContainer, options, eventEmitter, 0, target);

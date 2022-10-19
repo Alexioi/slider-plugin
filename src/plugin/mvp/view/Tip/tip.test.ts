@@ -5,12 +5,14 @@
 import Tip from './Tip';
 import sliderOptions from '../../../app/sliderOptions';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { ITarget } from '../../../types/types';
 
 jest.mock('../../../EventEmitter/EventEmitter');
 
 const node = document.createElement('div');
 const eventEmitter = new EventEmitter();
 const state = { ...sliderOptions.defaultConfig };
+const target: ITarget = { valueIndex: 1 };
 
 let i = 0;
 // @ts-ignore
@@ -43,7 +45,7 @@ Element.prototype.getBoundingClientRect = jest.fn(() => {
   };
 });
 
-const tip = new Tip(node, state, eventEmitter);
+const tip = new Tip(node, state, eventEmitter, target);
 tip.render();
 const tipLineNode = node.querySelector('div');
 let tipsNode = tipLineNode?.querySelectorAll('div');
