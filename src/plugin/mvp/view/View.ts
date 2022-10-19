@@ -106,7 +106,7 @@ class View {
 
   private switchTarget({ values, max, min }: IOptions): void {
     const { abs } = Math;
-    const isToTarget = abs(min - values[0]) / (abs(max) + abs(min)) < 0.5;
+    const isToTarget = abs(min - values[0]) / abs(max - min) < 0.5;
 
     this.target.valueIndex = isToTarget ? 1 : 0;
   }
