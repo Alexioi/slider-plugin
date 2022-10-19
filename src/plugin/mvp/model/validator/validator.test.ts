@@ -77,7 +77,7 @@ describe('Validator', () => {
     expect(getStep()).toEqual(99);
 
     validator.validateOptions({ step: 0.5 });
-    expect(getStep()).toEqual(1);
+    expect(getStep()).toEqual(0.5);
   });
 
   it('should change min and max if min and max values are numbers', () => {
