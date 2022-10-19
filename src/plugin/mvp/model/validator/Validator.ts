@@ -84,9 +84,9 @@ class Validator {
   private verifyStep(newStep: number | undefined): void {
     const { min, max, step } = this.options;
 
-    const intNewStep = Math.round(Validator.makeNumber(step, newStep));
+    const intNewStep = Validator.makeNumber(step, newStep);
 
-    if (intNewStep <= 1) {
+    if (intNewStep <= 0) {
       this.options.step = 1;
       return;
     }

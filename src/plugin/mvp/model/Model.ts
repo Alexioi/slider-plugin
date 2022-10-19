@@ -134,45 +134,63 @@ class Model {
     const stepRemainderOfDivision = differenceValue % step;
 
     if (newValue < minimum) {
-      this.options.values[valueIndex] = minimum;
+      this.options.values[valueIndex] = this.getRoundingNumber(minimum);
       return;
     }
 
     if (newValue > maximum) {
-      this.options.values[valueIndex] = maximum;
+      this.options.values[valueIndex] = this.getRoundingNumber(maximum);
       return;
     }
 
     if (differenceValue < step / 2) {
-      this.options.values[valueIndex] = oldValue;
+      this.options.values[valueIndex] = this.getRoundingNumber(oldValue);
       return;
     }
 
     if (stepRemainderOfDivision < step / 2) {
       if (newValue > oldValue) {
-        this.options.values[valueIndex] = newValue - stepRemainderOfDivision;
+        this.options.values[valueIndex] = this.getRoundingNumber(
+          newValue - stepRemainderOfDivision,
+        );
         return;
       }
-      this.options.values[valueIndex] = newValue + stepRemainderOfDivision;
+      this.options.values[valueIndex] = this.getRoundingNumber(newValue + stepRemainderOfDivision);
       return;
     }
 
     if (newValue + stepRemainderOfDivision - step < minimum) {
-      this.options.values[valueIndex] = minimum;
+      this.options.values[valueIndex] = this.getRoundingNumber(minimum);
       return;
     }
 
     if (newValue - stepRemainderOfDivision + step > maximum) {
-      this.options.values[valueIndex] = maximum;
+      this.options.values[valueIndex] = this.getRoundingNumber(maximum);
       return;
     }
 
     if (newValue > oldValue) {
-      this.options.values[valueIndex] = newValue - stepRemainderOfDivision + step;
+      this.options.values[valueIndex] = this.getRoundingNumber(
+        newValue - stepRemainderOfDivision + step,
+      );
       return;
     }
 
-    this.options.values[valueIndex] = newValue + stepRemainderOfDivision - step;
+    this.options.values[valueIndex] = this.getRoundingNumber(
+      newValue + stepRemainderOfDivision - step,
+    );
+  }
+
+  private getRoundingNumber(number: number) {
+    const { step } = this.options;
+
+    if (step >= 1) {
+      return number;
+    }
+
+    const simbolsAfterComma = String(step).split('.')[1].length;
+
+    return Number(number.toFixed(simbolsAfterComma));
   }
 }
 
