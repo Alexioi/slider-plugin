@@ -93,6 +93,13 @@ class Model {
     const diffFrom = Math.abs(values[0] - newValue);
     const diffTo = Math.abs(values[1] - newValue);
 
+    if (diffFrom === diffTo) {
+      if (values[0] > newValue) {
+        return 0;
+      }
+      return 1;
+    }
+
     if (diffFrom < diffTo) {
       return 0;
     }

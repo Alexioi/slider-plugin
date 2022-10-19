@@ -57,12 +57,28 @@ class Validator {
     const intFirstValue = Validator.makeNumber(values[0], newValues?.[0]);
     const intSecondValue = Validator.makeNumber(values[1], newValues?.[1]);
 
-    const [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort((a, b) => {
+    let [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort((a, b) => {
       return a - b;
     });
 
-    this.options.values[0] = newFirstValue > min ? newFirstValue : min;
-    this.options.values[1] = newSecondValue < max ? newSecondValue : max;
+    if (newSecondValue > max) {
+      newSecondValue = max;
+    }
+
+    if (newSecondValue < min) {
+      newSecondValue = min;
+    }
+
+    if (newFirstValue < min) {
+      newFirstValue = min;
+    }
+
+    if (newFirstValue > newSecondValue) {
+      newFirstValue = newSecondValue;
+    }
+
+    this.options.values[0] = newFirstValue;
+    this.options.values[1] = newSecondValue;
   }
 
   private verifyStep(newStep: number | undefined): void {
