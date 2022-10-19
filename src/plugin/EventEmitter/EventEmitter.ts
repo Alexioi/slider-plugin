@@ -18,7 +18,8 @@ type EventObject =
       eventArguments: number;
     }
   | { eventName: 'onChange'; eventArguments: IOptions }
-  | { eventName: 'ChangedRunnerPositionStep'; eventArguments: IElementTouch };
+  | { eventName: 'ChangedRunnerPositionStep'; eventArguments: IElementTouch }
+  | { eventName: 'ChangedNearRunnerPosition'; eventArguments: { position: number } };
 
 type EventNames =
   | 'UpdatedModelOptions'
@@ -26,7 +27,8 @@ type EventNames =
   | 'ChangedRunnerPosition'
   | 'ClickScale'
   | 'onChange'
-  | 'ChangedRunnerPositionStep';
+  | 'ChangedRunnerPositionStep'
+  | 'ChangedNearRunnerPosition';
 
 class EventEmitter {
   private events: {

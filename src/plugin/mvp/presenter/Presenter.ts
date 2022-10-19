@@ -40,11 +40,20 @@ class Presenter {
       this.model.updateValueByStep({ valueIndex, touchRoute });
     };
 
+    const notifyModelAboutChangedNearRunnerPosition = ({ position }: { position: number }) => {
+      this.model.calculateNearValueUsingFraction(position);
+    };
+
     this.eventEmitter.subscribe('ClickScale', notifyModelClickedScale);
 
     this.eventEmitter.subscribe('ChangedRunnerPosition', notifyModelAboutChangedRunnerPosition);
 
     this.eventEmitter.subscribe('ChangedRunnerPositionStep', notifyModelAboutTouchValue);
+
+    this.eventEmitter.subscribe(
+      'ChangedNearRunnerPosition',
+      notifyModelAboutChangedNearRunnerPosition,
+    );
   }
 
   private attachEventEmittersToView(): void {

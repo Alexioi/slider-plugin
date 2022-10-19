@@ -139,6 +139,10 @@ class Tip extends SubView {
       const position = this.getPosition(this.root, pointerEvent);
 
       if (typeof valueIndex === 'undefined') {
+        this.eventEmitter.emit({
+          eventName: 'ChangedNearRunnerPosition',
+          eventArguments: { position },
+        });
         return;
       }
 
