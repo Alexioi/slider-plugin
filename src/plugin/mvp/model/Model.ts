@@ -184,11 +184,13 @@ class Model {
   private getRoundingNumber(number: number) {
     const { step } = this.options;
 
-    if (step >= 1) {
+    const numberComponents = String(step).split('.');
+
+    if (numberComponents.length === 1) {
       return number;
     }
 
-    const simbolsAfterComma = String(step).split('.')[1].length;
+    const simbolsAfterComma = numberComponents[1].length;
 
     return Number(number.toFixed(simbolsAfterComma));
   }
