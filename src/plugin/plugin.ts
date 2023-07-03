@@ -7,6 +7,6 @@ declare global {
   }
 }
 
-$.fn.slider = function initSliders(config?: IConfig) {
-  return this.map((i: number, node: HTMLElement) => new App(node, config));
+$.fn.slider = function initSliders(config) {
+  return this.map((i, node) => new App(node, config));
 };

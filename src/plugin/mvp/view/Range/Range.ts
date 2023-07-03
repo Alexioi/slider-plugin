@@ -5,10 +5,10 @@ import SubView from '../SubView/SubView';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 class Range extends SubView {
-  private range!: HTMLDivElement;
+  private range: Element | null = null;
 
-  constructor(node: HTMLDivElement, options: IOptions, eventEmitter: EventEmitter) {
-    super(node, options, eventEmitter);
+  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter) {
+    super(root, options, eventEmitter);
 
     this.init();
   }
@@ -16,15 +16,17 @@ class Range extends SubView {
   public render(): void {
     const { isVertical, isRange, values } = this.options;
 
-    this.root.appendChild(this.range);
+    if (this.range instanceof HTMLElement) {
+      this.root.appendChild(this.range);
 
-    const startPercent = isRange ? this.calculatePercent(values[0]) : 0;
-    const finishPercent = this.calculatePercent(values[1]);
+      const startPercent = isRange ? this.calculatePercent(values[0]) : 0;
+      const finishPercent = this.calculatePercent(values[1]);
 
-    if (isVertical) {
-      this.range.style.cssText = `top: ${startPercent}%; bottom: ${100 - finishPercent}%`;
-    } else {
-      this.range.style.cssText = `left: ${startPercent}%; right: ${100 - finishPercent}%`;
+      if (isVertical) {
+        this.range.style.cssText = `top: ${startPercent}%; bottom: ${100 - finishPercent}%`;
+      } else {
+        this.range.style.cssText = `left: ${startPercent}%; right: ${100 - finishPercent}%`;
+      }
     }
   }
 

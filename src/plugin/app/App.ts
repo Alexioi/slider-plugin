@@ -6,18 +6,18 @@ import sliderOptions from './sliderOptions';
 import { IConfig, ICallbacks, IOptions } from '../types/types';
 
 class App {
-  private callbacks!: ICallbacks;
+  private callbacks: ICallbacks = { onChange: () => {} };
 
-  private model!: Model;
+  private model: Model | null = null;
 
-  private view!: View;
+  private view: View | null = null;
 
-  private presenter!: Presenter;
+  private presenter: Presenter | null = null;
 
-  private eventEmitter!: EventEmitter;
+  private eventEmitter: EventEmitter | null = null;
 
-  constructor(node: HTMLElement, config?: IConfig) {
-    this.init(node, config);
+  constructor(root: HTMLElement, config?: IConfig) {
+    this.init(root, config);
   }
 
   public update(config?: IConfig): void {
@@ -29,11 +29,11 @@ class App {
       this.callbacks.onChange = config.onChange;
     }
 
-    this.presenter.updateOptions(config);
+    this.presenter?.updateOptions(config);
   }
 
-  public getOptions(): IOptions {
-    return this.presenter.getOptions();
+  public getOptions(): IOptions | undefined {
+    return this.presenter?.getOptions();
   }
 
   private init(node: HTMLElement, config?: IConfig): void {
@@ -50,7 +50,7 @@ class App {
   }
 
   private attachEventEmitters(): void {
-    this.eventEmitter.subscribe('onChange', (options: IOptions) => {
+    this.eventEmitter?.subscribe('onChange', (options: IOptions) => {
       this.callbacks.onChange(options);
     });
   }

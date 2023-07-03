@@ -15,13 +15,13 @@ class View {
 
   private eventEmitter: EventEmitter;
 
-  private barContainer!: HTMLDivElement;
+  private barContainer: Element | null = null;
 
-  private range!: Range;
+  private range: Range | null = null;
 
-  private tip!: Tip;
+  private tip: Tip | null = null;
 
-  private slider!: HTMLDivElement;
+  private slider: Element | null = null;
 
   private runnerFrom!: Runner;
 
@@ -31,8 +31,8 @@ class View {
 
   private target: ITarget = { valueIndex: 0 };
 
-  constructor(node: HTMLElement, options: IOptions, eventEmitter: EventEmitter) {
-    this.root = node;
+  constructor(root: HTMLElement, options: IOptions, eventEmitter: EventEmitter) {
+    this.root = root;
     this.options = options;
     this.eventEmitter = eventEmitter;
 
@@ -45,9 +45,9 @@ class View {
     const { isVertical, hasScale } = options;
 
     if (isVertical) {
-      this.slider.classList.add('slider_vertical');
+      this.slider?.classList.add('slider_vertical');
     } else {
-      this.slider.classList.remove('slider_vertical');
+      this.slider?.classList.remove('slider_vertical');
     }
 
     if (hasScale) {
@@ -64,12 +64,12 @@ class View {
     const { isRange, hasTip } = options;
 
     if (hasTip) {
-      this.tip.render();
+      this.tip?.render();
     } else {
-      this.tip.destroy();
+      this.tip?.destroy();
     }
 
-    this.range.render();
+    this.range?.render();
 
     if (isRange) {
       this.runnerFrom.render();
@@ -84,14 +84,19 @@ class View {
     this.createElements();
     const { eventEmitter, slider, barContainer, options, target } = this;
 
-    this.tip = new Tip(slider, options, eventEmitter, target);
-    this.range = new Range(barContainer, options, eventEmitter);
-    this.scale = new Scale(slider, options, eventEmitter);
-    this.runnerFrom = new Runner(barContainer, options, eventEmitter, 0, target);
-    this.runnerTo = new Runner(barContainer, options, eventEmitter, 1, target);
+    if (slider === null || barContainer === null) {
+      return;
+    }
 
-    this.root.appendChild(this.slider);
-    this.slider.appendChild(this.barContainer);
+    this.tip = new Tip(slider, options, eventEmitter, target);
+
+    this.range = new Range(barContainer, options, eventEmitter);
+
+    this.scale = new Scale(slider, options, eventEmitter);
+
+    this.runnerFrom = new Runner(barContainer, options, eventEmitter, 0, target);
+
+    this.runnerTo = new Runner(barContainer, options, eventEmitter, 1, target);
 
     this.render(options);
   }
@@ -102,6 +107,9 @@ class View {
 
     this.barContainer = document.createElement('div');
     this.barContainer.classList.add('slider__bar-container');
+    this.root.appendChild(this.slider);
+
+    this.slider.appendChild(this.barContainer);
   }
 
   private switchTarget({ values, max, min }: IOptions): void {

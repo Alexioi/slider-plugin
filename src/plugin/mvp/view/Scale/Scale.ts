@@ -4,10 +4,10 @@ import EventEmitter from '../../../EventEmitter/EventEmitter';
 import SubView from '../SubView/SubView';
 
 class Scale extends SubView {
-  private scale!: HTMLDivElement;
+  private scale: Element | null = null;
 
-  constructor(node: HTMLDivElement, options: IOptions, eventEmitter: EventEmitter) {
-    super(node, options, eventEmitter);
+  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter) {
+    super(root, options, eventEmitter);
 
     this.init();
   }
@@ -15,7 +15,9 @@ class Scale extends SubView {
   public render(): void {
     this.deleteMarks();
 
-    this.root.appendChild(this.scale);
+    if (this.scale !== null) {
+      this.root.appendChild(this.scale);
+    }
 
     const scaleParameters = this.getScaleParameters();
 
@@ -23,18 +25,21 @@ class Scale extends SubView {
   }
 
   public destroy(): void {
-    this.scale.remove();
+    this.scale?.remove();
   }
 
   private init(): void {
     this.scale = SubView.getElement('slider__scale');
-    this.scale.addEventListener('pointerdown', this.clickScale.bind(this));
+    if (this.scale instanceof HTMLElement) {
+      this.scale.addEventListener('pointerdown', this.clickScale.bind(this));
+    }
+
     window.addEventListener('resize', this.handlerResizeScale.bind(this));
   }
 
   private deleteMarks(): void {
-    while (this.scale.firstChild) {
-      this.scale.removeChild(this.scale.firstChild);
+    while (this.scale?.firstChild) {
+      this.scale?.removeChild(this.scale.firstChild);
     }
   }
 
@@ -49,7 +54,7 @@ class Scale extends SubView {
       mark.style.cssText = style;
       mark.innerText = text;
 
-      this.scale.appendChild(mark);
+      this.scale?.appendChild(mark);
     });
   }
 
@@ -83,20 +88,24 @@ class Scale extends SubView {
   }
 
   private getScaleParameters(): IMarkParameters[] {
-    const { max, min, isVertical } = this.options;
-    const { offsetHeight, offsetWidth } = this.scale;
-    const scaleLength = isVertical ? offsetHeight : offsetWidth;
-    const scalePercents = Scale.getScalePercents(scaleLength);
+    if (this.scale instanceof HTMLElement) {
+      const { max, min, isVertical } = this.options;
+      const { offsetHeight, offsetWidth } = this.scale;
+      const scaleLength = isVertical ? offsetHeight : offsetWidth;
+      const scalePercents = Scale.getScalePercents(scaleLength);
 
-    const differenceMaxAndMin = Math.abs(max - min);
+      const differenceMaxAndMin = Math.abs(max - min);
 
-    const scaleParameters = scalePercents.map((percent) => {
-      const text = (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, '');
+      const scaleParameters = scalePercents.map((percent) => {
+        const text = (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, '');
 
-      return { percent, text };
-    });
+        return { percent, text };
+      });
 
-    return scaleParameters;
+      return scaleParameters;
+    }
+
+    return [{ percent: 1, text: '' }];
   }
 }
 

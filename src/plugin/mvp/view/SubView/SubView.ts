@@ -2,14 +2,14 @@ import { IOptions } from '../../../types/types';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
 
 abstract class SubView {
-  protected root: HTMLDivElement;
+  protected root: Element;
 
   protected options: IOptions;
 
   protected eventEmitter: EventEmitter;
 
-  constructor(node: HTMLDivElement, options: IOptions, eventEmitter: EventEmitter) {
-    this.root = node;
+  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter) {
+    this.root = root;
     this.options = options;
     this.eventEmitter = eventEmitter;
   }
@@ -27,7 +27,7 @@ abstract class SubView {
     return node;
   }
 
-  protected getPosition(node: HTMLElement, event: PointerEvent): number {
+  protected getPosition(node: Element, event: PointerEvent): number {
     const { isVertical } = this.options;
     const { height, width, left, top } = node.getBoundingClientRect();
 

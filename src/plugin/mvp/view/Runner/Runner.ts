@@ -6,7 +6,7 @@ import EventEmitter from '../../../EventEmitter/EventEmitter';
 import SubView from '../SubView/SubView';
 
 class Runner extends SubView {
-  private runner!: HTMLDivElement;
+  private runner: HTMLDivElement | null = null;
 
   private valueIndex: 0 | 1;
 
@@ -15,13 +15,13 @@ class Runner extends SubView {
   private isRender = false;
 
   constructor(
-    node: HTMLDivElement,
+    root: Element,
     options: IOptions,
     eventEmitter: EventEmitter,
     valueIndex: 0 | 1,
     target: ITarget,
   ) {
-    super(node, options, eventEmitter);
+    super(root, options, eventEmitter);
 
     this.valueIndex = valueIndex;
     this.target = target;
@@ -33,25 +33,27 @@ class Runner extends SubView {
     const { target, valueIndex: typeIndex } = this;
     const { isVertical } = this.options;
 
-    if (!this.isRender) {
-      this.root.appendChild(this.runner);
-      this.isRender = true;
+    if (this.runner instanceof HTMLElement) {
+      if (!this.isRender) {
+        this.root.appendChild(this.runner);
+        this.isRender = true;
+      }
+
+      if (target.valueIndex === typeIndex) {
+        this.runner.classList.add('slider__runner_targeted');
+      } else {
+        this.runner.classList.remove('slider__runner_targeted');
+      }
+
+      const percent = this.calculatePercent(this.options.values[typeIndex]);
+      const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
+
+      this.runner.style.cssText = styleRunner;
     }
-
-    if (target.valueIndex === typeIndex) {
-      this.runner.classList.add('slider__runner_targeted');
-    } else {
-      this.runner.classList.remove('slider__runner_targeted');
-    }
-
-    const percent = this.calculatePercent(this.options.values[typeIndex]);
-    const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
-
-    this.runner.style.cssText = styleRunner;
   }
 
   public destroy(): void {
-    this.runner.remove();
+    this.runner?.remove();
     this.isRender = false;
   }
 
@@ -87,6 +89,10 @@ class Runner extends SubView {
   private attachEventOnPointerDown(): void {
     const onPointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
+      if (this.runner === null) {
+        return;
+      }
+
       this.runner.ondragstart = () => false;
 
       const { valueIndex } = this;

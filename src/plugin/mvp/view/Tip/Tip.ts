@@ -1,11 +1,10 @@
 import './tip.scss';
 
-import { IOptions } from '../../../types/types';
+import { IOptions, ITarget } from '../../../types/types';
 import SubView from '../SubView/SubView';
 import EventEmitter from '../../../EventEmitter/EventEmitter';
-import { ITarget } from '../../../types/types';
 
-type tipNode = {
+type TipNode = {
   node: HTMLSpanElement;
   valueIndex?: 0 | 1;
 };
@@ -21,12 +20,7 @@ class Tip extends SubView {
 
   private target: ITarget;
 
-  constructor(
-    node: HTMLDivElement,
-    options: IOptions,
-    eventEmitter: EventEmitter,
-    target: ITarget,
-  ) {
+  constructor(node: Element, options: IOptions, eventEmitter: EventEmitter, target: ITarget) {
     super(node, options, eventEmitter);
 
     this.target = target;
@@ -131,10 +125,14 @@ class Tip extends SubView {
     this.tipBoth.remove();
   }
 
-  private attachEventOnPointerDown({ node, valueIndex }: tipNode): void {
+  private attachEventOnPointerDown({ node, valueIndex }: TipNode): void {
     const onPointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
-      node.ondragstart = () => false;
+
+      const thisNode = node;
+      thisNode.ondragstart = () => {
+        return false;
+      };
 
       const position = this.getPosition(this.root, pointerEvent);
 
