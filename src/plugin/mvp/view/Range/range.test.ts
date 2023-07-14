@@ -4,7 +4,7 @@
 
 import Range from './Range';
 import sliderOptions from '../../../app/sliderOptions';
-import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { EventEmitter } from '../../../EventEmitter';
 
 const node = document.createElement('div');
 const eventEmitter = new EventEmitter();

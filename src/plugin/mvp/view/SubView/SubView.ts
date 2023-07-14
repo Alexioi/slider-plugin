@@ -1,14 +1,14 @@
-import { IOptions } from '../../../types/types';
-import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { EventTypes, IOptions } from '../../../types/types';
+import { EventEmitter } from '../../../EventEmitter';
 
 abstract class SubView {
   protected root: Element;
 
   protected options: IOptions;
 
-  protected eventEmitter: EventEmitter;
+  protected eventEmitter: EventEmitter<EventTypes>;
 
-  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter) {
+  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
     this.root = root;
     this.options = options;
     this.eventEmitter = eventEmitter;

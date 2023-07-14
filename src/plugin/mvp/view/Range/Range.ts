@@ -1,13 +1,13 @@
 import './range.scss';
 
-import { IOptions } from '../../../types/types';
+import { EventTypes, IOptions } from '../../../types/types';
 import SubView from '../SubView/SubView';
-import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { EventEmitter } from '../../../EventEmitter';
 
 class Range extends SubView {
   private range: Element | null = null;
 
-  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter) {
+  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
     super(root, options, eventEmitter);
 
     this.init();

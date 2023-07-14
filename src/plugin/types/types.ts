@@ -48,7 +48,18 @@ interface IElementTouch {
   touchRoute: TouchRoute;
 }
 
+type EventTypes = {
+  UpdatedModelOptions: IOptions;
+  UpdatedModelValues: IOptions;
+  ChangedRunnerPosition: IElementPosition;
+  ClickScale: { targetNumber: number };
+  onChange: IOptions;
+  ChangedRunnerPositionStep: IElementTouch;
+  ChangedNearRunnerPosition: { position: number };
+};
+
 export {
+  EventTypes,
   IConfig,
   ICallbacks,
   IOptions,

@@ -1,16 +1,16 @@
 import View from '../view/View';
 import Model from '../model/Model';
-import EventEmitter from '../../EventEmitter/EventEmitter';
-import { IConfig, IElementPosition, IOptions, IElementTouch } from '../../types/types';
+import { EventEmitter } from '../../EventEmitter';
+import { IConfig, IElementPosition, IOptions, IElementTouch, EventTypes } from '../../types/types';
 
 class Presenter {
   private view: View;
 
   private model: Model;
 
-  private eventEmitter: EventEmitter;
+  private eventEmitter: EventEmitter<EventTypes>;
 
-  constructor(view: View, model: Model, eventEmitter: EventEmitter) {
+  constructor(view: View, model: Model, eventEmitter: EventEmitter<EventTypes>) {
     this.view = view;
     this.model = model;
     this.eventEmitter = eventEmitter;
@@ -28,8 +28,8 @@ class Presenter {
   }
 
   private attachEventEmittersToModel(): void {
-    const notifyModelClickedScale = (value: number) => {
-      this.model.updateNearValue(value);
+    const notifyModelClickedScale = ({ targetNumber }: { targetNumber: number }) => {
+      this.model.updateNearValue(targetNumber);
     };
 
     const notifyModelAboutChangedRunnerPosition = ({ position, valueIndex }: IElementPosition) => {
@@ -59,12 +59,12 @@ class Presenter {
   private attachEventEmittersToView(): void {
     const notifyViewUpdatedModelOptions = (options: IOptions): void => {
       this.view.render(options);
-      this.eventEmitter.emit({ eventName: 'onChange', eventArguments: options });
+      this.eventEmitter.emit('onChange', options);
     };
 
     const notifyViewUpdatedModelValues = (options: IOptions): void => {
       this.view.changeValues(options);
-      this.eventEmitter.emit({ eventName: 'onChange', eventArguments: options });
+      this.eventEmitter.emit('onChange', options);
     };
 
     this.eventEmitter.subscribe('UpdatedModelOptions', notifyViewUpdatedModelOptions);

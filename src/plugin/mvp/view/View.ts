@@ -1,19 +1,19 @@
 import './view.scss';
 
-import { IOptions, ITarget } from '../../types/types';
+import { EventTypes, IOptions, ITarget } from '../../types/types';
 
 import Tip from './Tip/Tip';
 import Runner from './Runner/Runner';
 import Range from './Range/Range';
 import Scale from './Scale/Scale';
-import EventEmitter from '../../EventEmitter/EventEmitter';
+import { EventEmitter } from '../../EventEmitter';
 
 class View {
   private root: HTMLElement;
 
   private options: IOptions;
 
-  private eventEmitter: EventEmitter;
+  private eventEmitter: EventEmitter<EventTypes>;
 
   private barContainer: Element | null = null;
 
@@ -31,7 +31,7 @@ class View {
 
   private target: ITarget = { valueIndex: 0 };
 
-  constructor(root: HTMLElement, options: IOptions, eventEmitter: EventEmitter) {
+  constructor(root: HTMLElement, options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
     this.root = root;
     this.options = options;
     this.eventEmitter = eventEmitter;

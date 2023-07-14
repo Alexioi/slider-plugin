@@ -1,4 +1,4 @@
-import EventEmitter from '../../EventEmitter/EventEmitter';
+import { EventEmitter } from '../../EventEmitter';
 import Model from './Model';
 import sliderOptions from '../../app/sliderOptions';
 import { IOptions } from '../../types/types';

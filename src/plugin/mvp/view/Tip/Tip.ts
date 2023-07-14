@@ -1,8 +1,8 @@
 import './tip.scss';
 
-import { IOptions, ITarget } from '../../../types/types';
+import { IOptions, ITarget, EventTypes } from '../../../types/types';
 import SubView from '../SubView/SubView';
-import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { EventEmitter } from '../../../EventEmitter';
 
 type TipNode = {
   node: HTMLSpanElement;
@@ -20,7 +20,12 @@ class Tip extends SubView {
 
   private target: ITarget;
 
-  constructor(node: Element, options: IOptions, eventEmitter: EventEmitter, target: ITarget) {
+  constructor(
+    node: Element,
+    options: IOptions,
+    eventEmitter: EventEmitter<EventTypes>,
+    target: ITarget,
+  ) {
     super(node, options, eventEmitter);
 
     this.target = target;
@@ -137,19 +142,13 @@ class Tip extends SubView {
       const position = this.getPosition(this.root, pointerEvent);
 
       if (typeof valueIndex === 'undefined') {
-        this.eventEmitter.emit({
-          eventName: 'ChangedNearRunnerPosition',
-          eventArguments: { position },
-        });
+        this.eventEmitter.emit('ChangedNearRunnerPosition', { position });
         return;
       }
 
       this.target.valueIndex = valueIndex;
 
-      this.eventEmitter.emit({
-        eventName: 'ChangedRunnerPosition',
-        eventArguments: { position, valueIndex },
-      });
+      this.eventEmitter.emit('ChangedRunnerPosition', { position, valueIndex });
     };
 
     const onPointerUp = (): void => {

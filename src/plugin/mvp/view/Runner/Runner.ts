@@ -1,8 +1,8 @@
 import './runner.scss';
 
-import { IOptions, ITarget, TouchRoute } from '../../../types/types';
+import { EventTypes, IOptions, ITarget, TouchRoute } from '../../../types/types';
 
-import EventEmitter from '../../../EventEmitter/EventEmitter';
+import { EventEmitter } from '../../../EventEmitter';
 import SubView from '../SubView/SubView';
 
 class Runner extends SubView {
@@ -17,7 +17,7 @@ class Runner extends SubView {
   constructor(
     root: Element,
     options: IOptions,
-    eventEmitter: EventEmitter,
+    eventEmitter: EventEmitter<EventTypes>,
     valueIndex: 0 | 1,
     target: ITarget,
   ) {
@@ -71,10 +71,7 @@ class Runner extends SubView {
     const onClickArrow = (touchRoute: TouchRoute): void => {
       keyboardEvent.preventDefault();
       this.target.valueIndex = valueIndex;
-      this.eventEmitter.emit({
-        eventName: 'ChangedRunnerPositionStep',
-        eventArguments: { valueIndex, touchRoute },
-      });
+      this.eventEmitter.emit('ChangedRunnerPositionStep', { valueIndex, touchRoute });
     };
 
     if (code === 'ArrowUp' || code === 'ArrowRight') {
@@ -101,10 +98,7 @@ class Runner extends SubView {
 
       const position = this.getPosition(this.root, pointerEvent);
 
-      this.eventEmitter.emit({
-        eventName: 'ChangedRunnerPosition',
-        eventArguments: { position, valueIndex },
-      });
+      this.eventEmitter.emit('ChangedRunnerPosition', { position, valueIndex });
     };
 
     const onPointerUp = (): void => {

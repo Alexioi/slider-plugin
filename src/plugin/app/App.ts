@@ -1,9 +1,9 @@
-import EventEmitter from '../EventEmitter/EventEmitter';
+import { EventEmitter } from '../EventEmitter';
 import Model from '../mvp/model/Model';
 import View from '../mvp/view/View';
 import Presenter from '../mvp/presenter/Presenter';
 import sliderOptions from './sliderOptions';
-import { IConfig, ICallbacks, IOptions } from '../types/types';
+import { IConfig, ICallbacks, IOptions, EventTypes } from '../types/types';
 
 class App {
   private callbacks: ICallbacks = { onChange: () => {} };
@@ -14,7 +14,7 @@ class App {
 
   private presenter: Presenter | null = null;
 
-  private eventEmitter: EventEmitter | null = null;
+  private eventEmitter: EventEmitter<EventTypes> | null = null;
 
   constructor(root: HTMLElement, config?: IConfig) {
     this.init(root, config);
