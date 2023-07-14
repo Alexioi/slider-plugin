@@ -1,4 +1,4 @@
-import { IConfig, IOptions } from '../../../types/types';
+import { IConfig, IOptions } from '../../../types';
 
 class Validator {
   private options: IOptions;

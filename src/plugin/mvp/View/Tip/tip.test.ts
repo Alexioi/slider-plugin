@@ -5,7 +5,7 @@
 import Tip from '.';
 import sliderOptions from '../../../App/sliderOptions';
 import { EventEmitter } from '../../../EventEmitter';
-import { ITarget } from '../../../types/types';
+import { ITarget } from '../../../types';
 
 jest.mock('../../../EventEmitter/EventEmitter');
 

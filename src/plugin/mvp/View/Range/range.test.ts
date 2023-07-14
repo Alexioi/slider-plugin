@@ -4,13 +4,12 @@
 
 import Range from '.';
 import sliderOptions from '../../../App/sliderOptions';
-import { EventEmitter } from '../../../EventEmitter';
 
 const node = document.createElement('div');
-const eventEmitter = new EventEmitter();
+
 const state = { ...sliderOptions.defaultConfig };
 
-const range = new Range(node, state, eventEmitter);
+const range = new Range(node, state);
 range.render();
 const rangeNode = node.querySelector('div');
 

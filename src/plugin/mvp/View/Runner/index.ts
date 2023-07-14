@@ -1,11 +1,11 @@
 import './runner.scss';
 
-import { EventTypes, IOptions, ITarget, TouchRoute } from '../../../types/types';
+import { EventTypes, IOptions, ITarget, TouchRoute } from '../../../types';
 
 import { EventEmitter } from '../../../EventEmitter';
-import SubView from '../SubView';
+import { helpers } from '../../../helpers';
 
-class Runner extends SubView {
+class Runner {
   private runner: HTMLDivElement | null = null;
 
   private valueIndex: 0 | 1;
@@ -14,6 +14,12 @@ class Runner extends SubView {
 
   private isRender = false;
 
+  private eventEmitter: EventEmitter<EventTypes>;
+
+  private options: IOptions;
+
+  private root: Element;
+
   constructor(
     root: Element,
     options: IOptions,
@@ -21,7 +27,11 @@ class Runner extends SubView {
     valueIndex: 0 | 1,
     target: ITarget,
   ) {
-    super(root, options, eventEmitter);
+    this.root = root;
+
+    this.options = options;
+
+    this.eventEmitter = eventEmitter;
 
     this.valueIndex = valueIndex;
     this.target = target;
@@ -45,7 +55,11 @@ class Runner extends SubView {
         this.runner.classList.remove('slider__runner_targeted');
       }
 
-      const percent = this.calculatePercent(this.options.values[typeIndex]);
+      const percent = helpers.calculatePercent(
+        this.options.values[typeIndex],
+        this.options.min,
+        this.options.max,
+      );
       const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
 
       this.runner.style.cssText = styleRunner;
@@ -58,7 +72,7 @@ class Runner extends SubView {
   }
 
   private init(): void {
-    this.runner = SubView.getElement('slider__runner');
+    this.runner = helpers.createElement('slider__runner');
     this.runner.setAttribute('tabindex', '0');
     this.runner.addEventListener('pointerdown', this.attachEventOnPointerDown.bind(this));
     this.runner.addEventListener('keydown', this.attachEventOnPressingKeyboard.bind(this));
@@ -96,7 +110,7 @@ class Runner extends SubView {
 
       this.target.valueIndex = valueIndex;
 
-      const position = this.getPosition(this.root, pointerEvent);
+      const position = helpers.getPosition(this.root, pointerEvent, this.options.isVertical);
 
       this.eventEmitter.emit('ChangedRunnerPosition', { position, valueIndex });
     };

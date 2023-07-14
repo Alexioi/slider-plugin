@@ -1,14 +1,19 @@
 import './range.scss';
 
-import { EventTypes, IOptions } from '../../../types/types';
-import SubView from '../SubView';
-import { EventEmitter } from '../../../EventEmitter';
+import { IOptions } from '../../../types';
+import { helpers } from '../../../helpers';
 
-class Range extends SubView {
+class Range {
   private range: Element | null = null;
 
-  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
-    super(root, options, eventEmitter);
+  private options: IOptions;
+
+  private root: Element;
+
+  constructor(root: Element, options: IOptions) {
+    this.root = root;
+
+    this.options = options;
 
     this.init();
   }
@@ -19,8 +24,10 @@ class Range extends SubView {
     if (this.range instanceof HTMLElement) {
       this.root.appendChild(this.range);
 
-      const startPercent = isRange ? this.calculatePercent(values[0]) : 0;
-      const finishPercent = this.calculatePercent(values[1]);
+      const startPercent = isRange
+        ? helpers.calculatePercent(values[0], this.options.min, this.options.max)
+        : 0;
+      const finishPercent = helpers.calculatePercent(values[1], this.options.min, this.options.max);
 
       if (isVertical) {
         this.range.style.cssText = `top: ${startPercent}%; bottom: ${100 - finishPercent}%`;
@@ -31,7 +38,7 @@ class Range extends SubView {
   }
 
   private init(): void {
-    this.range = SubView.getElement('slider__range');
+    this.range = helpers.createElement('slider__range');
   }
 }
 

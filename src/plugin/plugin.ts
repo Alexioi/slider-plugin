@@ -1,5 +1,5 @@
 import App from './App';
-import { IConfig } from './types/types';
+import { IConfig } from './types';
 
 declare global {
   interface JQuery {

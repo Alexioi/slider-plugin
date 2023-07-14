@@ -1,13 +1,24 @@
 import './scale.scss';
-import { IMarkParameters, IOptions, EventTypes } from '../../../types/types';
+import { IMarkParameters, IOptions, EventTypes } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
-import SubView from '../SubView';
 
-class Scale extends SubView {
-  private scale: Element | null = null;
+import { helpers } from '../../../helpers';
+
+class Scale {
+  private scale!: HTMLDivElement;
+
+  private eventEmitter: EventEmitter<EventTypes>;
+
+  private options: IOptions;
+
+  private root: Element;
 
   constructor(root: Element, options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
-    super(root, options, eventEmitter);
+    this.root = root;
+
+    this.options = options;
+
+    this.eventEmitter = eventEmitter;
 
     this.init();
   }
@@ -29,10 +40,9 @@ class Scale extends SubView {
   }
 
   private init(): void {
-    this.scale = SubView.getElement('slider__scale');
-    if (this.scale instanceof HTMLElement) {
-      this.scale.addEventListener('pointerdown', this.clickScale.bind(this));
-    }
+    this.scale = helpers.createElement('slider__scale');
+
+    this.scale.addEventListener('pointerdown', this.clickScale.bind(this));
 
     window.addEventListener('resize', this.handlerResizeScale.bind(this));
   }

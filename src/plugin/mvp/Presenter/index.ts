@@ -1,7 +1,7 @@
 import View from '../View';
 import Model from '../Model';
 import { EventEmitter } from '../../EventEmitter';
-import { IConfig, IElementPosition, IOptions, IElementTouch, EventTypes } from '../../types/types';
+import { IConfig, IElementPosition, IOptions, IElementTouch, EventTypes } from '../../types';
 
 class Presenter {
   private view: View;

@@ -1,7 +1,7 @@
 import { EventEmitter } from '../../EventEmitter';
 import Model from '.';
 import sliderOptions from '../../App/sliderOptions';
-import { IOptions } from '../../types/types';
+import { IOptions } from '../../types';
 
 describe('Model', () => {
   let options: IOptions = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));

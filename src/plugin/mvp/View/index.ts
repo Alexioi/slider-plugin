@@ -1,6 +1,6 @@
 import './view.scss';
 
-import { EventTypes, IOptions, ITarget } from '../../types/types';
+import { EventTypes, IOptions, ITarget } from '../../types';
 
 import Tip from './Tip';
 import Runner from './Runner';
@@ -90,7 +90,7 @@ class View {
 
     this.tip = new Tip(slider, options, eventEmitter, target);
 
-    this.range = new Range(barContainer, options, eventEmitter);
+    this.range = new Range(barContainer, options);
 
     this.scale = new Scale(slider, options, eventEmitter);
 

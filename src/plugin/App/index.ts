@@ -3,7 +3,7 @@ import Model from '../mvp/Model';
 import View from '../mvp/View';
 import Presenter from '../mvp/Presenter';
 import sliderOptions from './sliderOptions';
-import { IConfig, ICallbacks, IOptions, EventTypes } from '../types/types';
+import { IConfig, ICallbacks, IOptions, EventTypes } from '../types';
 
 class App {
   private callbacks: ICallbacks = { onChange: () => {} };

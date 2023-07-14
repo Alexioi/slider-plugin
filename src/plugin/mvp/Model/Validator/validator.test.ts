@@ -1,6 +1,6 @@
 import Validator from '.';
 import sliderOptions from '../../../App/sliderOptions';
-import { IOptions } from '../../../types/types';
+import { IOptions } from '../../../types';
 
 describe('Validator', () => {
   let options: IOptions = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));

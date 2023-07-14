@@ -1,15 +1,15 @@
 import './tip.scss';
 
-import { IOptions, ITarget, EventTypes } from '../../../types/types';
-import SubView from '../SubView';
+import { IOptions, ITarget, EventTypes } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
+import { helpers } from '../../../helpers';
 
 type TipNode = {
   node: HTMLSpanElement;
   valueIndex?: 0 | 1;
 };
 
-class Tip extends SubView {
+class Tip {
   private tipLine!: HTMLDivElement;
 
   private tipFrom!: HTMLSpanElement;
@@ -20,13 +20,23 @@ class Tip extends SubView {
 
   private target: ITarget;
 
+  private eventEmitter: EventEmitter<EventTypes>;
+
+  private options: IOptions;
+
+  private root: Element;
+
   constructor(
     node: Element,
     options: IOptions,
     eventEmitter: EventEmitter<EventTypes>,
     target: ITarget,
   ) {
-    super(node, options, eventEmitter);
+    this.root = node;
+
+    this.options = options;
+
+    this.eventEmitter = eventEmitter;
 
     this.target = target;
 
@@ -57,10 +67,10 @@ class Tip extends SubView {
   }
 
   private init() {
-    this.tipLine = SubView.getElement('slider__tip-line');
-    this.tipFrom = SubView.getElement('slider__tip');
-    this.tipBoth = SubView.getElement('slider__tip');
-    this.tipTo = SubView.getElement('slider__tip');
+    this.tipLine = helpers.createElement('slider__tip-line');
+    this.tipFrom = helpers.createElement('slider__tip');
+    this.tipBoth = helpers.createElement('slider__tip');
+    this.tipTo = helpers.createElement('slider__tip');
 
     this.tipFrom.addEventListener(
       'pointerdown',
@@ -80,8 +90,8 @@ class Tip extends SubView {
 
   private changePosition() {
     const { isVertical, values } = this.options;
-    const leftPosition = this.calculatePercent(values[0]);
-    const rightPosition = this.calculatePercent(values[1]);
+    const leftPosition = helpers.calculatePercent(values[0], this.options.min, this.options.max);
+    const rightPosition = helpers.calculatePercent(values[1], this.options.min, this.options.max);
 
     const positionRightTip = isVertical ? `top: ${rightPosition}%;` : `left: ${rightPosition}%;`;
 
@@ -139,7 +149,7 @@ class Tip extends SubView {
         return false;
       };
 
-      const position = this.getPosition(this.root, pointerEvent);
+      const position = helpers.getPosition(this.root, pointerEvent, this.options.isVertical);
 
       if (typeof valueIndex === 'undefined') {
         this.eventEmitter.emit('ChangedNearRunnerPosition', { position });
