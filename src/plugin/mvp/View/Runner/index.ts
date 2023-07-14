@@ -4,9 +4,11 @@ import { EventTypes, IOptions, ITarget, TouchRoute } from '../../../types';
 
 import { EventEmitter } from '../../../EventEmitter';
 import { helpers } from '../../../helpers';
+import { Dom } from './type';
+import { createElements } from './methods';
 
 class Runner extends EventEmitter<EventTypes> {
-  private runner: HTMLDivElement | null = null;
+  private dom: Dom;
 
   private valueIndex: 0 | 1;
 
@@ -16,35 +18,33 @@ class Runner extends EventEmitter<EventTypes> {
 
   private options: IOptions;
 
-  private root: Element;
-
-  constructor(root: Element, options: IOptions, valueIndex: 0 | 1, target: ITarget) {
+  constructor(root: HTMLDivElement, options: IOptions, valueIndex: 0 | 1, target: ITarget) {
     super();
-
-    this.root = root;
 
     this.options = options;
 
     this.valueIndex = valueIndex;
     this.target = target;
 
-    this.init();
+    const { dom } = this.init(root);
+
+    this.dom = dom;
   }
 
   public render(): void {
     const { target, valueIndex: typeIndex } = this;
     const { isVertical } = this.options;
 
-    if (this.runner instanceof HTMLElement) {
+    if (this.dom.runner instanceof HTMLElement) {
       if (!this.isRender) {
-        this.root.appendChild(this.runner);
+        this.dom.root.appendChild(this.dom.runner);
         this.isRender = true;
       }
 
       if (target.valueIndex === typeIndex) {
-        this.runner.classList.add('slider__runner_targeted');
+        this.dom.runner.classList.add('slider__runner_targeted');
       } else {
-        this.runner.classList.remove('slider__runner_targeted');
+        this.dom.runner.classList.remove('slider__runner_targeted');
       }
 
       const percent = helpers.calculatePercent(
@@ -54,20 +54,22 @@ class Runner extends EventEmitter<EventTypes> {
       );
       const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
 
-      this.runner.style.cssText = styleRunner;
+      this.dom.runner.style.cssText = styleRunner;
     }
   }
 
   public destroy(): void {
-    this.runner?.remove();
+    this.dom.runner.remove();
     this.isRender = false;
   }
 
-  private init(): void {
-    this.runner = helpers.createElement('slider__runner');
-    this.runner.setAttribute('tabindex', '0');
-    this.runner.addEventListener('pointerdown', this.attachEventOnPointerDown.bind(this));
-    this.runner.addEventListener('keydown', this.attachEventOnPressingKeyboard.bind(this));
+  private init(root: HTMLDivElement): { dom: Dom } {
+    const dom = createElements(root);
+
+    dom.runner.addEventListener('pointerdown', this.attachEventOnPointerDown.bind(this));
+    dom.runner.addEventListener('keydown', this.attachEventOnPressingKeyboard.bind(this));
+
+    return { dom };
   }
 
   private attachEventOnPressingKeyboard(keyboardEvent: KeyboardEvent): void {
@@ -92,17 +94,14 @@ class Runner extends EventEmitter<EventTypes> {
   private attachEventOnPointerDown(): void {
     const onPointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
-      if (this.runner === null) {
-        return;
-      }
 
-      this.runner.ondragstart = () => false;
+      this.dom.runner.ondragstart = () => false;
 
       const { valueIndex } = this;
 
       this.target.valueIndex = valueIndex;
 
-      const position = helpers.getPosition(this.root, pointerEvent, this.options.isVertical);
+      const position = helpers.getPosition(this.dom.root, pointerEvent, this.options.isVertical);
 
       this.emit('ChangedRunnerPosition', { position, valueIndex });
     };

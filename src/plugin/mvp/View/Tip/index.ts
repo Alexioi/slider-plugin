@@ -3,6 +3,8 @@ import './tip.scss';
 import { IOptions, ITarget, EventTypes } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
 import { helpers } from '../../../helpers';
+import { Dom } from './type';
+import { createElements } from './methods';
 
 type TipNode = {
   node: HTMLSpanElement;
@@ -10,79 +12,69 @@ type TipNode = {
 };
 
 class Tip extends EventEmitter<EventTypes> {
-  private tipLine!: HTMLDivElement;
-
-  private tipFrom!: HTMLSpanElement;
-
-  private tipTo!: HTMLSpanElement;
-
-  private tipBoth!: HTMLSpanElement;
+  private dom: Dom;
 
   private target: ITarget;
 
   private options: IOptions;
 
-  private root: Element;
-
-  constructor(
-    node: Element,
-    options: IOptions,
-
-    target: ITarget,
-  ) {
+  constructor(root: HTMLDivElement, options: IOptions, target: ITarget) {
     super();
-
-    this.root = node;
 
     this.options = options;
 
     this.target = target;
 
-    this.init();
+    const { dom } = this.init(root);
+
+    this.dom = dom;
   }
 
   public render() {
     const { isVertical } = this.options;
 
-    this.root.insertAdjacentElement('afterbegin', this.tipLine);
-    this.tipLine.appendChild(this.tipFrom);
-    this.tipLine.appendChild(this.tipBoth);
-    this.tipLine.appendChild(this.tipTo);
+    this.dom.root.insertAdjacentElement('afterbegin', this.dom.tipLine);
+    this.dom.tipLine.appendChild(this.dom.tipFrom);
+    this.dom.tipLine.appendChild(this.dom.tipBoth);
+    this.dom.tipLine.appendChild(this.dom.tipTo);
     this.changeText();
     this.changePosition();
 
     if (isVertical) {
-      this.tipLine.classList.add('slider__tip-line_vertical');
+      this.dom.tipLine.classList.add('slider__tip-line_vertical');
     } else {
-      this.tipLine.classList.remove('slider__tip-line_vertical');
+      this.dom.tipLine.classList.remove('slider__tip-line_vertical');
     }
 
     this.toggleDisplay();
   }
 
   public destroy() {
-    this.tipLine.remove();
+    this.dom.tipLine.remove();
   }
 
-  private init() {
-    this.tipLine = helpers.createElement('slider__tip-line');
-    this.tipFrom = helpers.createElement('slider__tip');
-    this.tipBoth = helpers.createElement('slider__tip');
-    this.tipTo = helpers.createElement('slider__tip');
+  private init(root: HTMLDivElement): { dom: Dom } {
+    const dom = createElements(root);
 
-    this.tipFrom.addEventListener(
+    this.attachEventHandlers(dom);
+
+    return { dom };
+  }
+
+  private attachEventHandlers({ tipFrom, tipTo, tipBoth }: Dom) {
+    tipFrom.addEventListener(
       'pointerdown',
-      this.attachEventOnPointerDown.bind(this, { node: this.tipFrom, valueIndex: 0 }),
+      this.attachEventOnPointerDown.bind(this, { node: tipFrom, valueIndex: 0 }),
     );
 
-    this.tipTo.addEventListener(
+    tipTo.addEventListener(
       'pointerdown',
-      this.attachEventOnPointerDown.bind(this, { node: this.tipTo, valueIndex: 1 }),
+      this.attachEventOnPointerDown.bind(this, { node: tipTo, valueIndex: 1 }),
     );
 
-    this.tipBoth.addEventListener(
+    tipBoth.addEventListener(
       'pointerdown',
-      this.attachEventOnPointerDown.bind(this, { node: this.tipBoth }),
+      this.attachEventOnPointerDown.bind(this, { node: tipBoth }),
     );
   }
 
@@ -99,43 +91,43 @@ class Tip extends EventEmitter<EventTypes> {
       ? `top: ${(leftPosition + rightPosition) / 2}%;`
       : `left: ${(leftPosition + rightPosition) / 2}%;`;
 
-    this.tipFrom.style.cssText = positionLeftTip;
-    this.tipBoth.style.cssText = positionBothTip;
-    this.tipTo.style.cssText = positionRightTip;
+    this.dom.tipFrom.style.cssText = positionLeftTip;
+    this.dom.tipBoth.style.cssText = positionBothTip;
+    this.dom.tipTo.style.cssText = positionRightTip;
   }
 
   private changeText() {
     const { values } = this.options;
     const bothText = values[0] === values[1] ? String(values[1]) : `${values[0]} - ${values[1]}`;
 
-    this.tipFrom.innerText = String(values[0]);
-    this.tipTo.innerText = String(values[1]);
-    this.tipBoth.innerText = bothText;
+    this.dom.tipFrom.innerText = String(values[0]);
+    this.dom.tipTo.innerText = String(values[1]);
+    this.dom.tipBoth.innerText = bothText;
   }
 
   private toggleDisplay() {
     const { isRange, isVertical } = this.options;
 
     if (!isRange) {
-      this.tipFrom.remove();
-      this.tipBoth.remove();
+      this.dom.tipFrom.remove();
+      this.dom.tipBoth.remove();
       return;
     }
 
-    const positionTipFrom = this.tipFrom.getBoundingClientRect();
-    const positionTipTo = this.tipTo.getBoundingClientRect();
+    const positionTipFrom = this.dom.tipFrom.getBoundingClientRect();
+    const positionTipTo = this.dom.tipTo.getBoundingClientRect();
 
     const isTipFromOverlapsTipTo = isVertical
       ? positionTipFrom.y + positionTipFrom.height >= positionTipTo.y
       : positionTipFrom.x + positionTipFrom.width >= positionTipTo.x;
 
     if (isTipFromOverlapsTipTo) {
-      this.tipFrom.remove();
-      this.tipTo.remove();
+      this.dom.tipFrom.remove();
+      this.dom.tipTo.remove();
       return;
     }
 
-    this.tipBoth.remove();
+    this.dom.tipBoth.remove();
   }
 
   private attachEventOnPointerDown({ node, valueIndex }: TipNode): void {
@@ -147,7 +139,7 @@ class Tip extends EventEmitter<EventTypes> {
         return false;
       };
 
-      const position = helpers.getPosition(this.root, pointerEvent, this.options.isVertical);
+      const position = helpers.getPosition(this.dom.root, pointerEvent, this.options.isVertical);
 
       if (typeof valueIndex === 'undefined') {
         this.emit('ChangedNearRunnerPosition', { position });

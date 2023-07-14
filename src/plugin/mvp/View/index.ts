@@ -7,19 +7,17 @@ import Runner from './Runner';
 import Range from './Range';
 import Scale from './Scale';
 import { EventEmitter } from '../../EventEmitter';
+import { Dom } from './type';
+import { createElements } from './methods';
 
 class View extends EventEmitter<EventTypes> {
-  private root: HTMLElement;
-
-  private options: IOptions;
-
-  private barContainer: Element | null = null;
+  private dom: Dom;
 
   public range: Range | null = null;
 
   public tip: Tip | null = null;
 
-  public slider: Element | null = null;
+  private options: IOptions;
 
   public runnerFrom!: Runner;
 
@@ -32,10 +30,13 @@ class View extends EventEmitter<EventTypes> {
   constructor(root: HTMLElement, options: IOptions) {
     super();
 
-    this.root = root;
     this.options = options;
 
-    this.init();
+    const { dom } = this.init(root);
+
+    this.dom = dom;
+
+    this.render(options);
   }
 
   public render(options: IOptions): void {
@@ -44,9 +45,9 @@ class View extends EventEmitter<EventTypes> {
     const { isVertical, hasScale } = options;
 
     if (isVertical) {
-      this.slider?.classList.add('slider_vertical');
+      this.dom.slider.classList.add('slider_vertical');
     } else {
-      this.slider?.classList.remove('slider_vertical');
+      this.dom.slider.classList.remove('slider_vertical');
     }
 
     if (hasScale) {
@@ -79,36 +80,21 @@ class View extends EventEmitter<EventTypes> {
     this.runnerTo.render();
   }
 
-  private init(): void {
-    this.createElements();
-    const { slider, barContainer, options, target } = this;
+  private init(root: HTMLElement): { dom: Dom } {
+    const dom = createElements(root);
+    const { options, target } = this;
 
-    if (slider === null || barContainer === null) {
-      return;
-    }
+    this.tip = new Tip(dom.slider, options, target);
 
-    this.tip = new Tip(slider, options, target);
+    this.range = new Range(dom.barContainer, options);
 
-    this.range = new Range(barContainer, options);
+    this.scale = new Scale(dom.slider, options);
 
-    this.scale = new Scale(slider, options);
+    this.runnerFrom = new Runner(dom.barContainer, options, 0, target);
 
-    this.runnerFrom = new Runner(barContainer, options, 0, target);
+    this.runnerTo = new Runner(dom.barContainer, options, 1, target);
 
-    this.runnerTo = new Runner(barContainer, options, 1, target);
-
-    this.render(options);
-  }
-
-  private createElements(): void {
-    this.slider = document.createElement('div');
-    this.slider.classList.add('slider');
-
-    this.barContainer = document.createElement('div');
-    this.barContainer.classList.add('slider__bar-container');
-    this.root.appendChild(this.slider);
-
-    this.slider.appendChild(this.barContainer);
+    return { dom };
   }
 
   private switchTarget({ values, max, min }: IOptions): void {

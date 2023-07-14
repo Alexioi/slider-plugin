@@ -1,32 +1,28 @@
 import './scale.scss';
 import { IMarkParameters, IOptions, EventTypes } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
-
-import { helpers } from '../../../helpers';
+import { Dom } from './type';
+import { createElement, getScalePercents } from './methods';
 
 class Scale extends EventEmitter<EventTypes> {
-  private scale!: HTMLDivElement;
+  private dom: Dom;
 
   private options: IOptions;
 
-  private root: Element;
-
-  constructor(root: Element, options: IOptions) {
+  constructor(root: HTMLDivElement, options: IOptions) {
     super();
-
-    this.root = root;
 
     this.options = options;
 
-    this.init();
+    const { dom } = this.init(root);
+
+    this.dom = dom;
   }
 
   public render(): void {
     this.deleteMarks();
 
-    if (this.scale !== null) {
-      this.root.appendChild(this.scale);
-    }
+    this.dom.root.appendChild(this.dom.scale);
 
     const scaleParameters = this.getScaleParameters();
 
@@ -34,20 +30,22 @@ class Scale extends EventEmitter<EventTypes> {
   }
 
   public destroy(): void {
-    this.scale?.remove();
+    this.dom.scale.remove();
   }
 
-  private init(): void {
-    this.scale = helpers.createElement('slider__scale');
+  private init(root: HTMLDivElement): { dom: Dom } {
+    const dom = createElement(root);
 
-    this.scale.addEventListener('pointerdown', this.clickScale.bind(this));
+    dom.scale.addEventListener('pointerdown', this.clickScale.bind(this));
 
     window.addEventListener('resize', this.handlerResizeScale.bind(this));
+
+    return { dom };
   }
 
   private deleteMarks(): void {
-    while (this.scale?.firstChild) {
-      this.scale?.removeChild(this.scale.firstChild);
+    while (this.dom.scale.firstChild) {
+      this.dom.scale.removeChild(this.dom.scale.firstChild);
     }
   }
 
@@ -62,7 +60,7 @@ class Scale extends EventEmitter<EventTypes> {
       mark.style.cssText = style;
       mark.innerText = text;
 
-      this.scale?.appendChild(mark);
+      this.dom.scale.appendChild(mark);
     });
   }
 
@@ -71,7 +69,11 @@ class Scale extends EventEmitter<EventTypes> {
   }
 
   private clickScale(pointerEvent: PointerEvent): void {
-    const { innerHTML } = <HTMLElement>pointerEvent.target;
+    if (!(pointerEvent.target instanceof Element)) {
+      return;
+    }
+
+    const { innerHTML } = pointerEvent.target;
     const intInnerHtml = Number(innerHTML);
 
     if (!isNaN(intInnerHtml)) {
@@ -79,41 +81,21 @@ class Scale extends EventEmitter<EventTypes> {
     }
   }
 
-  private static getScalePercents(sliderLength: number): number[] {
-    if (sliderLength > 800) {
-      return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-    }
-
-    if (sliderLength > 500) {
-      return [0, 20, 40, 60, 80, 100];
-    }
-
-    if (sliderLength > 300) {
-      return [0, 33, 66, 100];
-    }
-
-    return [0, 100];
-  }
-
   private getScaleParameters(): IMarkParameters[] {
-    if (this.scale instanceof HTMLElement) {
-      const { max, min, isVertical } = this.options;
-      const { offsetHeight, offsetWidth } = this.scale;
-      const scaleLength = isVertical ? offsetHeight : offsetWidth;
-      const scalePercents = Scale.getScalePercents(scaleLength);
+    const { max, min, isVertical } = this.options;
+    const { offsetHeight, offsetWidth } = this.dom.scale;
+    const scaleLength = isVertical ? offsetHeight : offsetWidth;
+    const scalePercents = getScalePercents(scaleLength);
 
-      const differenceMaxAndMin = Math.abs(max - min);
+    const differenceMaxAndMin = Math.abs(max - min);
 
-      const scaleParameters = scalePercents.map((percent) => {
-        const text = (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, '');
+    const scaleParameters = scalePercents.map((percent) => {
+      const text = (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, '');
 
-        return { percent, text };
-      });
+      return { percent, text };
+    });
 
-      return scaleParameters;
-    }
-
-    return [{ percent: 1, text: '' }];
+    return scaleParameters;
   }
 }
 
