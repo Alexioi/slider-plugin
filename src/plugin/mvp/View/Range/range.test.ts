@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import Range from './Range';
-import sliderOptions from '../../../app/sliderOptions';
+import Range from '.';
+import sliderOptions from '../../../App/sliderOptions';
 import { EventEmitter } from '../../../EventEmitter';
 
 const node = document.createElement('div');

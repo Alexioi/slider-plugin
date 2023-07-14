@@ -1,7 +1,7 @@
 import './range.scss';
 
 import { EventTypes, IOptions } from '../../../types/types';
-import SubView from '../SubView/SubView';
+import SubView from '../SubView';
 import { EventEmitter } from '../../../EventEmitter';
 
 class Range extends SubView {

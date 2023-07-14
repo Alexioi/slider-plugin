@@ -1,4 +1,4 @@
-import App from './app/App';
+import App from './App';
 import { IConfig } from './types/types';
 
 declare global {

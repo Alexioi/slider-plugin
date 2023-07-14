@@ -1,5 +1,5 @@
-import View from '../view/View';
-import Model from '../model/Model';
+import View from '../View';
+import Model from '../Model';
 import { EventEmitter } from '../../EventEmitter';
 import { IConfig, IElementPosition, IOptions, IElementTouch, EventTypes } from '../../types/types';
 

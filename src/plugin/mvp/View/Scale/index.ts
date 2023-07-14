@@ -1,7 +1,7 @@
 import './scale.scss';
 import { IMarkParameters, IOptions, EventTypes } from '../../../types/types';
 import { EventEmitter } from '../../../EventEmitter';
-import SubView from '../SubView/SubView';
+import SubView from '../SubView';
 
 class Scale extends SubView {
   private scale: Element | null = null;

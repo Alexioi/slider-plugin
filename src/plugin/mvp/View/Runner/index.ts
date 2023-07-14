@@ -3,7 +3,7 @@ import './runner.scss';
 import { EventTypes, IOptions, ITarget, TouchRoute } from '../../../types/types';
 
 import { EventEmitter } from '../../../EventEmitter';
-import SubView from '../SubView/SubView';
+import SubView from '../SubView';
 
 class Runner extends SubView {
   private runner: HTMLDivElement | null = null;

@@ -2,12 +2,12 @@
  * @jest-environment jsdom
  */
 
-import View from './View';
-import sliderOptions from '../../app/sliderOptions';
+import View from '.';
+import sliderOptions from '../../App/sliderOptions';
 import { EventEmitter } from '../../EventEmitter';
-import Tip from './Tip/Tip';
-import Runner from './Runner/Runner';
-import Scale from './Scale/Scale';
+import Tip from './Tip';
+import Runner from './Runner';
+import Scale from './Scale';
 
 jest.mock('../../EventEmitter/EventEmitter');
 jest.mock('./Runner/Runner.ts');

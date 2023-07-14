@@ -1,5 +1,5 @@
 import './panel.scss';
-import App from '../../plugin/app/App';
+import App from '../../plugin/App';
 import { IConfig, IOptions } from '../../plugin/types/types';
 
 class Panel {

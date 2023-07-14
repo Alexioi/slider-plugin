@@ -1,4 +1,4 @@
-import Validator from './validator/Validator';
+import Validator from './Validator';
 
 import { EventEmitter } from '../../EventEmitter';
 import { IOptions, IConfig, IElementPosition, IElementTouch, EventTypes } from '../../types/types';

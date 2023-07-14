@@ -1,7 +1,7 @@
 import { EventEmitter } from '../EventEmitter';
-import Model from '../mvp/model/Model';
-import View from '../mvp/view/View';
-import Presenter from '../mvp/presenter/Presenter';
+import Model from '../mvp/Model';
+import View from '../mvp/View';
+import Presenter from '../mvp/Presenter';
 import sliderOptions from './sliderOptions';
 import { IConfig, ICallbacks, IOptions, EventTypes } from '../types/types';
 

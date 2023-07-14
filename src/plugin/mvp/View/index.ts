@@ -2,10 +2,10 @@ import './view.scss';
 
 import { EventTypes, IOptions, ITarget } from '../../types/types';
 
-import Tip from './Tip/Tip';
-import Runner from './Runner/Runner';
-import Range from './Range/Range';
-import Scale from './Scale/Scale';
+import Tip from './Tip';
+import Runner from './Runner';
+import Range from './Range';
+import Scale from './Scale';
 import { EventEmitter } from '../../EventEmitter';
 
 class View {

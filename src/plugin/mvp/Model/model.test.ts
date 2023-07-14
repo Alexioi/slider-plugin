@@ -1,6 +1,6 @@
 import { EventEmitter } from '../../EventEmitter';
-import Model from './Model';
-import sliderOptions from '../../app/sliderOptions';
+import Model from '.';
+import sliderOptions from '../../App/sliderOptions';
 import { IOptions } from '../../types/types';
 
 describe('Model', () => {
