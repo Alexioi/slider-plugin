@@ -5,7 +5,7 @@ import { EventTypes, IOptions, ITarget, TouchRoute } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
 import { helpers } from '../../../helpers';
 
-class Runner {
+class Runner extends EventEmitter<EventTypes> {
   private runner: HTMLDivElement | null = null;
 
   private valueIndex: 0 | 1;
@@ -14,24 +14,16 @@ class Runner {
 
   private isRender = false;
 
-  private eventEmitter: EventEmitter<EventTypes>;
-
   private options: IOptions;
 
   private root: Element;
 
-  constructor(
-    root: Element,
-    options: IOptions,
-    eventEmitter: EventEmitter<EventTypes>,
-    valueIndex: 0 | 1,
-    target: ITarget,
-  ) {
+  constructor(root: Element, options: IOptions, valueIndex: 0 | 1, target: ITarget) {
+    super();
+
     this.root = root;
 
     this.options = options;
-
-    this.eventEmitter = eventEmitter;
 
     this.valueIndex = valueIndex;
     this.target = target;
@@ -85,7 +77,7 @@ class Runner {
     const onClickArrow = (touchRoute: TouchRoute): void => {
       keyboardEvent.preventDefault();
       this.target.valueIndex = valueIndex;
-      this.eventEmitter.emit('ChangedRunnerPositionStep', { valueIndex, touchRoute });
+      this.emit('ChangedRunnerPositionStep', { valueIndex, touchRoute });
     };
 
     if (code === 'ArrowUp' || code === 'ArrowRight') {
@@ -112,7 +104,7 @@ class Runner {
 
       const position = helpers.getPosition(this.root, pointerEvent, this.options.isVertical);
 
-      this.eventEmitter.emit('ChangedRunnerPosition', { position, valueIndex });
+      this.emit('ChangedRunnerPosition', { position, valueIndex });
     };
 
     const onPointerUp = (): void => {

@@ -4,13 +4,12 @@
 
 import Scale from '.';
 import sliderOptions from '../../../App/sliderOptions';
-import { EventEmitter } from '../../../EventEmitter';
 
 const node = document.createElement('div');
-const eventEmitter = new EventEmitter();
+
 const state = { ...sliderOptions.defaultConfig };
 
-const scale = new Scale(node, state, eventEmitter);
+const scale = new Scale(node, state);
 scale.render();
 const scaleNode = node.querySelector('div');
 let markNodes = node.querySelectorAll('span');

@@ -1,9 +1,8 @@
-import { EventEmitter } from '../EventEmitter';
 import Model from '../mvp/Model';
 import View from '../mvp/View';
 import Presenter from '../mvp/Presenter';
 import sliderOptions from './sliderOptions';
-import { IConfig, ICallbacks, IOptions, EventTypes } from '../types';
+import { IConfig, ICallbacks, IOptions } from '../types';
 
 class App {
   private callbacks: ICallbacks = { onChange: () => {} };
@@ -12,9 +11,7 @@ class App {
 
   private view: View | null = null;
 
-  private presenter: Presenter | null = null;
-
-  private eventEmitter: EventEmitter<EventTypes> | null = null;
+  private presenter!: Presenter;
 
   constructor(root: HTMLElement, config?: IConfig) {
     this.init(root, config);
@@ -40,17 +37,16 @@ class App {
     this.callbacks = { ...sliderOptions.callbacks };
     const options: IOptions = JSON.parse(JSON.stringify({ ...sliderOptions.defaultConfig }));
 
-    this.eventEmitter = new EventEmitter();
-    this.model = new Model(options, this.eventEmitter);
-    this.view = new View(node, options, this.eventEmitter);
-    this.presenter = new Presenter(this.view, this.model, this.eventEmitter);
+    this.model = new Model(options);
+    this.view = new View(node, options);
+    this.presenter = new Presenter(this.view, this.model);
     this.attachEventEmitters();
 
     this.update(config);
   }
 
   private attachEventEmitters(): void {
-    this.eventEmitter?.subscribe('onChange', (options: IOptions) => {
+    this.presenter.subscribe('onChange', (options: IOptions) => {
       this.callbacks.onChange(options);
     });
   }

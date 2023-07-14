@@ -4,7 +4,7 @@
 
 import View from '.';
 import sliderOptions from '../../App/sliderOptions';
-import { EventEmitter } from '../../EventEmitter';
+
 import Tip from './Tip';
 import Runner from './Runner';
 import Scale from './Scale';
@@ -15,10 +15,10 @@ jest.mock('./Scale/Scale.ts');
 jest.mock('./Tip/Tip.ts');
 
 const node = document.createElement('div');
-const eventEmitter = new EventEmitter();
+
 const state = { ...sliderOptions.defaultConfig };
 
-const view = new View(node, state, eventEmitter);
+const view = new View(node, state);
 view.render(state);
 const viewNodes = node.querySelectorAll('div');
 

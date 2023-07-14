@@ -8,33 +8,32 @@ import Range from './Range';
 import Scale from './Scale';
 import { EventEmitter } from '../../EventEmitter';
 
-class View {
+class View extends EventEmitter<EventTypes> {
   private root: HTMLElement;
 
   private options: IOptions;
 
-  private eventEmitter: EventEmitter<EventTypes>;
-
   private barContainer: Element | null = null;
 
-  private range: Range | null = null;
+  public range: Range | null = null;
 
-  private tip: Tip | null = null;
+  public tip: Tip | null = null;
 
-  private slider: Element | null = null;
+  public slider: Element | null = null;
 
-  private runnerFrom!: Runner;
+  public runnerFrom!: Runner;
 
-  private runnerTo!: Runner;
+  public runnerTo!: Runner;
 
-  private scale!: Scale;
+  public scale!: Scale;
 
   private target: ITarget = { valueIndex: 0 };
 
-  constructor(root: HTMLElement, options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
+  constructor(root: HTMLElement, options: IOptions) {
+    super();
+
     this.root = root;
     this.options = options;
-    this.eventEmitter = eventEmitter;
 
     this.init();
   }
@@ -82,21 +81,21 @@ class View {
 
   private init(): void {
     this.createElements();
-    const { eventEmitter, slider, barContainer, options, target } = this;
+    const { slider, barContainer, options, target } = this;
 
     if (slider === null || barContainer === null) {
       return;
     }
 
-    this.tip = new Tip(slider, options, eventEmitter, target);
+    this.tip = new Tip(slider, options, target);
 
     this.range = new Range(barContainer, options);
 
-    this.scale = new Scale(slider, options, eventEmitter);
+    this.scale = new Scale(slider, options);
 
-    this.runnerFrom = new Runner(barContainer, options, eventEmitter, 0, target);
+    this.runnerFrom = new Runner(barContainer, options, 0, target);
 
-    this.runnerTo = new Runner(barContainer, options, eventEmitter, 1, target);
+    this.runnerTo = new Runner(barContainer, options, 1, target);
 
     this.render(options);
   }

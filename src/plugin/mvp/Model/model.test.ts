@@ -1,11 +1,10 @@
-import { EventEmitter } from '../../EventEmitter';
 import Model from '.';
 import sliderOptions from '../../App/sliderOptions';
 import { IOptions } from '../../types';
 
 describe('Model', () => {
   let options: IOptions = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));
-  const model = new Model(options, new EventEmitter());
+  const model = new Model(options);
 
   beforeEach(() => {
     options = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));

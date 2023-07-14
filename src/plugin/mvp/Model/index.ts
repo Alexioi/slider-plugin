@@ -3,15 +3,14 @@ import Validator from './Validator';
 import { EventEmitter } from '../../EventEmitter';
 import { IOptions, IConfig, IElementPosition, IElementTouch, EventTypes } from '../../types';
 
-class Model {
+class Model extends EventEmitter<EventTypes> {
   private options: IOptions;
-
-  private eventEmitter: EventEmitter<EventTypes>;
 
   private validator: Validator;
 
-  constructor(options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
-    this.eventEmitter = eventEmitter;
+  constructor(options: IOptions) {
+    super();
+
     this.options = options;
     this.validator = new Validator(this.options);
   }
@@ -19,7 +18,7 @@ class Model {
   public updateOptions(config: IConfig): void {
     this.validator.validateOptions(config);
 
-    this.eventEmitter.emit('UpdatedModelOptions', this.options);
+    this.emit('UpdatedModelOptions', this.options);
   }
 
   public getOptions(): IOptions {
@@ -31,7 +30,7 @@ class Model {
 
     this.changeValueDependingOnStep(newValue, valueIndex);
 
-    this.eventEmitter.emit('UpdatedModelValues', this.options);
+    this.emit('UpdatedModelValues', this.options);
   }
 
   public calculateNearValueUsingFraction(position: number): void {
@@ -41,14 +40,14 @@ class Model {
 
     this.changeValueDependingOnStep(newValue, nearValueId);
 
-    this.eventEmitter.emit('UpdatedModelValues', this.options);
+    this.emit('UpdatedModelValues', this.options);
   }
 
   public updateNearValue(newValue: number): void {
     const nearValueId = this.getNearValueId(newValue);
 
     this.options.values[nearValueId] = newValue;
-    this.eventEmitter.emit('UpdatedModelValues', this.options);
+    this.emit('UpdatedModelValues', this.options);
   }
 
   public updateValueByStep({ valueIndex, touchRoute }: IElementTouch): void {
@@ -65,7 +64,7 @@ class Model {
       this.options.values[valueIndex] = newValue;
     }
 
-    this.eventEmitter.emit('UpdatedModelValues', this.options);
+    this.emit('UpdatedModelValues', this.options);
   }
 
   private getNearValueId(newValue: number): 0 | 1 {

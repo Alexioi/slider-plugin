@@ -10,11 +10,11 @@ import { ITarget } from '../../../types';
 jest.mock('../../../EventEmitter/EventEmitter');
 
 const node = document.createElement('div');
-const eventEmitter = new EventEmitter();
+
 const state = { ...sliderOptions.defaultConfig };
 const target: ITarget = { valueIndex: 1 };
 
-const runner = new Runner(node, state, eventEmitter, 0, target);
+const runner = new Runner(node, state, 0, target);
 runner.render();
 const runnerNode = node.querySelector('div');
 

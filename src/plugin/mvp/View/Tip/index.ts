@@ -9,7 +9,7 @@ type TipNode = {
   valueIndex?: 0 | 1;
 };
 
-class Tip {
+class Tip extends EventEmitter<EventTypes> {
   private tipLine!: HTMLDivElement;
 
   private tipFrom!: HTMLSpanElement;
@@ -20,8 +20,6 @@ class Tip {
 
   private target: ITarget;
 
-  private eventEmitter: EventEmitter<EventTypes>;
-
   private options: IOptions;
 
   private root: Element;
@@ -29,14 +27,14 @@ class Tip {
   constructor(
     node: Element,
     options: IOptions,
-    eventEmitter: EventEmitter<EventTypes>,
+
     target: ITarget,
   ) {
+    super();
+
     this.root = node;
 
     this.options = options;
-
-    this.eventEmitter = eventEmitter;
 
     this.target = target;
 
@@ -152,13 +150,13 @@ class Tip {
       const position = helpers.getPosition(this.root, pointerEvent, this.options.isVertical);
 
       if (typeof valueIndex === 'undefined') {
-        this.eventEmitter.emit('ChangedNearRunnerPosition', { position });
+        this.emit('ChangedNearRunnerPosition', { position });
         return;
       }
 
       this.target.valueIndex = valueIndex;
 
-      this.eventEmitter.emit('ChangedRunnerPosition', { position, valueIndex });
+      this.emit('ChangedRunnerPosition', { position, valueIndex });
     };
 
     const onPointerUp = (): void => {

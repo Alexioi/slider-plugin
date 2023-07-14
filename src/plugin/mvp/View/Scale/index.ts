@@ -4,21 +4,19 @@ import { EventEmitter } from '../../../EventEmitter';
 
 import { helpers } from '../../../helpers';
 
-class Scale {
+class Scale extends EventEmitter<EventTypes> {
   private scale!: HTMLDivElement;
-
-  private eventEmitter: EventEmitter<EventTypes>;
 
   private options: IOptions;
 
   private root: Element;
 
-  constructor(root: Element, options: IOptions, eventEmitter: EventEmitter<EventTypes>) {
+  constructor(root: Element, options: IOptions) {
+    super();
+
     this.root = root;
 
     this.options = options;
-
-    this.eventEmitter = eventEmitter;
 
     this.init();
   }
@@ -77,7 +75,7 @@ class Scale {
     const intInnerHtml = Number(innerHTML);
 
     if (!isNaN(intInnerHtml)) {
-      this.eventEmitter.emit('ClickScale', { targetNumber: intInnerHtml });
+      this.emit('ClickScale', { targetNumber: intInnerHtml });
     }
   }
 
