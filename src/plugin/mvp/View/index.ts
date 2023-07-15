@@ -30,7 +30,7 @@ class View extends EventEmitter<EventTypes> {
   public render(options: IOptions): void {
     this.switchTarget(options);
 
-    const { isVertical, hasScale } = options;
+    const { isVertical, hasScale, min, max } = options;
 
     if (isVertical) {
       this.dom.slider.classList.add('slider_vertical');
@@ -40,14 +40,8 @@ class View extends EventEmitter<EventTypes> {
 
     this.subViews.runnerFrom.render(options.isRange);
     this.subViews.runnerTo.render(options.isRange);
-
     this.subViews.range.render();
-
-    if (hasScale) {
-      this.subViews.scale.render();
-    } else {
-      this.subViews.scale.destroy();
-    }
+    this.subViews.scale.render({ hasScale, min, max, isVertical });
 
     this.changeValues(options);
   }
@@ -64,6 +58,7 @@ class View extends EventEmitter<EventTypes> {
       this.subViews.tip.destroy();
     }
 
+    this.subViews.scale.update();
     this.subViews.range.update({ min, max, isVertical, isRange, from, to });
     this.subViews.runnerFrom.update({ isVertical, min, max, from, to });
     this.subViews.runnerTo.update({ isVertical, min, max, from, to });

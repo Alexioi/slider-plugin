@@ -25,7 +25,7 @@ const initSubViews = (dom: Dom, options: IOptions, target: 0 | 1): SubViews => {
 
   const range = new Range(dom.barContainer);
 
-  const scale = new Scale(dom.slider, options);
+  const scale = new Scale(dom.slider);
 
   const runnerFrom = new Runner(dom.barContainer, RunnerId.From, target);
 

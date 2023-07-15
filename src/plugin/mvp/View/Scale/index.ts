@@ -1,32 +1,46 @@
 import './scale.scss';
-import { IMarkParameters, IOptions, EventTypes } from '../../../types';
+import { IMarkParameters, EventTypes } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
 import { Dom } from './type';
-import { createElement, getScalePercents } from './methods';
+import { createElement, deleteMarks, getScalePercents } from './methods';
 
 class Scale extends EventEmitter<EventTypes> {
   private dom: Dom;
 
-  private options: IOptions;
+  private props: { min: number; max: number; isVertical: boolean; isRender: boolean } = {
+    min: 0,
+    max: 100,
+    isVertical: false,
+    isRender: false,
+  };
 
-  constructor(root: HTMLDivElement, options: IOptions) {
+  constructor(root: HTMLDivElement) {
     super();
-
-    this.options = options;
 
     const { dom } = this.init(root);
 
     this.dom = dom;
   }
 
-  public render(): void {
-    this.deleteMarks();
+  public render({
+    min,
+    max,
+    isVertical,
+  }: {
+    min: number;
+    max: number;
+    isVertical: boolean;
+    hasScale: boolean;
+  }): void {
+    this.props = { min, max, isVertical, isRender: false };
+
+    if (this.props.isRender) {
+      return;
+    }
+
+    this.props = { min, max, isVertical, isRender: true };
 
     this.dom.root.appendChild(this.dom.scale);
-
-    const scaleParameters = this.getScaleParameters();
-
-    this.draw(scaleParameters);
   }
 
   public destroy(): void {
@@ -43,14 +57,16 @@ class Scale extends EventEmitter<EventTypes> {
     return { dom };
   }
 
-  private deleteMarks(): void {
-    while (this.dom.scale.firstChild) {
-      this.dom.scale.removeChild(this.dom.scale.firstChild);
-    }
+  public update() {
+    deleteMarks(this.dom.scale);
+
+    const scaleParameters = this.getScaleParameters();
+
+    this.draw(scaleParameters);
   }
 
   private draw(parameters: IMarkParameters[]): void {
-    const { isVertical } = this.options;
+    const { isVertical } = this.props;
 
     parameters.forEach((parameter) => {
       const { percent, text } = parameter;
@@ -65,7 +81,7 @@ class Scale extends EventEmitter<EventTypes> {
   }
 
   private handlerResizeScale(): void {
-    this.render();
+    this.update();
   }
 
   private clickScale(pointerEvent: PointerEvent): void {
@@ -82,7 +98,7 @@ class Scale extends EventEmitter<EventTypes> {
   }
 
   private getScaleParameters(): IMarkParameters[] {
-    const { max, min, isVertical } = this.options;
+    const { max, min, isVertical } = this.props;
     const { offsetHeight, offsetWidth } = this.dom.scale;
     const scaleLength = isVertical ? offsetHeight : offsetWidth;
     const scalePercents = getScalePercents(scaleLength);

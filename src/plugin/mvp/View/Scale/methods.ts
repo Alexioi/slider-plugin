@@ -23,4 +23,10 @@ const getScalePercents = (sliderLength: number): number[] => {
   return [0, 100];
 };
 
-export { createElement, getScalePercents };
+const deleteMarks = (scale: HTMLDivElement): void => {
+  while (scale.firstChild !== null) {
+    scale.removeChild(scale.firstChild);
+  }
+};
+
+export { createElement, getScalePercents, deleteMarks };
