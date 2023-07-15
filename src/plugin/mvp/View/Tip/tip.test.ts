@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import Tip from '.';
-import sliderOptions from '../../../App/sliderOptions';
+import { Tip } from '.';
+import { sliderOptions } from '../../../App/sliderOptions';
 
 import { ITarget } from '../../../types';
 

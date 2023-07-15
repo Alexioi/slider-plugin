@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import Scale from '.';
-import sliderOptions from '../../../App/sliderOptions';
+import { Scale } from '.';
+import { sliderOptions } from '../../../App/sliderOptions';
 
 const node = document.createElement('div');
 

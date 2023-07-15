@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import Range from '.';
-import sliderOptions from '../../../App/sliderOptions';
+import { Range } from '.';
+import { sliderOptions } from '../../../App/sliderOptions';
 
 const node = document.createElement('div');
 

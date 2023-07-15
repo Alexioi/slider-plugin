@@ -5,7 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 const isDocs = process.env.NODE_isDocs;
 
-const entry = isDocs ? './src/docs/docs.ts' : './src/plugin/plugin.ts';
+const entry = isDocs ? './src/docs' : './src/plugin';
 
 const plugins = isDocs
   ? [

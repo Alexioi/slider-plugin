@@ -2,10 +2,10 @@ import './view.scss';
 
 import { EventTypes, IOptions, ITarget } from '../../types';
 
-import Tip from './Tip';
-import Runner from './Runner';
-import Range from './Range';
-import Scale from './Scale';
+import { Tip } from './Tip';
+import { Runner } from './Runner';
+import { Range } from './Range';
+import { Scale } from './Scale';
 import { EventEmitter } from '../../EventEmitter';
 import { Dom } from './type';
 import { createElements } from './methods';
@@ -105,4 +105,4 @@ class View extends EventEmitter<EventTypes> {
   }
 }
 
-export default View;
+export { View };

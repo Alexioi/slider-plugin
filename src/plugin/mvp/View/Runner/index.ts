@@ -116,4 +116,4 @@ class Runner extends EventEmitter<EventTypes> {
   }
 }
 
-export default Runner;
+export { Runner };

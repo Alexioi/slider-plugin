@@ -1,5 +1,5 @@
-import Model from '.';
-import sliderOptions from '../../App/sliderOptions';
+import { Model } from '.';
+import { sliderOptions } from '../../App/sliderOptions';
 import { IOptions } from '../../types';
 
 describe('Model', () => {

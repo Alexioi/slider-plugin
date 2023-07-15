@@ -1,5 +1,5 @@
-import Validator from '.';
-import sliderOptions from '../../../App/sliderOptions';
+import { Validator } from '.';
+import { sliderOptions } from '../../../App/sliderOptions';
 import { IOptions } from '../../../types';
 
 describe('Validator', () => {

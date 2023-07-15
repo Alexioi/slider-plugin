@@ -99,4 +99,4 @@ class Scale extends EventEmitter<EventTypes> {
   }
 }
 
-export default Scale;
+export { Scale };

@@ -12,4 +12,4 @@ const sliderOptions = {
   callbacks: { onChange: () => {} },
 };
 
-export default sliderOptions;
+export { sliderOptions };

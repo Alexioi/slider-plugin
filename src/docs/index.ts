@@ -1,7 +1,7 @@
 import configs from './data.json';
 import './page/docs.scss';
-import Panel from './panel/Panel';
-import '../plugin/plugin';
+import { Panel } from './panel/Panel';
+import '../plugin';
 
 const slider = $('.js-panel__example').slider();
 

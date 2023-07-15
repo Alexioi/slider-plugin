@@ -36,4 +36,4 @@ class Range {
   }
 }
 
-export default Range;
+export { Range };

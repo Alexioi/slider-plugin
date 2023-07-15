@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import Runner from '.';
-import sliderOptions from '../../../App/sliderOptions';
+import { Runner } from '.';
+import { sliderOptions } from '../../../App/sliderOptions';
 import { EventEmitter } from '../../../EventEmitter';
 import { ITarget } from '../../../types';
 

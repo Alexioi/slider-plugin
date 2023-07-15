@@ -1,7 +1,7 @@
-import Model from '../mvp/Model';
-import View from '../mvp/View';
-import Presenter from '../mvp/Presenter';
-import sliderOptions from './sliderOptions';
+import { Model } from '../mvp/Model';
+import { View } from '../mvp/View';
+import { Presenter } from '../mvp/Presenter';
+import { sliderOptions } from './sliderOptions';
 import { IConfig, ICallbacks, IOptions } from '../types';
 
 class App {
@@ -52,4 +52,4 @@ class App {
   }
 }
 
-export default App;
+export { App };

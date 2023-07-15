@@ -161,4 +161,4 @@ class Tip extends EventEmitter<EventTypes> {
   }
 }
 
-export default Tip;
+export { Tip };
