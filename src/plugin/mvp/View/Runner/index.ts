@@ -1,84 +1,102 @@
 import './runner.scss';
 
-import { EventTypes, IOptions, ITarget, TouchRoute } from '../../../types';
-
+import { EventTypes, TouchRoute } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
 import { helpers } from '../../../helpers';
-import { Dom } from './type';
-import { createElements } from './methods';
+import { Dom, Props } from './type';
+import { createElements, initProps, switchIsRender } from './methods';
 
 class Runner extends EventEmitter<EventTypes> {
   private dom: Dom;
 
-  private valueIndex: 0 | 1;
+  private props: Props;
 
-  private target: ITarget;
+  private isVertical = false;
 
-  private isRender = false;
-
-  private options: IOptions;
-
-  constructor(root: HTMLDivElement, options: IOptions, valueIndex: 0 | 1, target: ITarget) {
+  constructor(root: HTMLDivElement, valueIndex: 0 | 1, target: 0 | 1) {
     super();
 
-    this.options = options;
+    this.handlePointerdownRunner = this.handlePointerdownRunner.bind(this);
+    this.handleKeydownRunner = this.handleKeydownRunner.bind(this);
 
-    this.valueIndex = valueIndex;
-    this.target = target;
-
-    const { dom } = this.init(root);
+    const { dom, props } = this.init(root, valueIndex, target);
 
     this.dom = dom;
+    this.props = props;
   }
 
-  public render(): void {
-    const { target, valueIndex: typeIndex } = this;
-    const { isVertical } = this.options;
-
-    if (this.dom.runner instanceof HTMLElement) {
-      if (!this.isRender) {
-        this.dom.root.appendChild(this.dom.runner);
-        this.isRender = true;
+  public render(isRange: boolean): void {
+    if (this.props.valueIndex === 0) {
+      if (isRange === false && this.props.isRender !== false) {
+        this.destroy();
+        return;
       }
-
-      if (target.valueIndex === typeIndex) {
-        this.dom.runner.classList.add('slider__runner_targeted');
-      } else {
-        this.dom.runner.classList.remove('slider__runner_targeted');
-      }
-
-      const percent = helpers.calculatePercent(
-        this.options.values[typeIndex],
-        this.options.min,
-        this.options.max,
-      );
-      const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
-
-      this.dom.runner.style.cssText = styleRunner;
     }
+
+    if (this.props.isRender) {
+      return;
+    }
+
+    this.dom.root.appendChild(this.dom.runner);
+    this.props = switchIsRender(this.props);
   }
 
-  public destroy(): void {
+  private destroy(): void {
     this.dom.runner.remove();
-    this.isRender = false;
+    this.props = switchIsRender(this.props);
   }
 
-  private init(root: HTMLDivElement): { dom: Dom } {
+  private init(root: HTMLDivElement, valueIndex: 0 | 1, target: 0 | 1): { dom: Dom; props: Props } {
     const dom = createElements(root);
+    const props = initProps(valueIndex, target);
 
-    dom.runner.addEventListener('pointerdown', this.attachEventOnPointerDown.bind(this));
-    dom.runner.addEventListener('keydown', this.attachEventOnPressingKeyboard.bind(this));
+    this.attachEventHandlers(dom);
 
-    return { dom };
+    return { dom, props };
   }
 
-  private attachEventOnPressingKeyboard(keyboardEvent: KeyboardEvent): void {
+  private attachEventHandlers(dom: Dom) {
+    dom.runner.addEventListener('pointerdown', this.handlePointerdownRunner);
+    dom.runner.addEventListener('keydown', this.handleKeydownRunner);
+  }
+
+  public update({
+    isVertical,
+    from,
+    to,
+    min,
+    max,
+  }: {
+    isVertical: boolean;
+    from: number;
+    to: number;
+    min: number;
+    max: number;
+  }) {
+    const { target, valueIndex } = this.props;
+
+    if (target === valueIndex) {
+      this.dom.runner.classList.add('slider__runner_targeted');
+    } else {
+      this.dom.runner.classList.remove('slider__runner_targeted');
+    }
+
+    const value = this.props.valueIndex === 0 ? from : to;
+
+    const percent = helpers.calculatePercent(value, min, max);
+    const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
+
+    this.dom.runner.style.cssText = styleRunner;
+  }
+
+  private handleKeydownRunner(keyboardEvent: KeyboardEvent): void {
     const { code } = keyboardEvent;
-    const { valueIndex } = this;
 
     const onClickArrow = (touchRoute: TouchRoute): void => {
       keyboardEvent.preventDefault();
-      this.target.valueIndex = valueIndex;
+      const { valueIndex } = this.props;
+
+      this.props.target = valueIndex;
       this.emit('ChangedRunnerPositionStep', { valueIndex, touchRoute });
     };
 
@@ -91,17 +109,17 @@ class Runner extends EventEmitter<EventTypes> {
     }
   }
 
-  private attachEventOnPointerDown(): void {
+  private handlePointerdownRunner(): void {
     const onPointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
 
       this.dom.runner.ondragstart = () => false;
 
-      const { valueIndex } = this;
+      const { valueIndex } = this.props;
 
-      this.target.valueIndex = valueIndex;
+      this.props.target = valueIndex;
 
-      const position = helpers.getPosition(this.dom.root, pointerEvent, this.options.isVertical);
+      const position = helpers.getPosition(this.dom.root, pointerEvent, this.isVertical);
 
       this.emit('ChangedRunnerPosition', { position, valueIndex });
     };

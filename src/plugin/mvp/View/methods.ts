@@ -3,7 +3,7 @@ import { Range } from './Range';
 import { Runner } from './Runner';
 import { Scale } from './Scale';
 import { Tip } from './Tip';
-import { IOptions, ITarget } from '../../types';
+import { IOptions } from '../../types';
 import { RunnerId } from './enums';
 
 const createElements = (root: HTMLElement): Dom => {
@@ -19,16 +19,17 @@ const createElements = (root: HTMLElement): Dom => {
   return { root, barContainer, slider };
 };
 
-const initSubViews = (dom: Dom, options: IOptions, target: ITarget): SubViews => {
+const initSubViews = (dom: Dom, options: IOptions, target: 0 | 1): SubViews => {
+  // @ts-ignore
   const tip = new Tip(dom.slider, options, target);
 
   const range = new Range(dom.barContainer);
 
   const scale = new Scale(dom.slider, options);
 
-  const runnerFrom = new Runner(dom.barContainer, options, RunnerId.From, target);
+  const runnerFrom = new Runner(dom.barContainer, RunnerId.From, target);
 
-  const runnerTo = new Runner(dom.barContainer, options, RunnerId.To, target);
+  const runnerTo = new Runner(dom.barContainer, RunnerId.To, target);
 
   return { tip, range, scale, runnerFrom, runnerTo };
 };

@@ -1,6 +1,6 @@
 import './view.scss';
 
-import { EventTypes, IOptions, ITarget } from '../../types';
+import { EventTypes, IOptions } from '../../types';
 
 import { EventEmitter } from '../../EventEmitter';
 import { Dom, SubViews } from './type';
@@ -14,7 +14,7 @@ class View extends EventEmitter<EventTypes> {
 
   private options: IOptions;
 
-  private target: ITarget = { valueIndex: 0 };
+  private target: 0 | 1 = 0;
 
   constructor(root: HTMLElement, options: IOptions) {
     super();
@@ -37,6 +37,9 @@ class View extends EventEmitter<EventTypes> {
     } else {
       this.dom.slider.classList.remove('slider_vertical');
     }
+
+    this.subViews.runnerFrom.render(options.isRange);
+    this.subViews.runnerTo.render(options.isRange);
 
     this.subViews.range.render();
 
@@ -62,14 +65,8 @@ class View extends EventEmitter<EventTypes> {
     }
 
     this.subViews.range.update({ min, max, isVertical, isRange, from, to });
-
-    if (isRange) {
-      this.subViews.runnerFrom.render();
-    } else {
-      this.subViews.runnerFrom.destroy();
-    }
-
-    this.subViews.runnerTo.render();
+    this.subViews.runnerFrom.update({ isVertical, min, max, from, to });
+    this.subViews.runnerTo.update({ isVertical, min, max, from, to });
   }
 
   private init(root: HTMLElement): { dom: Dom; subViews: SubViews } {
@@ -85,7 +82,7 @@ class View extends EventEmitter<EventTypes> {
     const { abs } = Math;
     const isToTarget = abs(min - values[RunnerId.From]) / abs(max - min) < 0.5;
 
-    this.target.valueIndex = isToTarget ? 1 : 0;
+    this.target = isToTarget ? 1 : 0;
   }
 }
 

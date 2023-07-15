@@ -1,6 +1,12 @@
 type Dom = {
-  root: Element;
+  root: HTMLDivElement;
   runner: HTMLDivElement;
 };
 
-export { Dom };
+type Props = {
+  isRender: boolean;
+  valueIndex: 0 | 1;
+  target: 0 | 1;
+};
+
+export { Dom, Props };
