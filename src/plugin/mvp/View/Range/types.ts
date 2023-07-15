@@ -3,4 +3,13 @@ type Dom = {
   range: HTMLDivElement;
 };
 
-export { Dom };
+type RangeOptions = {
+  min: number;
+  max: number;
+  isVertical: boolean;
+  isRange: boolean;
+  from: number;
+  to: number;
+};
+
+export { Dom, RangeOptions };

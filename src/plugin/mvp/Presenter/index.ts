@@ -14,8 +14,7 @@ class Presenter extends EventEmitter<EventTypes> {
     this.view = view;
     this.model = model;
 
-    this.attachEventEmittersToModel();
-    this.attachEventEmittersToView();
+    this.attachEventEmittersToModel().attachEventEmittersToView();
   }
 
   public updateOptions(config: IConfig): void {
@@ -26,7 +25,7 @@ class Presenter extends EventEmitter<EventTypes> {
     return this.model.getOptions();
   }
 
-  private attachEventEmittersToModel(): void {
+  private attachEventEmittersToModel(): Presenter {
     const notifyModelClickedScale = ({ targetNumber }: { targetNumber: number }) => {
       this.model.updateNearValue(targetNumber);
     };
@@ -43,25 +42,36 @@ class Presenter extends EventEmitter<EventTypes> {
       this.model.calculateNearValueUsingFraction(position);
     };
 
-    this.view.scale.subscribe('ClickScale', notifyModelClickedScale);
+    this.view.subViews.scale.subscribe('ClickScale', notifyModelClickedScale);
 
-    this.view.runnerFrom.subscribe('ChangedRunnerPosition', notifyModelAboutChangedRunnerPosition);
-    this.view.runnerTo.subscribe('ChangedRunnerPosition', notifyModelAboutChangedRunnerPosition);
+    this.view.subViews.runnerFrom.subscribe(
+      'ChangedRunnerPosition',
+      notifyModelAboutChangedRunnerPosition,
+    );
+    this.view.subViews.runnerTo.subscribe(
+      'ChangedRunnerPosition',
+      notifyModelAboutChangedRunnerPosition,
+    );
 
-    this.view.runnerFrom.subscribe('ChangedRunnerPositionStep', notifyModelAboutTouchValue);
-    this.view.runnerTo.subscribe('ChangedRunnerPositionStep', notifyModelAboutTouchValue);
+    this.view.subViews.runnerFrom.subscribe(
+      'ChangedRunnerPositionStep',
+      notifyModelAboutTouchValue,
+    );
+    this.view.subViews.runnerTo.subscribe('ChangedRunnerPositionStep', notifyModelAboutTouchValue);
 
-    this.view.runnerFrom.subscribe(
+    this.view.subViews.runnerFrom.subscribe(
       'ChangedNearRunnerPosition',
       notifyModelAboutChangedNearRunnerPosition,
     );
-    this.view.runnerTo.subscribe(
+    this.view.subViews.runnerTo.subscribe(
       'ChangedNearRunnerPosition',
       notifyModelAboutChangedNearRunnerPosition,
     );
+
+    return this;
   }
 
-  private attachEventEmittersToView(): void {
+  private attachEventEmittersToView(): Presenter {
     const notifyViewUpdatedModelOptions = (options: IOptions): void => {
       this.view.render(options);
       this.emit('onChange', options);
@@ -75,6 +85,8 @@ class Presenter extends EventEmitter<EventTypes> {
     this.model.subscribe('UpdatedModelOptions', notifyViewUpdatedModelOptions);
 
     this.model.subscribe('UpdatedModelValues', notifyViewUpdatedModelValues);
+
+    return this;
   }
 }
 

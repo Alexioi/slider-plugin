@@ -20,7 +20,7 @@
     "values": [100, 150]
   },
   {
-    "isRange": true,
+    "isRange": false,
     "isVertical": false,
     "hasTip": true,
     "hasScale": true,

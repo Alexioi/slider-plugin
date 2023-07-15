@@ -1,4 +1,10 @@
-import { Dom } from './type';
+import { Dom, SubViews } from './type';
+import { Range } from './Range';
+import { Runner } from './Runner';
+import { Scale } from './Scale';
+import { Tip } from './Tip';
+import { IOptions, ITarget } from '../../types';
+import { RunnerId } from './enums';
 
 const createElements = (root: HTMLElement): Dom => {
   const slider = document.createElement('div');
@@ -13,4 +19,18 @@ const createElements = (root: HTMLElement): Dom => {
   return { root, barContainer, slider };
 };
 
-export { createElements };
+const initSubViews = (dom: Dom, options: IOptions, target: ITarget): SubViews => {
+  const tip = new Tip(dom.slider, options, target);
+
+  const range = new Range(dom.barContainer);
+
+  const scale = new Scale(dom.slider, options);
+
+  const runnerFrom = new Runner(dom.barContainer, options, RunnerId.From, target);
+
+  const runnerTo = new Runner(dom.barContainer, options, RunnerId.To, target);
+
+  return { tip, range, scale, runnerFrom, runnerTo };
+};
+
+export { createElements, initSubViews };

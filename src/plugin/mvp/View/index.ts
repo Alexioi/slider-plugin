@@ -2,28 +2,17 @@ import './view.scss';
 
 import { EventTypes, IOptions, ITarget } from '../../types';
 
-import { Tip } from './Tip';
-import { Runner } from './Runner';
-import { Range } from './Range';
-import { Scale } from './Scale';
 import { EventEmitter } from '../../EventEmitter';
-import { Dom } from './type';
-import { createElements } from './methods';
+import { Dom, SubViews } from './type';
+import { createElements, initSubViews } from './methods';
+import { RunnerId } from './enums';
 
 class View extends EventEmitter<EventTypes> {
   private dom: Dom;
 
-  public range: Range | null = null;
-
-  public tip: Tip | null = null;
+  public subViews: SubViews;
 
   private options: IOptions;
-
-  public runnerFrom!: Runner;
-
-  public runnerTo!: Runner;
-
-  public scale!: Scale;
 
   private target: ITarget = { valueIndex: 0 };
 
@@ -32,11 +21,10 @@ class View extends EventEmitter<EventTypes> {
 
     this.options = options;
 
-    const { dom } = this.init(root);
+    const { dom, subViews } = this.init(root);
 
     this.dom = dom;
-
-    this.render(options);
+    this.subViews = subViews;
   }
 
   public render(options: IOptions): void {
@@ -50,10 +38,12 @@ class View extends EventEmitter<EventTypes> {
       this.dom.slider.classList.remove('slider_vertical');
     }
 
+    this.subViews.range.render();
+
     if (hasScale) {
-      this.scale.render();
+      this.subViews.scale.render();
     } else {
-      this.scale.destroy();
+      this.subViews.scale.destroy();
     }
 
     this.changeValues(options);
@@ -61,45 +51,39 @@ class View extends EventEmitter<EventTypes> {
 
   public changeValues(options: IOptions): void {
     this.options = options;
-    const { isRange, hasTip } = options;
+
+    const { min, max, isRange, hasTip, isVertical, values } = options;
+    const [from, to] = values;
 
     if (hasTip) {
-      this.tip?.render();
+      this.subViews.tip.render();
     } else {
-      this.tip?.destroy();
+      this.subViews.tip.destroy();
     }
 
-    this.range?.render();
+    this.subViews.range.update({ min, max, isVertical, isRange, from, to });
 
     if (isRange) {
-      this.runnerFrom.render();
+      this.subViews.runnerFrom.render();
     } else {
-      this.runnerFrom.destroy();
+      this.subViews.runnerFrom.destroy();
     }
 
-    this.runnerTo.render();
+    this.subViews.runnerTo.render();
   }
 
-  private init(root: HTMLElement): { dom: Dom } {
+  private init(root: HTMLElement): { dom: Dom; subViews: SubViews } {
     const dom = createElements(root);
     const { options, target } = this;
 
-    this.tip = new Tip(dom.slider, options, target);
+    const subViews = initSubViews(dom, options, target);
 
-    this.range = new Range(dom.barContainer, options);
-
-    this.scale = new Scale(dom.slider, options);
-
-    this.runnerFrom = new Runner(dom.barContainer, options, 0, target);
-
-    this.runnerTo = new Runner(dom.barContainer, options, 1, target);
-
-    return { dom };
+    return { dom, subViews };
   }
 
   private switchTarget({ values, max, min }: IOptions): void {
     const { abs } = Math;
-    const isToTarget = abs(min - values[0]) / abs(max - min) < 0.5;
+    const isToTarget = abs(min - values[RunnerId.From]) / abs(max - min) < 0.5;
 
     this.target.valueIndex = isToTarget ? 1 : 0;
   }
