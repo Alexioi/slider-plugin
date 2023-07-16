@@ -38,7 +38,7 @@ class View extends EventEmitter<EventTypes> {
       this.dom.slider.classList.remove('slider_vertical');
     }
 
-    this.subViews.tip.render(hasTip);
+    this.subViews.tip.render(hasTip, isRange, isVertical);
     this.subViews.runnerFrom.render(isRange);
     this.subViews.runnerTo.render(isRange);
     this.subViews.range.render();
