@@ -3,4 +3,13 @@ type Dom = {
   scale: HTMLDivElement;
 };
 
-export { Dom };
+type Props = { min: number; max: number; isVertical: boolean; isRender: boolean };
+
+type RenderProps = {
+  min: number;
+  max: number;
+  isVertical: boolean;
+  hasScale: boolean;
+};
+
+export { Dom, Props, RenderProps };

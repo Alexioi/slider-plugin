@@ -1,13 +1,13 @@
 import './scale.scss';
-import { IMarkParameters, EventTypes } from '../../../types';
+import { EventTypes } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
-import { Dom } from './type';
-import { createElement, deleteMarks, getScalePercents } from './methods';
+import { Dom, Props, RenderProps } from './type';
+import { createElement, destroy, update } from './methods';
 
 class Scale extends EventEmitter<EventTypes> {
   private dom: Dom;
 
-  private props: { min: number; max: number; isVertical: boolean; isRender: boolean } = {
+  private props: Props = {
     min: 0,
     max: 100,
     isVertical: false,
@@ -17,101 +17,61 @@ class Scale extends EventEmitter<EventTypes> {
   constructor(root: HTMLDivElement) {
     super();
 
+    this.handlePointerdownScale = this.handlePointerdownScale.bind(this);
+    this.handleWindowsResize = this.handleWindowsResize.bind(this);
+
     const { dom } = this.init(root);
 
     this.dom = dom;
   }
 
-  public render({
-    min,
-    max,
-    isVertical,
-  }: {
-    min: number;
-    max: number;
-    isVertical: boolean;
-    hasScale: boolean;
-  }): void {
-    this.props = { min, max, isVertical, isRender: false };
+  public render({ min, max, isVertical, hasScale }: RenderProps): void {
+    if (!hasScale && this.props.isRender) {
+      this.props = { min, max, isVertical, isRender: false };
+      destroy(this.dom);
+      return;
+    }
 
-    if (this.props.isRender) {
+    if (!hasScale) {
       return;
     }
 
     this.props = { min, max, isVertical, isRender: true };
 
     this.dom.root.appendChild(this.dom.scale);
-  }
 
-  public destroy(): void {
-    this.dom.scale.remove();
+    update(this.dom, this.props);
   }
 
   private init(root: HTMLDivElement): { dom: Dom } {
     const dom = createElement(root);
 
-    dom.scale.addEventListener('pointerdown', this.clickScale.bind(this));
-
-    window.addEventListener('resize', this.handlerResizeScale.bind(this));
+    this.attachEventHandlers(dom);
 
     return { dom };
   }
 
-  public update() {
-    deleteMarks(this.dom.scale);
-
-    const scaleParameters = this.getScaleParameters();
-
-    this.draw(scaleParameters);
+  private attachEventHandlers({ scale }: Dom) {
+    scale.addEventListener('pointerdown', this.handlePointerdownScale);
+    window.addEventListener('resize', this.handleWindowsResize);
   }
 
-  private draw(parameters: IMarkParameters[]): void {
-    const { isVertical } = this.props;
-
-    parameters.forEach((parameter) => {
-      const { percent, text } = parameter;
-      const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
-      const mark = document.createElement('span');
-      mark.classList.add('slider__mark');
-      mark.style.cssText = style;
-      mark.innerText = text;
-
-      this.dom.scale.appendChild(mark);
-    });
-  }
-
-  private handlerResizeScale(): void {
-    this.update();
-  }
-
-  private clickScale(pointerEvent: PointerEvent): void {
+  private handlePointerdownScale(pointerEvent: PointerEvent): void {
     if (!(pointerEvent.target instanceof Element)) {
       return;
     }
 
-    const { innerHTML } = pointerEvent.target;
-    const intInnerHtml = Number(innerHTML);
-
-    if (!isNaN(intInnerHtml)) {
-      this.emit('ClickScale', { targetNumber: intInnerHtml });
+    if (!('pluginData' in pointerEvent.target)) {
+      return;
     }
+
+    const targetNumber = Number(pointerEvent.target.pluginData);
+
+    this.emit('ClickScale', { targetNumber });
   }
 
-  private getScaleParameters(): IMarkParameters[] {
-    const { max, min, isVertical } = this.props;
-    const { offsetHeight, offsetWidth } = this.dom.scale;
-    const scaleLength = isVertical ? offsetHeight : offsetWidth;
-    const scalePercents = getScalePercents(scaleLength);
-
-    const differenceMaxAndMin = Math.abs(max - min);
-
-    const scaleParameters = scalePercents.map((percent) => {
-      const text = (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, '');
-
-      return { percent, text };
-    });
-
-    return scaleParameters;
+  private handleWindowsResize(): void {
+    update(this.dom, this.props);
   }
 }
 

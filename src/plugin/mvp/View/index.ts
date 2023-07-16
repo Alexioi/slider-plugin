@@ -58,7 +58,6 @@ class View extends EventEmitter<EventTypes> {
       this.subViews.tip.destroy();
     }
 
-    this.subViews.scale.update();
     this.subViews.range.update({ min, max, isVertical, isRange, from, to });
     this.subViews.runnerFrom.update({ isVertical, min, max, from, to });
     this.subViews.runnerTo.update({ isVertical, min, max, from, to });

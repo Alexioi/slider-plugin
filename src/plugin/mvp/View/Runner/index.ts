@@ -27,7 +27,7 @@ class Runner extends EventEmitter<EventTypes> {
 
   public render(isRange: boolean): void {
     if (this.props.valueIndex === 0) {
-      if (isRange === false && this.props.isRender !== false) {
+      if (!isRange && this.props.isRender) {
         this.destroy();
         return;
       }
