@@ -30,7 +30,7 @@ class View extends EventEmitter<EventTypes> {
   public render(options: IOptions): void {
     this.switchTarget(options);
 
-    const { isVertical, hasScale, min, max } = options;
+    const { isVertical, hasScale, min, max, isRange, hasTip } = options;
 
     if (isVertical) {
       this.dom.slider.classList.add('slider_vertical');
@@ -38,8 +38,9 @@ class View extends EventEmitter<EventTypes> {
       this.dom.slider.classList.remove('slider_vertical');
     }
 
-    this.subViews.runnerFrom.render(options.isRange);
-    this.subViews.runnerTo.render(options.isRange);
+    this.subViews.tip.render(hasTip);
+    this.subViews.runnerFrom.render(isRange);
+    this.subViews.runnerTo.render(isRange);
     this.subViews.range.render();
     this.subViews.scale.render({ hasScale, min, max, isVertical });
 
@@ -49,15 +50,10 @@ class View extends EventEmitter<EventTypes> {
   public changeValues(options: IOptions): void {
     this.options = options;
 
-    const { min, max, isRange, hasTip, isVertical, values } = options;
+    const { min, max, isRange, isVertical, values } = options;
     const [from, to] = values;
 
-    if (hasTip) {
-      this.subViews.tip.render();
-    } else {
-      this.subViews.tip.destroy();
-    }
-
+    this.subViews.tip.update({ min, max, isRange, isVertical, from, to });
     this.subViews.range.update({ min, max, isVertical, isRange, from, to });
     this.subViews.runnerFrom.update({ isVertical, min, max, from, to });
     this.subViews.runnerTo.update({ isVertical, min, max, from, to });
