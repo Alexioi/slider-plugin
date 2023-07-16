@@ -12,14 +12,10 @@ class View extends EventEmitter<EventTypes> {
 
   public subViews: SubViews;
 
-  private options: IOptions;
-
   private target: 0 | 1 = 0;
 
-  constructor(root: HTMLElement, options: IOptions) {
+  constructor(root: HTMLElement) {
     super();
-
-    this.options = options;
 
     const { dom, subViews } = this.init(root);
 
@@ -48,8 +44,6 @@ class View extends EventEmitter<EventTypes> {
   }
 
   public changeValues(options: IOptions): void {
-    this.options = options;
-
     const { min, max, isRange, isVertical, values } = options;
     const [from, to] = values;
 
@@ -61,9 +55,9 @@ class View extends EventEmitter<EventTypes> {
 
   private init(root: HTMLElement): { dom: Dom; subViews: SubViews } {
     const dom = createElements(root);
-    const { options, target } = this;
+    const { target } = this;
 
-    const subViews = initSubViews(dom, options, target);
+    const subViews = initSubViews(dom, target);
 
     return { dom, subViews };
   }

@@ -38,7 +38,7 @@ class App {
     const options: IOptions = JSON.parse(JSON.stringify({ ...sliderOptions.defaultConfig }));
 
     this.model = new Model(options);
-    this.view = new View(node, options);
+    this.view = new View(node);
     this.presenter = new Presenter(this.view, this.model);
     this.attachEventEmitters();
 

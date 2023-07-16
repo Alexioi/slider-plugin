@@ -18,7 +18,7 @@ const node = document.createElement('div');
 
 const state = { ...sliderOptions.defaultConfig };
 
-const view = new View(node, state);
+const view = new View(node);
 view.render(state);
 const viewNodes = node.querySelectorAll('div');
 

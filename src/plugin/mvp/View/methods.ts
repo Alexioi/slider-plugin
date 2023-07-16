@@ -3,7 +3,6 @@ import { Range } from './Range';
 import { Runner } from './Runner';
 import { Scale } from './Scale';
 import { Tip } from './Tip';
-import { IOptions } from '../../types';
 import { RunnerId } from './enums';
 
 const createElements = (root: HTMLElement): Dom => {
@@ -19,9 +18,9 @@ const createElements = (root: HTMLElement): Dom => {
   return { root, barContainer, slider };
 };
 
-const initSubViews = (dom: Dom, options: IOptions, target: 0 | 1): SubViews => {
+const initSubViews = (dom: Dom, target: 0 | 1): SubViews => {
   // @ts-ignore
-  const tip = new Tip(dom.slider, options, target);
+  const tip = new Tip(dom.slider, target);
 
   const range = new Range(dom.barContainer);
 
