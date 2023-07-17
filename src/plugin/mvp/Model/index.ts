@@ -26,11 +26,13 @@ class Model extends EventEmitter<EventTypes> {
   }
 
   public calculateValueUsingFraction({ position, valueIndex }: IElementPosition): void {
+    console.log(valueIndex, position);
+    console.log(this.options.from);
     const newValue = this.getNewValueUsingFraction(position);
 
-    const i = valueIndex === 'from' ? 0 : 1;
+    this.changeValueDependingOnStep(newValue, valueIndex);
 
-    this.changeValueDependingOnStep(newValue, i);
+    console.log(this.options.from);
 
     this.emit('UpdatedModelValues', this.options);
   }
@@ -48,51 +50,50 @@ class Model extends EventEmitter<EventTypes> {
   public updateNearValue(newValue: number): void {
     const nearValueId = this.getNearValueId(newValue);
 
-    this.options.values[nearValueId] = newValue;
+    this.options[nearValueId] = newValue;
     this.emit('UpdatedModelValues', this.options);
   }
 
   public updateValueByStep({ valueIndex, touchRoute }: IElementTouch): void {
-    const { step, values } = this.options;
+    const { step } = this.options;
 
-    const i = valueIndex === 'from' ? 0 : 1;
-
-    const newValue = touchRoute === 'up' ? values[i] + step : values[i] - step;
-    const [minimum, maximum] = this.getMinimumAndMaximum(i);
+    const newValue =
+      touchRoute === 'up' ? this.options[valueIndex] + step : this.options[valueIndex] - step;
+    const [minimum, maximum] = this.getMinimumAndMaximum(valueIndex);
 
     if (newValue < minimum) {
-      this.options.values[i] = minimum;
+      this.options[valueIndex] = minimum;
     } else if (newValue > maximum) {
-      this.options.values[i] = maximum;
+      this.options[valueIndex] = maximum;
     } else {
-      this.options.values[i] = newValue;
+      this.options[valueIndex] = newValue;
     }
 
     this.emit('UpdatedModelValues', this.options);
   }
 
-  private getNearValueId(newValue: number): 0 | 1 {
-    const { isRange, values } = this.options;
+  private getNearValueId(newValue: number): 'from' | 'to' {
+    const { isRange, from, to } = this.options;
 
     if (!isRange) {
-      return 1;
+      return 'to';
     }
 
-    const diffFrom = Math.abs(values[0] - newValue);
-    const diffTo = Math.abs(values[1] - newValue);
+    const diffFrom = Math.abs(from - newValue);
+    const diffTo = Math.abs(to - newValue);
 
     if (diffFrom === diffTo) {
-      if (values[0] > newValue) {
-        return 0;
+      if (from > newValue) {
+        return 'from';
       }
-      return 1;
+      return 'to';
     }
 
     if (diffFrom < diffTo) {
-      return 0;
+      return 'from';
     }
 
-    return 1;
+    return 'to';
   }
 
   private getNewValueUsingFraction(position: number): number {
@@ -101,72 +102,66 @@ class Model extends EventEmitter<EventTypes> {
     return (max - min) * position + min;
   }
 
-  private getMinimumAndMaximum(valueIndex: number): number[] {
-    const { values, min, max, isRange } = this.options;
+  private getMinimumAndMaximum(valueIndex: 'to' | 'from'): number[] {
+    const { from, to, min, max, isRange } = this.options;
 
-    const minimum = valueIndex === 0 || !isRange ? min : values[0];
-    const maximum = valueIndex === 0 ? values[1] : max;
+    const minimum = valueIndex === 'from' || !isRange ? min : from;
+    const maximum = valueIndex === 'from' ? to : max;
 
     return [minimum, maximum];
   }
 
-  private changeValueDependingOnStep(newValue: number, valueIndex: number): void {
+  private changeValueDependingOnStep(newValue: number, valueIndex: 'from' | 'to'): void {
     const { step } = this.options;
 
     const [minimum, maximum] = this.getMinimumAndMaximum(valueIndex);
 
-    const oldValue = this.options.values[valueIndex];
+    const oldValue = this.options[valueIndex];
 
     const differenceValue = Math.abs(newValue - oldValue);
 
     const stepRemainderOfDivision = differenceValue % step;
 
     if (newValue < minimum) {
-      this.options.values[valueIndex] = this.getRoundingNumber(minimum);
+      this.options[valueIndex] = this.getRoundingNumber(minimum);
       return;
     }
 
     if (newValue > maximum) {
-      this.options.values[valueIndex] = this.getRoundingNumber(maximum);
+      this.options[valueIndex] = this.getRoundingNumber(maximum);
       return;
     }
 
     if (differenceValue < step / 2) {
-      this.options.values[valueIndex] = this.getRoundingNumber(oldValue);
+      this.options[valueIndex] = this.getRoundingNumber(oldValue);
       return;
     }
 
     if (stepRemainderOfDivision < step / 2) {
       if (newValue > oldValue) {
-        this.options.values[valueIndex] = this.getRoundingNumber(
-          newValue - stepRemainderOfDivision,
-        );
+        this.options[valueIndex] = this.getRoundingNumber(newValue - stepRemainderOfDivision);
         return;
       }
-      this.options.values[valueIndex] = this.getRoundingNumber(newValue + stepRemainderOfDivision);
+      this.options[valueIndex] = this.getRoundingNumber(newValue + stepRemainderOfDivision);
       return;
     }
 
     if (newValue + stepRemainderOfDivision - step < minimum) {
-      this.options.values[valueIndex] = this.getRoundingNumber(minimum);
+      this.options[valueIndex] = this.getRoundingNumber(minimum);
       return;
     }
 
     if (newValue - stepRemainderOfDivision + step > maximum) {
-      this.options.values[valueIndex] = this.getRoundingNumber(maximum);
+      this.options[valueIndex] = this.getRoundingNumber(maximum);
       return;
     }
 
     if (newValue > oldValue) {
-      this.options.values[valueIndex] = this.getRoundingNumber(
-        newValue - stepRemainderOfDivision + step,
-      );
+      this.options[valueIndex] = this.getRoundingNumber(newValue - stepRemainderOfDivision + step);
       return;
     }
 
-    this.options.values[valueIndex] = this.getRoundingNumber(
-      newValue + stepRemainderOfDivision - step,
-    );
+    this.options[valueIndex] = this.getRoundingNumber(newValue + stepRemainderOfDivision - step);
   }
 
   private getRoundingNumber(number: number) {

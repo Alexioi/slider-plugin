@@ -7,9 +7,9 @@ const createElements = (root: HTMLDivElement): Dom => {
   const tipBoth = helpers.createElement('slider__tip');
   const tipTo = helpers.createElement('slider__tip');
   // @ts-ignore
-  tipFrom.valueIndex = 0;
+  tipFrom.valueIndex = 'from';
   // @ts-ignore
-  tipTo.valueIndex = 1;
+  tipTo.valueIndex = 'to';
 
   return { root, tipLine, tipFrom, tipBoth, tipTo };
 };

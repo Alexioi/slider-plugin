@@ -22,7 +22,8 @@ interface IOptions {
   step: number;
   min: number;
   max: number;
-  values: number[];
+  from: number;
+  to: number;
 }
 
 type ValuesIndex = 0 | 1;

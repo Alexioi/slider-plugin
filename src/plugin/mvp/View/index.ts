@@ -25,8 +25,7 @@ class View extends EventEmitter<EventTypes> {
   }
 
   public render(options: IOptions): void {
-    const { isVertical, hasScale, min, max, isRange, hasTip, values } = options;
-    const [from] = values;
+    const { isVertical, hasScale, min, max, isRange, hasTip, from } = options;
 
     if (isVertical) {
       this.dom.slider.classList.add('slider_vertical');
@@ -46,13 +45,10 @@ class View extends EventEmitter<EventTypes> {
   }
 
   public update(options: IOptions): void {
-    const { min, max, isRange, isVertical, values } = options;
-    const [from, to] = values;
-
-    this.subViews.tip.update({ min, max, isRange, isVertical, from, to });
-    this.subViews.range.update({ min, max, isVertical, isRange, from, to });
-    this.subViews.runnerFrom.update({ isVertical, min, max, from, to }, this.props.target);
-    this.subViews.runnerTo.update({ isVertical, min, max, from, to }, this.props.target);
+    this.subViews.tip.update(options);
+    this.subViews.range.update(options);
+    this.subViews.runnerFrom.update(options, this.props.target);
+    this.subViews.runnerTo.update(options, this.props.target);
   }
 
   private subscribeToRunnerAndTip(): View {

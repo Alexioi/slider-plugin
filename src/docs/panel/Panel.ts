@@ -45,8 +45,8 @@ class Panel {
 
     this.slider.update({
       onChange: function onChange(options: IOptions) {
-        that.$from?.val(options.values[0]);
-        that.$to?.val(options.values[1]);
+        that.$from?.val(options.from);
+        that.$to?.val(options.to);
       },
     });
   }
@@ -102,14 +102,14 @@ class Panel {
     if (typeof option === 'undefined') {
       return;
     }
-    const { isRange, isVertical, values, min, max, hasScale, hasTip, step } = option;
+    const { isRange, isVertical, from, to, min, max, hasScale, hasTip, step } = option;
 
     this.$range?.prop('checked', isRange);
     this.$vertical?.prop('checked', isVertical);
     this.$min?.val(min);
     this.$max?.val(max);
-    this.$from?.val(values[0]);
-    this.$to?.val(values[1]);
+    this.$from?.val(from);
+    this.$to?.val(to);
     this.$step?.val(step);
     this.$tip?.prop('checked', hasTip);
     this.$scale?.prop('checked', hasScale);
