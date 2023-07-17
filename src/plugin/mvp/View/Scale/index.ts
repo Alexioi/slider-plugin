@@ -61,11 +61,11 @@ class Scale extends EventEmitter<EventTypes> {
       return;
     }
 
-    if (!('pluginData' in pointerEvent.target)) {
+    if (!('customValue' in pointerEvent.target)) {
       return;
     }
 
-    const targetNumber = Number(pointerEvent.target.pluginData);
+    const targetNumber = Number(pointerEvent.target.customValue);
 
     this.emit('ClickScale', { targetNumber });
   }

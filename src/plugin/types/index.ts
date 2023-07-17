@@ -38,7 +38,7 @@ interface IElementPosition {
 
 interface IMarkParameters {
   percent: number;
-  text: string;
+  value: number;
 }
 
 interface ITarget {

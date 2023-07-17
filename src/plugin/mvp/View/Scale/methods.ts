@@ -1,6 +1,6 @@
 import { helpers } from '../../../helpers';
 import { IMarkParameters } from '../../../types';
-import { Dom, Props } from './type';
+import { Dom, HTMLSpanElementWithCustomData, Props } from './type';
 
 const createElement = (root: HTMLDivElement): Dom => {
   const scale = helpers.createElement('slider__scale');
@@ -38,9 +38,11 @@ const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): IM
   const differenceMaxAndMin = Math.abs(max - min);
 
   const scaleParameters = scalePercents.map((percent) => {
-    const text = (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, '');
+    const value = Number(
+      (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, ''),
+    );
 
-    return { percent, text };
+    return { percent, value };
   });
 
   return scaleParameters;
@@ -48,14 +50,13 @@ const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): IM
 
 const draw = ({ scale }: Dom, { isVertical }: Props, parameters: IMarkParameters[]): void => {
   parameters.forEach((parameter) => {
-    const { percent, text } = parameter;
+    const { percent, value } = parameter;
     const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
-    const mark = document.createElement('span');
+    const mark = document.createElement('span') as HTMLSpanElementWithCustomData;
     mark.classList.add('slider__mark');
     mark.style.cssText = style;
-    mark.innerText = text;
-    // @ts-ignore
-    mark.pluginData = Number(text);
+    mark.innerText = String(value);
+    mark.customValue = Number(value);
 
     scale.appendChild(mark);
   });
