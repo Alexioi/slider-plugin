@@ -26,18 +26,14 @@ class Model extends EventEmitter<EventTypes> {
   }
 
   public calculateValueUsingFraction({ position, valueIndex }: IElementPosition): void {
-    console.log(valueIndex, position);
-    console.log(this.options.from);
     const newValue = this.getNewValueUsingFraction(position);
 
     this.changeValueDependingOnStep(newValue, valueIndex);
 
-    console.log(this.options.from);
-
     this.emit('UpdatedModelValues', this.options);
   }
 
-  public calculateNearValueUsingFraction(position: number): void {
+  public calculateNearValueUsingFraction(position: { x: number; y: number }): void {
     const newValue = this.getNewValueUsingFraction(position);
 
     const nearValueId = this.getNearValueId(newValue);
@@ -96,10 +92,12 @@ class Model extends EventEmitter<EventTypes> {
     return 'to';
   }
 
-  private getNewValueUsingFraction(position: number): number {
-    const { min, max } = this.options;
+  private getNewValueUsingFraction(position: { x: number; y: number }): number {
+    const { min, max, isVertical } = this.options;
 
-    return (max - min) * position + min;
+    const percent = isVertical ? position.y : position.x;
+
+    return (max - min) * percent + min;
   }
 
   private getMinimumAndMaximum(valueIndex: 'to' | 'from'): number[] {

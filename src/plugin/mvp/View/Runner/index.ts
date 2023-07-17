@@ -118,7 +118,7 @@ class Runner extends EventEmitter<EventTypes> {
       const { valueIndex } = this.props;
 
       // const position = helpers.getPosition(this.dom.root, pointerEvent, this.isVertical);
-      const position = helpers.getPosition(this.dom.root, pointerEvent, false);
+      const position = helpers.getPosition(this.dom.root, pointerEvent);
 
       this.emit('ChangedRunnerPosition', { position, valueIndex });
     };

@@ -33,7 +33,7 @@ type TouchRoute = 'up' | 'down';
 
 interface IElementPosition {
   valueIndex: 'from' | 'to';
-  position: number;
+  position: { x: number; y: number };
 }
 
 interface IMarkParameters {
@@ -57,7 +57,7 @@ type EventTypes = {
   ClickScale: { targetNumber: number };
   onChange: IOptions;
   ChangedRunnerPositionStep: IElementTouch;
-  ChangedNearRunnerPosition: { position: number };
+  ChangedNearRunnerPosition: { position: { x: number; y: number } };
 };
 
 export {

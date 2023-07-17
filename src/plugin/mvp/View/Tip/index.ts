@@ -90,7 +90,7 @@ class Tip extends EventEmitter<EventTypes> {
       };
 
       // const position = helpers.getPosition(this.dom.root, pointerEvent, this.options.isVertical);
-      const position = helpers.getPosition(this.dom.root, pointerEvent, false);
+      const position = helpers.getPosition(this.dom.root, pointerEvent);
 
       if (typeof valueIndex === 'undefined') {
         this.emit('ChangedNearRunnerPosition', { position });
