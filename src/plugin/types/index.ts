@@ -6,7 +6,8 @@ interface IConfig {
   step?: number;
   min?: number;
   max?: number;
-  values?: number[];
+  from?: number;
+  to?: number;
   onChange?: Function;
 }
 

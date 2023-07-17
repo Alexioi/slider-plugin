@@ -5,6 +5,6 @@ import '../plugin';
 
 const slider = $('.js-panel__example').slider();
 
-$('.js-panel__control').each((i, node) => {
-  new Panel($(node), slider[i], configs[i]);
+document.querySelectorAll('.js-panel__control').forEach((node, i) => {
+  new Panel(node, slider[i], configs[i]);
 });

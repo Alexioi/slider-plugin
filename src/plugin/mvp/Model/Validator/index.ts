@@ -8,7 +8,7 @@ class Validator {
   }
 
   public validateOptions(config: IConfig) {
-    const { isRange, isVertical, hasTip, hasScale, step, min, max, values } = config;
+    const { isRange, isVertical, hasTip, hasScale, step, min, max, from, to } = config;
 
     if (typeof isRange === 'boolean') {
       this.options.isRange = isRange;
@@ -27,7 +27,7 @@ class Validator {
     }
 
     this.verifyMinAndMax(min, max);
-    this.verifyValues(values);
+    this.verifyValues(from, to);
     this.verifyStep(step);
   }
 
@@ -51,11 +51,11 @@ class Validator {
     this.options.max = newMax;
   }
 
-  private verifyValues(newValues?: number[]): void {
+  private verifyValues(newFrom?: number, newTo?: number): void {
     const { min, max, from, to } = this.options;
 
-    const intFirstValue = Validator.makeNumber(from, newValues?.[0]);
-    const intSecondValue = Validator.makeNumber(to, newValues?.[1]);
+    const intFirstValue = Validator.makeNumber(from, newFrom);
+    const intSecondValue = Validator.makeNumber(to, newTo);
 
     let [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort((a, b) => {
       return a - b;

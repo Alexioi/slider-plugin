@@ -7,7 +7,8 @@
     "step": 10,
     "min": -100,
     "max": 100,
-    "values": [-50, 40]
+    "from": -50,
+    "to": 40
   },
   {
     "isRange": true,
@@ -17,7 +18,8 @@
     "step": 10,
     "min": 100,
     "max": 200,
-    "values": [100, 150]
+    "from": 100,
+    "to": 150
   },
   {
     "isRange": false,
@@ -27,7 +29,8 @@
     "step": 10,
     "min": -100,
     "max": 100,
-    "values": [-50, 40]
+    "from": -50,
+    "to": 40
   },
   {
     "isRange": true,
@@ -37,6 +40,7 @@
     "step": 10,
     "min": -100,
     "max": 100,
-    "values": [-50, 40]
+    "from": -50,
+    "to": 40
   }
 ]
