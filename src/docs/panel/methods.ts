@@ -1,4 +1,5 @@
 import { App } from '../../plugin/App';
+import { IOptions } from '../../plugin/types';
 import { Dom } from './type';
 
 const searchElements = (root: Element): Dom => {
@@ -8,11 +9,17 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
+  // @ts-ignore
+  range.plugin = { name: 'range' };
+
   const vertical = root.querySelector('.panel__input_name-vertical');
 
   if (!(vertical instanceof HTMLInputElement)) {
     throw Error();
   }
+
+  // @ts-ignore
+  vertical.plugin = { name: 'vertical ' };
 
   const scale = root.querySelector('.panel__input_name-scale');
 
@@ -20,11 +27,17 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
+  // @ts-ignore
+  scale.plugin = { name: 'scale' };
+
   const min = root.querySelector('.panel__input_name-min');
 
   if (!(min instanceof HTMLInputElement)) {
     throw Error();
   }
+
+  // @ts-ignore
+  min.plugin = { name: 'min' };
 
   const max = root.querySelector('.panel__input_name-max');
 
@@ -32,11 +45,17 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
+  // @ts-ignore
+  max.plugin = { name: 'max' };
+
   const from = root.querySelector('.panel__input_name-from');
 
   if (!(from instanceof HTMLInputElement)) {
     throw Error();
   }
+
+  // @ts-ignore
+  from.plugin = { name: 'from' };
 
   const to = root.querySelector('.panel__input_name-to');
 
@@ -44,17 +63,26 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
+  // @ts-ignore
+  to.plugin = { name: 'to' };
+
   const step = root.querySelector('.panel__input_name-step');
 
   if (!(step instanceof HTMLInputElement)) {
     throw Error();
   }
 
+  // @ts-ignore
+  step.plugin = { name: 'step' };
+
   const tip = root.querySelector('.panel__input_name-tip');
 
   if (!(tip instanceof HTMLInputElement)) {
     throw Error();
   }
+
+  // @ts-ignore
+  tip.plugin = { name: 'tip' };
 
   return { root, range, vertical, scale, min, max, from, to, step, tip };
 };
@@ -78,4 +106,15 @@ const syncInputs = (slider: App, dom: Dom): void => {
   dom.scale.checked = hasScale;
 };
 
-export { searchElements, syncInputs };
+const attachCallback = (dom: Dom, slider: App): void => {
+  const thatDom = dom;
+
+  slider.update({
+    onChange: ({ from, to }: IOptions) => {
+      thatDom.from.value = String(from);
+      thatDom.to.value = String(to);
+    },
+  });
+};
+
+export { searchElements, syncInputs, attachCallback };

@@ -1,22 +1,23 @@
 import './panel.scss';
 import { App } from '../../plugin/App';
-import { IConfig, IOptions } from '../../plugin/types';
-import { searchElements, syncInputs } from './methods';
+import { IConfig } from '../../plugin/types';
+import { searchElements, syncInputs, attachCallback } from './methods';
 import { Dom } from './type';
 
 class Panel {
-  slider: App;
-
   private dom: Dom;
+
+  private slider: App;
 
   constructor(root: Element, slider: App, config: IConfig) {
     this.slider = slider;
 
+    this.handleClickCheckboxElement = this.handleClickCheckboxElement.bind(this);
+    this.handleChangeInputElement = this.handleChangeInputElement.bind(this);
+
     const { dom } = this.init(root, config);
 
     this.dom = dom;
-
-    this.attachCallback();
   }
 
   private init(root: Element, config: IConfig) {
@@ -25,52 +26,58 @@ class Panel {
 
     this.attachEventHandlers(dom);
     syncInputs(this.slider, dom);
+    attachCallback(dom, this.slider);
 
     return { dom };
   }
 
-  private attachCallback(): void {
-    const that = this;
-
-    this.slider.update({
-      onChange: function onChange({ from, to }: IOptions) {
-        that.dom.from.value = String(from);
-        that.dom.to.value = String(to);
-      },
-    });
-  }
-
-  private attachEventHandlers(dom: Dom): void {
+  private attachEventHandlers(dom: Dom): Panel {
     const { range, vertical, scale, min, max, from, to, step, tip } = dom;
 
-    range.addEventListener('click', this.changeCheckboxValue.bind(this, range, 'isRange'));
-    vertical.addEventListener('click', this.changeCheckboxValue.bind(this, vertical, 'isVertical'));
-    tip.addEventListener('click', this.changeCheckboxValue.bind(this, tip, 'hasTip'));
-    scale.addEventListener('click', this.changeCheckboxValue.bind(this, scale, 'hasScale'));
-    min.addEventListener('change', this.changeTextValue.bind(this, min, 'min'));
-    max.addEventListener('change', this.changeTextValue.bind(this, max, 'max'));
-    from.addEventListener('change', this.changeTextValue.bind(this, from, 'from'));
-    to.addEventListener('change', this.changeTextValue.bind(this, to, 'to'));
-    step.addEventListener('change', this.changeTextValue.bind(this, step, 'step'));
+    range.addEventListener('click', this.handleClickCheckboxElement);
+    vertical.addEventListener('click', this.handleClickCheckboxElement);
+    tip.addEventListener('click', this.handleClickCheckboxElement);
+    scale.addEventListener('click', this.handleClickCheckboxElement);
+    min.addEventListener('change', this.handleChangeInputElement);
+    max.addEventListener('change', this.handleChangeInputElement);
+    from.addEventListener('change', this.handleChangeInputElement);
+    to.addEventListener('change', this.handleChangeInputElement);
+    step.addEventListener('change', this.handleChangeInputElement);
+
+    return this;
   }
 
-  private changeCheckboxValue($node: HTMLInputElement, option: string) {
-    const value = $node.checked;
+  private handleClickCheckboxElement(event: Event) {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
 
-    this.slider.update({ [option]: value });
+    const value = event.target.checked;
+
+    // @ts-ignore
+    const optionName = event.target.plugin.name;
+
+    this.slider.update({ [optionName]: value });
 
     syncInputs(this.slider, this.dom);
   }
 
-  private changeTextValue = ($node: HTMLInputElement, option: string): void => {
-    if (option === 'from' || option === 'to') {
+  private handleChangeInputElement = (event: Event): void => {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
+
+    // @ts-ignore
+    const optionName = event.target.plugin.name;
+
+    if (optionName === 'from' || optionName === 'to') {
       const from = Number(this.dom.from.value);
       const to = Number(this.dom.to.value);
 
       this.slider.update({ from, to });
     } else {
-      const value = Number($node.value);
-      this.slider.update({ [option]: value });
+      const value = Number(event.target.value);
+      this.slider.update({ [optionName]: value });
     }
 
     syncInputs(this.slider, this.dom);
