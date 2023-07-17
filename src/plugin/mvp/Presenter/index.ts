@@ -88,7 +88,7 @@ class Presenter extends EventEmitter<EventTypes> {
     };
 
     const notifyViewUpdatedModelValues = (options: IOptions): void => {
-      this.view.changeValues(options);
+      this.view.update(options);
       this.emit('onChange', options);
     };
 

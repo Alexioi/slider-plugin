@@ -4,29 +4,29 @@ import { EventTypes, IOptions } from '../../types';
 
 import { EventEmitter } from '../../EventEmitter';
 import { Dom, SubViews } from './type';
-import { createElements, initSubViews } from './methods';
-import { RunnerId } from './enums';
+import { calculateTarget, init } from './methods';
 
 class View extends EventEmitter<EventTypes> {
   private dom: Dom;
 
   public subViews: SubViews;
 
-  private target: 0 | 1 = 0;
+  private props: { target: 'from' | 'to' } = { target: 'from' };
 
   constructor(root: HTMLElement) {
     super();
 
-    const { dom, subViews } = this.init(root);
+    const { dom, subViews } = init(root);
 
     this.dom = dom;
     this.subViews = subViews;
+
+    this.subscribeToRunnerAndTip();
   }
 
   public render(options: IOptions): void {
-    this.switchTarget(options);
-
-    const { isVertical, hasScale, min, max, isRange, hasTip } = options;
+    const { isVertical, hasScale, min, max, isRange, hasTip, values } = options;
+    const [from] = values;
 
     if (isVertical) {
       this.dom.slider.classList.add('slider_vertical');
@@ -34,39 +34,43 @@ class View extends EventEmitter<EventTypes> {
       this.dom.slider.classList.remove('slider_vertical');
     }
 
+    this.props = calculateTarget(from, min, max);
+
     this.subViews.tip.render(hasTip, isRange, isVertical);
     this.subViews.runnerFrom.render(isRange);
     this.subViews.runnerTo.render(isRange);
     this.subViews.range.render();
     this.subViews.scale.render({ hasScale, min, max, isVertical });
 
-    this.changeValues(options);
+    this.update(options);
   }
 
-  public changeValues(options: IOptions): void {
+  public update(options: IOptions): void {
     const { min, max, isRange, isVertical, values } = options;
     const [from, to] = values;
 
     this.subViews.tip.update({ min, max, isRange, isVertical, from, to });
     this.subViews.range.update({ min, max, isVertical, isRange, from, to });
-    this.subViews.runnerFrom.update({ isVertical, min, max, from, to });
-    this.subViews.runnerTo.update({ isVertical, min, max, from, to });
+    this.subViews.runnerFrom.update({ isVertical, min, max, from, to }, this.props.target);
+    this.subViews.runnerTo.update({ isVertical, min, max, from, to }, this.props.target);
   }
 
-  private init(root: HTMLElement): { dom: Dom; subViews: SubViews } {
-    const dom = createElements(root);
-    const { target } = this;
+  private subscribeToRunnerAndTip(): View {
+    this.subViews.runnerFrom.subscribe(
+      'ChangedRunnerPosition',
+      ({ valueIndex }: { valueIndex: 'to' | 'from' }) => {
+        this.props = { target: valueIndex };
+      },
+    );
 
-    const subViews = initSubViews(dom, target);
+    this.subViews.runnerTo.subscribe(
+      'ChangedRunnerPosition',
+      ({ valueIndex }: { valueIndex: 'to' | 'from' }) => {
+        this.props = { target: valueIndex };
+      },
+    );
 
-    return { dom, subViews };
-  }
-
-  private switchTarget({ values, max, min }: IOptions): void {
-    const { abs } = Math;
-    const isToTarget = abs(min - values[RunnerId.From]) / abs(max - min) < 0.5;
-
-    this.target = isToTarget ? 1 : 0;
+    return this;
   }
 }
 

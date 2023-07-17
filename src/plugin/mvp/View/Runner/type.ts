@@ -5,8 +5,7 @@ type Dom = {
 
 type Props = {
   isRender: boolean;
-  valueIndex: 0 | 1;
-  target: 0 | 1;
+  valueIndex: 'from' | 'to';
 };
 
 export { Dom, Props };

@@ -15,8 +15,7 @@ const createElements = (root: HTMLDivElement): Dom => {
 };
 
 const toggleDisplay = (
-  isRange: boolean,
-  isVertical: boolean,
+  { isRange, isVertical }: { isRange: boolean; isVertical: boolean },
   { tipFrom, tipTo, tipBoth }: Dom,
 ): void => {
   if (!isRange) {
@@ -44,11 +43,13 @@ const toggleDisplay = (
 };
 
 const changePosition = (
-  min: number,
-  max: number,
-  isVertical: boolean,
-  from: number,
-  to: number,
+  {
+    min,
+    max,
+    isVertical,
+    from,
+    to,
+  }: { min: number; max: number; isVertical: boolean; from: number; to: number },
   { tipBoth, tipFrom, tipTo }: Dom,
 ): void => {
   const leftPosition = helpers.calculatePercent(from, min, max);
@@ -71,7 +72,10 @@ const destroy = ({ tipLine }: Dom) => {
   tipLine.remove();
 };
 
-const changeText = (from: number, to: number, { tipFrom, tipTo, tipBoth }: Dom) => {
+const changeText = (
+  { from, to }: { from: number; to: number },
+  { tipFrom, tipTo, tipBoth }: Dom,
+) => {
   const bothText = from === to ? String(to) : `${from} - ${to}`;
 
   tipFrom.innerText = String(from);

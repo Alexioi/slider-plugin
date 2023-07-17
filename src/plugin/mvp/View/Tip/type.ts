@@ -6,4 +6,13 @@ type Dom = {
   tipBoth: HTMLDivElement;
 };
 
-export { Dom };
+type UpdateOptions = {
+  isVertical: boolean;
+  from: number;
+  to: number;
+  min: number;
+  max: number;
+  isRange: boolean;
+};
+
+export { Dom, UpdateOptions };

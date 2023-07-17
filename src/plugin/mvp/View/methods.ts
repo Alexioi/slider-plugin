@@ -3,7 +3,6 @@ import { Range } from './Range';
 import { Runner } from './Runner';
 import { Scale } from './Scale';
 import { Tip } from './Tip';
-import { RunnerId } from './enums';
 
 const createElements = (root: HTMLElement): Dom => {
   const slider = document.createElement('div');
@@ -18,19 +17,35 @@ const createElements = (root: HTMLElement): Dom => {
   return { root, barContainer, slider };
 };
 
-const initSubViews = (dom: Dom, target: 0 | 1): SubViews => {
-  // @ts-ignore
-  const tip = new Tip(dom.slider, target);
+const initSubViews = (dom: Dom): SubViews => {
+  const tip = new Tip(dom.slider);
 
   const range = new Range(dom.barContainer);
 
   const scale = new Scale(dom.slider);
 
-  const runnerFrom = new Runner(dom.barContainer, RunnerId.From, target);
+  const runnerFrom = new Runner(dom.barContainer, 'from');
 
-  const runnerTo = new Runner(dom.barContainer, RunnerId.To, target);
+  const runnerTo = new Runner(dom.barContainer, 'to');
 
   return { tip, range, scale, runnerFrom, runnerTo };
 };
 
-export { createElements, initSubViews };
+const calculateTarget = (from: number, min: number, max: number): { target: 'from' | 'to' } => {
+  const { abs } = Math;
+  const isToTarget = abs(min - from) / abs(max - min) < 0.5;
+
+  const target = isToTarget ? 'to' : 'from';
+
+  return { target };
+};
+
+const init = (root: HTMLElement): { dom: Dom; subViews: SubViews } => {
+  const dom = createElements(root);
+
+  const subViews = initSubViews(dom);
+
+  return { dom, subViews };
+};
+
+export { init, calculateTarget };

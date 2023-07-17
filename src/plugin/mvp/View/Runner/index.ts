@@ -11,22 +11,20 @@ class Runner extends EventEmitter<EventTypes> {
 
   private props: Props;
 
-  private isVertical = false;
-
-  constructor(root: HTMLDivElement, valueIndex: 0 | 1, target: 0 | 1) {
+  constructor(root: HTMLDivElement, valueIndex: 'from' | 'to') {
     super();
 
     this.handlePointerdownRunner = this.handlePointerdownRunner.bind(this);
     this.handleKeydownRunner = this.handleKeydownRunner.bind(this);
 
-    const { dom, props } = this.init(root, valueIndex, target);
+    const { dom, props } = this.init(root, valueIndex);
 
     this.dom = dom;
     this.props = props;
   }
 
   public render(isRange: boolean): void {
-    if (this.props.valueIndex === 0) {
+    if (this.props.valueIndex === 'from') {
       if (!isRange && this.props.isRender) {
         this.destroy();
         return;
@@ -46,9 +44,9 @@ class Runner extends EventEmitter<EventTypes> {
     this.props = switchIsRender(this.props);
   }
 
-  private init(root: HTMLDivElement, valueIndex: 0 | 1, target: 0 | 1): { dom: Dom; props: Props } {
+  private init(root: HTMLDivElement, valueIndex: 'from' | 'to'): { dom: Dom; props: Props } {
     const dom = createElements(root);
-    const props = initProps(valueIndex, target);
+    const props = initProps(valueIndex);
 
     this.attachEventHandlers(dom);
 
@@ -60,20 +58,23 @@ class Runner extends EventEmitter<EventTypes> {
     dom.runner.addEventListener('keydown', this.handleKeydownRunner);
   }
 
-  public update({
-    isVertical,
-    from,
-    to,
-    min,
-    max,
-  }: {
-    isVertical: boolean;
-    from: number;
-    to: number;
-    min: number;
-    max: number;
-  }) {
-    const { target, valueIndex } = this.props;
+  public update(
+    {
+      isVertical,
+      from,
+      to,
+      min,
+      max,
+    }: {
+      isVertical: boolean;
+      from: number;
+      to: number;
+      min: number;
+      max: number;
+    },
+    target: 'from' | 'to',
+  ) {
+    const { valueIndex } = this.props;
 
     if (target === valueIndex) {
       this.dom.runner.classList.add('slider__runner_targeted');
@@ -81,7 +82,7 @@ class Runner extends EventEmitter<EventTypes> {
       this.dom.runner.classList.remove('slider__runner_targeted');
     }
 
-    const value = this.props.valueIndex === 0 ? from : to;
+    const value = this.props.valueIndex === 'from' ? from : to;
 
     const percent = helpers.calculatePercent(value, min, max);
     const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
@@ -96,7 +97,6 @@ class Runner extends EventEmitter<EventTypes> {
       keyboardEvent.preventDefault();
       const { valueIndex } = this.props;
 
-      this.props.target = valueIndex;
       this.emit('ChangedRunnerPositionStep', { valueIndex, touchRoute });
     };
 
@@ -117,9 +117,8 @@ class Runner extends EventEmitter<EventTypes> {
 
       const { valueIndex } = this.props;
 
-      this.props.target = valueIndex;
-
-      const position = helpers.getPosition(this.dom.root, pointerEvent, this.isVertical);
+      // const position = helpers.getPosition(this.dom.root, pointerEvent, this.isVertical);
+      const position = helpers.getPosition(this.dom.root, pointerEvent, false);
 
       this.emit('ChangedRunnerPosition', { position, valueIndex });
     };

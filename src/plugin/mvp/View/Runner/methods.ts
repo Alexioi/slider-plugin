@@ -8,10 +8,10 @@ const createElements = (root: HTMLDivElement): Dom => {
   return { root, runner };
 };
 
-const initProps = (valueIndex: 0 | 1, target: 0 | 1): Props => {
+const initProps = (valueIndex: 'from' | 'to'): Props => {
   const isRender = false;
 
-  return { isRender, valueIndex, target };
+  return { isRender, valueIndex };
 };
 
 const switchIsRender = (props: Props) => {

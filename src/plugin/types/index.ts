@@ -30,7 +30,7 @@ type ValuesIndex = 0 | 1;
 type TouchRoute = 'up' | 'down';
 
 interface IElementPosition {
-  valueIndex: ValuesIndex;
+  valueIndex: 'from' | 'to';
   position: number;
 }
 
@@ -44,7 +44,7 @@ interface ITarget {
 }
 
 interface IElementTouch {
-  valueIndex: ValuesIndex;
+  valueIndex: 'from' | 'to';
   touchRoute: TouchRoute;
 }
 

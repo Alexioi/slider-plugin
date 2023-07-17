@@ -3,7 +3,7 @@ import './tip.scss';
 import { EventTypes } from '../../../types';
 import { EventEmitter } from '../../../EventEmitter';
 import { helpers } from '../../../helpers';
-import { Dom } from './type';
+import { Dom, UpdateOptions } from './type';
 import { changePosition, changeText, createElements, destroy, toggleDisplay } from './methods';
 
 class Tip extends EventEmitter<EventTypes> {
@@ -50,24 +50,12 @@ class Tip extends EventEmitter<EventTypes> {
     }
   }
 
-  public update({
-    isVertical,
-    from,
-    to,
-    min,
-    max,
-    isRange,
-  }: {
-    isVertical: boolean;
-    from: number;
-    to: number;
-    min: number;
-    max: number;
-    isRange: boolean;
-  }) {
-    changeText(from, to, this.dom);
-    changePosition(min, max, isVertical, from, to, this.dom);
-    toggleDisplay(isRange, isVertical, this.dom);
+  public update(updateOptions: UpdateOptions) {
+    const { dom } = this;
+
+    changeText(updateOptions, dom);
+    changePosition(updateOptions, dom);
+    toggleDisplay(updateOptions, dom);
   }
 
   private init(root: HTMLDivElement): { dom: Dom } {
