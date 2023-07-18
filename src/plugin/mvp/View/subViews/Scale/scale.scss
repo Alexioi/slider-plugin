@@ -1,14 +1,22 @@
 .slider {
+  $root: &;
+
+  &_vertical {
+    & #{$root}__scale {
+      margin-left: 20px;
+      margin-top: 0;
+      height: 100%;
+    }
+
+    & #{$root}__mark {
+      transform: translateY(-50%);
+    }
+  }
+
   &__scale {
     position: absolute;
     width: 100%;
     margin-top: 5px;
-  }
-
-  &_vertical &__scale {
-    margin-left: 20px;
-    margin-top: 0;
-    height: 100%;
   }
 
   &__mark {
@@ -17,9 +25,5 @@
     transform: translateX(-50%);
     user-select: none;
     color: rgb(31, 32, 65);
-  }
-
-  &_vertical &__mark {
-    transform: translateY(-50%);
   }
 }

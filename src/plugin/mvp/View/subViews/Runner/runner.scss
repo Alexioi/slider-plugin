@@ -3,6 +3,15 @@
 $runnerWidth: 1.5rem;
 
 .slider {
+  $root: &;
+
+  &_vertical {
+    & #{$root}__runner {
+      right: -(math.div($runnerWidth, 3));
+      transform: translateY(-50%);
+    }
+  }
+
   &__runner {
     box-sizing: border-box;
     position: absolute;
@@ -20,10 +29,5 @@ $runnerWidth: 1.5rem;
     &_targeted {
       z-index: 20;
     }
-  }
-
-  &_vertical &__runner {
-    right: -(math.div($runnerWidth, 3));
-    transform: translateY(-50%);
   }
 }

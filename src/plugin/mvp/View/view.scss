@@ -3,6 +3,8 @@
 $runnerWidth: 1.5rem;
 
 .slider {
+  $root: &;
+
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -11,19 +13,19 @@ $runnerWidth: 1.5rem;
     display: flex;
     flex-basis: 0;
     height: 100%;
+
+    & #{$root}__bar-container {
+      width: $runnerWidth * 0.5;
+      height: 100%;
+    }
   }
 
   &__bar-container {
     box-sizing: border-box;
     width: 100%;
     height: $runnerWidth * 0.5;
-    border: 1px solid rgb(31, 32, 65, 0.25);
+    border: 1px solid rgb(31, 32, 65, 25%);
     border-radius: 3px;
     position: relative;
-  }
-
-  &_vertical &__bar-container {
-    width: $runnerWidth * 0.5;
-    height: 100%;
   }
 }

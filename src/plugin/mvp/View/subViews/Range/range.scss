@@ -1,13 +1,17 @@
 .slider {
+  $root: &;
+
+  &_vertical {
+    & #{$root}__range {
+      width: 100%;
+      height: auto;
+    }
+  }
+
   &__range {
     position: absolute;
     border-radius: 3px;
     background: linear-gradient(180deg, #6fcf97 0%, #66d2ea 100%);
     height: 100%;
-  }
-
-  &_vertical &__range {
-    width: 100%;
-    height: auto;
   }
 }
