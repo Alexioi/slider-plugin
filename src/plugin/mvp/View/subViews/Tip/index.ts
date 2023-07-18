@@ -21,7 +21,15 @@ class Tip extends EventEmitter<EventTypes> {
     this.dom = dom;
   }
 
-  public render(hasTip: boolean, isRange: boolean, isVertical: boolean) {
+  public render({
+    hasTip,
+    isRange,
+    isVertical,
+  }: {
+    hasTip: boolean;
+    isRange: boolean;
+    isVertical: boolean;
+  }) {
     if (!hasTip && this.props.isRender) {
       this.props = { isRender: false };
       destroy(this.dom);

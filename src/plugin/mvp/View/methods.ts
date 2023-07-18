@@ -28,7 +28,15 @@ const initSubViews = (dom: Dom): SubViews => {
   return { tip, range, scale, runnerFrom, runnerTo };
 };
 
-const calculateTarget = (from: number, min: number, max: number): { target: 'from' | 'to' } => {
+const calculateTarget = ({
+  from,
+  min,
+  max,
+}: {
+  from: number;
+  min: number;
+  max: number;
+}): { target: 'from' | 'to' } => {
   const { abs } = Math;
   const isToTarget = abs(min - from) / abs(max - min) < 0.5;
 
@@ -37,12 +45,13 @@ const calculateTarget = (from: number, min: number, max: number): { target: 'fro
   return { target };
 };
 
-const init = (root: HTMLElement): { dom: Dom; subViews: SubViews } => {
-  const dom = createElements(root);
+const toggleVertical = ({ slider }: Dom, isVertical: boolean) => {
+  if (isVertical) {
+    slider.classList.add('slider_vertical');
+    return;
+  }
 
-  const subViews = initSubViews(dom);
-
-  return { dom, subViews };
+  slider.classList.remove('slider_vertical');
 };
 
-export { init, calculateTarget };
+export { initSubViews, createElements, calculateTarget, toggleVertical };
