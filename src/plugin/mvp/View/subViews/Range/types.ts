@@ -3,7 +3,7 @@ type Dom = {
   range: HTMLDivElement;
 };
 
-type RangeOptions = {
+type UpdateOptions = {
   min: number;
   max: number;
   isVertical: boolean;
@@ -12,4 +12,4 @@ type RangeOptions = {
   to: number;
 };
 
-export { Dom, RangeOptions };
+export { Dom, UpdateOptions };

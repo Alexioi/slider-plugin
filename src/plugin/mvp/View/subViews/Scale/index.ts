@@ -1,6 +1,6 @@
 import './scale.scss';
-import { EventTypes } from '../../../types';
-import { EventEmitter } from '../../../EventEmitter';
+import { EventTypes } from '../../../../types';
+import { EventEmitter } from '../../../../EventEmitter';
 import { Dom, Props, RenderProps } from './type';
 import { createElement, destroy, update } from './methods';
 
@@ -9,7 +9,7 @@ class Scale extends EventEmitter<EventTypes> {
 
   private props: Props = {
     min: 0,
-    max: 100,
+    max: 0,
     isVertical: false,
     isRender: false,
   };
@@ -51,13 +51,15 @@ class Scale extends EventEmitter<EventTypes> {
     return { dom };
   }
 
-  private attachEventHandlers({ scale }: Dom) {
+  private attachEventHandlers({ scale }: Dom): Scale {
     scale.addEventListener('pointerdown', this.handlePointerdownScale);
     window.addEventListener('resize', this.handleWindowsResize);
+
+    return this;
   }
 
   private handlePointerdownScale(pointerEvent: PointerEvent): void {
-    if (!(pointerEvent.target instanceof Element)) {
+    if (!(pointerEvent.target instanceof HTMLSpanElement)) {
       return;
     }
 

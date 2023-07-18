@@ -27,12 +27,10 @@ interface IOptions {
   to: number;
 }
 
-type ValuesIndex = 0 | 1;
-
 type TouchRoute = 'up' | 'down';
 
 interface IElementPosition {
-  valueIndex: 'from' | 'to';
+  type: 'from' | 'to';
   position: { x: number; y: number };
 }
 
@@ -42,21 +40,27 @@ interface IMarkParameters {
 }
 
 interface ITarget {
-  valueIndex: ValuesIndex;
+  type: 'from' | 'to';
 }
 
 interface IElementTouch {
-  valueIndex: 'from' | 'to';
+  type: 'from' | 'to';
   touchRoute: TouchRoute;
 }
 
 type EventTypes = {
   UpdatedModelOptions: IOptions;
   UpdatedModelValues: IOptions;
-  ChangedRunnerPosition: IElementPosition;
+  ChangedRunnerPosition: {
+    type: 'from' | 'to';
+    position: { x: number; y: number };
+  };
   ClickScale: { targetNumber: number };
   onChange: IOptions;
-  ChangedRunnerPositionStep: IElementTouch;
+  ChangedRunnerPositionStep: {
+    type: 'from' | 'to';
+    touchRoute: 'down' | 'up';
+  };
   ChangedNearRunnerPosition: { position: { x: number; y: number } };
 };
 

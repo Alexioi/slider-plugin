@@ -1,7 +1,4 @@
-import { Range } from './Range';
-import { Runner } from './Runner';
-import { Scale } from './Scale';
-import { Tip } from './Tip';
+import { Range, Runner, Scale, Tip } from './subViews';
 
 type Dom = {
   root: HTMLElement;

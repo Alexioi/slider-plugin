@@ -1,8 +1,5 @@
 import { Dom, SubViews } from './type';
-import { Range } from './Range';
-import { Runner } from './Runner';
-import { Scale } from './Scale';
-import { Tip } from './Tip';
+import { Range, Runner, Scale, Tip } from './subViews';
 
 const createElements = (root: HTMLElement): Dom => {
   const slider = document.createElement('div');

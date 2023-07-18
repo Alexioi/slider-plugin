@@ -54,15 +54,15 @@ class View extends EventEmitter<EventTypes> {
   private subscribeToRunnerAndTip(): View {
     this.subViews.runnerFrom.subscribe(
       'ChangedRunnerPosition',
-      ({ valueIndex }: { valueIndex: 'to' | 'from' }) => {
-        this.props = { target: valueIndex };
+      ({ type }: { type: 'to' | 'from' }) => {
+        this.props = { target: type };
       },
     );
 
     this.subViews.runnerTo.subscribe(
       'ChangedRunnerPosition',
-      ({ valueIndex }: { valueIndex: 'to' | 'from' }) => {
-        this.props = { target: valueIndex };
+      ({ type }: { type: 'to' | 'from' }) => {
+        this.props = { target: type };
       },
     );
 

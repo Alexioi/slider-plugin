@@ -1,5 +1,5 @@
-import { helpers } from '../../../helpers';
-import { IMarkParameters } from '../../../types';
+import { helpers } from '../../../../helpers';
+import { IMarkParameters } from '../../../../types';
 import { Dom, HTMLSpanElementWithCustomData, Props } from './type';
 
 const createElement = (root: HTMLDivElement): Dom => {

@@ -25,10 +25,10 @@ class Model extends EventEmitter<EventTypes> {
     return this.options;
   }
 
-  public calculateValueUsingFraction({ position, valueIndex }: IElementPosition): void {
+  public calculateValueUsingFraction({ position, type }: IElementPosition): void {
     const newValue = this.getNewValueUsingFraction(position);
 
-    this.changeValueDependingOnStep(newValue, valueIndex);
+    this.changeValueDependingOnStep(newValue, type);
 
     this.emit('UpdatedModelValues', this.options);
   }
@@ -50,19 +50,18 @@ class Model extends EventEmitter<EventTypes> {
     this.emit('UpdatedModelValues', this.options);
   }
 
-  public updateValueByStep({ valueIndex, touchRoute }: IElementTouch): void {
+  public updateValueByStep({ type, touchRoute }: IElementTouch): void {
     const { step } = this.options;
 
-    const newValue =
-      touchRoute === 'up' ? this.options[valueIndex] + step : this.options[valueIndex] - step;
-    const [minimum, maximum] = this.getMinimumAndMaximum(valueIndex);
+    const newValue = touchRoute === 'up' ? this.options[type] + step : this.options[type] - step;
+    const [minimum, maximum] = this.getMinimumAndMaximum(type);
 
     if (newValue < minimum) {
-      this.options[valueIndex] = minimum;
+      this.options[type] = minimum;
     } else if (newValue > maximum) {
-      this.options[valueIndex] = maximum;
+      this.options[type] = maximum;
     } else {
-      this.options[valueIndex] = newValue;
+      this.options[type] = newValue;
     }
 
     this.emit('UpdatedModelValues', this.options);

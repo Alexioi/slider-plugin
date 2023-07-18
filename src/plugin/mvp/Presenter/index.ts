@@ -30,12 +30,12 @@ class Presenter extends EventEmitter<EventTypes> {
       this.model.updateNearValue(targetNumber);
     };
 
-    const notifyModelAboutChangedRunnerPosition = ({ position, valueIndex }: IElementPosition) => {
-      this.model.calculateValueUsingFraction({ position, valueIndex });
+    const notifyModelAboutChangedRunnerPosition = ({ position, type }: IElementPosition) => {
+      this.model.calculateValueUsingFraction({ position, type });
     };
 
-    const notifyModelAboutTouchValue = ({ valueIndex, touchRoute }: IElementTouch) => {
-      this.model.updateValueByStep({ valueIndex, touchRoute });
+    const notifyModelAboutTouchValue = ({ type, touchRoute }: IElementTouch) => {
+      this.model.updateValueByStep({ type, touchRoute });
     };
 
     const notifyModelAboutChangedNearRunnerPosition = ({

@@ -10,7 +10,7 @@ const searchElements = (root: Element): Dom => {
   }
 
   // @ts-ignore
-  range.plugin = { name: 'range' };
+  range.plugin = { name: 'isRange' };
 
   const vertical = root.querySelector('.panel__input_name-vertical');
 
@@ -19,7 +19,7 @@ const searchElements = (root: Element): Dom => {
   }
 
   // @ts-ignore
-  vertical.plugin = { name: 'vertical ' };
+  vertical.plugin = { name: 'isVertical' };
 
   const scale = root.querySelector('.panel__input_name-scale');
 
@@ -28,7 +28,7 @@ const searchElements = (root: Element): Dom => {
   }
 
   // @ts-ignore
-  scale.plugin = { name: 'scale' };
+  scale.plugin = { name: 'hasScale' };
 
   const min = root.querySelector('.panel__input_name-min');
 
@@ -82,7 +82,7 @@ const searchElements = (root: Element): Dom => {
   }
 
   // @ts-ignore
-  tip.plugin = { name: 'tip' };
+  tip.plugin = { name: 'hasTip' };
 
   return { root, range, vertical, scale, min, max, from, to, step, tip };
 };

@@ -1,8 +1,8 @@
 import './tip.scss';
 
-import { EventTypes } from '../../../types';
-import { EventEmitter } from '../../../EventEmitter';
-import { helpers } from '../../../helpers';
+import { EventTypes } from '../../../../types';
+import { EventEmitter } from '../../../../EventEmitter';
+import { helpers } from '../../../../helpers';
 import { Dom, UpdateOptions } from './type';
 import { changePosition, changeText, createElements, destroy, toggleDisplay } from './methods';
 
@@ -66,15 +66,24 @@ class Tip extends EventEmitter<EventTypes> {
     return { dom };
   }
 
-  private attachEventHandlers({ tipFrom, tipTo, tipBoth }: Dom) {
+  private attachEventHandlers({ tipFrom, tipTo, tipBoth }: Dom): Tip {
     tipFrom.addEventListener('pointerdown', this.handlePointerdownTip);
     tipTo.addEventListener('pointerdown', this.handlePointerdownTip);
     tipBoth.addEventListener('pointerdown', this.handlePointerdownTip);
+
+    return this;
   }
 
-  private handlePointerdownTip(event: Event): void {
-    // @ts-ignore
-    const { valueIndex } = event.target;
+  private handlePointerdownTip({ target }: Event): void {
+    if (target === null) {
+      return;
+    }
+
+    if (!('customType' in target)) {
+      return;
+    }
+
+    const { customType } = target;
 
     const onPointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
@@ -89,15 +98,16 @@ class Tip extends EventEmitter<EventTypes> {
         return false;
       };
 
-      // const position = helpers.getPosition(this.dom.root, pointerEvent, this.options.isVertical);
       const position = helpers.getPosition(this.dom.root, pointerEvent);
 
-      if (typeof valueIndex === 'undefined') {
+      if (customType === 'both') {
         this.emit('ChangedNearRunnerPosition', { position });
         return;
       }
 
-      this.emit('ChangedRunnerPosition', { position, valueIndex });
+      if (customType === 'from' || customType === 'to') {
+        this.emit('ChangedRunnerPosition', { position, type: customType });
+      }
     };
 
     const onPointerUp = (): void => {

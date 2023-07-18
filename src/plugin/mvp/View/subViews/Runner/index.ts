@@ -1,34 +1,45 @@
 import './runner.scss';
 
-import { EventTypes, TouchRoute } from '../../../types';
-import { EventEmitter } from '../../../EventEmitter';
-import { helpers } from '../../../helpers';
-import { Dom, Props } from './type';
-import { createElements, initProps, switchIsRender } from './methods';
+import { EventTypes, TouchRoute } from '../../../../types';
+import { EventEmitter } from '../../../../EventEmitter';
+import { helpers } from '../../../../helpers';
+import { Dom, Props, UpdateOptions } from './type';
+import {
+  createElements,
+  destroy,
+  initProps,
+  isRangeRenderedRunnerFrom,
+  move,
+  switchIsRender,
+  toggleTarget,
+} from './methods';
 
 class Runner extends EventEmitter<EventTypes> {
   private dom: Dom;
 
   private props: Props;
 
-  constructor(root: HTMLDivElement, valueIndex: 'from' | 'to') {
+  constructor(root: HTMLDivElement, type: 'from' | 'to') {
     super();
 
     this.handlePointerdownRunner = this.handlePointerdownRunner.bind(this);
     this.handleKeydownRunner = this.handleKeydownRunner.bind(this);
 
-    const { dom, props } = this.init(root, valueIndex);
+    const { dom, props } = this.init(root, type);
 
     this.dom = dom;
     this.props = props;
   }
 
   public render(isRange: boolean): void {
-    if (this.props.valueIndex === 'from') {
-      if (!isRange && this.props.isRender) {
-        this.destroy();
-        return;
-      }
+    if (isRangeRenderedRunnerFrom(this.props, isRange)) {
+      destroy(this.dom, this.props);
+      this.props = switchIsRender(this.props);
+      return;
+    }
+
+    if (this.props.type === 'from' && !isRange) {
+      return;
     }
 
     if (this.props.isRender) {
@@ -39,9 +50,9 @@ class Runner extends EventEmitter<EventTypes> {
     this.props = switchIsRender(this.props);
   }
 
-  private destroy(): void {
-    this.dom.runner.remove();
-    this.props = switchIsRender(this.props);
+  public update(options: UpdateOptions, target: 'from' | 'to') {
+    toggleTarget(this.props, this.dom, target);
+    move(this.dom, this.props, options);
   }
 
   private init(root: HTMLDivElement, valueIndex: 'from' | 'to'): { dom: Dom; props: Props } {
@@ -58,46 +69,14 @@ class Runner extends EventEmitter<EventTypes> {
     dom.runner.addEventListener('keydown', this.handleKeydownRunner);
   }
 
-  public update(
-    {
-      isVertical,
-      from,
-      to,
-      min,
-      max,
-    }: {
-      isVertical: boolean;
-      from: number;
-      to: number;
-      min: number;
-      max: number;
-    },
-    target: 'from' | 'to',
-  ) {
-    const { valueIndex } = this.props;
-
-    if (target === valueIndex) {
-      this.dom.runner.classList.add('slider__runner_targeted');
-    } else {
-      this.dom.runner.classList.remove('slider__runner_targeted');
-    }
-
-    const value = this.props.valueIndex === 'from' ? from : to;
-
-    const percent = helpers.calculatePercent(value, min, max);
-    const styleRunner = isVertical ? `top:${percent}%;` : `left:${percent}%;`;
-
-    this.dom.runner.style.cssText = styleRunner;
-  }
-
   private handleKeydownRunner(keyboardEvent: KeyboardEvent): void {
     const { code } = keyboardEvent;
 
     const onClickArrow = (touchRoute: TouchRoute): void => {
       keyboardEvent.preventDefault();
-      const { valueIndex } = this.props;
+      const { type } = this.props;
 
-      this.emit('ChangedRunnerPositionStep', { valueIndex, touchRoute });
+      this.emit('ChangedRunnerPositionStep', { type, touchRoute });
     };
 
     if (code === 'ArrowUp' || code === 'ArrowRight') {
@@ -115,12 +94,11 @@ class Runner extends EventEmitter<EventTypes> {
 
       this.dom.runner.ondragstart = () => false;
 
-      const { valueIndex } = this.props;
+      const { type } = this.props;
 
-      // const position = helpers.getPosition(this.dom.root, pointerEvent, this.isVertical);
       const position = helpers.getPosition(this.dom.root, pointerEvent);
 
-      this.emit('ChangedRunnerPosition', { position, valueIndex });
+      this.emit('ChangedRunnerPosition', { position, type });
     };
 
     const onPointerUp = (): void => {

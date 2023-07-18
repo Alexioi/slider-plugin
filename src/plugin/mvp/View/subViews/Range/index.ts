@@ -1,6 +1,6 @@
 import './range.scss';
 
-import { Dom, RangeOptions } from './types';
+import { Dom, UpdateOptions } from './types';
 import { init, changeDimensions } from './methods';
 
 class Range {
@@ -26,7 +26,7 @@ class Range {
     this.dom.root.appendChild(this.dom.range);
   }
 
-  public update(rangeOptions: RangeOptions) {
+  public update(rangeOptions: UpdateOptions) {
     changeDimensions(this.dom.range, rangeOptions);
   }
 }
