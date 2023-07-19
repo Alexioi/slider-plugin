@@ -13,7 +13,7 @@ class Model extends EventEmitter<EventTypes> {
     this.options = validate(options, config);
   }
 
-  public updateOptions(config: IConfig): void {
+  public updateOptions(config?: IConfig): void {
     validate(this.options, config);
 
     this.emit('UpdatedModelOptions', this.options);
