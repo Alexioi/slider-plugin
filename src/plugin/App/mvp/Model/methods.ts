@@ -1,4 +1,4 @@
-import { Options } from '../../../types';
+import { Options } from '@types';
 
 const getRoundingNumber = (number: number, step: number): number => {
   const [, symbolsAfterComma] = String(step).split('.');

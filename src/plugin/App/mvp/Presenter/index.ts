@@ -1,7 +1,8 @@
+import { EventEmitter } from '@helpers/EventEmitter';
+import { Config, ElementPosition, Options, ElementTouch, EventTypes } from '@types';
+
 import { View } from '../View';
 import { Model } from '../Model';
-import { EventEmitter } from '../../../helpers/EventEmitter';
-import { Config, ElementPosition, Options, ElementTouch, EventTypes } from '../../../types';
 
 class Presenter extends EventEmitter<EventTypes> {
   private view: View;

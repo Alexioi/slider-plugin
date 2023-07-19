@@ -1,8 +1,8 @@
 import './view.scss';
 
-import { EventTypes, Options } from '../../../types';
+import { EventEmitter } from '@helpers/EventEmitter';
+import { EventTypes, Options } from '@types';
 
-import { EventEmitter } from '../../../helpers/EventEmitter';
 import { Dom, SubViews } from './type';
 import { calculateTarget, initSubViews, createElements, toggleVertical } from './methods';
 

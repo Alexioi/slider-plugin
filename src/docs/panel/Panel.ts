@@ -1,6 +1,6 @@
 import './panel.scss';
-import { App } from '../../plugin/App';
-import { Config } from '../../plugin/types';
+
+import { App, Config } from '../../plugin';
 import { searchElements, syncInputs, attachCallback } from './methods';
 import { Dom } from './type';
 

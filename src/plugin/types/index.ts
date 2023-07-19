@@ -1,4 +1,4 @@
-interface Config {
+type Config = {
   isRange?: boolean;
   isVertical?: boolean;
   hasTip?: boolean;
@@ -9,13 +9,13 @@ interface Config {
   from?: number;
   to?: number;
   onChange?: Function;
-}
+};
 
-interface Callbacks {
+type Callbacks = {
   onChange: Function;
-}
+};
 
-interface Options {
+type Options = {
   isRange: boolean;
   isVertical: boolean;
   hasTip: boolean;
@@ -25,28 +25,28 @@ interface Options {
   max: number;
   from: number;
   to: number;
-}
+};
 
 type TouchRoute = 'up' | 'down';
 
-interface ElementPosition {
+type ElementPosition = {
   type: 'from' | 'to';
   position: { x: number; y: number };
-}
+};
 
-interface MarkParameters {
+type MarkParameters = {
   percent: number;
   value: number;
-}
+};
 
-interface Target {
+type Target = {
   type: 'from' | 'to';
-}
+};
 
-interface ElementTouch {
+type ElementTouch = {
   type: 'from' | 'to';
   touchRoute: TouchRoute;
-}
+};
 
 type EventTypes = {
   UpdatedModelOptions: Options;

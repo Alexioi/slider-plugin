@@ -1,4 +1,5 @@
-import { Config, Options } from '../../../../types';
+import { Config, Options } from '@types';
+
 import { verifyFromAndTo, verifyMinAndMax, verifyStep } from './methods';
 
 const validate = (oldOptions: Options, newOptions?: Config): Options => {

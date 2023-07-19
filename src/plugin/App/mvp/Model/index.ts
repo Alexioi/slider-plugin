@@ -1,7 +1,7 @@
-import { validate } from './Validator';
+import { EventEmitter } from '@helpers/EventEmitter';
+import { Options, Config, ElementPosition, ElementTouch, EventTypes } from '@types';
 
-import { EventEmitter } from '../../../helpers/EventEmitter';
-import { Options, Config, ElementPosition, ElementTouch, EventTypes } from '../../../types';
+import { validate } from './Validator';
 import { calculateValue, updateNearValue, updateOptionsByStep } from './methods';
 
 class Model extends EventEmitter<EventTypes> {

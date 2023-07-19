@@ -7,8 +7,15 @@
     "build": "webpack --mode=production",
     "deploy": "cross-env NODE_isDocs=true npm run build && gh-pages -d dist/docs",
     "test": "jest",
-    "server": "cross-env NODE_isDocs=true webpack serve --mode=development"
+    "server": "cross-env NODE_isDocs=true webpack serve --mode=development",
+    "prettier": "npx prettier --write --ignore-unknown 'src/**/*'"
   },
+  "pre-commit": [
+    "prettier",
+    "test",
+    "build",
+    "deploy"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",

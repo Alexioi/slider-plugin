@@ -1,6 +1,7 @@
+import { Config, Callbacks, Options } from '@types';
+
 import { Model, View, Presenter } from './mvp';
-import { sliderOptions } from './sliderOptions';
-import { Config, Callbacks, Options } from '../types';
+import { defaultConfig } from './sliderOptions';
 
 class App {
   private callbacks: Callbacks = { onChange: () => {} };
@@ -21,7 +22,7 @@ class App {
   }
 
   private init(node: HTMLElement, config?: Config): Presenter {
-    const options: Options = { ...sliderOptions.defaultConfig };
+    const options: Options = { ...defaultConfig };
 
     const model = new Model(options, config);
     const view = new View(node);

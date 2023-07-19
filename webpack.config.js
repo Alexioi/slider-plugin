@@ -56,6 +56,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      '@types': path.resolve(__dirname, 'src/plugin/types'),
+      '@helpers': path.resolve(__dirname, 'src/plugin/helpers'),
+    },
   },
   plugins,
   devServer: {

@@ -1,4 +1,4 @@
-import { Config, Options } from '../../../../types';
+import { Config, Options } from '@types';
 
 const makeNumber = (number: number, value: any): number => {
   if (/^(-|\+)?([0-9]+)?(\.|,)?([0-9]+)$/.test(value)) {
