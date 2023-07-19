@@ -1,4 +1,4 @@
-import { IOptions } from '../../types';
+import { Options } from '../../../types';
 
 const getRoundingNumber = (number: number, step: number): number => {
   const [, symbolsAfterComma] = String(step).split('.');
@@ -124,7 +124,7 @@ const getNewValueUsingFraction = (
   return (max - min) * percent + min;
 };
 
-const updateOptionsByStep = (touchRoute: 'down' | 'up', options: IOptions, type: 'to' | 'from') => {
+const updateOptionsByStep = (touchRoute: 'down' | 'up', options: Options, type: 'to' | 'from') => {
   const newValue =
     touchRoute === 'up' ? options[type] + options.step : options[type] - options.step;
   const [minimum, maximum] = getMinimumAndMaximum(options, type);
@@ -142,9 +142,9 @@ const updateOptionsByStep = (touchRoute: 'down' | 'up', options: IOptions, type:
 
 const calculateValue = (
   position: { x: number; y: number },
-  options: IOptions,
+  options: Options,
   type?: 'from' | 'to',
-): IOptions => {
+): Options => {
   const newValue = getNewValueUsingFraction(position, options);
 
   if (typeof type !== 'undefined') {
@@ -156,7 +156,7 @@ const calculateValue = (
   return { ...options, [nearType]: changeValueDependingOnStep(newValue, options, nearType) };
 };
 
-const updateNearValue = (newValue: number, options: IOptions) => {
+const updateNearValue = (newValue: number, options: Options) => {
   const nearValueId = getNearValueType(newValue, options);
 
   return { ...options, [nearValueId]: newValue };

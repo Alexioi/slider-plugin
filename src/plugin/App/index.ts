@@ -1,29 +1,27 @@
-import { Model } from '../mvp/Model';
-import { View } from '../mvp/View';
-import { Presenter } from '../mvp/Presenter';
+import { Model, View, Presenter } from './mvp';
 import { sliderOptions } from './sliderOptions';
-import { IConfig, ICallbacks, IOptions } from '../types';
+import { Config, Callbacks, Options } from '../types';
 
 class App {
-  private callbacks: ICallbacks = { onChange: () => {} };
+  private callbacks: Callbacks = { onChange: () => {} };
 
   private presenter: Presenter;
 
-  constructor(root: HTMLElement, config?: IConfig) {
+  constructor(root: HTMLElement, config?: Config) {
     this.presenter = this.init(root, config);
   }
 
-  public update(config?: IConfig): void {
+  public update(config?: Config): void {
     this.updateCallbacks(config);
     this.presenter.updateOptions(config);
   }
 
-  public getOptions(): IOptions | undefined {
+  public getOptions(): Options | undefined {
     return this.presenter.getOptions();
   }
 
-  private init(node: HTMLElement, config?: IConfig): Presenter {
-    const options: IOptions = { ...sliderOptions.defaultConfig };
+  private init(node: HTMLElement, config?: Config): Presenter {
+    const options: Options = { ...sliderOptions.defaultConfig };
 
     const model = new Model(options, config);
     const view = new View(node);
@@ -36,12 +34,12 @@ class App {
   }
 
   private attachEventEmitters(presenter: Presenter): void {
-    presenter.subscribe('onChange', (options: IOptions) => {
+    presenter.subscribe('onChange', (options: Options) => {
       this.callbacks.onChange(options);
     });
   }
 
-  private updateCallbacks(config?: IConfig) {
+  private updateCallbacks(config?: Config) {
     if (typeof config === 'undefined') {
       return;
     }

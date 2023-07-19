@@ -5,14 +5,14 @@
 // import { Runner } from '.';
 // import { sliderOptions } from '../../../App/sliderOptions';
 // import { EventEmitter } from '../../../EventEmitter';
-// import { ITarget } from '../../../types';
+// import { Target } from '../../../types';
 
 // jest.mock('../../../EventEmitter/EventEmitter');
 
 // const node = document.createElement('div');
 
 // const state = { ...sliderOptions.defaultConfig };
-// const target: ITarget = { valueIndex: 1 };
+// const target: Target = { valueIndex: 1 };
 
 // const runner = new Runner(node, state, 0, target);
 // runner.render();

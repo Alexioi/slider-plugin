@@ -1,6 +1,6 @@
 import './scale.scss';
-import { EventTypes } from '../../../../types';
-import { EventEmitter } from '../../../../EventEmitter';
+import { EventTypes } from '../../../../../types';
+import { EventEmitter } from '../../../../../helpers/EventEmitter';
 import { Dom, Props, RenderProps } from './type';
 import { createElement, destroy, update } from './methods';
 

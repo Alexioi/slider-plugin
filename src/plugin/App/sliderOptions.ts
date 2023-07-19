@@ -10,7 +10,6 @@ const sliderOptions = {
     from: 40,
     to: 70,
   },
-  callbacks: { onChange: () => {} },
 };
 
 export { sliderOptions };

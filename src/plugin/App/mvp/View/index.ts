@@ -1,8 +1,8 @@
 import './view.scss';
 
-import { EventTypes, IOptions } from '../../types';
+import { EventTypes, Options } from '../../../types';
 
-import { EventEmitter } from '../../EventEmitter';
+import { EventEmitter } from '../../../helpers/EventEmitter';
 import { Dom, SubViews } from './type';
 import { calculateTarget, initSubViews, createElements, toggleVertical } from './methods';
 
@@ -22,7 +22,7 @@ class View extends EventEmitter<EventTypes> {
     this.subViews = subViews;
   }
 
-  public render(options: IOptions): void {
+  public render(options: Options): void {
     const { isVertical, isRange } = options;
 
     this.props = calculateTarget(options);
@@ -38,7 +38,7 @@ class View extends EventEmitter<EventTypes> {
     this.updateSubViews(options);
   }
 
-  public update(options: IOptions): void {
+  public update(options: Options): void {
     this.updateSubViews(options);
   }
 
@@ -64,7 +64,7 @@ class View extends EventEmitter<EventTypes> {
     return this;
   }
 
-  private updateSubViews(options: IOptions): View {
+  private updateSubViews(options: Options): View {
     this.subViews.tip.update(options);
     this.subViews.range.update(options);
     this.subViews.runnerFrom.update(options, this.props.target);

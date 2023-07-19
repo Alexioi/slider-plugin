@@ -1,29 +1,29 @@
 import { validate } from './Validator';
 
-import { EventEmitter } from '../../EventEmitter';
-import { IOptions, IConfig, IElementPosition, IElementTouch, EventTypes } from '../../types';
+import { EventEmitter } from '../../../helpers/EventEmitter';
+import { Options, Config, ElementPosition, ElementTouch, EventTypes } from '../../../types';
 import { calculateValue, updateNearValue, updateOptionsByStep } from './methods';
 
 class Model extends EventEmitter<EventTypes> {
-  private options: IOptions;
+  private options: Options;
 
-  constructor(options: IOptions, config?: IConfig) {
+  constructor(options: Options, config?: Config) {
     super();
 
     this.options = validate(options, config);
   }
 
-  public updateOptions(config?: IConfig): void {
+  public updateOptions(config?: Config): void {
     validate(this.options, config);
 
     this.emit('UpdatedModelOptions', this.options);
   }
 
-  public getOptions(): IOptions {
+  public getOptions(): Options {
     return this.options;
   }
 
-  public calculateValueUsingFraction({ position, type }: IElementPosition): void {
+  public calculateValueUsingFraction({ position, type }: ElementPosition): void {
     this.options = calculateValue(position, this.options, type);
 
     this.emit('UpdatedModelValues', this.options);
@@ -41,7 +41,7 @@ class Model extends EventEmitter<EventTypes> {
     this.emit('UpdatedModelValues', this.options);
   }
 
-  public updateValueByStep({ type, touchRoute }: IElementTouch): void {
+  public updateValueByStep({ type, touchRoute }: ElementTouch): void {
     this.options = updateOptionsByStep(touchRoute, this.options, type);
 
     this.emit('UpdatedModelValues', this.options);

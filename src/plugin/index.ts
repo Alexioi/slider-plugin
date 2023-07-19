@@ -1,9 +1,9 @@
 import { App } from './App';
-import { IConfig } from './types';
+import { Config } from './types';
 
 declare global {
   interface JQuery {
-    slider: (config?: IConfig) => JQuery<App>;
+    slider: (config?: Config) => JQuery<App>;
   }
 }
 

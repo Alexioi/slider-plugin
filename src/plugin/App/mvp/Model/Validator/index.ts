@@ -1,7 +1,7 @@
-import { IConfig, IOptions } from '../../../types';
+import { Config, Options } from '../../../../types';
 import { verifyFromAndTo, verifyMinAndMax, verifyStep } from './methods';
 
-const validate = (oldOptions: IOptions, newOptions?: IConfig): IOptions => {
+const validate = (oldOptions: Options, newOptions?: Config): Options => {
   const isRange =
     typeof newOptions?.isRange === 'boolean' ? newOptions.isRange : oldOptions.isRange;
   const isVertical =

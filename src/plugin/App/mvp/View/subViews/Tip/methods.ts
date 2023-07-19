@@ -1,4 +1,4 @@
-import { helpers } from '../../../../helpers';
+import { helpers } from '../../../../../helpers';
 import { Dom, HTMLDivElementWithCustomType, UpdateOptions } from './type';
 
 const createElements = (root: HTMLDivElement): Dom => {

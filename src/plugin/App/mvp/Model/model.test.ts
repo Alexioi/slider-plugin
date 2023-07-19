@@ -1,9 +1,9 @@
 // import { Model } from '.';
 // import { sliderOptions } from '../../App/sliderOptions';
-// import { IOptions } from '../../types';
+// import { Options } from '../../types';
 
 // describe('Model', () => {
-//   let options: IOptions = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));
+//   let options: Options = JSON.parse(JSON.stringify(sliderOptions.defaultConfig));
 //   const model = new Model(options);
 
 //   beforeEach(() => {

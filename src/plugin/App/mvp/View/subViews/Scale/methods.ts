@@ -1,5 +1,5 @@
-import { helpers } from '../../../../helpers';
-import { IMarkParameters } from '../../../../types';
+import { helpers } from '../../../../../helpers';
+import { MarkParameters } from '../../../../../types';
 import { Dom, HTMLSpanElementWithCustomData, Props } from './type';
 
 const createElement = (root: HTMLDivElement): Dom => {
@@ -30,7 +30,7 @@ const deleteMarks = ({ scale }: Dom): void => {
   }
 };
 
-const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): IMarkParameters[] => {
+const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): MarkParameters[] => {
   const { offsetHeight, offsetWidth } = scale;
   const scaleLength = isVertical ? offsetHeight : offsetWidth;
   const scalePercents = getScalePercents(scaleLength);
@@ -48,7 +48,7 @@ const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): IM
   return scaleParameters;
 };
 
-const draw = ({ scale }: Dom, { isVertical }: Props, parameters: IMarkParameters[]): void => {
+const draw = ({ scale }: Dom, { isVertical }: Props, parameters: MarkParameters[]): void => {
   parameters.forEach((parameter) => {
     const { percent, value } = parameter;
     const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;

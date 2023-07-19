@@ -1,8 +1,8 @@
 import './tip.scss';
 
-import { EventTypes } from '../../../../types';
-import { EventEmitter } from '../../../../EventEmitter';
-import { helpers } from '../../../../helpers';
+import { EventTypes } from '../../../../../types';
+import { EventEmitter } from '../../../../../helpers/EventEmitter';
+import { helpers } from '../../../../../helpers';
 import { Dom, UpdateOptions } from './type';
 import { changePosition, changeText, createElements, destroy, toggleDisplay } from './methods';
 

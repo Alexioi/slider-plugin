@@ -1,6 +1,6 @@
 import './panel.scss';
 import { App } from '../../plugin/App';
-import { IConfig } from '../../plugin/types';
+import { Config } from '../../plugin/types';
 import { searchElements, syncInputs, attachCallback } from './methods';
 import { Dom } from './type';
 
@@ -9,7 +9,7 @@ class Panel {
 
   private slider: App;
 
-  constructor(root: Element, slider: App, config: IConfig) {
+  constructor(root: Element, slider: App, config: Config) {
     this.slider = slider;
 
     this.handleClickCheckboxElement = this.handleClickCheckboxElement.bind(this);
@@ -20,7 +20,7 @@ class Panel {
     this.dom = dom;
   }
 
-  private init(root: Element, config: IConfig) {
+  private init(root: Element, config: Config) {
     this.slider.update(config);
     const dom = searchElements(root);
 

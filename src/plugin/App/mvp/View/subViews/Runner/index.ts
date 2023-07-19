@@ -1,8 +1,8 @@
 import './runner.scss';
 
-import { EventTypes, TouchRoute } from '../../../../types';
-import { EventEmitter } from '../../../../EventEmitter';
-import { helpers } from '../../../../helpers';
+import { EventTypes, TouchRoute } from '../../../../../types';
+import { EventEmitter } from '../../../../../helpers/EventEmitter';
+import { helpers } from '../../../../../helpers';
 import { Dom, Props, UpdateOptions } from './type';
 import {
   createElements,

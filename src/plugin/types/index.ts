@@ -1,4 +1,4 @@
-interface IConfig {
+interface Config {
   isRange?: boolean;
   isVertical?: boolean;
   hasTip?: boolean;
@@ -11,11 +11,11 @@ interface IConfig {
   onChange?: Function;
 }
 
-interface ICallbacks {
+interface Callbacks {
   onChange: Function;
 }
 
-interface IOptions {
+interface Options {
   isRange: boolean;
   isVertical: boolean;
   hasTip: boolean;
@@ -29,34 +29,34 @@ interface IOptions {
 
 type TouchRoute = 'up' | 'down';
 
-interface IElementPosition {
+interface ElementPosition {
   type: 'from' | 'to';
   position: { x: number; y: number };
 }
 
-interface IMarkParameters {
+interface MarkParameters {
   percent: number;
   value: number;
 }
 
-interface ITarget {
+interface Target {
   type: 'from' | 'to';
 }
 
-interface IElementTouch {
+interface ElementTouch {
   type: 'from' | 'to';
   touchRoute: TouchRoute;
 }
 
 type EventTypes = {
-  UpdatedModelOptions: IOptions;
-  UpdatedModelValues: IOptions;
+  UpdatedModelOptions: Options;
+  UpdatedModelValues: Options;
   ChangedRunnerPosition: {
     type: 'from' | 'to';
     position: { x: number; y: number };
   };
   ClickScale: { targetNumber: number };
-  onChange: IOptions;
+  onChange: Options;
   ChangedRunnerPositionStep: {
     type: 'from' | 'to';
     touchRoute: 'down' | 'up';
@@ -66,12 +66,12 @@ type EventTypes = {
 
 export {
   EventTypes,
-  IConfig,
-  ICallbacks,
-  IOptions,
-  IElementPosition,
-  IMarkParameters,
-  ITarget,
-  IElementTouch,
+  Config,
+  Callbacks,
+  Options,
+  ElementPosition,
+  MarkParameters,
+  Target,
+  ElementTouch,
   TouchRoute,
 };

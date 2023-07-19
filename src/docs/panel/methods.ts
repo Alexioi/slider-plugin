@@ -1,5 +1,5 @@
 import { App } from '../../plugin/App';
-import { IOptions } from '../../plugin/types';
+import { Options } from '../../plugin/types';
 import { Dom } from './type';
 
 const searchElements = (root: Element): Dom => {
@@ -110,7 +110,7 @@ const attachCallback = (dom: Dom, slider: App): void => {
   const thatDom = dom;
 
   slider.update({
-    onChange: ({ from, to }: IOptions) => {
+    onChange: ({ from, to }: Options) => {
       thatDom.from.value = String(from);
       thatDom.to.value = String(to);
     },

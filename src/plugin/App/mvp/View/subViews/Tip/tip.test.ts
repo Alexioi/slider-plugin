@@ -5,14 +5,14 @@
 // import { Tip } from '.';
 // import { sliderOptions } from '../../../App/sliderOptions';
 
-// import { ITarget } from '../../../types';
+// import { Target } from '../../../types';
 
 // jest.mock('../../../EventEmitter/EventEmitter');
 
 // const node = document.createElement('div');
 
 // const state = { ...sliderOptions.defaultConfig };
-// const target: ITarget = { valueIndex: 1 };
+// const target: Target = { valueIndex: 1 };
 
 // let i = 0;
 // // @ts-ignore

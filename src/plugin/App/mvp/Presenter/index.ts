@@ -1,7 +1,7 @@
 import { View } from '../View';
 import { Model } from '../Model';
-import { EventEmitter } from '../../EventEmitter';
-import { IConfig, IElementPosition, IOptions, IElementTouch, EventTypes } from '../../types';
+import { EventEmitter } from '../../../helpers/EventEmitter';
+import { Config, ElementPosition, Options, ElementTouch, EventTypes } from '../../../types';
 
 class Presenter extends EventEmitter<EventTypes> {
   private view: View;
@@ -17,11 +17,11 @@ class Presenter extends EventEmitter<EventTypes> {
     this.attachEventEmittersToModel().attachEventEmittersToView();
   }
 
-  public updateOptions(config?: IConfig): void {
+  public updateOptions(config?: Config): void {
     this.model.updateOptions(config);
   }
 
-  public getOptions(): IOptions {
+  public getOptions(): Options {
     return this.model.getOptions();
   }
 
@@ -30,11 +30,11 @@ class Presenter extends EventEmitter<EventTypes> {
       this.model.updateNearValue(targetNumber);
     };
 
-    const notifyModelAboutChangedRunnerPosition = ({ position, type }: IElementPosition) => {
+    const notifyModelAboutChangedRunnerPosition = ({ position, type }: ElementPosition) => {
       this.model.calculateValueUsingFraction({ position, type });
     };
 
-    const notifyModelAboutTouchValue = ({ type, touchRoute }: IElementTouch) => {
+    const notifyModelAboutTouchValue = ({ type, touchRoute }: ElementTouch) => {
       this.model.updateValueByStep({ type, touchRoute });
     };
 
@@ -86,12 +86,12 @@ class Presenter extends EventEmitter<EventTypes> {
   }
 
   private attachEventEmittersToView(): Presenter {
-    const notifyViewUpdatedModelOptions = (options: IOptions): void => {
+    const notifyViewUpdatedModelOptions = (options: Options): void => {
       this.view.render(options);
       this.emit('onChange', options);
     };
 
-    const notifyViewUpdatedModelValues = (options: IOptions): void => {
+    const notifyViewUpdatedModelValues = (options: Options): void => {
       this.view.update(options);
       this.emit('onChange', options);
     };

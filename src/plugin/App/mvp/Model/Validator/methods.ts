@@ -1,4 +1,4 @@
-import { IConfig, IOptions } from '../../../types';
+import { Config, Options } from '../../../../types';
 
 const makeNumber = (number: number, value: any): number => {
   if (/^(-|\+)?([0-9]+)?(\.|,)?([0-9]+)$/.test(value)) {
@@ -74,12 +74,7 @@ const verifyFromAndTo = (
   return { from, to };
 };
 
-const verifyStep = (
-  oldOptions: IOptions,
-  min: number,
-  max: number,
-  newOptions?: IConfig,
-): number => {
+const verifyStep = (oldOptions: Options, min: number, max: number, newOptions?: Config): number => {
   const intNewStep = makeNumber(oldOptions.step, newOptions?.step);
 
   if (intNewStep <= 0) {
