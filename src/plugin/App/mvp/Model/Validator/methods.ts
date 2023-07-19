@@ -1,9 +1,10 @@
 import { Config, Options } from '@types';
 
-const makeNumber = (number: number, value: any): number => {
-  if (/^(-|\+)?([0-9]+)?(\.|,)?([0-9]+)$/.test(value)) {
+const makeNumber = (number: number, value: unknown): number => {
+  if (String(value).search(/^(-|\+)?([0-9]+)?(\.|,)?([0-9]+)$/) !== -1) {
     return Number(value);
   }
+
   return number;
 };
 
@@ -90,4 +91,4 @@ const verifyStep = (oldOptions: Options, min: number, max: number, newOptions?: 
   return distanceBetweenMinAndMax;
 };
 
-export { verifyMinAndMax, verifyFromAndTo, verifyStep };
+export { verifyMinAndMax, verifyFromAndTo, verifyStep, calculateFrom, calculateTo, makeNumber };
