@@ -11,5 +11,6 @@ module.exports = {
     'arrow-body-style': 'off',
     '@typescript-eslint/indent': 'off',
     'import/prefer-default-export': 'off',
+    'operator-linebreak': 'off',
   },
 };
