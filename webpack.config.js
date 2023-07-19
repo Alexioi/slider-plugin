@@ -17,7 +17,7 @@ const plugins = isDocs
         patterns: [
           {
             from: path.resolve(__dirname, './src/docs/favicon'),
-            to: path.resolve(__dirname, './dist/docs/favicon'),
+            to: path.resolve(__dirname, './dist/docs'),
           },
         ],
       }),
