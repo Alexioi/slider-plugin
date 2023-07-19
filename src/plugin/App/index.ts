@@ -35,14 +35,12 @@ class App {
 
   private init(node: HTMLElement, config?: IConfig): void {
     this.callbacks = { ...sliderOptions.callbacks };
-    const options: IOptions = JSON.parse(JSON.stringify({ ...sliderOptions.defaultConfig }));
+    const options: IOptions = { ...sliderOptions.defaultConfig };
 
-    this.model = new Model(options);
+    this.model = new Model(options, config);
     this.view = new View(node);
     this.presenter = new Presenter(this.view, this.model);
     this.attachEventEmitters();
-
-    this.update(config);
   }
 
   private attachEventEmitters(): void {

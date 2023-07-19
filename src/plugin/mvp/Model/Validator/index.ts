@@ -1,112 +1,19 @@
 import { IConfig, IOptions } from '../../../types';
+import { verifyFromAndTo, verifyMinAndMax, verifyStep } from './methods';
 
-class Validator {
-  private options: IOptions;
+const validate = (oldOptions: IOptions, newOptions?: IConfig): IOptions => {
+  const isRange =
+    typeof newOptions?.isRange === 'boolean' ? newOptions.isRange : oldOptions.isRange;
+  const isVertical =
+    typeof newOptions?.isVertical === 'boolean' ? newOptions.isVertical : oldOptions.isVertical;
+  const hasTip = typeof newOptions?.hasTip === 'boolean' ? newOptions.hasTip : oldOptions.hasTip;
+  const hasScale =
+    typeof newOptions?.hasScale === 'boolean' ? newOptions.hasScale : oldOptions.hasScale;
+  const { min, max } = verifyMinAndMax(oldOptions, newOptions);
+  const { from, to } = verifyFromAndTo(oldOptions, min, max, newOptions);
+  const step = verifyStep(oldOptions, min, max, newOptions);
 
-  constructor(options: IOptions) {
-    this.options = options;
-  }
+  return { from, to, min, max, step, isRange, isVertical, hasScale, hasTip };
+};
 
-  public validateOptions(config: IConfig) {
-    const { isRange, isVertical, hasTip, hasScale, step, min, max, from, to } = config;
-
-    if (typeof isRange === 'boolean') {
-      this.options.isRange = isRange;
-    }
-
-    if (typeof isVertical === 'boolean') {
-      this.options.isVertical = isVertical;
-    }
-
-    if (typeof hasTip === 'boolean') {
-      this.options.hasTip = hasTip;
-    }
-
-    if (typeof hasScale === 'boolean') {
-      this.options.hasScale = hasScale;
-    }
-
-    this.verifyMinAndMax(min, max);
-    this.verifyValues(from, to);
-    this.verifyStep(step);
-  }
-
-  private verifyMinAndMax(firstValue?: number, secondValue?: number): void {
-    const { min, max } = this.options;
-
-    const intFirstValue = Validator.makeNumber(min, firstValue);
-    const intSecondValue = Validator.makeNumber(max, secondValue);
-
-    if (intFirstValue === intSecondValue) {
-      this.options.min = intFirstValue;
-      this.options.max = intSecondValue + 1;
-      return;
-    }
-
-    const [newMin, newMax] = [intFirstValue, intSecondValue].sort((a, b) => {
-      return a - b;
-    });
-
-    this.options.min = newMin;
-    this.options.max = newMax;
-  }
-
-  private verifyValues(newFrom?: number, newTo?: number): void {
-    const { min, max, from, to } = this.options;
-
-    const intFirstValue = Validator.makeNumber(from, newFrom);
-    const intSecondValue = Validator.makeNumber(to, newTo);
-
-    let [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort((a, b) => {
-      return a - b;
-    });
-
-    if (newSecondValue > max) {
-      newSecondValue = max;
-    }
-
-    if (newSecondValue < min) {
-      newSecondValue = min;
-    }
-
-    if (newFirstValue < min) {
-      newFirstValue = min;
-    }
-
-    if (newFirstValue > newSecondValue) {
-      newFirstValue = newSecondValue;
-    }
-
-    this.options.from = newFirstValue;
-    this.options.to = newSecondValue;
-  }
-
-  private verifyStep(newStep: number | undefined): void {
-    const { min, max, step } = this.options;
-
-    const intNewStep = Validator.makeNumber(step, newStep);
-
-    if (intNewStep <= 0) {
-      this.options.step = 1;
-      return;
-    }
-
-    const distanceBetweenMinAndMax = max - min;
-
-    if (intNewStep < distanceBetweenMinAndMax) {
-      this.options.step = intNewStep;
-      return;
-    }
-
-    this.options.step = distanceBetweenMinAndMax;
-  }
-
-  private static makeNumber(number: number, value: any): number {
-    if (/^(-|\+)?([0-9]+)?(\.|,)?([0-9]+)$/.test(value)) {
-      return Number(value);
-    }
-    return number;
-  }
-}
-
-export { Validator };
+export { validate };

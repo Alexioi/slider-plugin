@@ -1,4 +1,4 @@
-import { Validator } from './Validator';
+import { validate } from './Validator';
 
 import { EventEmitter } from '../../EventEmitter';
 import { IOptions, IConfig, IElementPosition, IElementTouch, EventTypes } from '../../types';
@@ -7,17 +7,14 @@ import { calculateValue, updateNearValue, updateOptionsByStep } from './methods'
 class Model extends EventEmitter<EventTypes> {
   private options: IOptions;
 
-  private validator: Validator;
-
-  constructor(options: IOptions) {
+  constructor(options: IOptions, config?: IConfig) {
     super();
 
-    this.options = options;
-    this.validator = new Validator(this.options);
+    this.options = validate(options, config);
   }
 
   public updateOptions(config: IConfig): void {
-    this.validator.validateOptions(config);
+    validate(this.options, config);
 
     this.emit('UpdatedModelOptions', this.options);
   }
