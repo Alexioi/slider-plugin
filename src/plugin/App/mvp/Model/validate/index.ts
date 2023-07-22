@@ -50,7 +50,7 @@ const calculateFrom = (min: number, to: number, from: number): number => {
   }
 
   if (from > to) {
-    return min;
+    return to;
   }
 
   return from;
@@ -75,7 +75,12 @@ const verifyFromAndTo = (
   return { from, to };
 };
 
-const verifyStep = (oldOptions: Options, min: number, max: number, newOptions?: Config): number => {
+const verifyStep = (
+  oldOptions: { step: number },
+  min: number,
+  max: number,
+  newOptions?: { step?: number },
+): number => {
   const intNewStep = makeNumber(oldOptions.step, newOptions?.step);
 
   if (intNewStep <= 0) {
@@ -91,4 +96,19 @@ const verifyStep = (oldOptions: Options, min: number, max: number, newOptions?: 
   return distanceBetweenMinAndMax;
 };
 
-export { verifyMinAndMax, verifyFromAndTo, verifyStep, calculateFrom, calculateTo, makeNumber };
+const validate = (oldOptions: Options, newOptions?: Config): Options => {
+  const isRange =
+    typeof newOptions?.isRange === 'boolean' ? newOptions.isRange : oldOptions.isRange;
+  const isVertical =
+    typeof newOptions?.isVertical === 'boolean' ? newOptions.isVertical : oldOptions.isVertical;
+  const hasTip = typeof newOptions?.hasTip === 'boolean' ? newOptions.hasTip : oldOptions.hasTip;
+  const hasScale =
+    typeof newOptions?.hasScale === 'boolean' ? newOptions.hasScale : oldOptions.hasScale;
+  const { min, max } = verifyMinAndMax(oldOptions, newOptions);
+  const { from, to } = verifyFromAndTo(oldOptions, min, max, newOptions);
+  const step = verifyStep(oldOptions, min, max, newOptions);
+
+  return { from, to, min, max, step, isRange, isVertical, hasScale, hasTip };
+};
+
+export { validate };

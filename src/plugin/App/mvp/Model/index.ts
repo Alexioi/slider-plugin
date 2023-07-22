@@ -1,7 +1,7 @@
 import { EventEmitter } from '@helpers/EventEmitter';
 import { Options, Config, ElementPosition, ElementTouch, EventTypes } from '@types';
 
-import { validate } from './Validator';
+import { validate } from './validate';
 import { calculateValue, updateNearValue, updateOptionsByStep } from './methods';
 
 class Model extends EventEmitter<EventTypes> {
@@ -14,7 +14,7 @@ class Model extends EventEmitter<EventTypes> {
   }
 
   public updateOptions(config?: Config): void {
-    validate(this.options, config);
+    this.options = validate(this.options, config);
 
     this.emit('UpdatedModelOptions', this.options);
   }
