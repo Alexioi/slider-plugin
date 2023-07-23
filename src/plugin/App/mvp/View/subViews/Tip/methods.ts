@@ -1,12 +1,13 @@
 import { helpers } from '@helpers';
 
 import { Dom, HTMLDivElementWithCustomType, UpdateOptions } from './type';
+import { cssSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement): Dom => {
-  const tipLine = helpers.createElement('slider__tip-line');
-  const tipFrom = helpers.createElement('slider__tip') as HTMLDivElementWithCustomType;
-  const tipBoth = helpers.createElement('slider__tip') as HTMLDivElementWithCustomType;
-  const tipTo = helpers.createElement('slider__tip') as HTMLDivElementWithCustomType;
+  const tipLine = helpers.createElement(cssSelectors.tipLine);
+  const tipFrom = helpers.createElement(cssSelectors.tip) as HTMLDivElementWithCustomType;
+  const tipBoth = helpers.createElement(cssSelectors.tip) as HTMLDivElementWithCustomType;
+  const tipTo = helpers.createElement(cssSelectors.tip) as HTMLDivElementWithCustomType;
 
   tipFrom.customType = 'from';
   tipBoth.customType = 'both';
@@ -19,14 +20,8 @@ const toggleDisplay = (
   { isRange, isVertical }: { isRange: boolean; isVertical: boolean },
   { tipFrom, tipTo, tipBoth }: Dom,
 ): void => {
-  const changedTipFrom = tipFrom;
-  const changedTipBoth = tipBoth;
-  const changedTipTo = tipTo;
-
   if (!isRange) {
-    changedTipFrom.style.display = 'none';
-    changedTipBoth.style.display = 'none';
-    changedTipTo.style.display = 'block';
+    tipTo.classList.remove(cssSelectors.hiddenTip);
     return;
   }
 
@@ -37,27 +32,34 @@ const toggleDisplay = (
     : x + width >= positionTipTo.x;
 
   if (isTipFromOverlapsTipTo) {
-    changedTipFrom.style.display = 'none';
-    changedTipBoth.style.display = 'block';
-    changedTipTo.style.display = 'none';
+    tipFrom.classList.add(cssSelectors.hiddenTip);
+    tipBoth.classList.remove(cssSelectors.hiddenTip);
+    tipTo.classList.add(cssSelectors.hiddenTip);
     return;
   }
 
-  changedTipFrom.style.display = 'block';
-  changedTipBoth.style.display = 'none';
-  changedTipTo.style.display = 'block';
+  tipFrom.classList.remove(cssSelectors.hiddenTip);
+  tipBoth.classList.add(cssSelectors.hiddenTip);
+  tipTo.classList.remove(cssSelectors.hiddenTip);
 };
 
 const changePosition = (
-  { min, max, isVertical, from, to }: UpdateOptions,
+  { min, max, isVertical, from, to, isRange }: UpdateOptions,
   { tipBoth, tipFrom, tipTo }: Dom,
 ): void => {
-  const changedTipFrom = tipFrom;
-  const changedTipBoth = tipBoth;
   const changedTipTo = tipTo;
-  const leftPosition = helpers.calculatePercent(from, min, max);
   const rightPosition = helpers.calculatePercent(to, min, max);
   const positionRightTip = isVertical ? `top: ${rightPosition}%;` : `left: ${rightPosition}%;`;
+
+  changedTipTo.style.cssText = positionRightTip;
+
+  if (!isRange) {
+    return;
+  }
+
+  const changedTipFrom = tipFrom;
+  const changedTipBoth = tipBoth;
+  const leftPosition = helpers.calculatePercent(from, min, max);
   const positionLeftTip = isVertical ? `top: ${leftPosition}%;` : `left: ${leftPosition}%;`;
   const positionBothTip = isVertical
     ? `top: ${(leftPosition + rightPosition) / 2}%;`
@@ -65,7 +67,6 @@ const changePosition = (
 
   changedTipFrom.style.cssText = positionLeftTip;
   changedTipBoth.style.cssText = positionBothTip;
-  changedTipTo.style.cssText = positionRightTip;
 };
 
 const destroy = ({ tipLine }: Dom) => {
@@ -73,17 +74,22 @@ const destroy = ({ tipLine }: Dom) => {
 };
 
 const changeText = (
-  { from, to }: { from: number; to: number },
+  { from, to, isRange }: { from: number; to: number; isRange: boolean },
   { tipFrom, tipTo, tipBoth }: Dom,
 ) => {
+  const changedTipTo = tipTo;
+  changedTipTo.innerText = String(to);
+
+  if (!isRange) {
+    return;
+  }
+
   const changedTipFrom = tipFrom;
   const changedTipBoth = tipBoth;
-  const changedTipTo = tipTo;
   const bothText = from === to ? String(to) : `${from} - ${to}`;
 
   changedTipFrom.innerText = String(from);
   changedTipBoth.innerText = bothText;
-  changedTipTo.innerText = String(to);
 };
 
 export { createElements, toggleDisplay, changePosition, destroy, changeText };

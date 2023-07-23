@@ -28,5 +28,9 @@
     color: rgb(31, 32, 65);
     user-select: none;
     cursor: pointer;
+
+    &_hidden {
+      visibility: hidden;
+    }
   }
 }

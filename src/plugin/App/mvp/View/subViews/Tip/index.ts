@@ -6,11 +6,10 @@ import { helpers } from '@helpers';
 
 import { Dom, UpdateOptions } from './type';
 import { changePosition, changeText, createElements, destroy, toggleDisplay } from './methods';
+import { cssSelectors } from './constants';
 
 class Tip extends EventEmitter<EventTypes> {
   private dom: Dom;
-
-  private props = { isRender: false };
 
   constructor(root: HTMLDivElement) {
     super();
@@ -31,31 +30,27 @@ class Tip extends EventEmitter<EventTypes> {
     isRange: boolean;
     isVertical: boolean;
   }) {
-    if (!hasTip && this.props.isRender) {
-      this.props = { isRender: false };
+    if (!hasTip) {
       destroy(this.dom);
       return;
     }
-
-    if (this.props.isRender) {
-      return;
-    }
-
-    this.props = { isRender: true };
 
     this.dom.root.insertAdjacentElement('afterbegin', this.dom.tipLine);
 
     if (isRange) {
       this.dom.tipLine.appendChild(this.dom.tipFrom);
       this.dom.tipLine.appendChild(this.dom.tipBoth);
+    } else {
+      this.dom.tipFrom.remove();
+      this.dom.tipBoth.remove();
     }
 
     this.dom.tipLine.appendChild(this.dom.tipTo);
 
     if (isVertical) {
-      this.dom.tipLine.classList.add('slider__tip-line_vertical');
+      this.dom.tipLine.classList.add(cssSelectors.verticalTipLine);
     } else {
-      this.dom.tipLine.classList.remove('slider__tip-line_vertical');
+      this.dom.tipLine.classList.remove(cssSelectors.verticalTipLine);
     }
   }
 
