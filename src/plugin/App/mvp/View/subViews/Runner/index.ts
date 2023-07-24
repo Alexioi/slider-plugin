@@ -5,15 +5,7 @@ import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
 
 import { Dom, Props, UpdateOptions } from './type';
-import {
-  createElements,
-  destroy,
-  initProps,
-  isRangeRenderedRunnerFrom,
-  move,
-  switchIsRender,
-  toggleTarget,
-} from './methods';
+import { createElements, destroy, initProps, move, toggleTarget } from './methods';
 
 class Runner extends EventEmitter<EventTypes> {
   private dom: Dom;
@@ -33,22 +25,12 @@ class Runner extends EventEmitter<EventTypes> {
   }
 
   public render(isRange: boolean): void {
-    if (isRangeRenderedRunnerFrom(this.props, isRange)) {
-      destroy(this.dom, this.props);
-      this.props = switchIsRender(this.props);
-      return;
-    }
-
     if (this.props.type === 'from' && !isRange) {
-      return;
-    }
-
-    if (this.props.isRender) {
+      destroy(this.dom);
       return;
     }
 
     this.dom.root.appendChild(this.dom.runner);
-    this.props = switchIsRender(this.props);
   }
 
   public update(options: UpdateOptions, target: 'from' | 'to') {
@@ -80,11 +62,11 @@ class Runner extends EventEmitter<EventTypes> {
       this.emit('ChangedRunnerPositionStep', { type, touchRoute });
     };
 
-    if (code === 'ArrowUp' || code === 'ArrowRight') {
+    if (code === 'ArrowDown' || code === 'ArrowRight') {
       onClickArrow('up');
     }
 
-    if (code === 'ArrowDown' || code === 'ArrowLeft') {
+    if (code === 'ArrowUp' || code === 'ArrowLeft') {
       onClickArrow('down');
     }
   }

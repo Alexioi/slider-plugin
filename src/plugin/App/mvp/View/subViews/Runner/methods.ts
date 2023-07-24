@@ -1,44 +1,29 @@
 import { helpers } from '@helpers';
 
 import { Dom, Props, UpdateOptions } from './type';
+import { cssSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement): Dom => {
-  const runner = helpers.createElement('slider__runner');
-  runner.setAttribute('tabindex', '0');
+  const runner = helpers.createElement(cssSelectors.runner);
 
   return { root, runner };
 };
 
 const initProps = (type: 'from' | 'to'): Props => {
-  const isRender = false;
-
-  return { isRender, type };
+  return { type };
 };
 
-const switchIsRender = (props: Props) => {
-  const isRender = !props.isRender;
-
-  return { ...props, isRender };
-};
-
-const destroy = ({ runner }: Dom, oldProps: Props): Props => {
+const destroy = ({ runner }: Dom): void => {
   runner.remove();
-  const props = switchIsRender(oldProps);
-
-  return props;
-};
-
-const isRangeRenderedRunnerFrom = ({ type, isRender }: Props, isRange: boolean) => {
-  return type === 'from' && !isRange && isRender;
 };
 
 const toggleTarget = ({ type }: Props, { runner }: Dom, target: 'to' | 'from') => {
   if (target === type) {
-    runner.classList.add('slider__runner_targeted');
+    runner.classList.add(cssSelectors.targetedRunner);
     return;
   }
 
-  runner.classList.remove('slider__runner_targeted');
+  runner.classList.remove(cssSelectors.targetedRunner);
 };
 
 const move = (
@@ -55,12 +40,4 @@ const move = (
   movingRunner.style.cssText = styleRunner;
 };
 
-export {
-  createElements,
-  initProps,
-  switchIsRender,
-  destroy,
-  isRangeRenderedRunnerFrom,
-  toggleTarget,
-  move,
-};
+export { createElements, initProps, destroy, toggleTarget, move };

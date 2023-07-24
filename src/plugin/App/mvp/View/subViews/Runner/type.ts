@@ -4,7 +4,6 @@ type Dom = {
 };
 
 type Props = {
-  isRender: boolean;
   type: 'from' | 'to';
 };
 
