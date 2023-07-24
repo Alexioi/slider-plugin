@@ -7,7 +7,7 @@ type Dom = {
   scale: HTMLDivElement;
 };
 
-type Props = { min: number; max: number; isVertical: boolean; isRender: boolean };
+type Props = { min: number; max: number; isVertical: boolean };
 
 type RenderProps = {
   min: number;

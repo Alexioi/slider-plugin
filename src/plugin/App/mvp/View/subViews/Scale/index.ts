@@ -13,7 +13,6 @@ class Scale extends EventEmitter<EventTypes> {
     min: 0,
     max: 0,
     isVertical: false,
-    isRender: false,
   };
 
   constructor(root: HTMLDivElement) {
@@ -28,17 +27,12 @@ class Scale extends EventEmitter<EventTypes> {
   }
 
   public render({ min, max, isVertical, hasScale }: RenderProps): void {
-    if (!hasScale && this.props.isRender) {
-      this.props = { min, max, isVertical, isRender: false };
+    if (!hasScale) {
       destroy(this.dom);
       return;
     }
 
-    if (!hasScale) {
-      return;
-    }
-
-    this.props = { min, max, isVertical, isRender: true };
+    this.props = { min, max, isVertical };
 
     this.dom.root.appendChild(this.dom.scale);
 

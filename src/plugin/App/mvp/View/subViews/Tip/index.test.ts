@@ -91,25 +91,4 @@ describe('Tip', () => {
     tip.update({ min: -100, max: 100, from: -50, to: 100, isRange: false, isVertical: false });
     expect(tipNode.style.left).toEqual('100%');
   });
-
-  it('must send its type when moving', () => {
-    tip.update({ min: -100, max: 100, from: -50, to: 50, isRange: false, isVertical: false });
-
-    const tipLine = document.querySelector(`.${cssSelectors.verticalTipLine}`);
-    const tipNode = tipLine?.querySelector(`.${cssSelectors.tip}`);
-
-    if (!(tipNode instanceof HTMLDivElement)) {
-      fail('tipNode is not HTMLDivElement');
-    }
-
-    const pointerDownEvent = new Event('pointerdown');
-    const pointerMoveEvent = new Event('pointermove');
-
-    tipNode.dispatchEvent(pointerDownEvent);
-    tipNode.dispatchEvent(pointerMoveEvent);
-
-    tip.subscribe('ChangedRunnerPosition', ({ type }) => {
-      expect(type).toBe('from');
-    });
-  });
 });

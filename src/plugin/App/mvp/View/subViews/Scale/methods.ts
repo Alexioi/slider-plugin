@@ -1,9 +1,11 @@
-import { helpers } from '../../../../../helpers';
-import { MarkParameters } from '../../../../../types';
+import { helpers } from '@helpers';
+import { MarkParameters } from '@types';
+
 import { Dom, HTMLSpanElementWithCustomData, Props } from './type';
+import { cssSelectors } from './constants';
 
 const createElement = (root: HTMLDivElement): Dom => {
-  const scale = helpers.createElement('slider__scale');
+  const scale = helpers.createElement(cssSelectors.scale);
 
   return { root, scale };
 };
@@ -53,7 +55,7 @@ const draw = ({ scale }: Dom, { isVertical }: Props, parameters: MarkParameters[
     const { percent, value } = parameter;
     const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
     const mark = document.createElement('span') as HTMLSpanElementWithCustomData;
-    mark.classList.add('slider__mark');
+    mark.classList.add(cssSelectors.mark);
     mark.style.cssText = style;
     mark.innerText = String(value);
     mark.customValue = Number(value);
