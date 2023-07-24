@@ -47,38 +47,44 @@ class Presenter extends EventEmitter<EventTypes> {
       this.model.calculateNearValueUsingFraction(position);
     };
 
-    this.view.subViews.scale.subscribe('ClickScale', notifyModelClickedScale);
-
-    this.view.subViews.runnerFrom.subscribe(
+    this.view.subscribeSubCViewToEvents('scale', 'ClickScale', notifyModelClickedScale);
+    this.view.subscribeSubCViewToEvents(
+      'runnerFrom',
       'ChangedRunnerPosition',
       notifyModelAboutChangedRunnerPosition,
     );
-    this.view.subViews.runnerTo.subscribe(
+    this.view.subscribeSubCViewToEvents(
+      'runnerTo',
       'ChangedRunnerPosition',
       notifyModelAboutChangedRunnerPosition,
     );
-
-    this.view.subViews.runnerFrom.subscribe(
+    this.view.subscribeSubCViewToEvents(
+      'runnerFrom',
       'ChangedRunnerPositionStep',
       notifyModelAboutTouchValue,
     );
-    this.view.subViews.runnerTo.subscribe('ChangedRunnerPositionStep', notifyModelAboutTouchValue);
-
-    this.view.subViews.runnerFrom.subscribe(
+    this.view.subscribeSubCViewToEvents(
+      'runnerTo',
+      'ChangedRunnerPositionStep',
+      notifyModelAboutTouchValue,
+    );
+    this.view.subscribeSubCViewToEvents(
+      'runnerFrom',
       'ChangedNearRunnerPosition',
       notifyModelAboutChangedNearRunnerPosition,
     );
-    this.view.subViews.runnerTo.subscribe(
+    this.view.subscribeSubCViewToEvents(
+      'runnerTo',
       'ChangedNearRunnerPosition',
       notifyModelAboutChangedNearRunnerPosition,
     );
-
-    this.view.subViews.tip.subscribe(
+    this.view.subscribeSubCViewToEvents(
+      'tip',
       'ChangedNearRunnerPosition',
       notifyModelAboutChangedNearRunnerPosition,
     );
-
-    this.view.subViews.tip.subscribe(
+    this.view.subscribeSubCViewToEvents(
+      'tip',
       'ChangedRunnerPosition',
       notifyModelAboutChangedRunnerPosition,
     );

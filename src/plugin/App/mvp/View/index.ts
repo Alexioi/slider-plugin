@@ -1,6 +1,6 @@
 import './view.scss';
 
-import { EventEmitter } from '@helpers/EventEmitter';
+import { EventEmitter, Callback } from '@helpers/EventEmitter';
 import { EventTypes, Options } from '@types';
 
 import { Dom, SubViews } from './type';
@@ -9,7 +9,7 @@ import { calculateTarget, initSubViews, createElements, toggleVertical } from '.
 class View extends EventEmitter<EventTypes> {
   private dom: Dom;
 
-  public subViews: SubViews;
+  private subViews: SubViews;
 
   private props: { target: 'from' | 'to' } = { target: 'from' };
 
@@ -40,6 +40,14 @@ class View extends EventEmitter<EventTypes> {
 
   public update(options: Options): void {
     this.updateSubViews(options);
+  }
+
+  public subscribeSubCViewToEvents<K extends keyof EventTypes>(
+    subName: 'tip' | 'runnerTo' | 'runnerFrom' | 'scale',
+    eventName: K,
+    callback: Callback<EventTypes, K>,
+  ): void {
+    this.subViews[subName].subscribe(eventName, callback);
   }
 
   private init(root: HTMLElement): { dom: Dom; subViews: SubViews } {
