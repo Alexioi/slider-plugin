@@ -5,6 +5,7 @@ import { cssSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement): Dom => {
   const runner = helpers.createElement(cssSelectors.runner);
+  runner.tabIndex = 0;
 
   return { root, runner };
 };
