@@ -1,9 +1,10 @@
 import { helpers } from '@helpers';
 
 import { UpdateOptions } from './types';
+import { cssSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement) => {
-  const range = helpers.createElement('slider__range');
+  const range = helpers.createElement(cssSelectors.range);
 
   return { root, range };
 };
