@@ -35,7 +35,9 @@ module.exports = {
   entry,
   output: {
     filename: '[name].js',
-    path: isDocs ? path.resolve(__dirname, 'dist/docs') : path.resolve(__dirname, 'dist/plugin'),
+    path: isDocs
+      ? path.resolve(__dirname, 'dist/docs')
+      : path.resolve(__dirname, 'dist/plugin'),
   },
   module: {
     rules: [
@@ -60,6 +62,7 @@ module.exports = {
       '@types': path.resolve(__dirname, 'src/plugin/types'),
       '@helpers': path.resolve(__dirname, 'src/plugin/helpers'),
       '@style': path.resolve(__dirname, 'src/style'),
+      '@plugin': path.resolve(__dirname, 'src/plugin'),
     },
   },
   plugins,
