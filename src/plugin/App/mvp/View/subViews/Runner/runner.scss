@@ -1,13 +1,14 @@
 @use 'sass:math';
 
-$runnerWidth: 1.5rem;
+@use '@style/parameters';
+@use '@style/gradients';
 
 .slider {
   $root: &;
 
   &_vertical {
     & #{$root}__runner {
-      right: -(math.div($runnerWidth, 3));
+      right: -(math.div(parameters.$runnerWidth, 3));
       transform: translateY(-50%);
     }
   }
@@ -16,12 +17,12 @@ $runnerWidth: 1.5rem;
     box-sizing: border-box;
     position: absolute;
     z-index: 10;
-    top: -(math.div($runnerWidth, 3));
+    top: -(math.div(parameters.$runnerWidth, 3));
     border: 2px solid white;
-    height: $runnerWidth;
-    width: $runnerWidth;
+    height: parameters.$runnerWidth;
+    width: parameters.$runnerWidth;
     border-radius: 50%;
-    background: linear-gradient(180deg, #6fcf97 0%, #66d2ea 100%);
+    background: gradients.$first;
     transform: translateX(-50%);
     cursor: pointer;
     touch-action: none;

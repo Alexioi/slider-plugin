@@ -1,9 +1,12 @@
+@use '@style/colors';
+@use '@style/parameters';
+
 .slider {
   $root: &;
 
   &_vertical {
     & #{$root}__scale {
-      margin-left: 20px;
+      margin-left: parameters.$runnerWidth;
       margin-top: 0;
       height: 100%;
     }
@@ -24,6 +27,6 @@
     position: absolute;
     transform: translateX(-50%);
     user-select: none;
-    color: rgb(31, 32, 65);
+    color: colors.$first;
   }
 }

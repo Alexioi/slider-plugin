@@ -27,6 +27,8 @@
     display: flex;
     width: 150px;
     justify-content: space-between;
+    cursor: pointer;
+    word-break: break-word;
   }
 
   &__input {

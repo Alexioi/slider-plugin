@@ -1,3 +1,5 @@
+@use '@style/gradients';
+
 .slider {
   $root: &;
 
@@ -11,7 +13,7 @@
   &__range {
     position: absolute;
     border-radius: 3px;
-    background: linear-gradient(180deg, #6fcf97 0%, #66d2ea 100%);
+    background: gradients.$first;
     height: 100%;
   }
 }
