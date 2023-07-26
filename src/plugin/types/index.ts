@@ -39,29 +39,25 @@ type MarkParameters = {
   value: number;
 };
 
-type Target = {
-  type: 'from' | 'to';
-};
-
 type ElementTouch = {
   type: 'from' | 'to';
   touchRoute: TouchRoute;
 };
 
 type EventTypes = {
-  UpdatedModelOptions: Options;
-  UpdatedModelValues: Options;
-  ChangedRunnerPosition: {
+  UpdateModelOptions: Options;
+  UpdateModelValues: Options;
+  ChangeRunnerPosition: {
     type: 'from' | 'to';
     position: { x: number; y: number };
   };
   ClickScale: { targetNumber: number };
   onChange: Options;
-  ChangedRunnerPositionStep: {
+  ChangeRunnerPositionByStep: {
     type: 'from' | 'to';
     touchRoute: 'down' | 'up';
   };
-  ChangedNearRunnerPosition: { position: { x: number; y: number } };
+  ChangeNearRunnerPosition: { position: { x: number; y: number } };
 };
 
 export {
@@ -71,7 +67,6 @@ export {
   Options,
   ElementPosition,
   MarkParameters,
-  Target,
   ElementTouch,
   TouchRoute,
 };

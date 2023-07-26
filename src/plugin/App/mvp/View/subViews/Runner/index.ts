@@ -67,7 +67,7 @@ class Runner extends EventEmitter<EventTypes> {
       keyboardEvent.preventDefault();
       const { type } = this.props;
 
-      this.emit('ChangedRunnerPositionStep', { type, touchRoute });
+      this.emit('ChangeRunnerPositionByStep', { type, touchRoute });
     };
 
     if (code === 'ArrowDown' || code === 'ArrowRight') {
@@ -89,7 +89,7 @@ class Runner extends EventEmitter<EventTypes> {
 
       const position = helpers.getPosition(this.dom.root, pointerEvent);
 
-      this.emit('ChangedRunnerPosition', { position, type });
+      this.emit('ChangeRunnerPosition', { position, type });
     };
 
     const handlePointerUp = (): void => {

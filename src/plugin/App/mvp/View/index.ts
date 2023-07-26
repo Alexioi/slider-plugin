@@ -69,7 +69,7 @@ class View extends EventEmitter<EventTypes> {
     runnerTo,
     tip,
   }: SubViews): View {
-    const notifyAboutChangedRunnerPosition = ({
+    const notifyAboutChangeRunnerPosition = ({
       type,
     }: {
       type: 'to' | 'from';
@@ -78,14 +78,11 @@ class View extends EventEmitter<EventTypes> {
     };
 
     runnerFrom.subscribe(
-      'ChangedRunnerPosition',
-      notifyAboutChangedRunnerPosition,
+      'ChangeRunnerPosition',
+      notifyAboutChangeRunnerPosition,
     );
-    runnerTo.subscribe(
-      'ChangedRunnerPosition',
-      notifyAboutChangedRunnerPosition,
-    );
-    tip.subscribe('ChangedRunnerPosition', notifyAboutChangedRunnerPosition);
+    runnerTo.subscribe('ChangeRunnerPosition', notifyAboutChangeRunnerPosition);
+    tip.subscribe('ChangeRunnerPosition', notifyAboutChangeRunnerPosition);
 
     return this;
   }

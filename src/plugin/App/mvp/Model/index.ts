@@ -26,7 +26,7 @@ class Model extends EventEmitter<EventTypes> {
   public updateOptions(config?: Config): void {
     this.options = validate(this.options, config);
 
-    this.emit('UpdatedModelOptions', this.options);
+    this.emit('UpdateModelOptions', this.options);
   }
 
   public getOptions(): Options {
@@ -39,7 +39,7 @@ class Model extends EventEmitter<EventTypes> {
   }: ElementPosition): void {
     this.options = calculateValue(position, this.options, type);
 
-    this.emit('UpdatedModelValues', this.options);
+    this.emit('UpdateModelValues', this.options);
   }
 
   public calculateNearValueUsingFraction(position: {
@@ -48,19 +48,19 @@ class Model extends EventEmitter<EventTypes> {
   }): void {
     this.options = calculateValue(position, this.options);
 
-    this.emit('UpdatedModelValues', this.options);
+    this.emit('UpdateModelValues', this.options);
   }
 
   public updateNearValue(newValue: number): void {
     this.options = updateNearValue(newValue, this.options);
 
-    this.emit('UpdatedModelValues', this.options);
+    this.emit('UpdateModelValues', this.options);
   }
 
   public updateValueByStep({ type, touchRoute }: ElementTouch): void {
     this.options = updateOptionsByStep(touchRoute, this.options, type);
 
-    this.emit('UpdatedModelValues', this.options);
+    this.emit('UpdateModelValues', this.options);
   }
 }
 

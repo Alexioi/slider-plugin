@@ -110,12 +110,12 @@ class Tip extends EventEmitter<EventTypes> {
       const position = helpers.getPosition(this.dom.root, pointerEvent);
 
       if (customType === 'both') {
-        this.emit('ChangedNearRunnerPosition', { position });
+        this.emit('ChangeNearRunnerPosition', { position });
         return;
       }
 
       if (customType === 'from' || customType === 'to') {
-        this.emit('ChangedRunnerPosition', { position, type: customType });
+        this.emit('ChangeRunnerPosition', { position, type: customType });
       }
     };
 

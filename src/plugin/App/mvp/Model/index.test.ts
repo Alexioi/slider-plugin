@@ -15,7 +15,7 @@ describe('Model', () => {
     to: 70,
   };
 
-  const makeTestUpdatedModelValues = (value: Options) => {
+  const makeTestUpdateModelValues = (value: Options) => {
     return (newOptions: Options) => {
       expect(newOptions).toEqual(value);
     };
@@ -41,7 +41,7 @@ describe('Model', () => {
         from: 40,
         to: 100,
       };
-      model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateValueUsingFraction({
         position: { x: 101, y: 50 },
@@ -62,7 +62,7 @@ describe('Model', () => {
         from: 40,
         to: 100,
       };
-      model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateValueUsingFraction({
         position: { x: 101, y: 50 },
@@ -83,7 +83,7 @@ describe('Model', () => {
         from: 40,
         to: 100,
       };
-      model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateValueUsingFraction({
         position: { x: 50, y: 101 },
@@ -104,7 +104,7 @@ describe('Model', () => {
         from: 70,
         to: 70,
       };
-      model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateValueUsingFraction({
         position: { x: 50, y: 101 },
@@ -119,7 +119,7 @@ describe('Model', () => {
         from: 70,
         isVertical: true,
       };
-      model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateValueUsingFraction({
         position: { x: 50, y: 10 },

@@ -41,7 +41,7 @@ class Presenter extends EventEmitter<EventTypes> {
       this.model.updateNearValue(targetNumber);
     };
 
-    const notifyModelAboutChangedRunnerPosition = ({
+    const notifyModelAboutChangeRunnerPosition = ({
       position,
       type,
     }: ElementPosition) => {
@@ -52,7 +52,7 @@ class Presenter extends EventEmitter<EventTypes> {
       this.model.updateValueByStep({ type, touchRoute });
     };
 
-    const notifyModelAboutChangedNearRunnerPosition = ({
+    const notifyModelAboutChangeNearRunnerPosition = ({
       position,
     }: {
       position: { x: number; y: number };
@@ -67,62 +67,62 @@ class Presenter extends EventEmitter<EventTypes> {
     );
     this.view.subscribeSubCViewToEvents(
       'runnerFrom',
-      'ChangedRunnerPosition',
-      notifyModelAboutChangedRunnerPosition,
+      'ChangeRunnerPosition',
+      notifyModelAboutChangeRunnerPosition,
     );
     this.view.subscribeSubCViewToEvents(
       'runnerTo',
-      'ChangedRunnerPosition',
-      notifyModelAboutChangedRunnerPosition,
+      'ChangeRunnerPosition',
+      notifyModelAboutChangeRunnerPosition,
     );
     this.view.subscribeSubCViewToEvents(
       'runnerFrom',
-      'ChangedRunnerPositionStep',
+      'ChangeRunnerPositionByStep',
       notifyModelAboutTouchValue,
     );
     this.view.subscribeSubCViewToEvents(
       'runnerTo',
-      'ChangedRunnerPositionStep',
+      'ChangeRunnerPositionByStep',
       notifyModelAboutTouchValue,
     );
     this.view.subscribeSubCViewToEvents(
       'runnerFrom',
-      'ChangedNearRunnerPosition',
-      notifyModelAboutChangedNearRunnerPosition,
+      'ChangeNearRunnerPosition',
+      notifyModelAboutChangeNearRunnerPosition,
     );
     this.view.subscribeSubCViewToEvents(
       'runnerTo',
-      'ChangedNearRunnerPosition',
-      notifyModelAboutChangedNearRunnerPosition,
+      'ChangeNearRunnerPosition',
+      notifyModelAboutChangeNearRunnerPosition,
     );
     this.view.subscribeSubCViewToEvents(
       'tip',
-      'ChangedNearRunnerPosition',
-      notifyModelAboutChangedNearRunnerPosition,
+      'ChangeNearRunnerPosition',
+      notifyModelAboutChangeNearRunnerPosition,
     );
     this.view.subscribeSubCViewToEvents(
       'tip',
-      'ChangedRunnerPosition',
-      notifyModelAboutChangedRunnerPosition,
+      'ChangeRunnerPosition',
+      notifyModelAboutChangeRunnerPosition,
     );
 
     return this;
   }
 
   private attachEventEmittersToView(): Presenter {
-    const notifyViewUpdatedModelOptions = (options: Options): void => {
+    const notifyViewUpdateModelOptions = (options: Options): void => {
       this.view.render(options);
       this.emit('onChange', options);
     };
 
-    const notifyViewUpdatedModelValues = (options: Options): void => {
+    const notifyViewUpdateModelValues = (options: Options): void => {
       this.view.update(options);
       this.emit('onChange', options);
     };
 
-    this.model.subscribe('UpdatedModelOptions', notifyViewUpdatedModelOptions);
+    this.model.subscribe('UpdateModelOptions', notifyViewUpdateModelOptions);
 
-    this.model.subscribe('UpdatedModelValues', notifyViewUpdatedModelValues);
+    this.model.subscribe('UpdateModelValues', notifyViewUpdateModelValues);
 
     return this;
   }
