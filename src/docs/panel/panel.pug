@@ -5,7 +5,13 @@ mixin panel()
   .panel
     .js-panel__control.panel__control
       each item in items
+        - 
+          const inputClass = 'panel__input'
+          const inputNameClass = 'panel__input_name-' + item.name
+          const jsInputNameClass = 'js-panel__input_name-' + item.name
+          const classes = [inputClass, inputNameClass, jsInputNameClass]
+          
         label.panel__label
           span.panel__input-header= item.header
-          input(class="panel__input panel__input_name-" + item.name, type=item.type) 
+          input(class=classes, type=item.type) 
     .panel__example.js-panel__example 

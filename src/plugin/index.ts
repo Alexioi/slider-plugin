@@ -1,5 +1,5 @@
 import { App } from './App';
-import { Config } from './types';
+import { Config, Options } from './types';
 
 declare global {
   interface JQuery {
@@ -11,4 +11,4 @@ $.fn.slider = function initSliders(config) {
   return this.map((i, node) => new App(node, config));
 };
 
-export { App, Config };
+export { App, Config, Options };
