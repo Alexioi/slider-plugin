@@ -1,7 +1,6 @@
-import './range.scss';
-
 import { Dom, UpdateOptions } from './types';
 import { init, changeDimensions } from './methods';
+import './range.scss';
 
 class Range {
   private dom: Dom;

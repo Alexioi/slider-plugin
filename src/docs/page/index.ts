@@ -2,8 +2,8 @@ import '@plugin';
 
 import { Panel } from '../panel/Panel';
 import configs from './data.json';
-import './docs.scss';
 import { cssSelectors } from './constants';
+import './docs.scss';
 
 const sliders = $(cssSelectors.example).slider();
 

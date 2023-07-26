@@ -1,5 +1,3 @@
-import './runner.scss';
-
 import { EventTypes, TouchRoute } from '@types';
 import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
@@ -12,6 +10,7 @@ import {
   move,
   toggleTarget,
 } from './methods';
+import './runner.scss';
 
 class Runner extends EventEmitter<EventTypes> {
   private dom: Dom;

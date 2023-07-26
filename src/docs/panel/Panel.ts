@@ -1,8 +1,8 @@
-import './panel.scss';
+import { App, Config } from '@plugin';
 
-import { App, Config } from '../../plugin';
 import { searchElements, syncInputs, attachCallback } from './methods';
 import { Dom } from './type';
+import './panel.scss';
 
 class Panel {
   private dom: Dom;

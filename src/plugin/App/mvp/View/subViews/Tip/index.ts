@@ -1,5 +1,3 @@
-import './tip.scss';
-
 import { EventTypes } from '@types';
 import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
@@ -13,6 +11,7 @@ import {
   toggleDisplay,
 } from './methods';
 import { cssSelectors } from './constants';
+import './tip.scss';
 
 class Tip extends EventEmitter<EventTypes> {
   private dom: Dom;

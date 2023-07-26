@@ -1,5 +1,3 @@
-import './view.scss';
-
 import { EventEmitter, Callback } from '@helpers/EventEmitter';
 import { EventTypes, Options } from '@types';
 
@@ -10,6 +8,7 @@ import {
   createElements,
   toggleVertical,
 } from './methods';
+import './view.scss';
 
 class View extends EventEmitter<EventTypes> {
   private dom: Dom;
