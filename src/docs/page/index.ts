@@ -1,10 +1,12 @@
-import configs from './data.json';
-import './docs.scss';
-import { Panel } from '../panel/Panel';
 import '@plugin';
 
-const sliders = $('.js-panel__example').slider();
+import { Panel } from '../panel/Panel';
+import configs from './data.json';
+import './docs.scss';
+import { cssSelectors } from './constants';
 
-document.querySelectorAll('.js-panel__control').forEach((node, i) => {
+const sliders = $(cssSelectors.example).slider();
+
+document.querySelectorAll(cssSelectors.control).forEach((node, i) => {
   new Panel(node, sliders[i], configs[i]);
 });
