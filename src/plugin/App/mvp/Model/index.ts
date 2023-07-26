@@ -1,8 +1,18 @@
 import { EventEmitter } from '@helpers/EventEmitter';
-import { Options, Config, ElementPosition, ElementTouch, EventTypes } from '@types';
+import {
+  Options,
+  Config,
+  ElementPosition,
+  ElementTouch,
+  EventTypes,
+} from '@types';
 
 import { validate } from './validate';
-import { calculateValue, updateNearValue, updateOptionsByStep } from './methods';
+import {
+  calculateValue,
+  updateNearValue,
+  updateOptionsByStep,
+} from './methods';
 
 class Model extends EventEmitter<EventTypes> {
   private options: Options;
@@ -23,13 +33,19 @@ class Model extends EventEmitter<EventTypes> {
     return this.options;
   }
 
-  public calculateValueUsingFraction({ position, type }: ElementPosition): void {
+  public calculateValueUsingFraction({
+    position,
+    type,
+  }: ElementPosition): void {
     this.options = calculateValue(position, this.options, type);
 
     this.emit('UpdatedModelValues', this.options);
   }
 
-  public calculateNearValueUsingFraction(position: { x: number; y: number }): void {
+  public calculateNearValueUsingFraction(position: {
+    x: number;
+    y: number;
+  }): void {
     this.options = calculateValue(position, this.options);
 
     this.emit('UpdatedModelValues', this.options);

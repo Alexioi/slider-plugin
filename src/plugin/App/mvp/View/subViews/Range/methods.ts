@@ -24,10 +24,14 @@ const changeDimensions = (
   const finishPercent = helpers.calculatePercent(to, min, max);
 
   if (isVertical) {
-    range.style.cssText = `top: ${startPercent}%; bottom: ${100 - finishPercent}%`;
+    range.style.cssText = `top: ${startPercent}%; bottom: ${
+      100 - finishPercent
+    }%`;
     return;
   }
 
-  range.style.cssText = `left: ${startPercent}%; right: ${100 - finishPercent}%`;
+  range.style.cssText = `left: ${startPercent}%; right: ${
+    100 - finishPercent
+  }%`;
 };
 export { init, changeDimensions };

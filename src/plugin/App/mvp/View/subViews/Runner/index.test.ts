@@ -29,14 +29,27 @@ describe('Runner', () => {
       fail('runnerToNode is not HTMLDivElement');
     }
 
-    runnerTo.update({ min: -100, max: 100, from: -50, to: 50, isVertical: false }, 'to');
+    runnerTo.update(
+      { min: -100, max: 100, from: -50, to: 50, isVertical: false },
+      'to',
+    );
     expect(runnerToNode.style.left).toEqual('75%');
-    expect(runnerToNode.classList.contains(cssSelectors.targetedRunner)).toBeTruthy();
+    expect(
+      runnerToNode.classList.contains(cssSelectors.targetedRunner),
+    ).toBeTruthy();
 
-    runnerTo.update({ min: -100, max: 100, from: -50, to: 50, isVertical: false }, 'from');
-    expect(runnerToNode.classList.contains(cssSelectors.targetedRunner)).toBeFalsy();
+    runnerTo.update(
+      { min: -100, max: 100, from: -50, to: 50, isVertical: false },
+      'from',
+    );
+    expect(
+      runnerToNode.classList.contains(cssSelectors.targetedRunner),
+    ).toBeFalsy();
 
-    runnerTo.update({ min: -100, max: 100, from: -50, to: 50, isVertical: true }, 'from');
+    runnerTo.update(
+      { min: -100, max: 100, from: -50, to: 50, isVertical: true },
+      'from',
+    );
     expect(runnerToNode.style.top).toEqual('75%');
   });
 });

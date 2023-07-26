@@ -4,7 +4,12 @@ import { EventEmitter, Callback } from '@helpers/EventEmitter';
 import { EventTypes, Options } from '@types';
 
 import { Dom, SubViews } from './type';
-import { calculateTarget, initSubViews, createElements, toggleVertical } from './methods';
+import {
+  calculateTarget,
+  initSubViews,
+  createElements,
+  toggleVertical,
+} from './methods';
 
 class View extends EventEmitter<EventTypes> {
   private dom: Dom;
@@ -60,13 +65,27 @@ class View extends EventEmitter<EventTypes> {
     return { dom, subViews };
   }
 
-  private subscribeToRunnerAndTip({ runnerFrom, runnerTo, tip }: SubViews): View {
-    const notifyAboutChangedRunnerPosition = ({ type }: { type: 'to' | 'from' }) => {
+  private subscribeToRunnerAndTip({
+    runnerFrom,
+    runnerTo,
+    tip,
+  }: SubViews): View {
+    const notifyAboutChangedRunnerPosition = ({
+      type,
+    }: {
+      type: 'to' | 'from';
+    }) => {
       this.props = { target: type };
     };
 
-    runnerFrom.subscribe('ChangedRunnerPosition', notifyAboutChangedRunnerPosition);
-    runnerTo.subscribe('ChangedRunnerPosition', notifyAboutChangedRunnerPosition);
+    runnerFrom.subscribe(
+      'ChangedRunnerPosition',
+      notifyAboutChangedRunnerPosition,
+    );
+    runnerTo.subscribe(
+      'ChangedRunnerPosition',
+      notifyAboutChangedRunnerPosition,
+    );
     tip.subscribe('ChangedRunnerPosition', notifyAboutChangedRunnerPosition);
 
     return this;

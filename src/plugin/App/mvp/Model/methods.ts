@@ -35,7 +35,14 @@ const changeValueDependingOnStep = (
     min,
     max,
     isRange,
-  }: { step: number; from: number; to: number; min: number; max: number; isRange: boolean },
+  }: {
+    step: number;
+    from: number;
+    to: number;
+    min: number;
+    max: number;
+    isRange: boolean;
+  },
   valueIndex: 'from' | 'to',
 ): number => {
   const [minimum, maximum] = getMinimumAndMaximum(
@@ -124,9 +131,15 @@ const getNewValueUsingFraction = (
   return (max - min) * percent + min;
 };
 
-const updateOptionsByStep = (touchRoute: 'down' | 'up', options: Options, type: 'to' | 'from') => {
+const updateOptionsByStep = (
+  touchRoute: 'down' | 'up',
+  options: Options,
+  type: 'to' | 'from',
+) => {
   const newValue =
-    touchRoute === 'up' ? options[type] + options.step : options[type] - options.step;
+    touchRoute === 'up'
+      ? options[type] + options.step
+      : options[type] - options.step;
   const [minimum, maximum] = getMinimumAndMaximum(options, type);
 
   if (newValue < minimum) {
@@ -148,12 +161,18 @@ const calculateValue = (
   const newValue = getNewValueUsingFraction(position, options);
 
   if (typeof type !== 'undefined') {
-    return { ...options, [type]: changeValueDependingOnStep(newValue, options, type) };
+    return {
+      ...options,
+      [type]: changeValueDependingOnStep(newValue, options, type),
+    };
   }
 
   const nearType = getNearValueType(newValue, options);
 
-  return { ...options, [nearType]: changeValueDependingOnStep(newValue, options, nearType) };
+  return {
+    ...options,
+    [nearType]: changeValueDependingOnStep(newValue, options, nearType),
+  };
 };
 
 const updateNearValue = (newValue: number, options: Options) => {

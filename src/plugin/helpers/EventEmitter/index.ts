@@ -5,7 +5,10 @@ class EventEmitter<T extends object> {
     [eventName in keyof T]?: Callback<T, eventName>[];
   } = {};
 
-  public subscribe<K extends keyof T>(eventName: K, callback: Callback<T, K>): void {
+  public subscribe<K extends keyof T>(
+    eventName: K,
+    callback: Callback<T, K>,
+  ): void {
     const events = this.events[eventName];
 
     if (events !== undefined) {
@@ -17,7 +20,10 @@ class EventEmitter<T extends object> {
     this.events[eventName] = [callback];
   }
 
-  public unsubscribe<K extends keyof T>(eventName: K, callback: Callback<T, K>): void {
+  public unsubscribe<K extends keyof T>(
+    eventName: K,
+    callback: Callback<T, K>,
+  ): void {
     this.events[eventName] = this.events[eventName]?.filter((eventCallback) => {
       return callback !== eventCallback;
     });

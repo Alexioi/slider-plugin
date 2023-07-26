@@ -12,7 +12,8 @@ class Panel {
   constructor(root: Element, slider: App, config: Config) {
     this.slider = slider;
 
-    this.handleClickCheckboxElement = this.handleClickCheckboxElement.bind(this);
+    this.handleClickCheckboxElement =
+      this.handleClickCheckboxElement.bind(this);
     this.handleChangeInputElement = this.handleChangeInputElement.bind(this);
 
     const { dom } = this.init(root, config);

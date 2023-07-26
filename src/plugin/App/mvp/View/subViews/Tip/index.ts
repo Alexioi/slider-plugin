@@ -5,7 +5,13 @@ import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
 
 import { Dom, UpdateOptions } from './type';
-import { changePosition, changeText, createElements, destroy, toggleDisplay } from './methods';
+import {
+  changePosition,
+  changeText,
+  createElements,
+  destroy,
+  toggleDisplay,
+} from './methods';
 import { cssSelectors } from './constants';
 
 class Tip extends EventEmitter<EventTypes> {

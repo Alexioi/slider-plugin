@@ -43,7 +43,10 @@ describe('Model', () => {
       };
       model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
 
-      model.calculateValueUsingFraction({ position: { x: 101, y: 50 }, type: 'to' });
+      model.calculateValueUsingFraction({
+        position: { x: 101, y: 50 },
+        type: 'to',
+      });
     })();
 
     (() => {
@@ -61,7 +64,10 @@ describe('Model', () => {
       };
       model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
 
-      model.calculateValueUsingFraction({ position: { x: 101, y: 50 }, type: 'to' });
+      model.calculateValueUsingFraction({
+        position: { x: 101, y: 50 },
+        type: 'to',
+      });
     })();
 
     (() => {
@@ -79,7 +85,10 @@ describe('Model', () => {
       };
       model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
 
-      model.calculateValueUsingFraction({ position: { x: 50, y: 101 }, type: 'to' });
+      model.calculateValueUsingFraction({
+        position: { x: 50, y: 101 },
+        type: 'to',
+      });
     })();
 
     (() => {
@@ -97,7 +106,10 @@ describe('Model', () => {
       };
       model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
 
-      model.calculateValueUsingFraction({ position: { x: 50, y: 101 }, type: 'from' });
+      model.calculateValueUsingFraction({
+        position: { x: 50, y: 101 },
+        type: 'from',
+      });
     })();
 
     (() => {
@@ -109,7 +121,10 @@ describe('Model', () => {
       };
       model.subscribe('UpdatedModelValues', makeTestUpdatedModelValues(value));
 
-      model.calculateValueUsingFraction({ position: { x: 50, y: 10 }, type: 'from' });
+      model.calculateValueUsingFraction({
+        position: { x: 50, y: 10 },
+        type: 'from',
+      });
     })();
   });
 });

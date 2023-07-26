@@ -65,9 +65,11 @@ const verifyFromAndTo = (
   const intFirstValue = makeNumber(oldOptions.from, newOptions?.from);
   const intSecondValue = makeNumber(oldOptions.to, newOptions?.to);
 
-  const [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort((a, b) => {
-    return a - b;
-  });
+  const [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort(
+    (a, b) => {
+      return a - b;
+    },
+  );
 
   const to = calculateTo(min, max, newSecondValue);
   const from = calculateFrom(min, to, newFirstValue);
@@ -98,12 +100,21 @@ const verifyStep = (
 
 const validate = (oldOptions: Options, newOptions?: Config): Options => {
   const isRange =
-    typeof newOptions?.isRange === 'boolean' ? newOptions.isRange : oldOptions.isRange;
+    typeof newOptions?.isRange === 'boolean'
+      ? newOptions.isRange
+      : oldOptions.isRange;
   const isVertical =
-    typeof newOptions?.isVertical === 'boolean' ? newOptions.isVertical : oldOptions.isVertical;
-  const hasTip = typeof newOptions?.hasTip === 'boolean' ? newOptions.hasTip : oldOptions.hasTip;
+    typeof newOptions?.isVertical === 'boolean'
+      ? newOptions.isVertical
+      : oldOptions.isVertical;
+  const hasTip =
+    typeof newOptions?.hasTip === 'boolean'
+      ? newOptions.hasTip
+      : oldOptions.hasTip;
   const hasScale =
-    typeof newOptions?.hasScale === 'boolean' ? newOptions.hasScale : oldOptions.hasScale;
+    typeof newOptions?.hasScale === 'boolean'
+      ? newOptions.hasScale
+      : oldOptions.hasScale;
   const { min, max } = verifyMinAndMax(oldOptions, newOptions);
   const { from, to } = verifyFromAndTo(oldOptions, min, max, newOptions);
   const step = verifyStep(oldOptions, min, max, newOptions);

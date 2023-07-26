@@ -1,4 +1,7 @@
-const getPosition = (node: Element, event: PointerEvent): { x: number; y: number } => {
+const getPosition = (
+  node: Element,
+  event: PointerEvent,
+): { x: number; y: number } => {
   const { height, width, left, top } = node.getBoundingClientRect();
   const { clientX, clientY } = event;
 

@@ -3,7 +3,9 @@ import { Options } from '../../plugin/types';
 import { Dom, HTMLDivElementWithCustomName } from './type';
 
 const searchElements = (root: Element): Dom => {
-  const range = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-range');
+  const range = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-range',
+  );
 
   if (!(range instanceof HTMLInputElement)) {
     throw Error();
@@ -11,7 +13,9 @@ const searchElements = (root: Element): Dom => {
 
   range.customName = 'isRange';
 
-  const vertical = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-vertical');
+  const vertical = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-vertical',
+  );
 
   if (!(vertical instanceof HTMLInputElement)) {
     throw Error();
@@ -19,7 +23,9 @@ const searchElements = (root: Element): Dom => {
 
   vertical.customName = 'isVertical';
 
-  const scale = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-scale');
+  const scale = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-scale',
+  );
 
   if (!(scale instanceof HTMLInputElement)) {
     throw Error();
@@ -27,7 +33,9 @@ const searchElements = (root: Element): Dom => {
 
   scale.customName = 'hasScale';
 
-  const min = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-min');
+  const min = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-min',
+  );
 
   if (!(min instanceof HTMLInputElement)) {
     throw Error();
@@ -35,7 +43,9 @@ const searchElements = (root: Element): Dom => {
 
   min.customName = 'min';
 
-  const max = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-max');
+  const max = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-max',
+  );
 
   if (!(max instanceof HTMLInputElement)) {
     throw Error();
@@ -43,7 +53,9 @@ const searchElements = (root: Element): Dom => {
 
   max.customName = 'max';
 
-  const from = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-from');
+  const from = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-from',
+  );
 
   if (!(from instanceof HTMLInputElement)) {
     throw Error();
@@ -51,7 +63,9 @@ const searchElements = (root: Element): Dom => {
 
   from.customName = 'from';
 
-  const to = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-to');
+  const to = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-to',
+  );
 
   if (!(to instanceof HTMLInputElement)) {
     throw Error();
@@ -59,7 +73,9 @@ const searchElements = (root: Element): Dom => {
 
   to.customName = 'to';
 
-  const step = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-step');
+  const step = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-step',
+  );
 
   if (!(step instanceof HTMLInputElement)) {
     throw Error();
@@ -67,7 +83,9 @@ const searchElements = (root: Element): Dom => {
 
   step.customName = 'step';
 
-  const tip = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-tip');
+  const tip = root.querySelector<HTMLDivElementWithCustomName>(
+    '.panel__input_name-tip',
+  );
 
   if (!(tip instanceof HTMLInputElement)) {
     throw Error();
@@ -86,7 +104,8 @@ const syncInputs = (slider: App, dom: Dom): void => {
     return;
   }
 
-  const { isRange, isVertical, from, to, min, max, hasScale, hasTip, step } = option;
+  const { isRange, isVertical, from, to, min, max, hasScale, hasTip, step } =
+    option;
 
   changedDom.range.checked = isRange;
   changedDom.vertical.checked = isVertical;

@@ -1,5 +1,11 @@
 import { EventEmitter } from '@helpers/EventEmitter';
-import { Config, ElementPosition, Options, ElementTouch, EventTypes } from '@types';
+import {
+  Config,
+  ElementPosition,
+  Options,
+  ElementTouch,
+  EventTypes,
+} from '@types';
 
 import { View } from '../View';
 import { Model } from '../Model';
@@ -27,11 +33,18 @@ class Presenter extends EventEmitter<EventTypes> {
   }
 
   private attachEventEmittersToModel(): Presenter {
-    const notifyModelClickedScale = ({ targetNumber }: { targetNumber: number }) => {
+    const notifyModelClickedScale = ({
+      targetNumber,
+    }: {
+      targetNumber: number;
+    }) => {
       this.model.updateNearValue(targetNumber);
     };
 
-    const notifyModelAboutChangedRunnerPosition = ({ position, type }: ElementPosition) => {
+    const notifyModelAboutChangedRunnerPosition = ({
+      position,
+      type,
+    }: ElementPosition) => {
       this.model.calculateValueUsingFraction({ position, type });
     };
 
@@ -47,7 +60,11 @@ class Presenter extends EventEmitter<EventTypes> {
       this.model.calculateNearValueUsingFraction(position);
     };
 
-    this.view.subscribeSubCViewToEvents('scale', 'ClickScale', notifyModelClickedScale);
+    this.view.subscribeSubCViewToEvents(
+      'scale',
+      'ClickScale',
+      notifyModelClickedScale,
+    );
     this.view.subscribeSubCViewToEvents(
       'runnerFrom',
       'ChangedRunnerPosition',

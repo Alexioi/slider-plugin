@@ -29,13 +29,34 @@ describe('Tip', () => {
       fail('tipNode is not HTMLDivElement');
     }
 
-    tip.update({ min: -100, max: 100, from: -50, to: 50, isRange: false, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: 50,
+      isRange: false,
+      isVertical: false,
+    });
     expect(tipNode.style.left).toEqual('75%');
 
-    tip.update({ min: -100, max: 100, from: -50, to: -100, isRange: false, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: -100,
+      isRange: false,
+      isVertical: false,
+    });
     expect(tipNode.style.left).toEqual('0%');
 
-    tip.update({ min: -100, max: 100, from: -50, to: 100, isRange: false, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: 100,
+      isRange: false,
+      isVertical: false,
+    });
     expect(tipNode.style.left).toEqual('100%');
   });
 
@@ -61,12 +82,26 @@ describe('Tip', () => {
       fail('tipTo is not HTMLDivElement');
     }
 
-    tip.update({ min: -100, max: 100, from: -50, to: 50, isRange: true, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: 50,
+      isRange: true,
+      isVertical: false,
+    });
     expect(tipFrom.style.left).toEqual('25%');
     expect(tipBoth.style.left).toEqual('50%');
     expect(tipTo.style.left).toEqual('75%');
 
-    tip.update({ min: -100, max: 100, from: -50, to: -50, isRange: true, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: -50,
+      isRange: true,
+      isVertical: false,
+    });
     expect(tipFrom.classList.contains(cssSelectors.hiddenTip)).toBeTruthy();
     expect(tipBoth.classList.contains(cssSelectors.hiddenTip)).toBeFalsy();
     expect(tipTo.classList.contains(cssSelectors.hiddenTip)).toBeTruthy();
@@ -82,13 +117,34 @@ describe('Tip', () => {
       fail('tipNode is not HTMLDivElement');
     }
 
-    tip.update({ min: -100, max: 100, from: -50, to: 50, isRange: false, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: 50,
+      isRange: false,
+      isVertical: false,
+    });
     expect(tipNode.style.left).toEqual('75%');
 
-    tip.update({ min: -100, max: 100, from: -50, to: -100, isRange: false, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: -100,
+      isRange: false,
+      isVertical: false,
+    });
     expect(tipNode.style.left).toEqual('0%');
 
-    tip.update({ min: -100, max: 100, from: -50, to: 100, isRange: false, isVertical: false });
+    tip.update({
+      min: -100,
+      max: 100,
+      from: -50,
+      to: 100,
+      isRange: false,
+      isVertical: false,
+    });
     expect(tipNode.style.left).toEqual('100%');
   });
 });

@@ -32,7 +32,10 @@ const deleteMarks = ({ scale }: Dom): void => {
   }
 };
 
-const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): MarkParameters[] => {
+const getScaleParameters = (
+  { max, min, isVertical }: Props,
+  { scale }: Dom,
+): MarkParameters[] => {
   const { offsetHeight, offsetWidth } = scale;
   const scaleLength = isVertical ? offsetHeight : offsetWidth;
   const scalePercents = getScalePercents(scaleLength);
@@ -41,7 +44,9 @@ const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): Ma
 
   const scaleParameters = scalePercents.map((percent) => {
     const value = Number(
-      (min + (differenceMaxAndMin * percent) / 100).toFixed(1).replace(/\.?0+$/, ''),
+      (min + (differenceMaxAndMin * percent) / 100)
+        .toFixed(1)
+        .replace(/\.?0+$/, ''),
     );
 
     return { percent, value };
@@ -50,11 +55,17 @@ const getScaleParameters = ({ max, min, isVertical }: Props, { scale }: Dom): Ma
   return scaleParameters;
 };
 
-const draw = ({ scale }: Dom, { isVertical }: Props, parameters: MarkParameters[]): void => {
+const draw = (
+  { scale }: Dom,
+  { isVertical }: Props,
+  parameters: MarkParameters[],
+): void => {
   parameters.forEach((parameter) => {
     const { percent, value } = parameter;
     const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
-    const mark = document.createElement('span') as HTMLSpanElementWithCustomData;
+    const mark = document.createElement(
+      'span',
+    ) as HTMLSpanElementWithCustomData;
     mark.classList.add(cssSelectors.mark);
     mark.style.cssText = style;
     mark.innerText = String(value);

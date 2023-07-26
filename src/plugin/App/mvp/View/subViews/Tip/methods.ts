@@ -5,9 +5,15 @@ import { cssSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement): Dom => {
   const tipLine = helpers.createElement(cssSelectors.tipLine);
-  const tipFrom = helpers.createElement(cssSelectors.tip) as HTMLDivElementWithCustomType;
-  const tipBoth = helpers.createElement(cssSelectors.tip) as HTMLDivElementWithCustomType;
-  const tipTo = helpers.createElement(cssSelectors.tip) as HTMLDivElementWithCustomType;
+  const tipFrom = helpers.createElement(
+    cssSelectors.tip,
+  ) as HTMLDivElementWithCustomType;
+  const tipBoth = helpers.createElement(
+    cssSelectors.tip,
+  ) as HTMLDivElementWithCustomType;
+  const tipTo = helpers.createElement(
+    cssSelectors.tip,
+  ) as HTMLDivElementWithCustomType;
 
   tipFrom.customType = 'from';
   tipBoth.customType = 'both';
@@ -49,7 +55,9 @@ const changePosition = (
 ): void => {
   const changedTipTo = tipTo;
   const rightPosition = helpers.calculatePercent(to, min, max);
-  const positionRightTip = isVertical ? `top: ${rightPosition}%;` : `left: ${rightPosition}%;`;
+  const positionRightTip = isVertical
+    ? `top: ${rightPosition}%;`
+    : `left: ${rightPosition}%;`;
 
   changedTipTo.style.cssText = positionRightTip;
 
@@ -60,7 +68,9 @@ const changePosition = (
   const changedTipFrom = tipFrom;
   const changedTipBoth = tipBoth;
   const leftPosition = helpers.calculatePercent(from, min, max);
-  const positionLeftTip = isVertical ? `top: ${leftPosition}%;` : `left: ${leftPosition}%;`;
+  const positionLeftTip = isVertical
+    ? `top: ${leftPosition}%;`
+    : `left: ${leftPosition}%;`;
   const positionBothTip = isVertical
     ? `top: ${(leftPosition + rightPosition) / 2}%;`
     : `left: ${(leftPosition + rightPosition) / 2}%;`;

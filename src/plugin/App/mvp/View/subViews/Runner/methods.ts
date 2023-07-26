@@ -18,7 +18,11 @@ const destroy = ({ runner }: Dom): void => {
   runner.remove();
 };
 
-const toggleTarget = ({ type }: Props, { runner }: Dom, target: 'to' | 'from') => {
+const toggleTarget = (
+  { type }: Props,
+  { runner }: Dom,
+  target: 'to' | 'from',
+) => {
   if (target === type) {
     runner.classList.add(cssSelectors.targetedRunner);
     return;

@@ -5,7 +5,13 @@ import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
 
 import { Dom, Props, UpdateOptions } from './type';
-import { createElements, destroy, initProps, move, toggleTarget } from './methods';
+import {
+  createElements,
+  destroy,
+  initProps,
+  move,
+  toggleTarget,
+} from './methods';
 
 class Runner extends EventEmitter<EventTypes> {
   private dom: Dom;
@@ -38,7 +44,10 @@ class Runner extends EventEmitter<EventTypes> {
     move(this.dom, this.props, options);
   }
 
-  private init(root: HTMLDivElement, valueIndex: 'from' | 'to'): { dom: Dom; props: Props } {
+  private init(
+    root: HTMLDivElement,
+    valueIndex: 'from' | 'to',
+  ): { dom: Dom; props: Props } {
     const dom = createElements(root);
     const props = initProps(valueIndex);
 
