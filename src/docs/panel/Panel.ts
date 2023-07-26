@@ -47,28 +47,42 @@ class Panel {
     return this;
   }
 
-  private handleClickCheckboxElement(event: Event) {
-    if (!(event.target instanceof HTMLInputElement)) {
+  private handleClickCheckboxElement({ target }: Event) {
+    if (!(target instanceof HTMLInputElement)) {
       return;
     }
 
-    const value = event.target.checked;
+    const value = target.checked;
 
-    // @ts-ignore
-    const optionName = event.target.plugin.name;
+    if (!('customName' in target)) {
+      return;
+    }
+
+    const optionName = target.customName;
+
+    if (typeof optionName !== 'string') {
+      return;
+    }
 
     this.slider.update({ [optionName]: value });
 
     syncInputs(this.slider, this.dom);
   }
 
-  private handleChangeInputElement = (event: Event): void => {
-    if (!(event.target instanceof HTMLInputElement)) {
+  private handleChangeInputElement = ({ target }: Event): void => {
+    if (!(target instanceof HTMLInputElement)) {
       return;
     }
 
-    // @ts-ignore
-    const optionName = event.target.plugin.name;
+    if (!('customName' in target)) {
+      return;
+    }
+
+    const optionName = target.customName;
+
+    if (typeof optionName !== 'string') {
+      return;
+    }
 
     if (optionName === 'from' || optionName === 'to') {
       const from = Number(this.dom.from.value);
@@ -76,7 +90,7 @@ class Panel {
 
       this.slider.update({ from, to });
     } else {
-      const value = Number(event.target.value);
+      const value = Number(target.value);
       this.slider.update({ [optionName]: value });
     }
 

@@ -11,4 +11,8 @@ type Dom = {
   scale: HTMLInputElement;
 };
 
-export { Dom };
+interface HTMLDivElementWithCustomName extends HTMLDivElement {
+  customName: string;
+}
+
+export { Dom, HTMLDivElementWithCustomName };

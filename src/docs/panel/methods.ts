@@ -1,93 +1,86 @@
 import { App } from '../../plugin/App';
 import { Options } from '../../plugin/types';
-import { Dom } from './type';
+import { Dom, HTMLDivElementWithCustomName } from './type';
 
 const searchElements = (root: Element): Dom => {
-  const range = root.querySelector('.panel__input_name-range');
+  const range = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-range');
 
   if (!(range instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  range.plugin = { name: 'isRange' };
+  range.customName = 'isRange';
 
-  const vertical = root.querySelector('.panel__input_name-vertical');
+  const vertical = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-vertical');
 
   if (!(vertical instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  vertical.plugin = { name: 'isVertical' };
+  vertical.customName = 'isVertical';
 
-  const scale = root.querySelector('.panel__input_name-scale');
+  const scale = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-scale');
 
   if (!(scale instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  scale.plugin = { name: 'hasScale' };
+  scale.customName = 'hasScale';
 
-  const min = root.querySelector('.panel__input_name-min');
+  const min = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-min');
 
   if (!(min instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  min.plugin = { name: 'min' };
+  min.customName = 'min';
 
-  const max = root.querySelector('.panel__input_name-max');
+  const max = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-max');
 
   if (!(max instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  max.plugin = { name: 'max' };
+  max.customName = 'max';
 
-  const from = root.querySelector('.panel__input_name-from');
+  const from = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-from');
 
   if (!(from instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  from.plugin = { name: 'from' };
+  from.customName = 'from';
 
-  const to = root.querySelector('.panel__input_name-to');
+  const to = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-to');
 
   if (!(to instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  to.plugin = { name: 'to' };
+  to.customName = 'to';
 
-  const step = root.querySelector('.panel__input_name-step');
+  const step = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-step');
 
   if (!(step instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  step.plugin = { name: 'step' };
+  step.customName = 'step';
 
-  const tip = root.querySelector('.panel__input_name-tip');
+  const tip = root.querySelector<HTMLDivElementWithCustomName>('.panel__input_name-tip');
 
   if (!(tip instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  // @ts-ignore
-  tip.plugin = { name: 'hasTip' };
+  tip.customName = 'hasTip';
 
   return { root, range, vertical, scale, min, max, from, to, step, tip };
 };
 
 const syncInputs = (slider: App, dom: Dom): void => {
+  const changedDom = dom;
+
   const option = slider.getOptions();
   if (typeof option === 'undefined') {
     return;
@@ -95,15 +88,15 @@ const syncInputs = (slider: App, dom: Dom): void => {
 
   const { isRange, isVertical, from, to, min, max, hasScale, hasTip, step } = option;
 
-  dom.range.checked = isRange;
-  dom.vertical.checked = isVertical;
-  dom.min.value = String(min);
-  dom.max.value = String(max);
-  dom.from.value = String(from);
-  dom.to.value = String(to);
-  dom.step.value = String(step);
-  dom.tip.checked = hasTip;
-  dom.scale.checked = hasScale;
+  changedDom.range.checked = isRange;
+  changedDom.vertical.checked = isVertical;
+  changedDom.min.value = String(min);
+  changedDom.max.value = String(max);
+  changedDom.from.value = String(from);
+  changedDom.to.value = String(to);
+  changedDom.step.value = String(step);
+  changedDom.tip.checked = hasTip;
+  changedDom.scale.checked = hasScale;
 };
 
 const attachCallback = (dom: Dom, slider: App): void => {
