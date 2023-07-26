@@ -94,7 +94,7 @@ class Tip extends EventEmitter<EventTypes> {
 
     const { customType } = target;
 
-    const onPointerMove = (pointerEvent: PointerEvent): void => {
+    const handlePointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
 
       const node = pointerEvent.target;
@@ -119,13 +119,13 @@ class Tip extends EventEmitter<EventTypes> {
       }
     };
 
-    const onPointerUp = (): void => {
-      document.removeEventListener('pointermove', onPointerMove);
-      document.removeEventListener('pointerup', onPointerUp);
+    const handlePointerUp = (): void => {
+      document.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('pointerup', handlePointerUp);
     };
 
-    document.addEventListener('pointermove', onPointerMove);
-    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointermove', handlePointerMove);
+    document.addEventListener('pointerup', handlePointerUp);
   }
 }
 

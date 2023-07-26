@@ -63,7 +63,7 @@ class Runner extends EventEmitter<EventTypes> {
   private handleKeydownRunner(keyboardEvent: KeyboardEvent): void {
     const { code } = keyboardEvent;
 
-    const onClickArrow = (touchRoute: TouchRoute): void => {
+    const handleClickArrow = (touchRoute: TouchRoute): void => {
       keyboardEvent.preventDefault();
       const { type } = this.props;
 
@@ -71,16 +71,16 @@ class Runner extends EventEmitter<EventTypes> {
     };
 
     if (code === 'ArrowDown' || code === 'ArrowRight') {
-      onClickArrow('up');
+      handleClickArrow('up');
     }
 
     if (code === 'ArrowUp' || code === 'ArrowLeft') {
-      onClickArrow('down');
+      handleClickArrow('down');
     }
   }
 
   private handlePointerdownRunner(): void {
-    const onPointerMove = (pointerEvent: PointerEvent): void => {
+    const handlePointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
 
       this.dom.runner.ondragstart = () => false;
@@ -92,13 +92,13 @@ class Runner extends EventEmitter<EventTypes> {
       this.emit('ChangedRunnerPosition', { position, type });
     };
 
-    const onPointerUp = (): void => {
-      document.removeEventListener('pointermove', onPointerMove);
-      document.removeEventListener('pointerup', onPointerUp);
+    const handlePointerUp = (): void => {
+      document.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('pointerup', handlePointerUp);
     };
 
-    document.addEventListener('pointermove', onPointerMove);
-    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointermove', handlePointerMove);
+    document.addEventListener('pointerup', handlePointerUp);
   }
 }
 
