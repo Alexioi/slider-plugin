@@ -62,7 +62,8 @@ $('#root').slider({
   step: 10,
   min: -100,
   max: 100,
-  values: [-50, 40],
+  from: -50,
+  to: 40,
 });
 ```
 
