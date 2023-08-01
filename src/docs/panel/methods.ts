@@ -92,7 +92,25 @@ const searchElements = (root: Element): Dom => {
 
   tip.customName = 'hasTip';
 
-  return { root, range, vertical, scale, min, max, from, to, step, tip };
+  const indicator = root.querySelector(cssSelectors.indicator);
+
+  if (indicator === null) {
+    throw Error();
+  }
+
+  return {
+    root,
+    range,
+    vertical,
+    scale,
+    min,
+    max,
+    from,
+    to,
+    step,
+    tip,
+    indicator,
+  };
 };
 
 const syncInputs = (slider: App, dom: Dom): void => {
@@ -119,11 +137,22 @@ const syncInputs = (slider: App, dom: Dom): void => {
 
 const attachCallback = (dom: Dom, slider: App): void => {
   const thatDom = dom;
+  const disableIndicator = () => {
+    thatDom.indicator.classList.remove(cssSelectors.decoratedIndicator);
+  };
+
+  let timeout = setTimeout(() => {}, 0);
 
   slider.update({
     onChange: ({ from, to }: Options) => {
+      clearTimeout(timeout);
+
       thatDom.from.value = String(from);
       thatDom.to.value = String(to);
+
+      thatDom.indicator.classList.add(cssSelectors.decoratedIndicator);
+
+      timeout = setTimeout(disableIndicator, 300);
     },
   });
 };

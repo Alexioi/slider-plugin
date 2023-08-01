@@ -9,6 +9,7 @@ type Dom = {
   step: HTMLInputElement;
   tip: HTMLInputElement;
   scale: HTMLInputElement;
+  indicator: Element;
 };
 
 interface HTMLDivElementWithCustomName extends HTMLDivElement {

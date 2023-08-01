@@ -7,6 +7,22 @@
   border-radius: 4px;
   background-color: white;
 
+  &__indicator-area {
+    display: flex;
+    gap: 20px;
+  }
+
+  &__indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: gray;
+
+    &_decorated {
+      background: orangered;
+    }
+  }
+
   &__example {
     display: flex;
     align-items: center;

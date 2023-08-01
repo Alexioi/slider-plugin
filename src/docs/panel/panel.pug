@@ -14,4 +14,7 @@ mixin panel()
         label.panel__label
           span.panel__input-header= item.header
           input(class=classes, type=item.type) 
+      .panel__indicator-area
+        span.panel__indicator-text= 'onChange: '
+        .panel__indicator.js-panel__indicator
     .panel__example.js-panel__example 

@@ -8,6 +8,8 @@ const cssSelectors = {
   to: '.js-panel__input_name-to',
   step: '.js-panel__input_name-step',
   tip: '.js-panel__input_name-tip',
+  indicator: '.js-panel__indicator',
+  decoratedIndicator: 'panel__indicator_decorated',
 };
 
 export { cssSelectors };
