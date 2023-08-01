@@ -7,7 +7,7 @@ import { cssSelectors } from './constants';
 
 describe('Scale', () => {
   const div = document.createElement('div');
-  document.body.appendChild(div);
+  document.body.append(div);
 
   const scale = new Scale(div);
 

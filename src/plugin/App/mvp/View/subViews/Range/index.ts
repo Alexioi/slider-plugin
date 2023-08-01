@@ -12,7 +12,7 @@ class Range {
   }
 
   public render(): void {
-    this.dom.root.appendChild(this.dom.range);
+    this.dom.root.append(this.dom.range);
   }
 
   public update(rangeOptions: UpdateOptions) {

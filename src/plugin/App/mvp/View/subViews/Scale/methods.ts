@@ -28,7 +28,7 @@ const getScalePercents = (sliderLength: number): number[] => {
 
 const deleteMarks = ({ scale }: Dom): void => {
   while (scale.firstChild !== null) {
-    scale.removeChild(scale.firstChild);
+    scale.firstChild.remove();
   }
 };
 
@@ -71,7 +71,7 @@ const draw = (
     mark.innerText = String(value);
     mark.customValue = Number(value);
 
-    scale.appendChild(mark);
+    scale.append(mark);
   });
 };
 

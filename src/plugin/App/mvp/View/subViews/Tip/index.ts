@@ -43,14 +43,14 @@ class Tip extends EventEmitter<EventTypes> {
     this.dom.root.insertAdjacentElement('afterbegin', this.dom.tipLine);
 
     if (isRange) {
-      this.dom.tipLine.appendChild(this.dom.tipFrom);
-      this.dom.tipLine.appendChild(this.dom.tipBoth);
+      this.dom.tipLine.append(this.dom.tipFrom);
+      this.dom.tipLine.append(this.dom.tipBoth);
     } else {
       this.dom.tipFrom.remove();
       this.dom.tipBoth.remove();
     }
 
-    this.dom.tipLine.appendChild(this.dom.tipTo);
+    this.dom.tipLine.append(this.dom.tipTo);
 
     if (isVertical) {
       this.dom.tipLine.classList.add(cssSelectors.verticalTipLine);

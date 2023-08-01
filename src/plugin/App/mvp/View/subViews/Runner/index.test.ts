@@ -7,7 +7,7 @@ import { cssSelectors } from './constants';
 
 describe('Runner', () => {
   const div = document.createElement('div');
-  document.body.appendChild(div);
+  document.body.append(div);
 
   const runnerFrom = new Runner(div, 'from');
   const runnerTo = new Runner(div, 'to');

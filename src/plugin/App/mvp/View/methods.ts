@@ -7,9 +7,9 @@ const createElements = (root: HTMLElement): Dom => {
 
   const barContainer = document.createElement('div');
   barContainer.classList.add('slider__bar-container');
-  root.appendChild(slider);
+  root.append(slider);
 
-  slider.appendChild(barContainer);
+  slider.append(barContainer);
 
   return { root, barContainer, slider };
 };

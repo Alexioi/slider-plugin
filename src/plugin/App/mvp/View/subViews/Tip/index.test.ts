@@ -7,7 +7,7 @@ import { cssSelectors } from './constants';
 
 describe('Tip', () => {
   const div = document.createElement('div');
-  document.body.appendChild(div);
+  document.body.append(div);
 
   const tip = new Tip(div);
 

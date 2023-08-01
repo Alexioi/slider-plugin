@@ -33,7 +33,7 @@ class Scale extends EventEmitter<EventTypes> {
 
     this.props = { min, max, isVertical };
 
-    this.dom.root.appendChild(this.dom.scale);
+    this.dom.root.append(this.dom.scale);
 
     update(this.dom, this.props);
   }

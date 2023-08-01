@@ -35,7 +35,7 @@ class Runner extends EventEmitter<EventTypes> {
       return;
     }
 
-    this.dom.root.appendChild(this.dom.runner);
+    this.dom.root.append(this.dom.runner);
   }
 
   public update(options: UpdateOptions, target: 'from' | 'to') {

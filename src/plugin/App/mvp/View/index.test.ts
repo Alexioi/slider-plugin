@@ -7,7 +7,7 @@ import { defaultConfig } from '../../sliderOptions';
 
 describe('View', () => {
   const div = document.createElement('div');
-  document.body.appendChild(div);
+  document.body.append(div);
 
   const view = new View(div);
 
