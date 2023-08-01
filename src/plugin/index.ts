@@ -8,7 +8,7 @@ declare global {
 }
 
 $.fn.slider = function initSliders(config) {
-  return this.map((i, node) => new App(node, config));
+  return this.map((i, el) => new App(el, config));
 };
 
 export { App, Config, Options };

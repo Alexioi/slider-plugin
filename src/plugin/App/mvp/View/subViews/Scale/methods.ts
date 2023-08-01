@@ -42,14 +42,12 @@ const getScaleParameters = (
 
   const differenceMaxAndMin = Math.abs(max - min);
 
-  const scaleParameters = scalePercents.map((percent) => {
+  const scaleParameters = scalePercents.map((el) => {
     const value = Number(
-      (min + (differenceMaxAndMin * percent) / 100)
-        .toFixed(1)
-        .replace(/\.?0+$/, ''),
+      (min + (differenceMaxAndMin * el) / 100).toFixed(1).replace(/\.?0+$/, ''),
     );
 
-    return { percent, value };
+    return { percent: el, value };
   });
 
   return scaleParameters;
@@ -60,8 +58,8 @@ const draw = (
   { isVertical }: Props,
   parameters: MarkParameters[],
 ): void => {
-  parameters.forEach((parameter) => {
-    const { percent, value } = parameter;
+  parameters.forEach((el) => {
+    const { percent, value } = el;
     const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
     const mark = document.createElement(
       'span',

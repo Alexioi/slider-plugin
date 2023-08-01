@@ -7,6 +7,6 @@ import './docs.scss';
 
 const sliders = $(cssSelectors.example).slider();
 
-document.querySelectorAll(cssSelectors.control).forEach((node, i) => {
-  new Panel(node, sliders[i], configs[i]);
+document.querySelectorAll(cssSelectors.control).forEach((el, i) => {
+  new Panel(el, sliders[i], configs[i]);
 });
