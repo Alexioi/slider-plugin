@@ -3,7 +3,7 @@ import '@plugin';
 import { Panel } from '../panel/Panel';
 import configs from './data.json';
 import { cssSelectors } from './constants';
-import './docs.scss';
+import './style.scss';
 
 const sliders = $(cssSelectors.example).slider();
 

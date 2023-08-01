@@ -2,7 +2,7 @@ import { App, Config } from '@plugin';
 
 import { searchElements, syncInputs, attachCallback } from './methods';
 import { Dom } from './type';
-import './panel.scss';
+import './style.scss';
 
 class Panel {
   private dom: Dom;
