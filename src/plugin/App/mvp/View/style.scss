@@ -12,19 +12,5 @@
     display: flex;
     flex-basis: 0;
     height: 100%;
-
-    & #{$root}__bar-container {
-      width: parameters.$runnerWidth * 0.5;
-      height: 100%;
-    }
-  }
-
-  &__bar-container {
-    box-sizing: border-box;
-    width: 100%;
-    height: parameters.$runnerWidth * 0.5;
-    border: parameters.$barBorder solid rgb(colors.$first, 25%);
-    border-radius: 3px;
-    position: relative;
   }
 }

@@ -1,4 +1,4 @@
-import { Dom, UpdateOptions } from './types';
+import { Dom, UpdateOptions } from './type';
 import { init, changeDimensions } from './methods';
 
 class Range {

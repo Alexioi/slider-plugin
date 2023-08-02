@@ -32,6 +32,7 @@ class View extends EventEmitter<EventTypes> {
 
     toggleVertical(this.dom, isVertical);
 
+    this.subViews.bar.render();
     this.subViews.tip.render(options);
     this.subViews.runnerFrom.render(isRange);
     this.subViews.runnerTo.render(isRange);

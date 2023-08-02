@@ -1,6 +1,6 @@
 import { helpers } from '@helpers';
 
-import { UpdateOptions } from './types';
+import { UpdateOptions } from './type';
 import { cssSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement) => {

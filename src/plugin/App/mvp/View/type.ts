@@ -1,8 +1,8 @@
 import { Range, Runner, Scale, Tip } from './subViews';
+import { Bar } from './subViews/Bar';
 
 type Dom = {
   root: HTMLElement;
-  barContainer: HTMLDivElement;
   slider: HTMLDivElement;
 };
 
@@ -12,6 +12,7 @@ type SubViews = {
   runnerTo: Runner;
   scale: Scale;
   tip: Tip;
+  bar: Bar;
 };
 
 export { Dom, SubViews };

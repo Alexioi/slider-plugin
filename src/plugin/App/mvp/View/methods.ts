@@ -1,31 +1,31 @@
 import { Dom, SubViews } from './type';
-import { Range, Runner, Scale, Tip } from './subViews';
+import { Bar, Range, Runner, Scale, Tip } from './subViews';
 
 const createElements = (root: HTMLElement): Dom => {
   const slider = document.createElement('div');
   slider.classList.add('slider');
 
-  const barContainer = document.createElement('div');
-  barContainer.classList.add('slider__bar-container');
   root.append(slider);
 
-  slider.append(barContainer);
-
-  return { root, barContainer, slider };
+  return { root, slider };
 };
 
 const initSubViews = (dom: Dom): SubViews => {
   const tip = new Tip(dom.slider);
 
-  const range = new Range(dom.barContainer);
+  const bar = new Bar(dom.slider);
+
+  const barNode = bar.getBarNode();
+
+  const range = new Range(barNode);
 
   const scale = new Scale(dom.slider);
 
-  const runnerFrom = new Runner(dom.barContainer, 'from');
+  const runnerFrom = new Runner(barNode, 'from');
 
-  const runnerTo = new Runner(dom.barContainer, 'to');
+  const runnerTo = new Runner(barNode, 'to');
 
-  return { tip, range, scale, runnerFrom, runnerTo };
+  return { tip, range, scale, runnerFrom, runnerTo, bar };
 };
 
 const calculateTarget = ({

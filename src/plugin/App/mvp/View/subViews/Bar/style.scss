@@ -1,0 +1,22 @@
+@use '@style/parameters';
+@use '@style/colors';
+
+.slider {
+  $root: &;
+
+  &_vertical {
+    & #{$root}__bar {
+      width: parameters.$runnerWidth * 0.5;
+      height: 100%;
+    }
+  }
+
+  &__bar {
+    box-sizing: border-box;
+    width: 100%;
+    height: parameters.$runnerWidth * 0.5;
+    border: parameters.$barBorder solid rgb(colors.$first, 25%);
+    border-radius: 3px;
+    position: relative;
+  }
+}
