@@ -12,7 +12,7 @@ describe('Tip', () => {
   const tip = new Tip(div);
 
   it('should not display tip if hasTip is false', () => {
-    tip.render({ hasTip: false, isRange: true, isVertical: true });
+    tip.render({ hasTip: false, isRange: true });
 
     const tipLine = document.querySelector(`.${cssSelectors.tipLine}`);
 
@@ -20,7 +20,7 @@ describe('Tip', () => {
   });
 
   it('should update tip styles when isRange is false', () => {
-    tip.render({ hasTip: true, isRange: false, isVertical: false });
+    tip.render({ hasTip: true, isRange: false });
 
     const tipLine = document.querySelector(`.${cssSelectors.tipLine}`);
     const tipNode = tipLine?.querySelector(`.${cssSelectors.tip}`);
@@ -61,7 +61,7 @@ describe('Tip', () => {
   });
 
   it('should update tip styles when isRange is true', () => {
-    tip.render({ hasTip: true, isRange: true, isVertical: false });
+    tip.render({ hasTip: true, isRange: true });
 
     const tipLine = document.querySelector(`.${cssSelectors.tipLine}`);
     const tipNodeList = tipLine?.querySelectorAll(`.${cssSelectors.tip}`);
@@ -105,46 +105,5 @@ describe('Tip', () => {
     expect(tipFrom.classList.contains(cssSelectors.hiddenTip)).toBeTruthy();
     expect(tipBoth.classList.contains(cssSelectors.hiddenTip)).toBeFalsy();
     expect(tipTo.classList.contains(cssSelectors.hiddenTip)).toBeTruthy();
-  });
-
-  it('must be vertical', () => {
-    tip.render({ hasTip: true, isRange: false, isVertical: true });
-
-    const tipLine = document.querySelector(`.${cssSelectors.verticalTipLine}`);
-    const tipNode = tipLine?.querySelector(`.${cssSelectors.tip}`);
-
-    if (!(tipNode instanceof HTMLDivElement)) {
-      fail('tipNode is not HTMLDivElement');
-    }
-
-    tip.update({
-      min: -100,
-      max: 100,
-      from: -50,
-      to: 50,
-      isRange: false,
-      isVertical: false,
-    });
-    expect(tipNode.style.left).toEqual('75%');
-
-    tip.update({
-      min: -100,
-      max: 100,
-      from: -50,
-      to: -100,
-      isRange: false,
-      isVertical: false,
-    });
-    expect(tipNode.style.left).toEqual('0%');
-
-    tip.update({
-      min: -100,
-      max: 100,
-      from: -50,
-      to: 100,
-      isRange: false,
-      isVertical: false,
-    });
-    expect(tipNode.style.left).toEqual('100%');
   });
 });

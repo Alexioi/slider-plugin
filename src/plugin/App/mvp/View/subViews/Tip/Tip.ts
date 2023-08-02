@@ -10,7 +10,6 @@ import {
   destroy,
   toggleDisplay,
 } from './methods';
-import { cssSelectors } from './constants';
 
 class Tip extends EventEmitter<EventTypes> {
   private dom: Dom;
@@ -25,15 +24,7 @@ class Tip extends EventEmitter<EventTypes> {
     this.dom = dom;
   }
 
-  public render({
-    hasTip,
-    isRange,
-    isVertical,
-  }: {
-    hasTip: boolean;
-    isRange: boolean;
-    isVertical: boolean;
-  }) {
+  public render({ hasTip, isRange }: { hasTip: boolean; isRange: boolean }) {
     if (!hasTip) {
       destroy(this.dom);
       return;
@@ -50,12 +41,6 @@ class Tip extends EventEmitter<EventTypes> {
     }
 
     this.dom.tipLine.append(this.dom.tipTo);
-
-    if (isVertical) {
-      this.dom.tipLine.classList.add(cssSelectors.verticalTipLine);
-    } else {
-      this.dom.tipLine.classList.remove(cssSelectors.verticalTipLine);
-    }
   }
 
   public update(updateOptions: UpdateOptions) {

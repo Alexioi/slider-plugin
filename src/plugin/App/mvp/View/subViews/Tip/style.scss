@@ -7,21 +7,19 @@
 .slider {
   $root: &;
 
-  &__tip-line {
-    height: parameters.$runnerWidth * 1.5;
+  &_vertical {
+    & #{$root}__tip-line {
+      height: 100%;
+    }
 
     & #{$root}__tip {
-      transform: translateX(-50%);
+      right: math.div(parameters.$runnerWidth, 1.3);
+      transform: translateY(-50%);
     }
+  }
 
-    &_vertical {
-      height: 100%;
-
-      & #{$root}__tip {
-        right: math.div(parameters.$runnerWidth, 1.3);
-        transform: translateY(-50%);
-      }
-    }
+  &__tip-line {
+    height: parameters.$runnerWidth * 1.5;
   }
 
   &__tip {
@@ -34,6 +32,7 @@
     color: colors.$first;
     user-select: none;
     cursor: pointer;
+    transform: translateX(-50%);
 
     &_hidden {
       visibility: hidden;
