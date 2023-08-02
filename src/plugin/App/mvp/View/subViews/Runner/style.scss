@@ -9,7 +9,7 @@
   &_vertical {
     & #{$root}__runner {
       right: -(math.div(parameters.$runnerWidth, 3));
-      transform: translateY(-50%);
+      transform: translate(-#{parameters.$barBorder}, -50%);
     }
   }
 
@@ -17,13 +17,12 @@
     box-sizing: border-box;
     position: absolute;
     z-index: 10;
-    top: -(math.div(parameters.$runnerWidth, 3));
     border: 2px solid white;
     height: parameters.$runnerWidth;
     width: parameters.$runnerWidth;
     border-radius: 50%;
     background: gradients.$first;
-    transform: translateX(-50%);
+    transform: translate(-50%, calc(-25% - #{parameters.$barBorder}));
     cursor: pointer;
     touch-action: none;
 

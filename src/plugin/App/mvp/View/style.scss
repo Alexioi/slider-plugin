@@ -23,7 +23,7 @@
     box-sizing: border-box;
     width: 100%;
     height: parameters.$runnerWidth * 0.5;
-    border: 1px solid rgb(colors.$first, 25%);
+    border: parameters.$barBorder solid rgb(colors.$first, 25%);
     border-radius: 3px;
     position: relative;
   }
