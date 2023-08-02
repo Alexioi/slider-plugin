@@ -1,6 +1,6 @@
 import { Options } from '@types';
 
-const getRoundingNumber = (number: number, step: number): number => {
+const getRoundingNumber = (number: number, step: number | 'none'): number => {
   const [, symbolsAfterComma] = String(step).split('.');
 
   if (typeof symbolsAfterComma === 'undefined') {
@@ -72,7 +72,7 @@ const changeValueDependingOnStep = (
     max,
     isRange,
   }: {
-    step: number;
+    step: number | 'none';
     from: number;
     to: number;
     min: number;
@@ -92,6 +92,18 @@ const changeValueDependingOnStep = (
     },
     valueIndex,
   );
+
+  if (step === 'none') {
+    if (newValue < minimum) {
+      return minimum;
+    }
+
+    if (newValue > maximum) {
+      return maximum;
+    }
+
+    return newValue;
+  }
 
   const oldValue = valueIndex === 'from' ? from : to;
 
@@ -165,10 +177,10 @@ const updateOptionsByStep = (
   options: Options,
   type: 'to' | 'from',
 ) => {
+  const step =
+    options.step === 'none' ? options.max - options.min / 10 : options.step;
   const newValue =
-    touchRoute === 'up'
-      ? options[type] + options.step
-      : options[type] - options.step;
+    touchRoute === 'up' ? options[type] + step : options[type] - step;
   const [minimum, maximum] = getMinimumAndMaximum(options, type);
 
   if (newValue < minimum) {

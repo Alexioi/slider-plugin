@@ -1,8 +1,8 @@
 import { Config, Options } from '@types';
 
-const makeNumber = (number: number, value: unknown): number => {
-  if (String(value).search(/^(-|\+)?([0-9]+)?(\.|,)?([0-9]+)$/) !== -1) {
-    return Number(value);
+const getDefine = (number: number, value?: number): number => {
+  if (typeof value !== 'undefined') {
+    return value;
   }
 
   return number;
@@ -12,8 +12,8 @@ const verifyMinAndMax = (
   oldOptions: { min: number; max: number },
   newOptions?: { min?: number; max?: number },
 ): { min: number; max: number } => {
-  const intFirstValue = makeNumber(oldOptions.min, newOptions?.min);
-  const intSecondValue = makeNumber(oldOptions.max, newOptions?.max);
+  const intFirstValue = getDefine(oldOptions.min, newOptions?.min);
+  const intSecondValue = getDefine(oldOptions.max, newOptions?.max);
 
   if (intFirstValue === intSecondValue) {
     const min = intFirstValue;
@@ -62,8 +62,8 @@ const verifyFromAndTo = (
   max: number,
   newOptions?: { from?: number; to?: number },
 ): { from: number; to: number } => {
-  const intFirstValue = makeNumber(oldOptions.from, newOptions?.from);
-  const intSecondValue = makeNumber(oldOptions.to, newOptions?.to);
+  const intFirstValue = getDefine(oldOptions.from, newOptions?.from);
+  const intSecondValue = getDefine(oldOptions.to, newOptions?.to);
 
   const [newFirstValue, newSecondValue] = [intFirstValue, intSecondValue].sort(
     (a, b) => {
@@ -78,15 +78,22 @@ const verifyFromAndTo = (
 };
 
 const verifyStep = (
-  oldOptions: { step: number },
+  oldOptions: { step: number | 'none' },
   min: number,
   max: number,
-  newOptions?: { step?: number },
-): number => {
-  const intNewStep = makeNumber(oldOptions.step, newOptions?.step);
+  newOptions?: { step?: number | 'none' },
+): number | 'none' => {
+  const intNewStep =
+    typeof newOptions?.step === 'undefined'
+      ? oldOptions.step
+      : newOptions?.step;
+
+  if (intNewStep === 'none') {
+    return 'none';
+  }
 
   if (intNewStep <= 0) {
-    return 1;
+    return 'none';
   }
 
   const distanceBetweenMinAndMax = max - min;

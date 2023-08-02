@@ -130,7 +130,7 @@ const syncInputs = (slider: App, dom: Dom): void => {
   changedDom.max.value = String(max);
   changedDom.from.value = String(from);
   changedDom.to.value = String(to);
-  changedDom.step.value = String(step);
+  changedDom.step.value = step === 'none' ? '0' : String(step);
   changedDom.tip.checked = hasTip;
   changedDom.scale.checked = hasScale;
 };

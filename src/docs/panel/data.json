@@ -9,5 +9,6 @@
     { "header": "From:", "name": "from", "type": "number" },
     { "header": "To:", "name": "to", "type": "number" },
     { "header": "Step:", "name": "step", "type": "number" }
-  ]
+  ],
+  "indicatorText": "onChange: "
 }

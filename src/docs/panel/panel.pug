@@ -1,6 +1,6 @@
 mixin panel()
 
-  - const {items} = require('../panel/data.json')
+  - const {items,indicatorText} = require('../panel/data.json')
 
   .panel
     .js-panel__control.panel__control
@@ -15,6 +15,6 @@ mixin panel()
           span.panel__input-header= item.header
           input(class=classes, type=item.type) 
       .panel__indicator-area
-        span.panel__indicator-text= 'onChange: '
+        span.panel__indicator-text= indicatorText
         .panel__indicator.js-panel__indicator
     .panel__example.js-panel__example 

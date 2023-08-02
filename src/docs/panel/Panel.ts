@@ -79,20 +79,18 @@ class Panel {
       return;
     }
 
-    const optionName = target.customName;
+    const { customName } = target;
 
-    if (typeof optionName !== 'string') {
+    if (typeof customName !== 'string') {
       return;
     }
 
-    if (optionName === 'from' || optionName === 'to') {
-      const from = Number(this.dom.from.value);
-      const to = Number(this.dom.to.value);
+    const value = Number(target.value);
 
-      this.slider.update({ from, to });
+    if (customName === 'step' && value === 0) {
+      this.slider.update({ step: 'none' });
     } else {
-      const value = Number(target.value);
-      this.slider.update({ [optionName]: value });
+      this.slider.update({ [customName]: value });
     }
 
     syncInputs(this.slider, this.dom);

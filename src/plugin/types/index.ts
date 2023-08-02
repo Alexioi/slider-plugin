@@ -3,7 +3,7 @@ type Config = {
   isVertical?: boolean;
   hasTip?: boolean;
   hasScale?: boolean;
-  step?: number;
+  step?: number | 'none';
   min?: number;
   max?: number;
   from?: number;
@@ -20,7 +20,7 @@ type Options = {
   isVertical: boolean;
   hasTip: boolean;
   hasScale: boolean;
-  step: number;
+  step: number | 'none';
   min: number;
   max: number;
   from: number;
