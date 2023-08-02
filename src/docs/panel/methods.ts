@@ -128,8 +128,8 @@ const syncInputs = (slider: App, dom: Dom): void => {
   changedDom.vertical.checked = isVertical;
   changedDom.min.value = String(min);
   changedDom.max.value = String(max);
-  changedDom.from.value = String(from);
-  changedDom.to.value = String(to);
+  changedDom.from.value = String(Number(from.toFixed(3)));
+  changedDom.to.value = String(Number(to.toFixed(3)));
   changedDom.step.value = step === 'none' ? '0' : String(step);
   changedDom.tip.checked = hasTip;
   changedDom.scale.checked = hasScale;
@@ -147,8 +147,8 @@ const attachCallback = (dom: Dom, slider: App): void => {
     onChange: ({ from, to }: Options) => {
       clearTimeout(timeout);
 
-      thatDom.from.value = String(from);
-      thatDom.to.value = String(to);
+      thatDom.from.value = String(Number(from.toFixed(3)));
+      thatDom.to.value = String(Number(to.toFixed(3)));
 
       thatDom.indicator.classList.add(cssSelectors.decoratedIndicator);
 
