@@ -106,6 +106,12 @@ class Presenter extends EventEmitter<EventTypes> {
       notifyModelAboutChangeRunnerPosition,
     );
 
+    this.view.subscribeSubCViewToEvents(
+      'bar',
+      'ChangeNearRunnerPosition',
+      notifyModelAboutChangeNearRunnerPosition,
+    );
+
     return this;
   }
 

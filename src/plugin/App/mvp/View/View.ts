@@ -47,7 +47,7 @@ class View extends EventEmitter<EventTypes> {
   }
 
   public subscribeSubCViewToEvents<K extends keyof EventTypes>(
-    subName: 'tip' | 'runnerTo' | 'runnerFrom' | 'scale',
+    subName: 'tip' | 'runnerTo' | 'runnerFrom' | 'scale' | 'bar',
     eventName: K,
     callback: Callback<EventTypes, K>,
   ): void {

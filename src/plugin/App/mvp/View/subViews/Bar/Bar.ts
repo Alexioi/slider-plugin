@@ -1,5 +1,6 @@
 import { EventEmitter } from '@helpers/EventEmitter';
 import { EventTypes } from '@types';
+import { helpers } from '@helpers';
 
 import { Dom } from './type';
 import { createElements } from './methods';
@@ -9,6 +10,8 @@ class Bar extends EventEmitter<EventTypes> {
 
   constructor(root: HTMLElement) {
     super();
+
+    this.handlePointerdownRunner = this.handlePointerdownRunner.bind(this);
 
     const { dom } = this.init(root);
 
@@ -32,7 +35,15 @@ class Bar extends EventEmitter<EventTypes> {
   }
 
   private attachEventHandlers(dom: Dom): void {
-    console.log(this.dom, dom);
+    dom.bar.addEventListener('pointerdown', this.handlePointerdownRunner);
+  }
+
+  private handlePointerdownRunner(pointerEvent: PointerEvent): void {
+    pointerEvent.preventDefault();
+
+    const position = helpers.getPosition(this.dom.bar, pointerEvent);
+
+    this.emit('ChangeNearRunnerPosition', { position });
   }
 }
 
