@@ -26,6 +26,42 @@ const getMinimumAndMaximum = (
   return [minimum, maximum];
 };
 
+const checkSensitiveStepForStep = (
+  differenceValue: number,
+  step: number,
+  oldValue: number,
+  newValue: number,
+  stepRemainderOfDivision: number,
+  minimum: number,
+  maximum: number,
+): number => {
+  if (differenceValue < step / 2) {
+    return getRoundingNumber(oldValue, step);
+  }
+
+  if (stepRemainderOfDivision < step / 2) {
+    if (newValue > oldValue) {
+      return getRoundingNumber(newValue - stepRemainderOfDivision, step);
+    }
+
+    return getRoundingNumber(newValue + stepRemainderOfDivision, step);
+  }
+
+  if (newValue + stepRemainderOfDivision - step < minimum) {
+    return getRoundingNumber(minimum, step);
+  }
+
+  if (newValue - stepRemainderOfDivision + step > maximum) {
+    return getRoundingNumber(maximum, step);
+  }
+
+  if (newValue > oldValue) {
+    return getRoundingNumber(newValue - stepRemainderOfDivision + step, step);
+  }
+
+  return getRoundingNumber(newValue + stepRemainderOfDivision - step, step);
+};
+
 const changeValueDependingOnStep = (
   newValue: number,
   {
@@ -44,6 +80,7 @@ const changeValueDependingOnStep = (
     isRange: boolean;
   },
   valueIndex: 'from' | 'to',
+  isCheckSensitive: boolean,
 ): number => {
   const [minimum, maximum] = getMinimumAndMaximum(
     {
@@ -70,31 +107,23 @@ const changeValueDependingOnStep = (
     return getRoundingNumber(maximum, step);
   }
 
-  if (differenceValue < step / 2) {
-    return getRoundingNumber(oldValue, step);
-  }
-
-  if (stepRemainderOfDivision < step / 2) {
-    if (newValue > oldValue) {
-      return getRoundingNumber(newValue - stepRemainderOfDivision, step);
-    }
-
-    return getRoundingNumber(newValue + stepRemainderOfDivision, step);
-  }
-
-  if (newValue + stepRemainderOfDivision - step < minimum) {
-    return getRoundingNumber(minimum, step);
-  }
-
-  if (newValue - stepRemainderOfDivision + step > maximum) {
-    return getRoundingNumber(maximum, step);
+  if (isCheckSensitive) {
+    return checkSensitiveStepForStep(
+      differenceValue,
+      step,
+      oldValue,
+      newValue,
+      stepRemainderOfDivision,
+      minimum,
+      maximum,
+    );
   }
 
   if (newValue > oldValue) {
-    return getRoundingNumber(newValue - stepRemainderOfDivision + step, step);
+    return getRoundingNumber(newValue - stepRemainderOfDivision, step);
   }
 
-  return getRoundingNumber(newValue + stepRemainderOfDivision - step, step);
+  return getRoundingNumber(newValue + stepRemainderOfDivision, step);
 };
 
 const getNearValueType = (
@@ -156,6 +185,7 @@ const updateOptionsByStep = (
 const calculateValue = (
   position: { x: number; y: number },
   options: Options,
+  isCheckSensitive: boolean,
   type?: 'from' | 'to',
 ): Options => {
   const newValue = getNewValueUsingFraction(position, options);
@@ -163,7 +193,12 @@ const calculateValue = (
   if (typeof type !== 'undefined') {
     return {
       ...options,
-      [type]: changeValueDependingOnStep(newValue, options, type),
+      [type]: changeValueDependingOnStep(
+        newValue,
+        options,
+        type,
+        isCheckSensitive,
+      ),
     };
   }
 
@@ -171,7 +206,12 @@ const calculateValue = (
 
   return {
     ...options,
-    [nearType]: changeValueDependingOnStep(newValue, options, nearType),
+    [nearType]: changeValueDependingOnStep(
+      newValue,
+      options,
+      nearType,
+      isCheckSensitive,
+    ),
   };
 };
 

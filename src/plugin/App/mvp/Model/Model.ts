@@ -33,20 +33,28 @@ class Model extends EventEmitter<EventTypes> {
     return this.options;
   }
 
-  public calculateValueUsingFraction({
-    position,
-    type,
-  }: ElementPosition): void {
-    this.options = calculateValue(position, this.options, type);
+  public calculateValueUsingFraction(
+    { position, type }: ElementPosition,
+    isCheckSensitive: boolean,
+  ): void {
+    this.options = calculateValue(
+      position,
+      this.options,
+      isCheckSensitive,
+      type,
+    );
 
     this.emit('UpdateModelValues', this.options);
   }
 
-  public calculateNearValueUsingFraction(position: {
-    x: number;
-    y: number;
-  }): void {
-    this.options = calculateValue(position, this.options);
+  public calculateNearValueUsingFraction(
+    position: {
+      x: number;
+      y: number;
+    },
+    isCheckSensitive: boolean,
+  ): void {
+    this.options = calculateValue(position, this.options, isCheckSensitive);
 
     this.emit('UpdateModelValues', this.options);
   }

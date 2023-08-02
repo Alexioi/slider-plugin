@@ -45,7 +45,7 @@ class Presenter extends EventEmitter<EventTypes> {
       position,
       type,
     }: ElementPosition) => {
-      this.model.calculateValueUsingFraction({ position, type });
+      this.model.calculateValueUsingFraction({ position, type }, false);
     };
 
     const notifyModelAboutTouchValue = ({ type, touchRoute }: ElementTouch) => {
@@ -57,7 +57,15 @@ class Presenter extends EventEmitter<EventTypes> {
     }: {
       position: { x: number; y: number };
     }) => {
-      this.model.calculateNearValueUsingFraction(position);
+      this.model.calculateNearValueUsingFraction(position, false);
+    };
+
+    const notifyModelAboutBarClick = ({
+      position,
+    }: {
+      position: { x: number; y: number };
+    }) => {
+      this.model.calculateNearValueUsingFraction(position, true);
     };
 
     this.view.subscribeSubCViewToEvents(
@@ -109,7 +117,7 @@ class Presenter extends EventEmitter<EventTypes> {
     this.view.subscribeSubCViewToEvents(
       'bar',
       'ChangeNearRunnerPosition',
-      notifyModelAboutChangeNearRunnerPosition,
+      notifyModelAboutBarClick,
     );
 
     return this;

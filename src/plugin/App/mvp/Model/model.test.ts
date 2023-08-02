@@ -36,10 +36,13 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateValueUsingFraction({
-        position: { x: 1.01, y: 0.5 },
-        type: 'to',
-      });
+      model.calculateValueUsingFraction(
+        {
+          position: { x: 1.01, y: 0.5 },
+          type: 'to',
+        },
+        true,
+      );
     })();
 
     (() => {
@@ -50,10 +53,13 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateValueUsingFraction({
-        position: { x: 1.01, y: 0.5 },
-        type: 'to',
-      });
+      model.calculateValueUsingFraction(
+        {
+          position: { x: 1.01, y: 0.5 },
+          type: 'to',
+        },
+        true,
+      );
     })();
 
     (() => {
@@ -65,10 +71,13 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateValueUsingFraction({
-        position: { x: 0.5, y: 1.01 },
-        type: 'to',
-      });
+      model.calculateValueUsingFraction(
+        {
+          position: { x: 0.5, y: 1.01 },
+          type: 'to',
+        },
+        true,
+      );
     })();
 
     (() => {
@@ -80,10 +89,13 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateValueUsingFraction({
-        position: { x: 0.5, y: 1.01 },
-        type: 'from',
-      });
+      model.calculateValueUsingFraction(
+        {
+          position: { x: 0.5, y: 1.01 },
+          type: 'from',
+        },
+        true,
+      );
     })();
 
     (() => {
@@ -95,10 +107,13 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateValueUsingFraction({
-        position: { x: 0.5, y: 0.1 },
-        type: 'from',
-      });
+      model.calculateValueUsingFraction(
+        {
+          position: { x: 0.5, y: 0.1 },
+          type: 'from',
+        },
+        true,
+      );
     })();
   });
 
@@ -111,7 +126,7 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateNearValueUsingFraction({ x: 1.01, y: 0.5 });
+      model.calculateNearValueUsingFraction({ x: 1.01, y: 0.5 }, true);
     })();
 
     (() => {
@@ -122,7 +137,7 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateNearValueUsingFraction({ x: -0.2, y: 1.01 });
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 1.01 }, true);
     })();
 
     (() => {
@@ -134,7 +149,7 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateNearValueUsingFraction({ x: -0.2, y: 1.01 });
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 1.01 }, true);
     })();
 
     (() => {
@@ -146,7 +161,7 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateNearValueUsingFraction({ x: -0.2, y: -0.3 });
+      model.calculateNearValueUsingFraction({ x: -0.2, y: -0.3 }, true);
     })();
 
     (() => {
@@ -157,7 +172,7 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateNearValueUsingFraction({ x: 0.54, y: 1.01 });
+      model.calculateNearValueUsingFraction({ x: 0.54, y: 1.01 }, true);
     })();
 
     (() => {
@@ -169,7 +184,7 @@ describe('Model', () => {
       };
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
-      model.calculateNearValueUsingFraction({ x: -0.2, y: 0.56 });
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 0.56 }, true);
     })();
   });
 
