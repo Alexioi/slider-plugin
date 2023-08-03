@@ -29,4 +29,19 @@ describe('View', () => {
     expect(slider.querySelector('.slider__range')).not.toBeNull();
     expect(slider.querySelector('.slider__scale')).not.toBeNull();
   });
+
+  it('should render vertical', () => {
+    view.render({
+      ...defaultConfig,
+      isVertical: true,
+    });
+
+    const verticalSlider = document.querySelector('.slider_vertical');
+
+    if (verticalSlider === null) {
+      fail('slider equal null');
+    }
+
+    expect(verticalSlider.classList.contains('slider_vertical')).toBeTruthy();
+  });
 });
