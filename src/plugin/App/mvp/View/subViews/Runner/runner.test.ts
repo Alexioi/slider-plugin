@@ -52,4 +52,72 @@ describe('Runner', () => {
     );
     expect(runnerToNode.style.top).toEqual('75%');
   });
+
+  it('should handle pointerdown runner', () => {
+    const pointerDownEvent = new MouseEvent('pointerdown', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+
+    const runnerToNode = document.querySelector(`.${cssSelectors.runner}`);
+
+    if (!(runnerToNode instanceof HTMLDivElement)) {
+      fail('runner is not HTMLDivElement');
+    }
+
+    runnerToNode.dispatchEvent(pointerDownEvent);
+
+    const pointerMoveEvent = new MouseEvent('pointermove', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+      clientX: 100,
+      clientY: 200,
+    });
+
+    runnerTo.subscribe('ChangeRunnerPosition', ({ type }) => {
+      expect(type).toEqual('to');
+    });
+
+    runnerToNode.dispatchEvent(pointerMoveEvent);
+
+    const pointerUpEvent = new MouseEvent('pointerup', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+
+    runnerToNode.dispatchEvent(pointerUpEvent);
+  });
+
+  it('should handle keydown runner', () => {
+    const keyDownEvent = new KeyboardEvent('keydown', {
+      code: 'ArrowDown',
+    });
+
+    const keyUpEvent = new KeyboardEvent('keydown', {
+      code: 'ArrowUp',
+    });
+
+    const runnerToNode = document.querySelector(`.${cssSelectors.runner}`);
+
+    if (!(runnerToNode instanceof HTMLDivElement)) {
+      fail('runner is not HTMLDivElement');
+    }
+
+    runnerTo.subscribe('ChangeRunnerPositionByStep', ({ type, touchRoute }) => {
+      expect(type).toEqual('to');
+
+      if (touchRoute === 'up') {
+        expect(touchRoute).toEqual('up');
+        return;
+      }
+
+      expect(touchRoute).toEqual('down');
+    });
+
+    runnerToNode.dispatchEvent(keyDownEvent);
+    runnerToNode.dispatchEvent(keyUpEvent);
+  });
 });

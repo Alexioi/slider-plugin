@@ -59,25 +59,6 @@ class Runner extends EventEmitter<EventTypes> {
     dom.runner.addEventListener('keydown', this.handleKeydownRunner);
   }
 
-  private handleKeydownRunner(keyboardEvent: KeyboardEvent): void {
-    const { code } = keyboardEvent;
-
-    const handleClickArrow = (touchRoute: TouchRoute): void => {
-      keyboardEvent.preventDefault();
-      const { type } = this.props;
-
-      this.emit('ChangeRunnerPositionByStep', { type, touchRoute });
-    };
-
-    if (code === 'ArrowDown' || code === 'ArrowRight') {
-      handleClickArrow('up');
-    }
-
-    if (code === 'ArrowUp' || code === 'ArrowLeft') {
-      handleClickArrow('down');
-    }
-  }
-
   private handlePointerdownRunner(): void {
     const handlePointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
@@ -98,6 +79,25 @@ class Runner extends EventEmitter<EventTypes> {
 
     document.addEventListener('pointermove', handlePointerMove);
     document.addEventListener('pointerup', handlePointerUp);
+  }
+
+  private handleKeydownRunner(keyboardEvent: KeyboardEvent): void {
+    const { code } = keyboardEvent;
+
+    const handleClickArrow = (touchRoute: TouchRoute): void => {
+      keyboardEvent.preventDefault();
+      const { type } = this.props;
+
+      this.emit('ChangeRunnerPositionByStep', { type, touchRoute });
+    };
+
+    if (code === 'ArrowDown' || code === 'ArrowRight') {
+      handleClickArrow('up');
+    }
+
+    if (code === 'ArrowUp' || code === 'ArrowLeft') {
+      handleClickArrow('down');
+    }
   }
 }
 
