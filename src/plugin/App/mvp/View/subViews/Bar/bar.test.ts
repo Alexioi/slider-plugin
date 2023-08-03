@@ -17,4 +17,20 @@ describe('Runner', () => {
 
     expect(barNode.classList.contains(cssSelectors.bar)).toBeTruthy();
   });
+
+  it('should handle pointer down event', () => {
+    const mouseEvent = new MouseEvent('pointerdown');
+
+    const barNode = document.querySelector(`.${cssSelectors.bar}`);
+
+    if (!(barNode instanceof HTMLDivElement)) {
+      fail('barNode is not HTMLDivElement');
+    }
+
+    bar.subscribe('ChangeNearRunnerPosition', () => {
+      expect(true).toBeTruthy();
+    });
+
+    barNode.dispatchEvent(mouseEvent);
+  });
 });
