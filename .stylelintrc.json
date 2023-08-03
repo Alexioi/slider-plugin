@@ -3,6 +3,7 @@
   "rules": {
     "string-quotes": "single",
     "color-function-notation": "legacy",
-    "declaration-colon-newline-after": null
+    "declaration-colon-newline-after": null,
+    "at-rule-empty-line-before": null
   }
 }

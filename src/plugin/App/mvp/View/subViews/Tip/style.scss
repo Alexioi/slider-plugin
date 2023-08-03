@@ -20,6 +20,8 @@
 
   &__tip-line {
     height: parameters.$runnerWidth * 1.5;
+    position: absolute;
+    width: 100%;
   }
 
   &__tip {
@@ -32,7 +34,7 @@
     color: colors.$first;
     user-select: none;
     cursor: pointer;
-    transform: translateX(-50%);
+    transform: translate(-50%, -130%);
 
     &_hidden {
       visibility: hidden;
