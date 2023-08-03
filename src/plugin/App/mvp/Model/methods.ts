@@ -178,7 +178,7 @@ const updateOptionsByStep = (
   type: 'to' | 'from',
 ) => {
   const step =
-    options.step === 'none' ? options.max - options.min / 10 : options.step;
+    options.step === 'none' ? (options.max - options.min) / 10 : options.step;
   const newValue =
     touchRoute === 'up' ? options[type] + step : options[type] - step;
   const [minimum, maximum] = getMinimumAndMaximum(options, type);

@@ -3,7 +3,7 @@ import { Options } from '@types';
 import { Model } from '.';
 
 describe('Model', () => {
-  const options = {
+  const options: Options = {
     isRange: true,
     isVertical: false,
     hasTip: true,
@@ -186,6 +186,54 @@ describe('Model', () => {
 
       model.calculateNearValueUsingFraction({ x: -0.2, y: 0.56 }, true);
     })();
+
+    (() => {
+      const model = new Model({ ...options, step: 3.333 });
+      const value = {
+        ...options,
+        to: 66.667,
+        step: 3.333,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.66, y: -0.66 }, true);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true });
+      const value = {
+        ...options,
+        isVertical: true,
+        to: 70,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 0.69 }, true);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true });
+      const value = {
+        ...options,
+        isVertical: true,
+        to: 100,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 0.99 }, true);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true });
+      const value = {
+        ...options,
+        isVertical: true,
+        from: 0,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 0.03 }, true);
+    })();
   });
 
   it('should update near value', () => {
@@ -288,6 +336,164 @@ describe('Model', () => {
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.updateValueByStep({ type: 'to', touchRoute: 'down' });
+    })();
+
+    (() => {
+      const model = new Model({ ...options, to: 50, step: 'none' });
+      const value: Options = {
+        ...options,
+        to: 60,
+        step: 'none',
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.updateValueByStep({ type: 'to', touchRoute: 'up' });
+    })();
+
+    (() => {
+      const model = new Model({ ...options, to: 100, step: 'none' });
+      const value: Options = {
+        ...options,
+        to: 100,
+        step: 'none',
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.updateValueByStep({ type: 'to', touchRoute: 'up' });
+    })();
+
+    (() => {
+      const model = new Model({ ...options, from: 0, step: 'none' });
+      const value: Options = {
+        ...options,
+        from: 0,
+        step: 'none',
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.updateValueByStep({ type: 'from', touchRoute: 'down' });
+    })();
+  });
+
+  it('should not sensitive calculate near value using fraction and emit options', () => {
+    (() => {
+      const model = new Model(options);
+      const value = {
+        ...options,
+        to: 100,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 1.01, y: 0.5 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options });
+      const value = {
+        ...options,
+        from: 0,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 1.01 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true });
+      const value = {
+        ...options,
+        isVertical: true,
+        to: 100,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 1.01 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true });
+      const value = {
+        ...options,
+        from: 0,
+        isVertical: true,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: -0.3 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options });
+      const value = {
+        ...options,
+        from: 50,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.54, y: 1.01 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true });
+      const value = {
+        ...options,
+        isVertical: true,
+        to: 60,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 0.56 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true });
+      const value = {
+        ...options,
+        isVertical: true,
+        to: 70,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -0.2, y: 0.61 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true, step: 'none' });
+      const value: Options = {
+        ...options,
+        isVertical: true,
+        from: 0,
+        step: 'none',
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0, y: 0 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true, step: 'none' });
+      const value: Options = {
+        ...options,
+        isVertical: true,
+        from: 0,
+        step: 'none',
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: -1, y: -1 }, false);
+    })();
+
+    (() => {
+      const model = new Model({ ...options, isVertical: true, step: 'none' });
+      const value: Options = {
+        ...options,
+        isVertical: true,
+        to: 100,
+        step: 'none',
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 1.1, y: 1.1 }, false);
     })();
   });
 });
