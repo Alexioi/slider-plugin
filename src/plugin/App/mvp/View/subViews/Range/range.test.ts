@@ -39,5 +39,15 @@ describe('Scale', () => {
       to: 50,
     });
     expect(rangeNode.style.cssText).toEqual('top: 50%; bottom: 25%;');
+
+    range.update({
+      min: -100,
+      max: 100,
+      isVertical: true,
+      isRange: false,
+      from: 0,
+      to: 50,
+    });
+    expect(rangeNode.style.cssText).toEqual('top: 0%; bottom: 25%;');
   });
 });
