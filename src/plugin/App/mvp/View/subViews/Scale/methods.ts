@@ -1,7 +1,7 @@
 import { helpers } from '@helpers';
 import { MarkParameters } from '@types';
 
-import { Dom, HTMLSpanElementWithCustomData, Props } from './type';
+import { Dom, HTMLDivElementWithCustomData, Props } from './type';
 import { cssSelectors } from './constants';
 
 const createElement = (root: HTMLDivElement): Dom => {
@@ -58,18 +58,34 @@ const draw = (
   { isVertical }: Props,
   parameters: MarkParameters[],
 ): void => {
-  parameters.forEach((el) => {
+  let markLength = 0;
+  const changeScale = scale;
+
+  parameters.forEach((el, i) => {
     const { percent, value } = el;
     const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
-    const mark = document.createElement(
-      'span',
-    ) as HTMLSpanElementWithCustomData;
+    const mark = document.createElement('div') as HTMLDivElementWithCustomData;
     mark.classList.add(cssSelectors.mark);
     mark.style.cssText = style;
     mark.innerText = String(value);
     mark.customValue = Number(value);
 
     scale.append(mark);
+
+    if (isVertical) {
+      const { width } = mark.getBoundingClientRect();
+
+      if (width > markLength) {
+        markLength = width;
+        changeScale.style.cssText = `width: ${markLength}px`;
+      }
+      return;
+    }
+
+    if (i === 0) {
+      const { height } = mark.getBoundingClientRect();
+      changeScale.style.cssText = `height: ${height}px`;
+    }
   });
 };
 

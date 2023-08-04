@@ -10,10 +10,11 @@
   &_vertical {
     & #{$root}__tip-line {
       height: 100%;
+      width: auto;
     }
 
     & #{$root}__tip {
-      right: math.div(parameters.$runnerWidth, 1.3);
+      right: math.div(parameters.$runnerWidth, 3.3);
       transform: translateY(-50%);
     }
   }

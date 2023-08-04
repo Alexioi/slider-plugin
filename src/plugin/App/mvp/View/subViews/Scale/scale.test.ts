@@ -24,8 +24,8 @@ describe('Scale', () => {
 
     const markNode = document.querySelector(`.${cssSelectors.mark}`);
 
-    if (!(markNode instanceof HTMLSpanElement)) {
-      fail('scaleNode is not HTMLSpanElement');
+    if (!(markNode instanceof HTMLDivElement)) {
+      fail('scaleNode is not HTMLDivElement');
     }
 
     const pointerDownEvent = new Event('pointerdown', { bubbles: true });

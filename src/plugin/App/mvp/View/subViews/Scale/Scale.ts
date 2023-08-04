@@ -53,7 +53,7 @@ class Scale extends EventEmitter<EventTypes> {
   }
 
   private handlePointerdownScale(pointerEvent: PointerEvent): void {
-    if (!(pointerEvent.target instanceof HTMLSpanElement)) {
+    if (!(pointerEvent.target instanceof HTMLDivElement)) {
       return;
     }
 

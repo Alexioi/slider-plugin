@@ -1,4 +1,4 @@
-interface HTMLSpanElementWithCustomData extends HTMLSpanElement {
+interface HTMLDivElementWithCustomData extends HTMLDivElement {
   customValue: number;
 }
 
@@ -16,4 +16,4 @@ type RenderProps = {
   hasScale: boolean;
 };
 
-export { Dom, Props, RenderProps, HTMLSpanElementWithCustomData };
+export { Dom, Props, RenderProps, HTMLDivElementWithCustomData };
