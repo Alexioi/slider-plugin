@@ -27,6 +27,59 @@ describe('Model', () => {
     expect(model.getOptions()).toEqual(options);
   });
 
+  it('should update', () => {
+    (() => {
+      const model = new Model(options);
+      const value = {
+        ...options,
+        min: 100,
+        max: 100,
+      };
+
+      model.updateOptions(value);
+
+      expect(model.getOptions()).toEqual({
+        ...value,
+        from: 100,
+        to: 100,
+        max: 101,
+        step: 1,
+      });
+    })();
+
+    (() => {
+      const model = new Model(options);
+      const value = {
+        ...options,
+        to: 200,
+        max: 100,
+      };
+
+      model.updateOptions(value);
+
+      expect(model.getOptions()).toEqual({
+        ...value,
+        to: 100,
+        max: 100,
+      });
+    })();
+
+    (() => {
+      const model = new Model(options);
+      const value = {
+        ...options,
+        step: -1,
+      };
+
+      model.updateOptions(value);
+
+      expect(model.getOptions()).toEqual({
+        ...value,
+        step: 'none',
+      });
+    })();
+  });
+
   it('should calculate value using fraction and emit options', () => {
     (() => {
       const model = new Model(options);
@@ -494,6 +547,25 @@ describe('Model', () => {
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateNearValueUsingFraction({ x: 1.1, y: 1.1 }, false);
+    })();
+
+    (() => {
+      const model = new Model({
+        ...options,
+        isVertical: true,
+        step: 'none',
+        isRange: false,
+      });
+      const value: Options = {
+        ...options,
+        isRange: false,
+        isVertical: true,
+        to: 0,
+        step: 'none',
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 1.1, y: 0 }, false);
     })();
   });
 });
