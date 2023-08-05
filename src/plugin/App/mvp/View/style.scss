@@ -2,15 +2,13 @@
 @use '@style/colors';
 
 .slider {
-  $root: &;
-
   position: relative;
   box-sizing: border-box;
   width: 100%;
 
   &_vertical {
     display: flex;
-    flex-basis: 0;
     height: 100%;
+    width: auto;
   }
 }

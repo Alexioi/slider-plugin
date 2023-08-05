@@ -5,7 +5,7 @@
   $root: &;
 
   &_vertical {
-    & #{$root}__bar {
+    #{$root}__bar {
       width: parameters.$runner-width * 0.5;
       height: 100%;
     }

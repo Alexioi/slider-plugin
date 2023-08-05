@@ -7,7 +7,7 @@
   $root: &;
 
   &_vertical {
-    & #{$root}__runner {
+    #{$root}__runner {
       right: -(math.div(parameters.$runner-width, 3));
       transform: translate(-#{parameters.$bar-border}, -50%);
     }

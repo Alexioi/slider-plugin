@@ -4,7 +4,7 @@
   $root: &;
 
   &_vertical {
-    & #{$root}__range {
+    #{$root}__range {
       width: 100%;
       height: auto;
     }

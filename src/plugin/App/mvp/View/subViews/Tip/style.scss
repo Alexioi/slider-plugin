@@ -8,12 +8,12 @@
   $root: &;
 
   &_vertical {
-    & #{$root}__tip-line {
+    #{$root}__tip-line {
       height: 100%;
       width: auto;
     }
 
-    & #{$root}__tip {
+    #{$root}__tip {
       right: math.div(parameters.$runner-width, 3.3);
       transform: translateY(-50%);
     }
