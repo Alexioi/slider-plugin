@@ -14,13 +14,13 @@
     }
 
     & #{$root}__tip {
-      right: math.div(parameters.$runnerWidth, 3.3);
+      right: math.div(parameters.$runner-width, 3.3);
       transform: translateY(-50%);
     }
   }
 
   &__tip-line {
-    height: parameters.$runnerWidth * 1.5;
+    height: parameters.$runner-width * 1.5;
     position: absolute;
     width: 100%;
   }

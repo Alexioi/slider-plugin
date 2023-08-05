@@ -8,8 +8,8 @@
 
   &_vertical {
     & #{$root}__runner {
-      right: -(math.div(parameters.$runnerWidth, 3));
-      transform: translate(-#{parameters.$barBorder}, -50%);
+      right: -(math.div(parameters.$runner-width, 3));
+      transform: translate(-#{parameters.$bar-border}, -50%);
     }
   }
 
@@ -18,11 +18,11 @@
     position: absolute;
     z-index: 10;
     border: 2px solid white;
-    height: parameters.$runnerWidth;
-    width: parameters.$runnerWidth;
+    height: parameters.$runner-width;
+    width: parameters.$runner-width;
     border-radius: 50%;
     background: gradients.$first;
-    transform: translate(-50%, calc(-25% - #{parameters.$barBorder}));
+    transform: translate(-50%, calc(-25% - #{parameters.$bar-border}));
     cursor: pointer;
     touch-action: none;
 

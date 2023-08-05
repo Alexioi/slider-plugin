@@ -6,7 +6,7 @@
 
   &_vertical {
     & #{$root}__bar {
-      width: parameters.$runnerWidth * 0.5;
+      width: parameters.$runner-width * 0.5;
       height: 100%;
     }
   }
@@ -14,8 +14,8 @@
   &__bar {
     box-sizing: border-box;
     width: 100%;
-    height: parameters.$runnerWidth * 0.5;
-    border: parameters.$barBorder solid rgb(colors.$first, 25%);
+    height: parameters.$runner-width * 0.5;
+    border: parameters.$bar-border solid rgb(colors.$first, 25%);
     border-radius: 3px;
     position: relative;
     cursor: pointer;

@@ -61,7 +61,7 @@ module.exports = {
     alias: {
       '@types': path.resolve(__dirname, 'src/plugin/types'),
       '@helpers': path.resolve(__dirname, 'src/plugin/helpers'),
-      '@style': path.resolve(__dirname, 'src/style'),
+      '@style': path.resolve(__dirname, 'src/plugin/style'),
       '@plugin': path.resolve(__dirname, 'src/plugin'),
     },
   },
