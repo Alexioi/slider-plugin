@@ -10,6 +10,7 @@ import {
   move,
   toggleTarget,
 } from './methods';
+import './style.scss';
 
 class Runner extends EventEmitter<EventTypes> {
   private dom: Dom;

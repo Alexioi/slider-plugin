@@ -10,6 +10,7 @@ import {
   destroy,
   toggleDisplay,
 } from './methods';
+import './style.scss';
 
 class Tip extends EventEmitter<EventTypes> {
   private dom: Dom;

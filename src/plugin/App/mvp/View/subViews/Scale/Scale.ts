@@ -3,6 +3,7 @@ import { EventEmitter } from '@helpers/EventEmitter';
 
 import { Dom, Props, RenderProps } from './type';
 import { createElement, destroy, update } from './methods';
+import './style.scss';
 
 class Scale extends EventEmitter<EventTypes> {
   private dom: Dom;

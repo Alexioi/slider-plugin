@@ -8,6 +8,7 @@ import {
   createElements,
   toggleVertical,
 } from './methods';
+import './style.scss';
 
 class View extends EventEmitter<EventTypes> {
   private dom: Dom;

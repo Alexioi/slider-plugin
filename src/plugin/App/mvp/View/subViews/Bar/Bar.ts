@@ -4,6 +4,7 @@ import { helpers } from '@helpers';
 
 import { Dom } from './type';
 import { createElements } from './methods';
+import './style.scss';
 
 class Bar extends EventEmitter<EventTypes> {
   private dom: Dom;
