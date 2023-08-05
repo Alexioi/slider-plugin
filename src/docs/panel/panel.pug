@@ -3,12 +3,12 @@ mixin panel()
   - const {items,indicatorText} = require('../panel/data.json')
 
   .panel
-    .js-panel__control.panel__control
+    form.js-panel__control.panel__control
       each item in items
         - 
           const inputClass = 'panel__input'
-          const inputNameClass = 'panel__input_name-' + item.name
-          const jsInputNameClass = 'js-panel__input_name-' + item.name
+          const inputNameClass = `panel__input_name-${item.name}`
+          const jsInputNameClass = `js-panel__input_name-${item.name}`
           const classes = [inputClass, inputNameClass, jsInputNameClass]
           
         label.panel__label
