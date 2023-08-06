@@ -53,16 +53,16 @@ class Scale extends EventEmitter<EventTypes> {
     return this;
   }
 
-  private handlePointerdownScale(pointerEvent: PointerEvent): void {
-    if (!(pointerEvent.target instanceof HTMLDivElement)) {
+  private handlePointerdownScale({ target }: PointerEvent): void {
+    if (!(target instanceof HTMLDivElement)) {
       return;
     }
 
-    if (!('customValue' in pointerEvent.target)) {
+    if (!('customValue' in target)) {
       return;
     }
 
-    const targetNumber = Number(pointerEvent.target.customValue);
+    const targetNumber = Number(target.customValue);
 
     this.emit('ClickScale', { targetNumber });
   }
