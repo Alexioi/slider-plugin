@@ -1,5 +1,5 @@
 import { EventEmitter, Callback } from '@helpers/EventEmitter';
-import { EventTypes, Options } from '@types';
+import { Config, EventTypes, Options } from '@types';
 
 import { Dom, SubViews } from './type';
 import {
@@ -17,13 +17,17 @@ class View extends EventEmitter<EventTypes> {
 
   private props: { target: 'from' | 'to' } = { target: 'from' };
 
-  constructor(root: HTMLElement) {
+  constructor(root: HTMLElement, config?: Config) {
     super();
 
-    const { dom, subViews } = this.init(root);
+    const { dom, subViews } = this.init(root, config);
 
     this.dom = dom;
     this.subViews = subViews;
+  }
+
+  public updateLibs(config?: Config) {
+    this.subViews.tip.updateLibs(config);
   }
 
   public render(options: Options): void {
@@ -55,10 +59,13 @@ class View extends EventEmitter<EventTypes> {
     this.subViews[subName].subscribe(eventName, callback);
   }
 
-  private init(root: HTMLElement): { dom: Dom; subViews: SubViews } {
+  private init(
+    root: HTMLElement,
+    config?: Config,
+  ): { dom: Dom; subViews: SubViews } {
     const dom = createElements(root);
 
-    const subViews = initSubViews(dom);
+    const subViews = initSubViews(dom, config);
 
     this.subscribeToRunnerAndTip(subViews);
 

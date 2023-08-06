@@ -25,6 +25,7 @@ class Presenter extends EventEmitter<EventTypes> {
   }
 
   public updateOptions(config?: Config): void {
+    this.view.updateLibs(config);
     this.model.updateOptions(config);
   }
 

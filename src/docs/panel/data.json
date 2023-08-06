@@ -8,7 +8,12 @@
     { "header": "Max:", "name": "max", "type": "number" },
     { "header": "From:", "name": "from", "type": "number" },
     { "header": "To:", "name": "to", "type": "number" },
-    { "header": "Step:", "name": "step", "type": "number" }
+    { "header": "Step:", "name": "step", "type": "number" },
+    {
+      "header": "Format:",
+      "name": "format",
+      "type": "select"
+    }
   ],
   "indicatorText": "onChange: "
 }

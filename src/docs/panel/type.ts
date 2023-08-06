@@ -10,6 +10,7 @@ type Dom = {
   tip: HTMLInputElement;
   scale: HTMLInputElement;
   indicator: Element;
+  format: HTMLSelectElement;
 };
 
 interface HTMLDivElementWithCustomName extends HTMLDivElement {

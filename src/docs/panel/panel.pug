@@ -9,11 +9,18 @@ mixin panel()
           const inputClass = 'panel__input'
           const inputNameClass = `panel__input_name-${item.name}`
           const jsInputNameClass = `js-panel__input_name-${item.name}`
-          const classes = [inputClass, inputNameClass, jsInputNameClass]
+          const inputClasses = [inputClass, inputNameClass, jsInputNameClass]
+          const selectClass = 'panel__select'
+          const selectNameClass = `panel__select_name-${item.name}`
+          const jsSelectNameClass = `js-panel__select_name-${item.name}`
+          const selectClasses = [selectClass, selectNameClass, jsSelectNameClass]
           
-        label.panel__label
+        .panel__item
           span.panel__input-header= item.header
-          input(class=classes, type=item.type) 
+          if item.type === 'select'
+            select(class=selectClasses)
+          else
+            input(class=inputClasses, type=item.type) 
       .panel__indicator-area
         span.panel__indicator-text= indicatorText
         .panel__indicator.js-panel__indicator

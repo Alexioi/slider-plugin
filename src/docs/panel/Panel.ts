@@ -15,6 +15,7 @@ class Panel {
     this.handleClickCheckboxElement =
       this.handleClickCheckboxElement.bind(this);
     this.handleChangeInputElement = this.handleChangeInputElement.bind(this);
+    this.handleChangeFormat = this.handleChangeFormat.bind(this);
 
     const { dom } = this.init(root, config);
 
@@ -23,7 +24,13 @@ class Panel {
 
   private init(root: Element, config: Config) {
     this.slider.update(config);
+
     const dom = searchElements(root);
+
+    const newOption = new Option('text', 'value');
+    const newOption2 = new Option('text2', 'value2');
+    dom.format.options[dom.format.options.length] = newOption;
+    dom.format.options[dom.format.options.length] = newOption2;
 
     this.attachEventHandlers(dom);
     syncInputs(this.slider, dom);
@@ -33,7 +40,8 @@ class Panel {
   }
 
   private attachEventHandlers(dom: Dom): Panel {
-    const { range, vertical, scale, min, max, from, to, step, tip } = dom;
+    const { range, vertical, scale, min, max, from, to, step, tip, format } =
+      dom;
 
     range.addEventListener('click', this.handleClickCheckboxElement);
     vertical.addEventListener('click', this.handleClickCheckboxElement);
@@ -44,6 +52,7 @@ class Panel {
     from.addEventListener('change', this.handleChangeInputElement);
     to.addEventListener('change', this.handleChangeInputElement);
     step.addEventListener('change', this.handleChangeInputElement);
+    format.addEventListener('change', this.handleChangeFormat);
 
     return this;
   }
@@ -95,6 +104,15 @@ class Panel {
 
     syncInputs(this.slider, this.dom);
   };
+
+  private handleChangeFormat() {
+    console.log('x');
+    this.slider.update({
+      format: (x) => {
+        return `${x + 22} $`;
+      },
+    });
+  }
 }
 
 export { Panel };

@@ -15,11 +15,10 @@
     border-right: 2px solid gray;
   }
 
-  &__label {
+  &__item {
     display: flex;
     min-width: 150px;
     justify-content: space-between;
-    cursor: pointer;
     word-break: break-word;
   }
 

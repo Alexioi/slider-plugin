@@ -1,4 +1,4 @@
-import { EventTypes } from '@types';
+import { Config, EventTypes } from '@types';
 import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
 
@@ -15,14 +15,28 @@ import './style.scss';
 class Tip extends EventEmitter<EventTypes> {
   private dom: Dom;
 
-  constructor(root: HTMLDivElement) {
+  private libs = {
+    format: (value: number): string => {
+      return String(value);
+    },
+  };
+
+  constructor(root: HTMLDivElement, config?: Config) {
     super();
 
     this.handlePointerdownTip = this.handlePointerdownTip.bind(this);
 
-    const { dom } = this.init(root);
+    const { dom } = this.init(root, config);
 
     this.dom = dom;
+  }
+
+  public updateLibs(config?: Config) {
+    if (typeof config?.format === 'undefined') {
+      return;
+    }
+
+    this.libs = { format: config.format };
   }
 
   public render({ hasTip, isRange }: { hasTip: boolean; isRange: boolean }) {
@@ -47,13 +61,17 @@ class Tip extends EventEmitter<EventTypes> {
   public update(updateOptions: UpdateOptions) {
     const { dom } = this;
 
-    changeText(updateOptions, dom);
+    changeText(updateOptions, dom, this.libs);
     changePosition(updateOptions, dom);
     toggleDisplay(updateOptions, dom);
   }
 
-  private init(root: HTMLDivElement): { dom: Dom } {
+  private init(root: HTMLDivElement, config?: Config): { dom: Dom } {
     const dom = createElements(root);
+
+    if (typeof config?.format !== 'undefined') {
+      this.libs = { format: config.format };
+    }
 
     this.attachEventHandlers(dom);
 

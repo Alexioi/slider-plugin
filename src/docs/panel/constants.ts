@@ -10,6 +10,7 @@ const cssSelectors = {
   tip: '.js-panel__input_name-tip',
   indicator: '.js-panel__indicator',
   decoratedIndicator: 'panel__indicator_decorated',
+  format: '.js-panel__select_name-format',
 };
 
 export { cssSelectors };

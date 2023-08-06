@@ -98,6 +98,16 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
+  const format = root.querySelector<HTMLDivElementWithCustomName>(
+    cssSelectors.format,
+  );
+
+  if (!(format instanceof HTMLSelectElement)) {
+    throw Error();
+  }
+
+  format.customName = 'format';
+
   return {
     root,
     range,
@@ -110,6 +120,7 @@ const searchElements = (root: Element): Dom => {
     step,
     tip,
     indicator,
+    format,
   };
 };
 

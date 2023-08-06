@@ -25,7 +25,7 @@ class App {
     const options: Options = { ...defaultConfig };
 
     const model = new Model(options, config);
-    const view = new View(node);
+    const view = new View(node, config);
     const presenter = new Presenter(view, model);
 
     this.attachEventEmitters(presenter);

@@ -9,6 +9,7 @@ type Config = {
   from?: number;
   to?: number;
   onChange?: Function;
+  format?: (value: number) => string;
 };
 
 type Callbacks = {

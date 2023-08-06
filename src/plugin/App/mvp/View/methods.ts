@@ -1,3 +1,5 @@
+import { Config } from '@types';
+
 import { Dom, SubViews } from './type';
 import { Bar, Range, Runner, Scale, Tip } from './subViews';
 
@@ -10,8 +12,8 @@ const createElements = (root: HTMLElement): Dom => {
   return { root, slider };
 };
 
-const initSubViews = (dom: Dom): SubViews => {
-  const tip = new Tip(dom.slider);
+const initSubViews = (dom: Dom, config?: Config): SubViews => {
+  const tip = new Tip(dom.slider, config);
 
   const bar = new Bar(dom.slider);
 
