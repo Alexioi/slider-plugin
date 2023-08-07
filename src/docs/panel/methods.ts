@@ -1,10 +1,15 @@
 import { App, Options } from '@plugin';
 
-import { Dom, HTMLDivElementWithCustomName } from './type';
+import {
+  Dom,
+  HTMLInputElementWithCustomName,
+  HTMLOptionElementWithCustomName,
+  HTMLSelectElementWithCustomName,
+} from './type';
 import { cssSelectors } from './constants';
 
 const searchElements = (root: Element): Dom => {
-  const range = root.querySelector<HTMLDivElementWithCustomName>(
+  const range = root.querySelector<HTMLInputElementWithCustomName>(
     '.panel__input_name-range',
   );
 
@@ -14,7 +19,7 @@ const searchElements = (root: Element): Dom => {
 
   range.customName = 'isRange';
 
-  const vertical = root.querySelector<HTMLDivElementWithCustomName>(
+  const vertical = root.querySelector<HTMLInputElementWithCustomName>(
     cssSelectors.vertical,
   );
 
@@ -24,7 +29,7 @@ const searchElements = (root: Element): Dom => {
 
   vertical.customName = 'isVertical';
 
-  const scale = root.querySelector<HTMLDivElementWithCustomName>(
+  const scale = root.querySelector<HTMLInputElementWithCustomName>(
     cssSelectors.scale,
   );
 
@@ -34,7 +39,7 @@ const searchElements = (root: Element): Dom => {
 
   scale.customName = 'hasScale';
 
-  const min = root.querySelector<HTMLDivElementWithCustomName>(
+  const min = root.querySelector<HTMLInputElementWithCustomName>(
     cssSelectors.min,
   );
 
@@ -44,7 +49,7 @@ const searchElements = (root: Element): Dom => {
 
   min.customName = 'min';
 
-  const max = root.querySelector<HTMLDivElementWithCustomName>(
+  const max = root.querySelector<HTMLInputElementWithCustomName>(
     cssSelectors.max,
   );
 
@@ -54,7 +59,7 @@ const searchElements = (root: Element): Dom => {
 
   max.customName = 'max';
 
-  const from = root.querySelector<HTMLDivElementWithCustomName>(
+  const from = root.querySelector<HTMLInputElementWithCustomName>(
     cssSelectors.from,
   );
 
@@ -64,7 +69,9 @@ const searchElements = (root: Element): Dom => {
 
   from.customName = 'from';
 
-  const to = root.querySelector<HTMLDivElementWithCustomName>(cssSelectors.to);
+  const to = root.querySelector<HTMLInputElementWithCustomName>(
+    cssSelectors.to,
+  );
 
   if (!(to instanceof HTMLInputElement)) {
     throw Error();
@@ -72,7 +79,7 @@ const searchElements = (root: Element): Dom => {
 
   to.customName = 'to';
 
-  const step = root.querySelector<HTMLDivElementWithCustomName>(
+  const step = root.querySelector<HTMLInputElementWithCustomName>(
     cssSelectors.step,
   );
 
@@ -82,7 +89,7 @@ const searchElements = (root: Element): Dom => {
 
   step.customName = 'step';
 
-  const tip = root.querySelector<HTMLDivElementWithCustomName>(
+  const tip = root.querySelector<HTMLInputElementWithCustomName>(
     cssSelectors.tip,
   );
 
@@ -98,7 +105,7 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
-  const format = root.querySelector<HTMLDivElementWithCustomName>(
+  const format = root.querySelector<HTMLSelectElementWithCustomName>(
     cssSelectors.format,
   );
 
@@ -168,4 +175,25 @@ const attachCallback = (dom: Dom, slider: App): void => {
   });
 };
 
-export { searchElements, syncInputs, attachCallback };
+const addOptionsToFormat = ({ format }: Dom): void => {
+  const changedFormat = format;
+  const configs = [
+    { name: 'none' },
+    { name: 'before' },
+    { name: 'after' },
+    { name: 'x2' },
+    { name: 'toFixed0' },
+    { name: 'toFixed2' },
+    { name: 'toFixed4' },
+  ];
+
+  configs.forEach((el) => {
+    const option = new Option(el.name) as HTMLOptionElementWithCustomName;
+
+    option.customName = el.name;
+
+    changedFormat.options[format.options.length] = option;
+  });
+};
+
+export { searchElements, syncInputs, attachCallback, addOptionsToFormat };

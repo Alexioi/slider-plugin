@@ -1,6 +1,11 @@
 import { App, Config } from '@plugin';
 
-import { searchElements, syncInputs, attachCallback } from './methods';
+import {
+  searchElements,
+  syncInputs,
+  attachCallback,
+  addOptionsToFormat,
+} from './methods';
 import { Dom } from './type';
 import './style.scss';
 
@@ -27,10 +32,7 @@ class Panel {
 
     const dom = searchElements(root);
 
-    const newOption = new Option('text', 'value');
-    const newOption2 = new Option('text2', 'value2');
-    dom.format.options[dom.format.options.length] = newOption;
-    dom.format.options[dom.format.options.length] = newOption2;
+    addOptionsToFormat(dom);
 
     this.attachEventHandlers(dom);
     syncInputs(this.slider, dom);
@@ -105,11 +107,76 @@ class Panel {
     syncInputs(this.slider, this.dom);
   };
 
-  private handleChangeFormat() {
-    console.log('x');
+  private handleChangeFormat({ target }: Event) {
+    if (!(target instanceof HTMLSelectElement)) {
+      return;
+    }
+
+    const currentOption = target.options[target.selectedIndex];
+
+    if (!('customName' in currentOption)) {
+      return;
+    }
+
+    const { customName } = currentOption;
+
+    if (customName === 'before') {
+      this.slider.update({
+        format: (value) => {
+          return `$ ${value}`;
+        },
+      });
+      return;
+    }
+
+    if (customName === 'after') {
+      this.slider.update({
+        format: (value) => {
+          return `${value} $`;
+        },
+      });
+      return;
+    }
+
+    if (customName === 'x2') {
+      this.slider.update({
+        format: (value) => {
+          return String(value * 2);
+        },
+      });
+      return;
+    }
+
+    if (customName === 'toFixed0') {
+      this.slider.update({
+        format: (value) => {
+          return value.toFixed(0);
+        },
+      });
+      return;
+    }
+
+    if (customName === 'toFixed2') {
+      this.slider.update({
+        format: (value) => {
+          return String(Number(value.toFixed(2)));
+        },
+      });
+      return;
+    }
+
+    if (customName === 'toFixed4') {
+      this.slider.update({
+        format: (value) => {
+          return String(Number(value.toFixed(4)));
+        },
+      });
+      return;
+    }
+
     this.slider.update({
-      format: (x) => {
-        return `${x + 22} $`;
+      format: (value) => {
+        return String(value);
       },
     });
   }

@@ -87,25 +87,35 @@ const sliderOptions = slider[1].getOptions();
 // Method update changes custom event
 slider[0].update({
   onChange: () => {
-    //function body
+    // function body
+  },
+});
+
+// Method update change format tip value
+slider[0].update({
+  format: (value) => {
+    // function body
+    // must return string
+    return Strung(value * 2);
   },
 });
 ```
 
 ## Параметры слайдера
 
-| Опция      | Тип              | Начальное значение | Описание                                                        |
-| ---------- | ---------------- | ------------------ | --------------------------------------------------------------- |
-| isRange    | boolean          | true               | Тип слайдера (один бегунок \| два бегунка)                      |
-| isVertical | boolean          | false              | Вид слайдера (горизонтальный \| вертикальный)                   |
-| hasTip     | boolean          | true               | Имеет значения над бегунками                                    |
-| hasScale   | boolean          | true               | Имеет шкалу                                                     |
-| step       | number \| 'none' | 10                 | Шаг, при значении 'none' шаг отсутствует                        |
-| min        | number           | 0                  | Минимальное значение слайдер                                    |
-| max        | number           | 100                | Максимальное значение слайдера                                  |
-| from       | number           | 40                 | Стартовое значения слайдера                                     |
-| to         | number           | 70                 | Конечное значения слайдера                                      |
-| onChange   | function         | () => {}           | Вызываемая функция при любой попытке изменить значение слайдера |
+| Опция      | Тип                       | Начальное значение               | Описание                                                        |
+| ---------- | ------------------------- | -------------------------------- | --------------------------------------------------------------- |
+| isRange    | boolean                   | true                             | Тип слайдера (один бегунок \| два бегунка)                      |
+| isVertical | boolean                   | false                            | Вид слайдера (горизонтальный \| вертикальный)                   |
+| hasTip     | boolean                   | true                             | Имеет значения над бегунками                                    |
+| hasScale   | boolean                   | true                             | Имеет шкалу                                                     |
+| step       | number \| 'none'          | 10                               | Шаг, при значении 'none' шаг отсутствует                        |
+| min        | number                    | 0                                | Минимальное значение слайдер                                    |
+| max        | number                    | 100                              | Максимальное значение слайдера                                  |
+| from       | number                    | 40                               | Стартовое значения слайдера                                     |
+| to         | number                    | 70                               | Конечное значения слайдера                                      |
+| onChange   | (options: Options) => any | (options: Options) => {}         | Вызываемая функция при любой попытке изменить значение слайдера |
+| format     | (value: number) => string | (value: number) => String(value) | Форматирует значение подсказки, должно возвращать строку        |
 
 ## Архитектура
 

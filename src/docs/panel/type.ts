@@ -13,8 +13,21 @@ type Dom = {
   format: HTMLSelectElement;
 };
 
-interface HTMLDivElementWithCustomName extends HTMLDivElement {
+interface HTMLInputElementWithCustomName extends HTMLInputElement {
   customName: string;
 }
 
-export { Dom, HTMLDivElementWithCustomName };
+interface HTMLSelectElementWithCustomName extends HTMLSelectElement {
+  customName: string;
+}
+
+interface HTMLOptionElementWithCustomName extends HTMLOptionElement {
+  customName: string;
+}
+
+export {
+  Dom,
+  HTMLInputElementWithCustomName,
+  HTMLSelectElementWithCustomName,
+  HTMLOptionElementWithCustomName,
+};
