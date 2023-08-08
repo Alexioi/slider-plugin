@@ -17,7 +17,6 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
-  // range.customName = 'isRange';
   range.customName = customName.isRange;
 
   const vertical = root.querySelector<HTMLInputElementWithCustomName>(
