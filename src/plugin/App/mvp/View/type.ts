@@ -15,4 +15,8 @@ type SubViews = {
   bar: Bar;
 };
 
-export { Dom, SubViews };
+type Libs = {
+  format: (value: number) => string;
+};
+
+export { Dom, SubViews, Libs };

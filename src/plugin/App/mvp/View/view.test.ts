@@ -44,4 +44,58 @@ describe('View', () => {
 
     expect(verticalSlider.classList.contains('slider_vertical')).toBeTruthy();
   });
+
+  it('should update subviews', () => {
+    view.update({ ...defaultConfig, from: 0 });
+
+    const tip = document.querySelector<HTMLElement>('.slider__tip');
+
+    expect(tip?.innerText).toEqual('0');
+  });
+
+  it('should update target', () => {
+    view.update({ ...defaultConfig });
+
+    const runner = document.querySelector<HTMLElement>('.slider__runner');
+
+    expect(runner?.classList.contains('.slider__tip_target')).toBeFalsy();
+
+    const pointerDownEvent = new MouseEvent('pointerdown', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+
+    runner?.dispatchEvent(pointerDownEvent);
+
+    const pointerMoveEvent = new MouseEvent('pointermove', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+      clientX: 100,
+      clientY: 200,
+    });
+
+    runner?.dispatchEvent(pointerMoveEvent);
+
+    expect(runner?.style.left).toBeTruthy();
+  });
+
+  it('should update libs', () => {
+    view.updateLibs({
+      format: () => {
+        return 'hello world';
+      },
+    });
+
+    view.updateLibs();
+
+    const verticalSlider = document.querySelector('.slider_vertical');
+
+    if (verticalSlider === null) {
+      fail('slider equal null');
+    }
+
+    expect(verticalSlider.classList.contains('slider_vertical')).toBeTruthy();
+  });
 });

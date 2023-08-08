@@ -1,14 +1,7 @@
 import { Options } from '@types';
 
-const calculateRoundingNumber = (
-  number: number,
-  step: number | 'none',
-): number => {
+const calculateRoundingNumber = (number: number, step: number): number => {
   const [, symbolsAfterComma] = String(step).split('.');
-
-  if (step === 'none') {
-    return number;
-  }
 
   if (typeof symbolsAfterComma === 'undefined') {
     return Number(number.toFixed(0));
@@ -174,13 +167,6 @@ const getNearValueType = (
 
   const diffFrom = Math.abs(from - newValue);
   const diffTo = Math.abs(to - newValue);
-
-  if (diffFrom === diffTo) {
-    if (from > newValue) {
-      return 'from';
-    }
-    return 'to';
-  }
 
   if (diffFrom < diffTo) {
     return 'from';

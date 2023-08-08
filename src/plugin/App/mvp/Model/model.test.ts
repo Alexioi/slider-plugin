@@ -247,6 +247,7 @@ describe('Model', () => {
         to: 66.667,
         step: 3.333,
       };
+
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateNearValueUsingFraction({ x: 0.66, y: -0.66 }, true);
@@ -566,6 +567,58 @@ describe('Model', () => {
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateNearValueUsingFraction({ x: 1.1, y: 0 }, false);
+    })();
+
+    (() => {
+      const model = new Model({
+        ...options,
+      });
+      const value: Options = {
+        ...options,
+        to: 60,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.64, y: 0.66 }, true);
+    })();
+
+    (() => {
+      const model = new Model({
+        ...options,
+      });
+      const value: Options = {
+        ...options,
+        to: 80,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.76, y: 0.74 }, true);
+    })();
+
+    (() => {
+      const model = new Model({
+        ...options,
+      });
+      const value: Options = {
+        ...options,
+        from: 10,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.11, y: 0.66 }, true);
+    })();
+
+    (() => {
+      const model = new Model({
+        ...options,
+      });
+      const value: Options = {
+        ...options,
+        to: 90,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.89, y: 0.74 }, true);
     })();
   });
 });

@@ -1,7 +1,7 @@
 import { EventEmitter, Callback } from '@helpers/EventEmitter';
 import { Config, EventTypes, Options } from '@types';
 
-import { Dom, SubViews } from './type';
+import { Dom, Libs, SubViews } from './type';
 import {
   calculateTarget,
   initSubViews,
@@ -17,19 +17,16 @@ class View extends EventEmitter<EventTypes> {
 
   private props: { target: 'from' | 'to' } = { target: 'from' };
 
-  private libs = {
-    format: (value: number): string => {
-      return String(value);
-    },
-  };
+  private libs: Libs;
 
   constructor(root: HTMLElement, config?: Config) {
     super();
 
-    const { dom, subViews } = this.init(root, config);
+    const { dom, subViews, libs } = this.init(root, config);
 
     this.dom = dom;
     this.subViews = subViews;
+    this.libs = libs;
   }
 
   public updateLibs(config?: Config) {
@@ -70,18 +67,23 @@ class View extends EventEmitter<EventTypes> {
   private init(
     root: HTMLElement,
     config?: Config,
-  ): { dom: Dom; subViews: SubViews } {
+  ): { dom: Dom; subViews: SubViews; libs: Libs } {
     const dom = createElements(root);
 
     const subViews = initSubViews(dom);
 
     this.subscribeToRunnerAndTip(subViews);
 
-    if (typeof config?.format !== 'undefined') {
-      this.libs = { format: config.format };
-    }
+    const libs =
+      typeof config?.format !== 'undefined'
+        ? { format: config.format }
+        : {
+            format: (value: number): string => {
+              return String(value);
+            },
+          };
 
-    return { dom, subViews };
+    return { dom, subViews, libs };
   }
 
   private subscribeToRunnerAndTip({

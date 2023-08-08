@@ -7,6 +7,7 @@ import { cssSelectors } from './constants';
 
 describe('Scale', () => {
   const div = document.createElement('div');
+  div.style.height = '100%';
   document.body.append(div);
 
   const scale = new Scale(div);
@@ -36,5 +37,21 @@ describe('Scale', () => {
     });
 
     markNode.dispatchEvent(pointerDownEvent);
+  });
+
+  it('should update by windows resize', () => {
+    scale.render({ min: 0, max: 100, isVertical: true, hasScale: true });
+
+    Object.defineProperty(window, 'innerHeight', {
+      writable: true,
+      configurable: true,
+      value: 1500,
+    });
+
+    window.dispatchEvent(new Event('resize'));
+
+    const marks = document.querySelectorAll('.slider__mark');
+
+    expect(marks.length).toEqual(2);
   });
 });
