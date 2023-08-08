@@ -13,7 +13,7 @@ describe('Runner', () => {
   const runnerTo = new Runner(div, 'to');
 
   it('should not display from if slider not range', () => {
-    runnerFrom.render(false);
+    runnerFrom.render({ isRange: false, isVertical: false, min: 0, max: 100 });
 
     const runner = document.querySelector(`.${cssSelectors.runner}`);
 
@@ -21,7 +21,7 @@ describe('Runner', () => {
   });
 
   it('should update runner styles', () => {
-    runnerTo.render(false);
+    runnerTo.render({ isRange: false, isVertical: false, min: 0, max: 100 });
 
     const runnerToNode = document.querySelector(`.${cssSelectors.runner}`);
 
@@ -32,6 +32,7 @@ describe('Runner', () => {
     runnerTo.update(
       { min: -100, max: 100, from: -50, to: 50, isVertical: false },
       'to',
+      { from: '-50', to: '50' },
     );
     expect(runnerToNode.style.left).toEqual('75%');
     expect(
@@ -41,6 +42,7 @@ describe('Runner', () => {
     runnerTo.update(
       { min: -100, max: 100, from: -50, to: 50, isVertical: false },
       'from',
+      { from: '-50', to: '50' },
     );
     expect(
       runnerToNode.classList.contains(cssSelectors.targetedRunner),
@@ -49,6 +51,7 @@ describe('Runner', () => {
     runnerTo.update(
       { min: -100, max: 100, from: -50, to: 50, isVertical: true },
       'from',
+      { from: '-50', to: '50' },
     );
     expect(runnerToNode.style.top).toEqual('75%');
   });

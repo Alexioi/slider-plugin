@@ -4,6 +4,7 @@ import { helpers } from '@helpers';
 
 import { Dom, Props, UpdateOptions } from './type';
 import {
+  changeAria,
   createElements,
   destroy,
   initProps,
@@ -29,18 +30,34 @@ class Runner extends EventEmitter<EventTypes> {
     this.props = props;
   }
 
-  public render(isRange: boolean): void {
+  public render({
+    isRange,
+    isVertical,
+    min,
+    max,
+  }: {
+    isRange: boolean;
+    isVertical: boolean;
+    min: number;
+    max: number;
+  }): void {
     if (this.props.type === 'from' && !isRange) {
       destroy(this.dom);
       return;
     }
 
+    changeAria(this.dom, isVertical, min, max);
+
     this.dom.root.append(this.dom.runner);
   }
 
-  public update(options: UpdateOptions, target: 'from' | 'to') {
+  public update(
+    options: UpdateOptions,
+    target: 'from' | 'to',
+    ariaValueText: { from: string; to: string },
+  ) {
     toggleTarget(this.props, this.dom, target);
-    move(this.dom, this.props, options);
+    move(this.dom, this.props, options, ariaValueText);
   }
 
   private init(

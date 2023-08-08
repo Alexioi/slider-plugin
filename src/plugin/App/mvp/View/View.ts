@@ -17,6 +17,12 @@ class View extends EventEmitter<EventTypes> {
 
   private props: { target: 'from' | 'to' } = { target: 'from' };
 
+  private libs = {
+    format: (value: number): string => {
+      return String(value);
+    },
+  };
+
   constructor(root: HTMLElement, config?: Config) {
     super();
 
@@ -27,20 +33,22 @@ class View extends EventEmitter<EventTypes> {
   }
 
   public updateLibs(config?: Config) {
-    this.subViews.tip.updateLibs(config);
+    if (typeof config?.format === 'undefined') {
+      return;
+    }
+
+    this.libs = { format: config.format };
   }
 
   public render(options: Options): void {
-    const { isVertical, isRange } = options;
-
     this.props = calculateTarget(options);
 
-    toggleVertical(this.dom, isVertical);
+    toggleVertical(this.dom, options.isVertical);
 
     this.subViews.bar.render();
     this.subViews.tip.render(options);
-    this.subViews.runnerFrom.render(isRange);
-    this.subViews.runnerTo.render(isRange);
+    this.subViews.runnerFrom.render(options);
+    this.subViews.runnerTo.render(options);
     this.subViews.range.render();
     this.subViews.scale.render(options);
 
@@ -65,9 +73,13 @@ class View extends EventEmitter<EventTypes> {
   ): { dom: Dom; subViews: SubViews } {
     const dom = createElements(root);
 
-    const subViews = initSubViews(dom, config);
+    const subViews = initSubViews(dom);
 
     this.subscribeToRunnerAndTip(subViews);
+
+    if (typeof config?.format !== 'undefined') {
+      this.libs = { format: config.format };
+    }
 
     return { dom, subViews };
   }
@@ -96,10 +108,14 @@ class View extends EventEmitter<EventTypes> {
   }
 
   private updateSubViews(options: Options): View {
-    this.subViews.tip.update(options);
+    const from = this.libs.format(options.from);
+    const to = this.libs.format(options.to);
+    const ariaValueText = { from, to };
+
+    this.subViews.tip.update(options, ariaValueText);
     this.subViews.range.update(options);
-    this.subViews.runnerFrom.update(options, this.props.target);
-    this.subViews.runnerTo.update(options, this.props.target);
+    this.subViews.runnerFrom.update(options, this.props.target, ariaValueText);
+    this.subViews.runnerTo.update(options, this.props.target, ariaValueText);
 
     return this;
   }

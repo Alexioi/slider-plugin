@@ -86,14 +86,10 @@ const destroy = ({ tipLine }: Dom) => {
 const changeText = (
   { from, to, isRange }: { from: number; to: number; isRange: boolean },
   { tipFrom, tipTo, tipBoth }: Dom,
-  {
-    format,
-  }: {
-    format: (value: number) => string;
-  },
+  values: { from: string; to: string },
 ) => {
   const changedTipTo = tipTo;
-  changedTipTo.innerText = format(to);
+  changedTipTo.innerText = values.to;
 
   if (!isRange) {
     return;
@@ -101,9 +97,9 @@ const changeText = (
 
   const changedTipFrom = tipFrom;
   const changedTipBoth = tipBoth;
-  const bothText = from === to ? format(to) : `${format(from)} - ${format(to)}`;
+  const bothText = from === to ? values.to : `${values.from} - ${values.to}`;
 
-  changedTipFrom.innerText = format(from);
+  changedTipFrom.innerText = values.from;
   changedTipBoth.innerText = bothText;
 };
 
