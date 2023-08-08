@@ -32,7 +32,7 @@ const deleteMarks = ({ scale }: Dom): void => {
   }
 };
 
-const getScaleParameters = (
+const calculateScaleParameters = (
   { max, min, isVertical }: Props,
   { scale }: Dom,
 ): MarkParameters[] => {
@@ -96,7 +96,7 @@ const destroy = ({ scale }: Dom): void => {
 const update = (dom: Dom, props: Props) => {
   deleteMarks(dom);
 
-  const scaleParameters = getScaleParameters(props, dom);
+  const scaleParameters = calculateScaleParameters(props, dom);
 
   draw(dom, props, scaleParameters);
 };

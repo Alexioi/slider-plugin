@@ -8,6 +8,7 @@ import {
 } from './methods';
 import { Dom } from './type';
 import './style.scss';
+import { formatName } from './constants';
 
 class Panel {
   private dom: Dom;
@@ -120,7 +121,7 @@ class Panel {
 
     const { customName } = currentOption;
 
-    if (customName === 'before') {
+    if (customName === formatName.before) {
       this.slider.update({
         format: (value) => {
           return `$ ${value}`;
@@ -129,7 +130,7 @@ class Panel {
       return;
     }
 
-    if (customName === 'after') {
+    if (customName === formatName.after) {
       this.slider.update({
         format: (value) => {
           return `${value} $`;
@@ -138,7 +139,7 @@ class Panel {
       return;
     }
 
-    if (customName === 'x2') {
+    if (customName === formatName.x2) {
       this.slider.update({
         format: (value) => {
           return String(value * 2);
@@ -147,7 +148,7 @@ class Panel {
       return;
     }
 
-    if (customName === 'toFixed0') {
+    if (customName === formatName.toFixed0) {
       this.slider.update({
         format: (value) => {
           return value.toFixed(0);
@@ -156,7 +157,7 @@ class Panel {
       return;
     }
 
-    if (customName === 'toFixed2') {
+    if (customName === formatName.toFixed2) {
       this.slider.update({
         format: (value) => {
           return String(Number(value.toFixed(2)));
@@ -165,7 +166,7 @@ class Panel {
       return;
     }
 
-    if (customName === 'toFixed4') {
+    if (customName === formatName.toFixed4) {
       this.slider.update({
         format: (value) => {
           return String(Number(value.toFixed(4)));

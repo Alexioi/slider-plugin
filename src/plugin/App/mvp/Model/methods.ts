@@ -175,7 +175,7 @@ const getNearValueType = (
   return 'to';
 };
 
-const getNewValueUsingFraction = (
+const calculateNewValueUsingFraction = (
   { x, y }: { x: number; y: number },
   { min, max, isVertical }: { min: number; max: number; isVertical: boolean },
 ): number => {
@@ -212,7 +212,7 @@ const calculateValue = (
   isCheckSensitive: boolean,
   type?: 'from' | 'to',
 ): Options => {
-  const newValue = getNewValueUsingFraction(position, options);
+  const newValue = calculateNewValueUsingFraction(position, options);
 
   if (typeof type !== 'undefined') {
     return {
