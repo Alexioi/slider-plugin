@@ -8,8 +8,9 @@ mixin panel()
         - 
           const inputClass = 'panel__input'
           const inputNameClass = `panel__input_name-${item.name}`
+          const inputTypeClass = `panel__input_type-${item.type}`
           const jsInputNameClass = `js-panel__input_name-${item.name}`
-          const inputClasses = [inputClass, inputNameClass, jsInputNameClass]
+          const inputClasses = [inputClass, inputNameClass, inputTypeClass, jsInputNameClass]
           const selectClass = 'panel__select'
           const selectNameClass = `panel__select_name-${item.name}`
           const jsSelectNameClass = `js-panel__select_name-${item.name}`

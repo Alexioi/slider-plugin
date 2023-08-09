@@ -22,8 +22,18 @@
     word-break: break-word;
   }
 
+  &__select {
+    cursor: pointer;
+  }
+
   &__input {
     max-width: 90px;
+
+    &_type {
+      &-checkbox {
+        cursor: pointer;
+      }
+    }
   }
 
   &__indicator-area {
