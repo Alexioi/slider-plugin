@@ -2,102 +2,65 @@ import { App, Options } from '@plugin';
 
 import {
   Dom,
-  HTMLInputElementWithCustomName,
   HTMLOptionElementWithCustomName,
   HTMLSelectElementWithCustomName,
 } from './type';
 import { cssSelectors, customName, formatOptions } from './constants';
 
 const searchElements = (root: Element): Dom => {
-  const range = root.querySelector<HTMLInputElementWithCustomName>(
-    '.panel__input_name-range',
-  );
+  const range = root.querySelector('.panel__input_name-range');
 
   if (!(range instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  range.customName = customName.isRange;
-
-  const vertical = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.vertical,
-  );
+  const vertical = root.querySelector(cssSelectors.vertical);
 
   if (!(vertical instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  vertical.customName = customName.isVertical;
-
-  const scale = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.scale,
-  );
+  const scale = root.querySelector(cssSelectors.scale);
 
   if (!(scale instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  scale.customName = customName.hasScale;
-
-  const min = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.min,
-  );
+  const min = root.querySelector(cssSelectors.min);
 
   if (!(min instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  min.customName = customName.min;
-
-  const max = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.max,
-  );
+  const max = root.querySelector(cssSelectors.max);
 
   if (!(max instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  max.customName = customName.max;
-
-  const from = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.from,
-  );
+  const from = root.querySelector(cssSelectors.from);
 
   if (!(from instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  from.customName = customName.from;
-
-  const to = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.to,
-  );
+  const to = root.querySelector(cssSelectors.to);
 
   if (!(to instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  to.customName = customName.to;
-
-  const step = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.step,
-  );
+  const step = root.querySelector(cssSelectors.step);
 
   if (!(step instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  step.customName = customName.step;
-
-  const tip = root.querySelector<HTMLInputElementWithCustomName>(
-    cssSelectors.tip,
-  );
+  const tip = root.querySelector(cssSelectors.tip);
 
   if (!(tip instanceof HTMLInputElement)) {
     throw Error();
   }
-
-  tip.customName = customName.hasTip;
 
   const indicator = root.querySelector(cssSelectors.indicator);
 

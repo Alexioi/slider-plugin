@@ -15,10 +15,21 @@ import './style.scss';
 class Tip extends EventEmitter<EventTypes> {
   private dom: Dom;
 
+  private handlePointerdownFromTip: ({ target }: Event) => void;
+
+  private handlePointerdownBothTip: ({ target }: Event) => void;
+
+  private handlePointerdownToTip: ({ target }: Event) => void;
+
   constructor(root: HTMLDivElement) {
     super();
 
-    this.handlePointerdownTip = this.handlePointerdownTip.bind(this);
+    this.handlePointerdownFromTip =
+      this.makeHandlePointerdownTip('from').bind(this);
+    this.handlePointerdownBothTip =
+      this.makeHandlePointerdownTip('both').bind(this);
+    this.handlePointerdownToTip =
+      this.makeHandlePointerdownTip('to').bind(this);
 
     const { dom } = this.init(root);
 
@@ -64,56 +75,54 @@ class Tip extends EventEmitter<EventTypes> {
   }
 
   private attachEventHandlers({ tipFrom, tipTo, tipBoth }: Dom): Tip {
-    tipFrom.addEventListener('pointerdown', this.handlePointerdownTip);
-    tipTo.addEventListener('pointerdown', this.handlePointerdownTip);
-    tipBoth.addEventListener('pointerdown', this.handlePointerdownTip);
+    tipFrom.addEventListener('pointerdown', this.handlePointerdownFromTip);
+    tipBoth.addEventListener('pointerdown', this.handlePointerdownBothTip);
+    tipTo.addEventListener('pointerdown', this.handlePointerdownToTip);
 
     return this;
   }
 
-  private handlePointerdownTip({ target }: Event): void {
-    if (target === null) {
-      return;
-    }
-
-    if (!('customType' in target)) {
-      return;
-    }
-
-    const { customType } = target;
-
-    const handlePointerMove = (pointerEvent: PointerEvent): void => {
-      pointerEvent.preventDefault();
-
-      const node = pointerEvent.target;
-
-      if (!(node instanceof HTMLElement)) {
+  private makeHandlePointerdownTip(
+    type: 'from' | 'both' | 'to',
+  ): ({ target }: Event) => void {
+    return ({ target }: Event) => {
+      if (target === null) {
         return;
       }
 
-      node.ondragstart = () => {
-        return false;
+      const handlePointerMove = (pointerEvent: PointerEvent): void => {
+        pointerEvent.preventDefault();
+
+        const node = pointerEvent.target;
+
+        if (!(node instanceof HTMLElement)) {
+          return;
+        }
+
+        node.ondragstart = () => {
+          return false;
+        };
+
+        const position = helpers.getPosition(this.dom.root, pointerEvent);
+
+        if (type === 'both') {
+          this.emit('ChangeNearRunnerPosition', { position });
+          return;
+        }
+
+        if (type === 'from' || type === 'to') {
+          this.emit('ChangeRunnerPosition', { position, type });
+        }
       };
 
-      const position = helpers.getPosition(this.dom.root, pointerEvent);
+      const handlePointerUp = (): void => {
+        document.removeEventListener('pointermove', handlePointerMove);
+        document.removeEventListener('pointerup', handlePointerUp);
+      };
 
-      if (customType === 'both') {
-        this.emit('ChangeNearRunnerPosition', { position });
-        return;
-      }
-
-      if (customType === 'from' || customType === 'to') {
-        this.emit('ChangeRunnerPosition', { position, type: customType });
-      }
+      document.addEventListener('pointermove', handlePointerMove);
+      document.addEventListener('pointerup', handlePointerUp);
     };
-
-    const handlePointerUp = (): void => {
-      document.removeEventListener('pointermove', handlePointerMove);
-      document.removeEventListener('pointerup', handlePointerUp);
-    };
-
-    document.addEventListener('pointermove', handlePointerMove);
-    document.addEventListener('pointerup', handlePointerUp);
   }
 }
 

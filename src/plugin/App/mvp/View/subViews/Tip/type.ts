@@ -15,8 +15,4 @@ type UpdateOptions = {
   isRange: boolean;
 };
 
-interface HTMLDivElementWithCustomType extends HTMLDivElement {
-  customType: 'from' | 'to' | 'both';
-}
-
-export { Dom, UpdateOptions, HTMLDivElementWithCustomType };
+export { Dom, UpdateOptions };

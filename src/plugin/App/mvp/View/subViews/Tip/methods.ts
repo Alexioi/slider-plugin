@@ -1,23 +1,13 @@
 import { helpers } from '@helpers';
 
-import { Dom, HTMLDivElementWithCustomType, UpdateOptions } from './type';
+import { Dom, UpdateOptions } from './type';
 import { cssSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement): Dom => {
   const tipLine = helpers.createElement(cssSelectors.tipLine);
-  const tipFrom = helpers.createElement(
-    cssSelectors.tip,
-  ) as HTMLDivElementWithCustomType;
-  const tipBoth = helpers.createElement(
-    cssSelectors.tip,
-  ) as HTMLDivElementWithCustomType;
-  const tipTo = helpers.createElement(
-    cssSelectors.tip,
-  ) as HTMLDivElementWithCustomType;
-
-  tipFrom.customType = 'from';
-  tipBoth.customType = 'both';
-  tipTo.customType = 'to';
+  const tipFrom = helpers.createElement(cssSelectors.tip);
+  const tipBoth = helpers.createElement(cssSelectors.tip);
+  const tipTo = helpers.createElement(cssSelectors.tip);
 
   return { root, tipLine, tipFrom, tipBoth, tipTo };
 };
