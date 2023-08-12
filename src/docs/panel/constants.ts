@@ -33,7 +33,7 @@ const formatName = {
   toFixed4: 'toFixed4',
 };
 
-const customName = {
+const name = {
   isRange: 'isRange',
   isVertical: 'isVertical',
   hasScale: 'hasScale',
@@ -47,4 +47,4 @@ const customName = {
   format: 'format',
 };
 
-export { cssSelectors, formatOptions, formatName, customName };
+export { cssSelectors, formatOptions, formatName, name };

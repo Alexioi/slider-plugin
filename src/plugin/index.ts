@@ -3,7 +3,7 @@ import { Config, Options } from './types';
 
 declare global {
   interface JQuery {
-    slider: (config?: Config) => JQuery<App>;
+    slider: (config?: Partial<Config>) => JQuery<App>;
   }
 }
 

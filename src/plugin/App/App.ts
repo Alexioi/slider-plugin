@@ -1,31 +1,31 @@
-import { Config, Callbacks, Options } from '@types';
+import { Config, Options } from '@types';
 
 import { Model, View, Presenter } from './mvp';
-import { defaultConfig } from './sliderOptions';
+import { defaultOptions } from './sliderOptions';
 
 class App {
-  private callbacks: Callbacks = { onChange: () => {} };
+  private callbacks: any = { onChange: () => {} };
 
   private presenter: Presenter;
 
-  constructor(root: HTMLElement, config?: Config) {
+  constructor(root: HTMLElement, config?: Partial<Config>) {
     this.presenter = this.init(root, config);
   }
 
-  public update(config?: Config): void {
+  public update(config?: Partial<Config>): void {
     this.updateCallbacks(config);
     this.presenter.updateOptions(config);
   }
 
-  public getOptions(): Options | undefined {
+  public getOptions(): Options {
     return this.presenter.getOptions();
   }
 
-  private init(node: HTMLElement, config?: Config): Presenter {
-    const options: Options = { ...defaultConfig };
+  private init(node: HTMLElement, config?: Partial<Config>): Presenter {
+    const options: Options = { ...defaultOptions };
 
     const model = new Model(options, config);
-    const view = new View(node, config);
+    const view = new View(node);
     const presenter = new Presenter(view, model);
 
     this.attachEventEmitters(presenter);
@@ -40,7 +40,7 @@ class App {
     });
   }
 
-  private updateCallbacks(config?: Config) {
+  private updateCallbacks(config?: Partial<Config>) {
     if (typeof config === 'undefined') {
       return;
     }

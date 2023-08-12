@@ -8,7 +8,7 @@ import {
 } from './methods';
 import { Dom } from './type';
 import './style.scss';
-import { customName, formatName } from './constants';
+import { name, formatName } from './constants';
 
 class Panel {
   private dom: Dom;
@@ -33,36 +33,34 @@ class Panel {
 
   private handleChangeStep: ({ target }: Event) => void;
 
-  constructor(root: Element, slider: App, config: Config) {
+  constructor(root: Element, slider: App, config?: Partial<Config>) {
     this.slider = slider;
 
     this.handleClickRange = this.makeHandleClickCheckboxElement(
-      customName.isRange,
+      name.isRange,
     ).bind(this);
     this.handleClickVertical = this.makeHandleClickCheckboxElement(
-      customName.isVertical,
+      name.isVertical,
     ).bind(this);
-    this.handleClickTip = this.makeHandleClickCheckboxElement(
-      customName.hasTip,
-    ).bind(this);
-    this.handleClickScale = this.makeHandleClickCheckboxElement(
-      customName.hasScale,
-    ).bind(this);
-    this.handleChangeMin = this.makeHandleChangeInputElement(
-      customName.min,
-    ).bind(this);
-    this.handleChangeMax = this.makeHandleChangeInputElement(
-      customName.max,
-    ).bind(this);
-    this.handleChangeFrom = this.makeHandleChangeInputElement(
-      customName.from,
-    ).bind(this);
-    this.handleChangeTo = this.makeHandleChangeInputElement(customName.to).bind(
+    this.handleClickTip = this.makeHandleClickCheckboxElement(name.hasTip).bind(
       this,
     );
-    this.handleChangeStep = this.makeHandleChangeInputElement(
-      customName.step,
+    this.handleClickScale = this.makeHandleClickCheckboxElement(
+      name.hasScale,
     ).bind(this);
+    this.handleChangeMin = this.makeHandleChangeInputElement(name.min).bind(
+      this,
+    );
+    this.handleChangeMax = this.makeHandleChangeInputElement(name.max).bind(
+      this,
+    );
+    this.handleChangeFrom = this.makeHandleChangeInputElement(name.from).bind(
+      this,
+    );
+    this.handleChangeTo = this.makeHandleChangeInputElement(name.to).bind(this);
+    this.handleChangeStep = this.makeHandleChangeInputElement(name.step).bind(
+      this,
+    );
     this.handleChangeFormat = this.handleChangeFormat.bind(this);
 
     const { dom } = this.init(root, config);
@@ -70,7 +68,7 @@ class Panel {
     this.dom = dom;
   }
 
-  private init(root: Element, config: Config) {
+  private init(root: Element, config?: Partial<Config>) {
     this.slider.update(config);
 
     const dom = searchElements(root);
@@ -104,7 +102,7 @@ class Panel {
   }
 
   private makeHandleClickCheckboxElement(
-    name: string,
+    inputName: string,
   ): ({ target }: Event) => void {
     return ({ target }: Event) => {
       if (!(target instanceof HTMLInputElement)) {
@@ -113,14 +111,14 @@ class Panel {
 
       const value = target.checked;
 
-      this.slider.update({ [name]: value });
+      this.slider.update({ [inputName]: value });
 
       syncInputs(this.slider, this.dom);
     };
   }
 
   private makeHandleChangeInputElement(
-    name: string,
+    inputName: string,
   ): ({ target }: Event) => void {
     return ({ target }: Event) => {
       if (!(target instanceof HTMLInputElement)) {
@@ -129,10 +127,10 @@ class Panel {
 
       const value = Number(target.value);
 
-      if (name === 'step' && value === 0) {
+      if (inputName === 'step' && value === 0) {
         this.slider.update({ step: 'none' });
       } else {
-        this.slider.update({ [name]: value });
+        this.slider.update({ [inputName]: value });
       }
 
       syncInputs(this.slider, this.dom);

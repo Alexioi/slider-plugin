@@ -17,13 +17,13 @@ import {
 class Model extends EventEmitter<EventTypes> {
   private options: Options;
 
-  constructor(options: Options, config?: Config) {
+  constructor(options: Options, config?: Partial<Config>) {
     super();
 
     this.options = validate(options, config);
   }
 
-  public updateOptions(config?: Config): void {
+  public updateOptions(config?: Partial<Config>): void {
     this.options = validate(this.options, config);
 
     this.emit('UpdateModelOptions', this.options);

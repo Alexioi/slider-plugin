@@ -3,7 +3,7 @@
  */
 
 import { View } from '.';
-import { defaultConfig } from '../../sliderOptions';
+import { defaultOptions } from '../../sliderOptions';
 
 describe('View', () => {
   const div = document.createElement('div');
@@ -13,7 +13,7 @@ describe('View', () => {
 
   it('should render', () => {
     view.render({
-      ...defaultConfig,
+      ...defaultOptions,
       hasScale: true,
       hasTip: true,
     });
@@ -32,7 +32,7 @@ describe('View', () => {
 
   it('should render vertical', () => {
     view.render({
-      ...defaultConfig,
+      ...defaultOptions,
       isVertical: true,
     });
 
@@ -46,7 +46,7 @@ describe('View', () => {
   });
 
   it('should update subviews', () => {
-    view.update({ ...defaultConfig, from: 0 });
+    view.update({ ...defaultOptions, from: 0 });
 
     const tip = document.querySelector<HTMLElement>('.slider__tip');
 
@@ -54,7 +54,7 @@ describe('View', () => {
   });
 
   it('should update target', () => {
-    view.update({ ...defaultConfig });
+    view.update({ ...defaultOptions });
 
     const runner = document.querySelector<HTMLElement>('.slider__runner');
 
@@ -79,23 +79,5 @@ describe('View', () => {
     runner?.dispatchEvent(pointerMoveEvent);
 
     expect(runner?.style.left).toBeTruthy();
-  });
-
-  it('should update libs', () => {
-    view.updateLibs({
-      format: () => {
-        return 'hello world';
-      },
-    });
-
-    view.updateLibs();
-
-    const verticalSlider = document.querySelector('.slider_vertical');
-
-    if (verticalSlider === null) {
-      fail('slider equal null');
-    }
-
-    expect(verticalSlider.classList.contains('slider_vertical')).toBeTruthy();
   });
 });

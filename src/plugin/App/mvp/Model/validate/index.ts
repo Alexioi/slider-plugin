@@ -101,7 +101,10 @@ const verifyStep = (
   return distanceBetweenMinAndMax;
 };
 
-const validate = (oldOptions: Options, newOptions?: Config): Options => {
+const validate = (
+  oldOptions: Options,
+  newOptions?: Partial<Config>,
+): Options => {
   const isRange =
     typeof newOptions?.isRange === 'boolean'
       ? newOptions.isRange
@@ -121,8 +124,23 @@ const validate = (oldOptions: Options, newOptions?: Config): Options => {
   const { min, max } = verifyMinAndMax(oldOptions, newOptions);
   const { from, to } = verifyFromAndTo(oldOptions, min, max, newOptions);
   const step = verifyStep(oldOptions, min, max, newOptions);
+  const format =
+    typeof newOptions?.format !== 'undefined'
+      ? newOptions.format
+      : oldOptions.format;
 
-  return { from, to, min, max, step, isRange, isVertical, hasScale, hasTip };
+  return {
+    from,
+    to,
+    min,
+    max,
+    step,
+    isRange,
+    isVertical,
+    hasScale,
+    hasTip,
+    format,
+  };
 };
 
 export { validate };

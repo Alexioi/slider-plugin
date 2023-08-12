@@ -1,4 +1,4 @@
-const defaultConfig = {
+const defaultOptions = {
   isRange: true,
   isVertical: false,
   hasTip: true,
@@ -8,6 +8,9 @@ const defaultConfig = {
   max: 100,
   from: 40,
   to: 70,
+  format: (value: number): string => {
+    return String(value);
+  },
 };
 
-export { defaultConfig };
+export { defaultOptions };

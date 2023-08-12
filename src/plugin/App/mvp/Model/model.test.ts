@@ -13,6 +13,9 @@ describe('Model', () => {
     max: 100,
     from: 40,
     to: 70,
+    format: () => {
+      return 'Hello World';
+    },
   };
 
   const makeTestUpdateModelValues = (value: Options) => {

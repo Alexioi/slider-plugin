@@ -1,21 +1,3 @@
-type Config = {
-  isRange?: boolean;
-  isVertical?: boolean;
-  hasTip?: boolean;
-  hasScale?: boolean;
-  step?: number | 'none';
-  min?: number;
-  max?: number;
-  from?: number;
-  to?: number;
-  onChange?: Function;
-  format?: (value: number) => string;
-};
-
-type Callbacks = {
-  onChange: Function;
-};
-
 type Options = {
   isRange: boolean;
   isVertical: boolean;
@@ -26,6 +8,11 @@ type Options = {
   max: number;
   from: number;
   to: number;
+  format: (value: number) => string;
+};
+
+type Config = Options & {
+  onChange: (options: Options) => void;
 };
 
 type TouchRoute = 'up' | 'down';
@@ -64,7 +51,6 @@ type EventTypes = {
 export {
   EventTypes,
   Config,
-  Callbacks,
   Options,
   ElementPosition,
   MarkParameters,

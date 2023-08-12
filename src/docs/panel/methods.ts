@@ -5,7 +5,7 @@ import {
   HTMLOptionElementWithCustomName,
   HTMLSelectElementWithCustomName,
 } from './type';
-import { cssSelectors, customName, formatOptions } from './constants';
+import { cssSelectors, name, formatOptions } from './constants';
 
 const searchElements = (root: Element): Dom => {
   const range = root.querySelector('.panel__input_name-range');
@@ -76,7 +76,7 @@ const searchElements = (root: Element): Dom => {
     throw Error();
   }
 
-  format.customName = customName.format;
+  format.customName = name.format;
 
   return {
     root,

@@ -1,7 +1,7 @@
 import { EventEmitter, Callback } from '@helpers/EventEmitter';
-import { Config, EventTypes, Options } from '@types';
+import { EventTypes, Options } from '@types';
 
-import { Dom, Libs, SubViews } from './type';
+import { Dom, SubViews } from './type';
 import {
   calculateTarget,
   initSubViews,
@@ -17,24 +17,13 @@ class View extends EventEmitter<EventTypes> {
 
   private props: { target: 'from' | 'to' } = { target: 'from' };
 
-  private libs: Libs;
-
-  constructor(root: HTMLElement, config?: Config) {
+  constructor(root: HTMLElement) {
     super();
 
-    const { dom, subViews, libs } = this.init(root, config);
+    const { dom, subViews } = this.init(root);
 
     this.dom = dom;
     this.subViews = subViews;
-    this.libs = libs;
-  }
-
-  public updateLibs(config?: Config) {
-    if (typeof config?.format === 'undefined') {
-      return;
-    }
-
-    this.libs = { format: config.format };
   }
 
   public render(options: Options): void {
@@ -64,26 +53,14 @@ class View extends EventEmitter<EventTypes> {
     this.subViews[subName].subscribe(eventName, callback);
   }
 
-  private init(
-    root: HTMLElement,
-    config?: Config,
-  ): { dom: Dom; subViews: SubViews; libs: Libs } {
+  private init(root: HTMLElement): { dom: Dom; subViews: SubViews } {
     const dom = createElements(root);
 
     const subViews = initSubViews(dom);
 
     this.subscribeToRunnerAndTip(subViews);
 
-    const libs =
-      typeof config?.format !== 'undefined'
-        ? { format: config.format }
-        : {
-            format: (value: number): string => {
-              return String(value);
-            },
-          };
-
-    return { dom, subViews, libs };
+    return { dom, subViews };
   }
 
   private subscribeToRunnerAndTip({
@@ -110,8 +87,8 @@ class View extends EventEmitter<EventTypes> {
   }
 
   private updateSubViews(options: Options): View {
-    const from = this.libs.format(options.from);
-    const to = this.libs.format(options.to);
+    const from = options.format(options.from);
+    const to = options.format(options.to);
     const ariaValueText = { from, to };
 
     this.subViews.tip.update(options, ariaValueText);
