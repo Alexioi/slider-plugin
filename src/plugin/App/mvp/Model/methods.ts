@@ -22,11 +22,11 @@ const getMinimumAndMaximum = (
     isRange,
   }: { from: number; to: number; min: number; max: number; isRange: boolean },
   valueIndex: 'to' | 'from',
-): number[] => {
+): { minimum: number; maximum: number } => {
   const minimum = valueIndex === 'from' || !isRange ? min : from;
   const maximum = valueIndex === 'from' ? to : max;
 
-  return [minimum, maximum];
+  return { minimum, maximum };
 };
 
 const checkSensitiveStepForStep = (
@@ -101,7 +101,7 @@ const changeValueDependingOnStep = (
   valueIndex: 'from' | 'to',
   isCheckSensitive: boolean,
 ): number => {
-  const [minimum, maximum] = getMinimumAndMaximum(
+  const { minimum, maximum } = getMinimumAndMaximum(
     {
       from,
       to,
@@ -193,7 +193,7 @@ const updateOptionsByStep = (
     options.step === 'none' ? (options.max - options.min) / 10 : options.step;
   const newValue =
     touchRoute === 'up' ? options[type] + step : options[type] - step;
-  const [minimum, maximum] = getMinimumAndMaximum(options, type);
+  const { minimum, maximum } = getMinimumAndMaximum(options, type);
 
   if (newValue < minimum) {
     return { ...options, [type]: minimum };
