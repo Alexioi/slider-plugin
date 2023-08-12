@@ -58,8 +58,8 @@ const draw = (
   { isVertical }: Props,
   parameters: MarkParameters[],
 ): void => {
-  let markLength = 0;
   const changeScale = scale;
+  let markLength = 0;
 
   parameters.forEach((el, i) => {
     const { percent, value } = el;
