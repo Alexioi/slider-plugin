@@ -27,9 +27,9 @@ const getScalePercents = (sliderLength: number): number[] => {
 };
 
 const deleteMarks = ({ scale }: Dom): void => {
-  while (scale.firstChild !== null) {
-    scale.firstChild.remove();
-  }
+  const peelableScale = scale;
+
+  peelableScale.innerHTML = '';
 };
 
 const calculateScaleParameters = (
