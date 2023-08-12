@@ -1,23 +1,14 @@
-import { EventEmitter } from '@helpers/EventEmitter';
-import {
-  Config,
-  ElementPosition,
-  Options,
-  ElementTouch,
-  EventTypes,
-} from '@types';
+import { Config, ElementPosition, Options, ElementTouch } from '@types';
 
 import { View } from '../View';
 import { Model } from '../Model';
 
-class Presenter extends EventEmitter<EventTypes> {
+class Presenter {
   private view: View;
 
   private model: Model;
 
   constructor(view: View, model: Model) {
-    super();
-
     this.view = view;
     this.model = model;
 
@@ -126,12 +117,10 @@ class Presenter extends EventEmitter<EventTypes> {
   private attachEventEmittersToView(): Presenter {
     const notifyViewUpdateModelOptions = (options: Options): void => {
       this.view.render(options);
-      this.emit('onChange', options);
     };
 
     const notifyViewUpdateModelValues = (options: Options): void => {
       this.view.update(options);
-      this.emit('onChange', options);
     };
 
     this.model.subscribe('UpdateModelOptions', notifyViewUpdateModelOptions);
