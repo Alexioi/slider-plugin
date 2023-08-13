@@ -168,6 +168,14 @@ const getNearValueType = (
   const diffFrom = Math.abs(from - newValue);
   const diffTo = Math.abs(to - newValue);
 
+  if (diffFrom === diffTo) {
+    if (newValue > from) {
+      return 'to';
+    }
+
+    return 'from';
+  }
+
   if (diffFrom < diffTo) {
     return 'from';
   }

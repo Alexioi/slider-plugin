@@ -24,6 +24,161 @@ describe('Model', () => {
     };
   };
 
+  it('should return options', () => {
+    const model = new Model(options);
+
+    const {
+      isRange,
+      isVertical,
+      hasTip,
+      hasScale,
+      step,
+      min,
+      max,
+      from,
+      to,
+      format,
+    } = model.getConfig();
+
+    expect({
+      isRange,
+      isVertical,
+      hasTip,
+      hasScale,
+      step,
+      min,
+      max,
+      from,
+      to,
+      format,
+    }).toEqual(options);
+  });
+
+  it('should update', () => {
+    (() => {
+      const model = new Model(options);
+      const value = {
+        ...options,
+        min: 100,
+        max: 100,
+      };
+
+      model.updateConfig(value);
+
+      const {
+        isRange,
+        isVertical,
+        hasTip,
+        hasScale,
+        step,
+        min,
+        max,
+        from,
+        to,
+        format,
+      } = model.getConfig();
+
+      expect({
+        isRange,
+        isVertical,
+        hasTip,
+        hasScale,
+        step,
+        min,
+        max,
+        from,
+        to,
+        format,
+      }).toEqual({
+        ...value,
+        from: 100,
+        to: 100,
+        max: 101,
+        step: 1,
+      });
+    })();
+
+    (() => {
+      const model = new Model(options);
+      const value = {
+        ...options,
+        to: 200,
+        max: 100,
+      };
+
+      model.updateConfig(value);
+
+      const {
+        isRange,
+        isVertical,
+        hasTip,
+        hasScale,
+        step,
+        min,
+        max,
+        from,
+        to,
+        format,
+      } = model.getConfig();
+
+      expect({
+        isRange,
+        isVertical,
+        hasTip,
+        hasScale,
+        step,
+        min,
+        max,
+        from,
+        to,
+        format,
+      }).toEqual({
+        ...value,
+        to: 100,
+        max: 100,
+      });
+    })();
+
+    (() => {
+      const model = new Model(options);
+      const value = {
+        ...options,
+        step: -1,
+      };
+
+      model.updateConfig(value);
+
+      const {
+        isRange,
+        isVertical,
+        hasTip,
+        hasScale,
+        step,
+        min,
+        max,
+        from,
+        to,
+        format,
+      } = model.getConfig();
+
+      expect({
+        isRange,
+        isVertical,
+        hasTip,
+        hasScale,
+        step,
+        min,
+        max,
+        from,
+        to,
+        format,
+      }).toEqual({
+        ...value,
+        step: 'none',
+      });
+    })();
+  });
+
   it('should calculate value using fraction and emit options', () => {
     (() => {
       const model = new Model(options);
@@ -147,6 +302,40 @@ describe('Model', () => {
       model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
 
       model.calculateNearValueUsingFraction({ x: -0.2, y: 1.01 }, true);
+    })();
+
+    (() => {
+      const model = new Model({
+        ...options,
+        from: 100,
+        to: 100,
+      });
+
+      const value = {
+        ...options,
+        from: 90,
+        to: 100,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.9, y: 0.9 }, true);
+    })();
+
+    (() => {
+      const model = new Model({
+        ...options,
+        from: 0,
+        to: 0,
+      });
+
+      const value = {
+        ...options,
+        from: 0,
+        to: 90,
+      };
+      model.subscribe('UpdateModelValues', makeTestUpdateModelValues(value));
+
+      model.calculateNearValueUsingFraction({ x: 0.9, y: 0.9 }, true);
     })();
 
     (() => {
