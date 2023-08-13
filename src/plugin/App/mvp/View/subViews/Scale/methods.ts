@@ -99,6 +99,8 @@ const update = (dom: Dom, props: Props) => {
   const scaleParameters = calculateScaleParameters(props, dom);
 
   draw(dom, props, scaleParameters);
+
+  dom.root.append(dom.scale);
 };
 
 export { createElement, getScalePercents, destroy, update };
