@@ -48,67 +48,21 @@ class Presenter {
     }: {
       position: { x: number; y: number };
     }) => {
-      this.model.calculateNearValueUsingFraction(position, false);
-    };
-
-    const notifyModelAboutBarClick = ({
-      position,
-    }: {
-      position: { x: number; y: number };
-    }) => {
       this.model.calculateNearValueUsingFraction(position, true);
     };
 
-    this.view.subscribeSubViewToEvents(
-      'scale',
-      'ClickScale',
-      notifyModelClickedScale,
-    );
-    this.view.subscribeSubViewToEvents(
-      'runnerFrom',
+    this.view.subscribe('ClickScale', notifyModelClickedScale);
+    this.view.subscribe(
       'ChangeRunnerPosition',
       notifyModelAboutChangeRunnerPosition,
     );
-    this.view.subscribeSubViewToEvents(
-      'runnerTo',
-      'ChangeRunnerPosition',
-      notifyModelAboutChangeRunnerPosition,
-    );
-    this.view.subscribeSubViewToEvents(
-      'runnerFrom',
+    this.view.subscribe(
       'ChangeRunnerPositionByStep',
       notifyModelAboutTouchValue,
     );
-    this.view.subscribeSubViewToEvents(
-      'runnerTo',
-      'ChangeRunnerPositionByStep',
-      notifyModelAboutTouchValue,
-    );
-    this.view.subscribeSubViewToEvents(
-      'runnerFrom',
+    this.view.subscribe(
       'ChangeNearRunnerPosition',
       notifyModelAboutChangeNearRunnerPosition,
-    );
-    this.view.subscribeSubViewToEvents(
-      'runnerTo',
-      'ChangeNearRunnerPosition',
-      notifyModelAboutChangeNearRunnerPosition,
-    );
-    this.view.subscribeSubViewToEvents(
-      'tip',
-      'ChangeNearRunnerPosition',
-      notifyModelAboutChangeNearRunnerPosition,
-    );
-    this.view.subscribeSubViewToEvents(
-      'tip',
-      'ChangeRunnerPosition',
-      notifyModelAboutChangeRunnerPosition,
-    );
-
-    this.view.subscribeSubViewToEvents(
-      'bar',
-      'ChangeNearRunnerPosition',
-      notifyModelAboutBarClick,
     );
 
     return this;
