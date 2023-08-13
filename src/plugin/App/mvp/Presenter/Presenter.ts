@@ -15,12 +15,12 @@ class Presenter {
     this.attachEventEmittersToModel().attachEventEmittersToView();
   }
 
-  public updateOptions(config?: Partial<Config>): void {
-    this.model.updateOptions(config);
+  public updateConfig(config?: Partial<Config>): void {
+    this.model.updateConfig(config);
   }
 
-  public getOptions(): Options {
-    return this.model.getOptions();
+  public getConfig(): Config {
+    return this.model.getConfig();
   }
 
   private attachEventEmittersToModel(): Presenter {

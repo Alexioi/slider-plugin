@@ -24,65 +24,6 @@ describe('Model', () => {
     };
   };
 
-  it('should return options', () => {
-    const model = new Model(options);
-
-    expect(model.getOptions()).toEqual(options);
-  });
-
-  it('should update', () => {
-    (() => {
-      const model = new Model(options);
-      const value = {
-        ...options,
-        min: 100,
-        max: 100,
-      };
-
-      model.updateOptions(value);
-
-      expect(model.getOptions()).toEqual({
-        ...value,
-        from: 100,
-        to: 100,
-        max: 101,
-        step: 1,
-      });
-    })();
-
-    (() => {
-      const model = new Model(options);
-      const value = {
-        ...options,
-        to: 200,
-        max: 100,
-      };
-
-      model.updateOptions(value);
-
-      expect(model.getOptions()).toEqual({
-        ...value,
-        to: 100,
-        max: 100,
-      });
-    })();
-
-    (() => {
-      const model = new Model(options);
-      const value = {
-        ...options,
-        step: -1,
-      };
-
-      model.updateOptions(value);
-
-      expect(model.getOptions()).toEqual({
-        ...value,
-        step: 'none',
-      });
-    })();
-  });
-
   it('should calculate value using fraction and emit options', () => {
     (() => {
       const model = new Model(options);

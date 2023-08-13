@@ -15,8 +15,6 @@ type Config = Options & {
   onChange: (options: Options) => void;
 };
 
-type Callbacks = Pick<Config, 'onChange'>;
-
 type TouchRoute = 'up' | 'down';
 
 type ElementPosition = {
@@ -54,7 +52,6 @@ export {
   EventTypes,
   Config,
   Options,
-  Callbacks,
   ElementPosition,
   MarkParameters,
   ElementTouch,

@@ -97,7 +97,7 @@ const searchElements = (root: Element): Dom => {
 const syncInputs = (slider: App, dom: Dom): void => {
   const changedDom = dom;
 
-  const option = slider.getOptions();
+  const option = slider.getConfig();
   if (typeof option === 'undefined') {
     return;
   }

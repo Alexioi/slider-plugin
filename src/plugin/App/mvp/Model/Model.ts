@@ -5,7 +5,6 @@ import {
   ElementPosition,
   ElementTouch,
   EventTypes,
-  Callbacks,
 } from '@types';
 
 import { validate } from './validate';
@@ -18,31 +17,33 @@ import {
 class Model extends EventEmitter<EventTypes> {
   private options: Options;
 
-  private callbacks: Callbacks = { onChange: () => {} };
+  private callbacks: Pick<Config, 'onChange'> = { onChange: () => {} };
 
   constructor(options: Options, config?: Partial<Config>) {
     super();
 
-    if (typeof config?.onChange !== 'undefined') {
-      this.callbacks = { onChange: config.onChange };
-    }
+    const { newOptions, callbacks } = validate(options, this.callbacks, config);
 
-    this.options = validate(options, config);
+    this.options = newOptions;
+    this.callbacks = callbacks;
   }
 
-  public updateOptions(config?: Partial<Config>): void {
-    this.options = validate(this.options, config);
+  public updateConfig(config?: Partial<Config>): void {
+    const { newOptions, callbacks } = validate(
+      this.options,
+      this.callbacks,
+      config,
+    );
 
-    if (typeof config?.onChange !== 'undefined') {
-      this.callbacks = { onChange: config.onChange };
-    }
+    this.options = newOptions;
+    this.callbacks = callbacks;
 
     this.callbacks.onChange(this.options);
     this.emit('UpdateModelOptions', this.options);
   }
 
-  public getOptions(): Options {
-    return this.options;
+  public getConfig(): Config {
+    return { ...this.options, ...this.callbacks };
   }
 
   public calculateValueUsingFraction(

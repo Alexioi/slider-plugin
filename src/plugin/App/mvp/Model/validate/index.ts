@@ -103,8 +103,9 @@ const verifyStep = (
 
 const validate = (
   oldOptions: Options,
+  callbacks: Pick<Config, 'onChange'>,
   newOptions?: Partial<Config>,
-): Options => {
+): { newOptions: Options; callbacks: Pick<Config, 'onChange'> } => {
   const isRange =
     typeof newOptions?.isRange === 'boolean'
       ? newOptions.isRange
@@ -129,17 +130,25 @@ const validate = (
       ? newOptions.format
       : oldOptions.format;
 
+  const onChange =
+    typeof newOptions?.onChange !== 'undefined'
+      ? newOptions.onChange
+      : callbacks.onChange;
+
   return {
-    from,
-    to,
-    min,
-    max,
-    step,
-    isRange,
-    isVertical,
-    hasScale,
-    hasTip,
-    format,
+    newOptions: {
+      from,
+      to,
+      min,
+      max,
+      step,
+      isRange,
+      isVertical,
+      hasScale,
+      hasTip,
+      format,
+    },
+    callbacks: { onChange },
   };
 };
 

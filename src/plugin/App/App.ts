@@ -21,11 +21,11 @@ class App {
   }
 
   public update(config?: Partial<Config>): void {
-    this.presenter.updateOptions(config);
+    this.presenter.updateConfig(config);
   }
 
-  public getOptions(): Options {
-    return this.presenter.getOptions();
+  public getConfig(): Config {
+    return this.presenter.getConfig();
   }
 }
 

@@ -21,8 +21,22 @@ interface HTMLOptionElementWithCustomName extends HTMLOptionElement {
   customName: string;
 }
 
+type Handles = {
+  rangeClick: ({ target }: Event) => void;
+  verticalClick: ({ target }: Event) => void;
+  tipClick: ({ target }: Event) => void;
+  scaleClick: ({ target }: Event) => void;
+  minChange: ({ target }: Event) => void;
+  maxChange: ({ target }: Event) => void;
+  fromChange: ({ target }: Event) => void;
+  toChange: ({ target }: Event) => void;
+  stepChange: ({ target }: Event) => void;
+  formatChange: ({ target }: Event) => void;
+};
+
 export {
   Dom,
   HTMLSelectElementWithCustomName,
   HTMLOptionElementWithCustomName,
+  Handles,
 };
