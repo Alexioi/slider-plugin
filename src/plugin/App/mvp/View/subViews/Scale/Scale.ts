@@ -17,7 +17,7 @@ class Scale extends EventEmitter<EventTypes> {
   constructor(root: HTMLDivElement) {
     super();
 
-    this.handlePointerdownScale = this.handlePointerdownScale.bind(this);
+    this.handleScalePointerdown = this.handleScalePointerdown.bind(this);
     this.handleWindowsResize = this.handleWindowsResize.bind(this);
 
     const { dom } = this.init(root);
@@ -47,13 +47,13 @@ class Scale extends EventEmitter<EventTypes> {
   }
 
   private attachEventHandlers({ scale }: Dom): Scale {
-    scale.addEventListener('pointerdown', this.handlePointerdownScale);
+    scale.addEventListener('pointerdown', this.handleScalePointerdown);
     window.addEventListener('resize', this.handleWindowsResize);
 
     return this;
   }
 
-  private handlePointerdownScale({ target }: PointerEvent): void {
+  private handleScalePointerdown({ target }: PointerEvent): void {
     if (!(target instanceof HTMLDivElement)) {
       return;
     }

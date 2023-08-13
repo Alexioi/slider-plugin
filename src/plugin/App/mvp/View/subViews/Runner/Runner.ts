@@ -21,8 +21,8 @@ class Runner extends EventEmitter<EventTypes> {
   constructor(root: HTMLDivElement, type: 'from' | 'to') {
     super();
 
-    this.handlePointerdownRunner = this.handlePointerdownRunner.bind(this);
-    this.handleKeydownRunner = this.handleKeydownRunner.bind(this);
+    this.handleRunnerPointerdown = this.handleRunnerPointerdown.bind(this);
+    this.handleRunnerKeydown = this.handleRunnerKeydown.bind(this);
 
     const { dom, props } = this.init(root, type);
 
@@ -73,11 +73,11 @@ class Runner extends EventEmitter<EventTypes> {
   }
 
   private attachEventHandlers(dom: Dom) {
-    dom.runner.addEventListener('pointerdown', this.handlePointerdownRunner);
-    dom.runner.addEventListener('keydown', this.handleKeydownRunner);
+    dom.runner.addEventListener('pointerdown', this.handleRunnerPointerdown);
+    dom.runner.addEventListener('keydown', this.handleRunnerKeydown);
   }
 
-  private handlePointerdownRunner(): void {
+  private handleRunnerPointerdown(): void {
     const handlePointerMove = (pointerEvent: PointerEvent): void => {
       pointerEvent.preventDefault();
 
@@ -99,10 +99,10 @@ class Runner extends EventEmitter<EventTypes> {
     document.addEventListener('pointerup', handlePointerUp);
   }
 
-  private handleKeydownRunner(keyboardEvent: KeyboardEvent): void {
+  private handleRunnerKeydown(keyboardEvent: KeyboardEvent): void {
     const { code } = keyboardEvent;
 
-    const handleClickArrow = (touchRoute: TouchRoute): void => {
+    const handleArrowClick = (touchRoute: TouchRoute): void => {
       keyboardEvent.preventDefault();
       const { type } = this.props;
 
@@ -110,11 +110,11 @@ class Runner extends EventEmitter<EventTypes> {
     };
 
     if (code === 'ArrowDown' || code === 'ArrowRight') {
-      handleClickArrow('up');
+      handleArrowClick('up');
     }
 
     if (code === 'ArrowUp' || code === 'ArrowLeft') {
-      handleClickArrow('down');
+      handleArrowClick('down');
     }
   }
 }

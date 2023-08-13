@@ -15,20 +15,20 @@ import './style.scss';
 class Tip extends EventEmitter<EventTypes> {
   private dom: Dom;
 
-  private handlePointerdownFromTip: ({ target }: Event) => void;
+  private handleFromTipPointerdown: ({ target }: Event) => void;
 
-  private handlePointerdownBothTip: ({ target }: Event) => void;
+  private handleBothTipPointerdown: ({ target }: Event) => void;
 
-  private handlePointerdownToTip: ({ target }: Event) => void;
+  private handleToTipPointerdown: ({ target }: Event) => void;
 
   constructor(root: HTMLDivElement) {
     super();
 
-    this.handlePointerdownFromTip =
+    this.handleFromTipPointerdown =
       this.makeHandlePointerdownTip('from').bind(this);
-    this.handlePointerdownBothTip =
+    this.handleBothTipPointerdown =
       this.makeHandlePointerdownTip('both').bind(this);
-    this.handlePointerdownToTip =
+    this.handleToTipPointerdown =
       this.makeHandlePointerdownTip('to').bind(this);
 
     const { dom } = this.init(root);
@@ -75,9 +75,9 @@ class Tip extends EventEmitter<EventTypes> {
   }
 
   private attachEventHandlers({ tipFrom, tipTo, tipBoth }: Dom): Tip {
-    tipFrom.addEventListener('pointerdown', this.handlePointerdownFromTip);
-    tipBoth.addEventListener('pointerdown', this.handlePointerdownBothTip);
-    tipTo.addEventListener('pointerdown', this.handlePointerdownToTip);
+    tipFrom.addEventListener('pointerdown', this.handleFromTipPointerdown);
+    tipBoth.addEventListener('pointerdown', this.handleBothTipPointerdown);
+    tipTo.addEventListener('pointerdown', this.handleToTipPointerdown);
 
     return this;
   }

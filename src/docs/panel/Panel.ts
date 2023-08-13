@@ -15,53 +15,53 @@ class Panel {
 
   private slider: App;
 
-  private handleClickRange: ({ target }: Event) => void;
+  private handleRangeClick: ({ target }: Event) => void;
 
-  private handleClickVertical: ({ target }: Event) => void;
+  private handleVerticalClick: ({ target }: Event) => void;
 
-  private handleClickTip: ({ target }: Event) => void;
+  private handleTipClick: ({ target }: Event) => void;
 
-  private handleClickScale: ({ target }: Event) => void;
+  private handleScaleClick: ({ target }: Event) => void;
 
-  private handleChangeMin: ({ target }: Event) => void;
+  private handleMinChange: ({ target }: Event) => void;
 
-  private handleChangeMax: ({ target }: Event) => void;
+  private handleMaxChange: ({ target }: Event) => void;
 
-  private handleChangeFrom: ({ target }: Event) => void;
+  private handleFromChange: ({ target }: Event) => void;
 
-  private handleChangeTo: ({ target }: Event) => void;
+  private handleToChange: ({ target }: Event) => void;
 
-  private handleChangeStep: ({ target }: Event) => void;
+  private handleStepChange: ({ target }: Event) => void;
 
   constructor(root: Element, slider: App, config?: Partial<Config>) {
     this.slider = slider;
 
-    this.handleClickRange = this.makeHandleClickCheckboxElement(
+    this.handleRangeClick = this.makeHandleClickCheckboxElement(
       name.isRange,
     ).bind(this);
-    this.handleClickVertical = this.makeHandleClickCheckboxElement(
+    this.handleVerticalClick = this.makeHandleClickCheckboxElement(
       name.isVertical,
     ).bind(this);
-    this.handleClickTip = this.makeHandleClickCheckboxElement(name.hasTip).bind(
+    this.handleTipClick = this.makeHandleClickCheckboxElement(name.hasTip).bind(
       this,
     );
-    this.handleClickScale = this.makeHandleClickCheckboxElement(
+    this.handleScaleClick = this.makeHandleClickCheckboxElement(
       name.hasScale,
     ).bind(this);
-    this.handleChangeMin = this.makeHandleChangeInputElement(name.min).bind(
+    this.handleMinChange = this.makeHandleChangeInputElement(name.min).bind(
       this,
     );
-    this.handleChangeMax = this.makeHandleChangeInputElement(name.max).bind(
+    this.handleMaxChange = this.makeHandleChangeInputElement(name.max).bind(
       this,
     );
-    this.handleChangeFrom = this.makeHandleChangeInputElement(name.from).bind(
+    this.handleFromChange = this.makeHandleChangeInputElement(name.from).bind(
       this,
     );
-    this.handleChangeTo = this.makeHandleChangeInputElement(name.to).bind(this);
-    this.handleChangeStep = this.makeHandleChangeInputElement(name.step).bind(
+    this.handleToChange = this.makeHandleChangeInputElement(name.to).bind(this);
+    this.handleStepChange = this.makeHandleChangeInputElement(name.step).bind(
       this,
     );
-    this.handleChangeFormat = this.handleChangeFormat.bind(this);
+    this.handleFormatChange = this.handleFormatChange.bind(this);
 
     const { dom } = this.init(root, config);
 
@@ -86,17 +86,16 @@ class Panel {
     const { range, vertical, scale, min, max, from, to, step, tip, format } =
       dom;
 
-    range.addEventListener('click', this.handleClickRange);
-    vertical.addEventListener('click', this.handleClickVertical);
-    tip.addEventListener('click', this.handleClickTip);
-    scale.addEventListener('click', this.handleClickScale);
-    min.addEventListener('change', this.handleChangeMin);
-    max.addEventListener('change', this.handleChangeMax);
-    from.addEventListener('change', this.handleChangeFrom);
-    to.addEventListener('change', this.handleChangeTo);
-    step.addEventListener('change', this.handleChangeStep);
-
-    format.addEventListener('change', this.handleChangeFormat);
+    range.addEventListener('click', this.handleRangeClick);
+    vertical.addEventListener('click', this.handleVerticalClick);
+    tip.addEventListener('click', this.handleTipClick);
+    scale.addEventListener('click', this.handleScaleClick);
+    min.addEventListener('change', this.handleMinChange);
+    max.addEventListener('change', this.handleMaxChange);
+    from.addEventListener('change', this.handleFromChange);
+    to.addEventListener('change', this.handleToChange);
+    step.addEventListener('change', this.handleStepChange);
+    format.addEventListener('change', this.handleFormatChange);
 
     return this;
   }
@@ -137,7 +136,7 @@ class Panel {
     };
   }
 
-  private handleChangeFormat({ target }: Event) {
+  private handleFormatChange({ target }: Event) {
     if (!(target instanceof HTMLSelectElement)) {
       return;
     }

@@ -12,7 +12,7 @@ class Bar extends EventEmitter<EventTypes> {
   constructor(root: HTMLElement) {
     super();
 
-    this.handlePointerdownRunner = this.handlePointerdownRunner.bind(this);
+    this.handleRunnerPointerdown = this.handleRunnerPointerdown.bind(this);
 
     const { dom } = this.init(root);
 
@@ -36,10 +36,10 @@ class Bar extends EventEmitter<EventTypes> {
   }
 
   private attachEventHandlers(dom: Dom): void {
-    dom.bar.addEventListener('pointerdown', this.handlePointerdownRunner);
+    dom.bar.addEventListener('pointerdown', this.handleRunnerPointerdown);
   }
 
-  private handlePointerdownRunner(pointerEvent: PointerEvent): void {
+  private handleRunnerPointerdown(pointerEvent: PointerEvent): void {
     pointerEvent.preventDefault();
 
     const position = helpers.getPosition(this.dom.bar, pointerEvent);
