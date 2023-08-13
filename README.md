@@ -81,8 +81,8 @@ const slider = $('#root').slider();
 // Method update changes option min to -900
 slider[0].update({ min: -900 });
 
-// Method getOptions returns all slider options
-const sliderOptions = slider[1].getOptions();
+// Method getOptions returns slider config
+const sliderOptions = slider[1].getConfig();
 
 // Method update changes custom event
 slider[0].update({
