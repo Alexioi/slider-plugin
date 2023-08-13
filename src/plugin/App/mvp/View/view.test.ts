@@ -2,8 +2,13 @@
  * @jest-environment jsdom
  */
 
-import { View } from '.';
+import { CSSSelectors as tipCSSSelectors } from './subViews/Tip/constants';
+import { CSSSelectors as runnerCSSSelectors } from './subViews/Runner/constants';
+import { CSSSelectors as rangeCSSSelectors } from './subViews/Range/constants';
+import { CSSSelectors as scaleSSSelectors } from './subViews/Scale/constants';
 import { defaultOptions } from '../../sliderOptions';
+import { CSSSelectors } from './constants';
+import { View } from './View';
 
 describe('View', () => {
   const div = document.createElement('div');
@@ -18,16 +23,18 @@ describe('View', () => {
       hasTip: true,
     });
 
-    const slider = document.querySelector('.slider');
+    const slider = document.querySelector(`.${CSSSelectors.slider}`);
 
     if (slider === null) {
       fail('slider equal null');
     }
 
-    expect(slider.querySelector('.slider__tip-line')).not.toBeNull();
-    expect(slider.querySelector('.slider__runner')).not.toBeNull();
-    expect(slider.querySelector('.slider__range')).not.toBeNull();
-    expect(slider.querySelector('.slider__scale')).not.toBeNull();
+    expect(slider.querySelector(`.${tipCSSSelectors.tipLine}`)).not.toBeNull();
+    expect(
+      slider.querySelector(`.${runnerCSSSelectors.runner}`),
+    ).not.toBeNull();
+    expect(slider.querySelector(`.${rangeCSSSelectors.range}`)).not.toBeNull();
+    expect(slider.querySelector(`.${scaleSSSelectors.scale}`)).not.toBeNull();
   });
 
   it('should render vertical', () => {
@@ -36,19 +43,23 @@ describe('View', () => {
       isVertical: true,
     });
 
-    const verticalSlider = document.querySelector('.slider_vertical');
+    const verticalSlider = document.querySelector(
+      `.${CSSSelectors.sliderVertical}`,
+    );
 
     if (verticalSlider === null) {
       fail('slider equal null');
     }
 
-    expect(verticalSlider.classList.contains('slider_vertical')).toBeTruthy();
+    expect(
+      verticalSlider.classList.contains(CSSSelectors.sliderVertical),
+    ).toBeTruthy();
   });
 
   it('should update subviews', () => {
     view.update({ ...defaultOptions, from: 0 });
 
-    const tip = document.querySelector<HTMLElement>('.slider__tip');
+    const tip = document.querySelector<HTMLElement>(`.${tipCSSSelectors.tip}`);
 
     expect(tip?.innerText).toEqual('0');
   });
@@ -56,9 +67,13 @@ describe('View', () => {
   it('should update target', () => {
     view.update({ ...defaultOptions });
 
-    const runner = document.querySelector<HTMLElement>('.slider__runner');
+    const runner = document.querySelector<HTMLElement>(
+      `.${runnerCSSSelectors.runner}`,
+    );
 
-    expect(runner?.classList.contains('.slider__tip_target')).toBeFalsy();
+    expect(
+      runner?.classList.contains(`.${runnerCSSSelectors.targetedRunner}`),
+    ).toBeFalsy();
 
     const pointerDownEvent = new MouseEvent('pointerdown', {
       bubbles: true,

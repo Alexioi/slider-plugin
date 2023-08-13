@@ -1,13 +1,13 @@
 import { helpers } from '@helpers';
 
 import { Dom, UpdateOptions } from './type';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement): Dom => {
-  const tipLine = helpers.createElement(cssSelectors.tipLine);
-  const tipFrom = helpers.createElement(cssSelectors.tip);
-  const tipBoth = helpers.createElement(cssSelectors.tip);
-  const tipTo = helpers.createElement(cssSelectors.tip);
+  const tipLine = helpers.createElement(CSSSelectors.tipLine);
+  const tipFrom = helpers.createElement(CSSSelectors.tip);
+  const tipBoth = helpers.createElement(CSSSelectors.tip);
+  const tipTo = helpers.createElement(CSSSelectors.tip);
 
   return { root, tipLine, tipFrom, tipBoth, tipTo };
 };
@@ -17,7 +17,7 @@ const toggleDisplay = (
   { tipFrom, tipTo, tipBoth }: Dom,
 ): void => {
   if (!isRange) {
-    tipTo.classList.remove(cssSelectors.hiddenTip);
+    tipTo.classList.remove(CSSSelectors.hiddenTip);
     return;
   }
 
@@ -28,15 +28,15 @@ const toggleDisplay = (
     : x + width >= positionTipTo.x;
 
   if (isTipFromOverlapsTipTo) {
-    tipFrom.classList.add(cssSelectors.hiddenTip);
-    tipBoth.classList.remove(cssSelectors.hiddenTip);
-    tipTo.classList.add(cssSelectors.hiddenTip);
+    tipFrom.classList.add(CSSSelectors.hiddenTip);
+    tipBoth.classList.remove(CSSSelectors.hiddenTip);
+    tipTo.classList.add(CSSSelectors.hiddenTip);
     return;
   }
 
-  tipFrom.classList.remove(cssSelectors.hiddenTip);
-  tipBoth.classList.add(cssSelectors.hiddenTip);
-  tipTo.classList.remove(cssSelectors.hiddenTip);
+  tipFrom.classList.remove(CSSSelectors.hiddenTip);
+  tipBoth.classList.add(CSSSelectors.hiddenTip);
+  tipTo.classList.remove(CSSSelectors.hiddenTip);
 };
 
 const changePosition = (

@@ -1,4 +1,4 @@
-const cssSelectors = {
+const CSSSelectors = {
   range: '.js-panel__input_name-range',
   vertical: '.js-panel__input_name-vertical',
   scale: '.js-panel__input_name-scale',
@@ -47,4 +47,4 @@ const name = {
   format: 'format',
 };
 
-export { cssSelectors, formatOptions, formatName, name };
+export { CSSSelectors, formatOptions, formatName, name };

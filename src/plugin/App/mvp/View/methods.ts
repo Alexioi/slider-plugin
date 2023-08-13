@@ -1,9 +1,10 @@
 import { Dom, SubViews } from './type';
 import { Bar, Range, Runner, Scale, Tip } from './subViews';
+import { CSSSelectors } from './constants';
 
 const createElements = (root: HTMLElement): Dom => {
   const slider = document.createElement('div');
-  slider.classList.add('slider');
+  slider.classList.add(CSSSelectors.slider);
 
   root.append(slider);
 
@@ -47,11 +48,11 @@ const calculateTarget = ({
 
 const toggleVertical = ({ slider }: Dom, isVertical: boolean) => {
   if (isVertical) {
-    slider.classList.add('slider_vertical');
+    slider.classList.add(CSSSelectors.sliderVertical);
     return;
   }
 
-  slider.classList.remove('slider_vertical');
+  slider.classList.remove(CSSSelectors.sliderVertical);
 };
 
 export { initSubViews, createElements, calculateTarget, toggleVertical };

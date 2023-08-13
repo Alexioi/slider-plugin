@@ -45,7 +45,7 @@ class View extends EventEmitter<EventTypes> {
     this.updateSubViews(options);
   }
 
-  public subscribeSubCViewToEvents<K extends keyof EventTypes>(
+  public subscribeSubViewToEvents<K extends keyof EventTypes>(
     subName: 'tip' | 'runnerTo' | 'runnerFrom' | 'scale' | 'bar',
     eventName: K,
     callback: Callback<EventTypes, K>,

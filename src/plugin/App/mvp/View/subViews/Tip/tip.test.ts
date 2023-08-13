@@ -3,7 +3,7 @@
  */
 
 import { Tip } from '.';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 describe('Tip', () => {
   const div = document.createElement('div');
@@ -14,7 +14,7 @@ describe('Tip', () => {
   it('should not display tip if hasTip is false', () => {
     tip.render({ hasTip: false, isRange: true });
 
-    const tipLine = document.querySelector(`.${cssSelectors.tipLine}`);
+    const tipLine = document.querySelector(`.${CSSSelectors.tipLine}`);
 
     expect(tipLine).toBeNull();
   });
@@ -22,8 +22,8 @@ describe('Tip', () => {
   it('should update tip styles when isRange is false', () => {
     tip.render({ hasTip: true, isRange: false });
 
-    const tipLine = document.querySelector(`.${cssSelectors.tipLine}`);
-    const tipNode = tipLine?.querySelector(`.${cssSelectors.tip}`);
+    const tipLine = document.querySelector(`.${CSSSelectors.tipLine}`);
+    const tipNode = tipLine?.querySelector(`.${CSSSelectors.tip}`);
 
     if (!(tipNode instanceof HTMLDivElement)) {
       fail('tipNode is not HTMLDivElement');
@@ -72,8 +72,8 @@ describe('Tip', () => {
   it('should update tip styles when isRange is true', () => {
     tip.render({ hasTip: true, isRange: true });
 
-    const tipLine = document.querySelector(`.${cssSelectors.tipLine}`);
-    const tipNodeList = tipLine?.querySelectorAll(`.${cssSelectors.tip}`);
+    const tipLine = document.querySelector(`.${CSSSelectors.tipLine}`);
+    const tipNodeList = tipLine?.querySelectorAll(`.${CSSSelectors.tip}`);
 
     if (typeof tipNodeList === 'undefined') {
       fail('tipNodeList equal undefined');
@@ -117,16 +117,16 @@ describe('Tip', () => {
       },
       { from: '-50', to: '50' },
     );
-    expect(tipFrom.classList.contains(cssSelectors.hiddenTip)).toBeTruthy();
-    expect(tipBoth.classList.contains(cssSelectors.hiddenTip)).toBeFalsy();
-    expect(tipTo.classList.contains(cssSelectors.hiddenTip)).toBeTruthy();
+    expect(tipFrom.classList.contains(CSSSelectors.hiddenTip)).toBeTruthy();
+    expect(tipBoth.classList.contains(CSSSelectors.hiddenTip)).toBeFalsy();
+    expect(tipTo.classList.contains(CSSSelectors.hiddenTip)).toBeTruthy();
   });
 
   it('should handle pointerdown runner', () => {
     tip.render({ hasTip: true, isRange: true });
 
-    const tipLine = document.querySelector(`.${cssSelectors.tipLine}`);
-    const tipNodeList = tipLine?.querySelectorAll(`.${cssSelectors.tip}`);
+    const tipLine = document.querySelector(`.${CSSSelectors.tipLine}`);
+    const tipNodeList = tipLine?.querySelectorAll(`.${CSSSelectors.tip}`);
 
     if (typeof tipNodeList === 'undefined') {
       fail('tipNodeList equal undefined');

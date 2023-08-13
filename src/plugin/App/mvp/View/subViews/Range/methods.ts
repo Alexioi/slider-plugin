@@ -1,10 +1,10 @@
 import { helpers } from '@helpers';
 
 import { UpdateOptions } from './type';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement) => {
-  const range = helpers.createElement(cssSelectors.range);
+  const range = helpers.createElement(CSSSelectors.range);
 
   return { root, range };
 };

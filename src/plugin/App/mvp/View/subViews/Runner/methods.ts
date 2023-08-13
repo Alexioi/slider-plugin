@@ -1,10 +1,10 @@
 import { helpers } from '@helpers';
 
 import { Dom, Props, UpdateOptions } from './type';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 const createElements = (root: HTMLDivElement): Dom => {
-  const runner = helpers.createElement(cssSelectors.runner);
+  const runner = helpers.createElement(CSSSelectors.runner);
   runner.tabIndex = 0;
   runner.role = 'slider';
   runner.ariaLabel = 'slider runner';
@@ -26,11 +26,11 @@ const toggleTarget = (
   target: 'to' | 'from',
 ) => {
   if (target === type) {
-    runner.classList.add(cssSelectors.targetedRunner);
+    runner.classList.add(CSSSelectors.targetedRunner);
     return;
   }
 
-  runner.classList.remove(cssSelectors.targetedRunner);
+  runner.classList.remove(CSSSelectors.targetedRunner);
 };
 
 const move = (

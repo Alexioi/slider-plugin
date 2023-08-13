@@ -3,7 +3,7 @@
  */
 
 import { Runner } from '.';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 describe('Runner', () => {
   const div = document.createElement('div');
@@ -15,7 +15,7 @@ describe('Runner', () => {
   it('should not display from if slider not range', () => {
     runnerFrom.render({ isRange: false, isVertical: false, min: 0, max: 100 });
 
-    const runner = document.querySelector(`.${cssSelectors.runner}`);
+    const runner = document.querySelector(`.${CSSSelectors.runner}`);
 
     expect(runner).toBeNull();
   });
@@ -23,7 +23,7 @@ describe('Runner', () => {
   it('should update runner styles', () => {
     runnerTo.render({ isRange: false, isVertical: false, min: 0, max: 100 });
 
-    const runnerToNode = document.querySelector(`.${cssSelectors.runner}`);
+    const runnerToNode = document.querySelector(`.${CSSSelectors.runner}`);
 
     if (!(runnerToNode instanceof HTMLDivElement)) {
       fail('runnerToNode is not HTMLDivElement');
@@ -36,7 +36,7 @@ describe('Runner', () => {
     );
     expect(runnerToNode.style.left).toEqual('75%');
     expect(
-      runnerToNode.classList.contains(cssSelectors.targetedRunner),
+      runnerToNode.classList.contains(CSSSelectors.targetedRunner),
     ).toBeTruthy();
 
     runnerTo.update(
@@ -45,7 +45,7 @@ describe('Runner', () => {
       { from: '-50', to: '50' },
     );
     expect(
-      runnerToNode.classList.contains(cssSelectors.targetedRunner),
+      runnerToNode.classList.contains(CSSSelectors.targetedRunner),
     ).toBeFalsy();
 
     runnerTo.update(
@@ -63,7 +63,7 @@ describe('Runner', () => {
       view: window,
     });
 
-    const runnerToNode = document.querySelector(`.${cssSelectors.runner}`);
+    const runnerToNode = document.querySelector(`.${CSSSelectors.runner}`);
 
     if (!(runnerToNode instanceof HTMLDivElement)) {
       fail('runner is not HTMLDivElement');
@@ -103,7 +103,7 @@ describe('Runner', () => {
       code: 'ArrowUp',
     });
 
-    const runnerToNode = document.querySelector(`.${cssSelectors.runner}`);
+    const runnerToNode = document.querySelector(`.${CSSSelectors.runner}`);
 
     if (!(runnerToNode instanceof HTMLDivElement)) {
       fail('runner is not HTMLDivElement');

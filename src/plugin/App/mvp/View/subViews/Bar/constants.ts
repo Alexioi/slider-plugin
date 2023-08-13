@@ -1,5 +1,5 @@
-const cssSelectors = {
+const CSSSelectors = {
   bar: 'slider__bar',
 };
 
-export { cssSelectors };
+export { CSSSelectors };

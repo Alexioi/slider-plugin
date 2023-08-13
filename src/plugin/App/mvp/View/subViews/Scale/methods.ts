@@ -2,10 +2,10 @@ import { helpers } from '@helpers';
 import { MarkParameters } from '@types';
 
 import { Dom, HTMLDivElementWithCustomData, Props } from './type';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 const createElement = (root: HTMLDivElement): Dom => {
-  const scale = helpers.createElement(cssSelectors.scale);
+  const scale = helpers.createElement(CSSSelectors.scale);
 
   return { root, scale };
 };
@@ -65,7 +65,7 @@ const draw = (
     const { percent, value } = el;
     const style = isVertical ? `top: ${percent}%` : `left: ${percent}%`;
     const mark = document.createElement('div') as HTMLDivElementWithCustomData;
-    mark.classList.add(cssSelectors.mark);
+    mark.classList.add(CSSSelectors.mark);
     mark.style.cssText = style;
     mark.innerText = String(value);
     mark.customValue = Number(value);

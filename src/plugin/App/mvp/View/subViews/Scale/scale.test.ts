@@ -3,7 +3,7 @@
  */
 
 import { Scale } from '.';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 describe('Scale', () => {
   const div = document.createElement('div');
@@ -15,7 +15,7 @@ describe('Scale', () => {
   it('should not render', () => {
     scale.render({ min: 0, max: 100, isVertical: false, hasScale: false });
 
-    const scaleNode = document.querySelector(`.${cssSelectors.scale}`);
+    const scaleNode = document.querySelector(`.${CSSSelectors.scale}`);
 
     expect(scaleNode).toBeNull();
   });
@@ -23,7 +23,7 @@ describe('Scale', () => {
   it('should emit customValue', () => {
     scale.render({ min: 0, max: 100, isVertical: false, hasScale: true });
 
-    const markNode = document.querySelector(`.${cssSelectors.mark}`);
+    const markNode = document.querySelector(`.${CSSSelectors.mark}`);
 
     if (!(markNode instanceof HTMLDivElement)) {
       fail('scaleNode is not HTMLDivElement');

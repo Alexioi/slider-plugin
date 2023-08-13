@@ -3,7 +3,7 @@
  */
 
 import { Range } from '.';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 
 describe('Scale', () => {
   const div = document.createElement('div');
@@ -14,7 +14,7 @@ describe('Scale', () => {
   it('should update', () => {
     range.render();
 
-    const rangeNode = document.querySelector(`.${cssSelectors.range}`);
+    const rangeNode = document.querySelector(`.${CSSSelectors.range}`);
 
     if (!(rangeNode instanceof HTMLDivElement)) {
       fail('rangeNode is not HTMLDivElement');

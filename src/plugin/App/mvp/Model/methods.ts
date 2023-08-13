@@ -240,9 +240,9 @@ const calculateValue = (
 };
 
 const updateNearValue = (newValue: number, options: Options) => {
-  const nearValueId = getNearValueType(newValue, options);
+  const nearValueName = getNearValueType(newValue, options);
 
-  return { ...options, [nearValueId]: newValue };
+  return { ...options, [nearValueName]: newValue };
 };
 
 export { updateOptionsByStep, calculateValue, updateNearValue };

@@ -1,3 +1,3 @@
-const cssSelectors = { range: 'slider__range' };
+const CSSSelectors = { range: 'slider__range' };
 
-export { cssSelectors };
+export { CSSSelectors };

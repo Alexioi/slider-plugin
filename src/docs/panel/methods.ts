@@ -5,71 +5,71 @@ import {
   HTMLOptionElementWithCustomName,
   HTMLSelectElementWithCustomName,
 } from './type';
-import { cssSelectors, name, formatOptions } from './constants';
+import { CSSSelectors, name, formatOptions } from './constants';
 
 const searchElements = (root: Element): Dom => {
-  const range = root.querySelector('.panel__input_name-range');
+  const range = root.querySelector(CSSSelectors.range);
 
   if (!(range instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const vertical = root.querySelector(cssSelectors.vertical);
+  const vertical = root.querySelector(CSSSelectors.vertical);
 
   if (!(vertical instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const scale = root.querySelector(cssSelectors.scale);
+  const scale = root.querySelector(CSSSelectors.scale);
 
   if (!(scale instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const min = root.querySelector(cssSelectors.min);
+  const min = root.querySelector(CSSSelectors.min);
 
   if (!(min instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const max = root.querySelector(cssSelectors.max);
+  const max = root.querySelector(CSSSelectors.max);
 
   if (!(max instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const from = root.querySelector(cssSelectors.from);
+  const from = root.querySelector(CSSSelectors.from);
 
   if (!(from instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const to = root.querySelector(cssSelectors.to);
+  const to = root.querySelector(CSSSelectors.to);
 
   if (!(to instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const step = root.querySelector(cssSelectors.step);
+  const step = root.querySelector(CSSSelectors.step);
 
   if (!(step instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const tip = root.querySelector(cssSelectors.tip);
+  const tip = root.querySelector(CSSSelectors.tip);
 
   if (!(tip instanceof HTMLInputElement)) {
     throw Error();
   }
 
-  const indicator = root.querySelector(cssSelectors.indicator);
+  const indicator = root.querySelector(CSSSelectors.indicator);
 
   if (indicator === null) {
     throw Error();
   }
 
   const format = root.querySelector<HTMLSelectElementWithCustomName>(
-    cssSelectors.format,
+    CSSSelectors.format,
   );
 
   if (!(format instanceof HTMLSelectElement)) {
@@ -119,7 +119,7 @@ const syncInputs = (slider: App, dom: Dom): void => {
 const attachCallback = (dom: Dom, slider: App): void => {
   const thatDom = dom;
   const disableIndicator = () => {
-    thatDom.indicator.classList.remove(cssSelectors.decoratedIndicator);
+    thatDom.indicator.classList.remove(CSSSelectors.decoratedIndicator);
   };
 
   let timeout = setTimeout(() => {}, 0);
@@ -131,7 +131,7 @@ const attachCallback = (dom: Dom, slider: App): void => {
       thatDom.from.value = String(Number(from.toFixed(3)));
       thatDom.to.value = String(Number(to.toFixed(3)));
 
-      thatDom.indicator.classList.add(cssSelectors.decoratedIndicator);
+      thatDom.indicator.classList.add(CSSSelectors.decoratedIndicator);
 
       timeout = setTimeout(disableIndicator, 300);
     },

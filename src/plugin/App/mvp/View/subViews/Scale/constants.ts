@@ -1,6 +1,6 @@
-const cssSelectors = {
+const CSSSelectors = {
   scale: 'slider__scale',
   mark: 'slider__mark',
 };
 
-export { cssSelectors };
+export { CSSSelectors };

@@ -59,53 +59,53 @@ class Presenter {
       this.model.calculateNearValueUsingFraction(position, true);
     };
 
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'scale',
       'ClickScale',
       notifyModelClickedScale,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'runnerFrom',
       'ChangeRunnerPosition',
       notifyModelAboutChangeRunnerPosition,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'runnerTo',
       'ChangeRunnerPosition',
       notifyModelAboutChangeRunnerPosition,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'runnerFrom',
       'ChangeRunnerPositionByStep',
       notifyModelAboutTouchValue,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'runnerTo',
       'ChangeRunnerPositionByStep',
       notifyModelAboutTouchValue,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'runnerFrom',
       'ChangeNearRunnerPosition',
       notifyModelAboutChangeNearRunnerPosition,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'runnerTo',
       'ChangeNearRunnerPosition',
       notifyModelAboutChangeNearRunnerPosition,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'tip',
       'ChangeNearRunnerPosition',
       notifyModelAboutChangeNearRunnerPosition,
     );
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'tip',
       'ChangeRunnerPosition',
       notifyModelAboutChangeRunnerPosition,
     );
 
-    this.view.subscribeSubCViewToEvents(
+    this.view.subscribeSubViewToEvents(
       'bar',
       'ChangeNearRunnerPosition',
       notifyModelAboutBarClick,

@@ -2,11 +2,11 @@ import '@plugin';
 
 import { Panel } from '../panel/Panel';
 import configs from './data.json';
-import { cssSelectors } from './constants';
+import { CSSSelectors } from './constants';
 import './style.scss';
 
-const sliders = $(cssSelectors.example).slider();
+const sliders = $(CSSSelectors.example).slider();
 
-document.querySelectorAll(cssSelectors.control).forEach((el, i) => {
+document.querySelectorAll(CSSSelectors.control).forEach((el, i) => {
   new Panel(el, sliders[i], configs[i]);
 });
