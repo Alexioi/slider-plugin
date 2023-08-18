@@ -75,14 +75,14 @@ $('#root').slider({
 const slider = $('#root').slider();
 ```
 
-Далее нужно обратиться к нужному элементу массива и использовать нужный метод **update | getOptions**
+Далее нужно обратиться к нужному элементу массива и использовать нужный метод **update | getConfig**
 
 ```javascript
 // Method update changes option min to -900
 slider[0].update({ min: -900 });
 
 // Method getOptions returns slider config
-const sliderOptions = slider[1].getConfig();
+const config = slider[1].getConfig();
 
 // Method update changes custom event
 slider[0].update({
