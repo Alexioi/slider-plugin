@@ -31,7 +31,7 @@ describe('Scale', () => {
 
     const pointerDownEvent = new Event('pointerdown', { bubbles: true });
 
-    scale.subscribe('ClickScale', ({ targetNumber }) => {
+    scale.subscribe('clickScale', ({ targetNumber }) => {
       expect(targetNumber).not.toEqual(40);
       expect(targetNumber).toEqual(0);
     });

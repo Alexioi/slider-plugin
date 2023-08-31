@@ -79,7 +79,7 @@ describe('Runner', () => {
       clientY: 200,
     });
 
-    runnerTo.subscribe('ChangeRunnerPosition', ({ type }) => {
+    runnerTo.subscribe('changeRunnerPosition', ({ type }) => {
       expect(type).toEqual('to');
     });
 
@@ -109,7 +109,7 @@ describe('Runner', () => {
       fail('runner is not HTMLDivElement');
     }
 
-    runnerTo.subscribe('ChangeRunnerPositionByStep', ({ type, touchRoute }) => {
+    runnerTo.subscribe('changeRunnerPositionByStep', ({ type, touchRoute }) => {
       expect(type).toEqual('to');
 
       if (touchRoute === 'up') {

@@ -27,7 +27,7 @@ describe('Runner', () => {
       fail('barNode is not HTMLDivElement');
     }
 
-    bar.subscribe('ChangeNearRunnerPosition', () => {
+    bar.subscribe('changeNearRunnerPosition', () => {
       expect(true).toBeTruthy();
     });
 

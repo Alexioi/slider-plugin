@@ -32,28 +32,32 @@ type ElementTouch = {
   touchRoute: TouchRoute;
 };
 
-type EventTypes = {
-  UpdateModelOptions: Options;
-  UpdateModelValues: Options;
-  ChangeRunnerPosition: {
+type ModelEvents = {
+  updateOptions: Options;
+  updateValues: Options;
+  onChange: Options;
+};
+
+type ViewEvents = {
+  changeRunnerPosition: {
     type: 'from' | 'to';
     position: { x: number; y: number };
   };
-  ClickScale: { targetNumber: number };
-  onChange: Options;
-  ChangeRunnerPositionByStep: {
+  clickScale: { targetNumber: number };
+  changeRunnerPositionByStep: {
     type: 'from' | 'to';
     touchRoute: 'down' | 'up';
   };
-  ChangeNearRunnerPosition: { position: { x: number; y: number } };
+  changeNearRunnerPosition: { position: { x: number; y: number } };
 };
 
 export {
-  EventTypes,
   Config,
   Options,
   ElementPosition,
   MarkParameters,
   ElementTouch,
   TouchRoute,
+  ModelEvents,
+  ViewEvents,
 };

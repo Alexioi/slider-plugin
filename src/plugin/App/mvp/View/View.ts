@@ -1,5 +1,5 @@
 import { EventEmitter } from '@helpers/EventEmitter';
-import { ElementTouch, EventTypes, Options } from '@types';
+import { ElementTouch, ViewEvents, Options } from '@types';
 
 import { Dom, SubViews } from './type';
 import {
@@ -10,7 +10,7 @@ import {
 } from './methods';
 import './style.scss';
 
-class View extends EventEmitter<EventTypes> {
+class View extends EventEmitter<ViewEvents> {
   private dom: Dom;
 
   private subViews: SubViews;
@@ -70,7 +70,7 @@ class View extends EventEmitter<EventTypes> {
       type: 'to' | 'from';
     }) => {
       this.props = { target: type };
-      this.emit('ChangeRunnerPosition', { position, type });
+      this.emit('changeRunnerPosition', { position, type });
     };
 
     const notifyAboutBarClick = ({
@@ -78,15 +78,15 @@ class View extends EventEmitter<EventTypes> {
     }: {
       position: { x: number; y: number };
     }) => {
-      this.emit('ChangeNearRunnerPosition', { position });
+      this.emit('changeNearRunnerPosition', { position });
     };
 
     const notifyClickedScale = ({ targetNumber }: { targetNumber: number }) => {
-      this.emit('ClickScale', { targetNumber });
+      this.emit('clickScale', { targetNumber });
     };
 
     const notifyAboutTouchValue = ({ type, touchRoute }: ElementTouch) => {
-      this.emit('ChangeRunnerPositionByStep', { type, touchRoute });
+      this.emit('changeRunnerPositionByStep', { type, touchRoute });
     };
 
     const notifyAboutChangeNearRunnerPosition = ({
@@ -94,27 +94,27 @@ class View extends EventEmitter<EventTypes> {
     }: {
       position: { x: number; y: number };
     }) => {
-      this.emit('ChangeNearRunnerPosition', { position });
+      this.emit('changeNearRunnerPosition', { position });
     };
 
     runnerFrom.subscribe(
-      'ChangeRunnerPosition',
+      'changeRunnerPosition',
       notifyAboutChangeRunnerPosition,
     );
-    runnerTo.subscribe('ChangeRunnerPosition', notifyAboutChangeRunnerPosition);
-    runnerFrom.subscribe('ChangeRunnerPositionByStep', notifyAboutTouchValue);
-    runnerTo.subscribe('ChangeRunnerPositionByStep', notifyAboutTouchValue);
+    runnerTo.subscribe('changeRunnerPosition', notifyAboutChangeRunnerPosition);
+    runnerFrom.subscribe('changeRunnerPositionByStep', notifyAboutTouchValue);
+    runnerTo.subscribe('changeRunnerPositionByStep', notifyAboutTouchValue);
 
-    tip.subscribe('ChangeRunnerPosition', notifyAboutChangeRunnerPosition);
-    tip.subscribe('ChangeRunnerPosition', notifyAboutChangeRunnerPosition);
+    tip.subscribe('changeRunnerPosition', notifyAboutChangeRunnerPosition);
+    tip.subscribe('changeRunnerPosition', notifyAboutChangeRunnerPosition);
     tip.subscribe(
-      'ChangeNearRunnerPosition',
+      'changeNearRunnerPosition',
       notifyAboutChangeNearRunnerPosition,
     );
 
-    bar.subscribe('ChangeNearRunnerPosition', notifyAboutBarClick);
+    bar.subscribe('changeNearRunnerPosition', notifyAboutBarClick);
 
-    scale.subscribe('ClickScale', notifyClickedScale);
+    scale.subscribe('clickScale', notifyClickedScale);
 
     return this;
   }

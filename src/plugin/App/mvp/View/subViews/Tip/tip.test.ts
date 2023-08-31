@@ -163,7 +163,7 @@ describe('Tip', () => {
       view: window,
     });
 
-    tip.subscribe('ChangeRunnerPosition', ({ type }) => {
+    tip.subscribe('changeRunnerPosition', ({ type }) => {
       if (type === 'from') {
         expect(type).toEqual('from');
         return;
@@ -172,7 +172,7 @@ describe('Tip', () => {
       expect(type).toEqual('to');
     });
 
-    tip.subscribe('ChangeNearRunnerPosition', () => {
+    tip.subscribe('changeNearRunnerPosition', () => {
       expect(true).toBeTruthy();
     });
 

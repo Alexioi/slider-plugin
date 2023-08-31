@@ -1,12 +1,12 @@
 import { EventEmitter } from '@helpers/EventEmitter';
-import { EventTypes } from '@types';
+import { ViewEvents } from '@types';
 import { helpers } from '@helpers';
 
 import { Dom } from './type';
 import { createElements } from './methods';
 import './style.scss';
 
-class Bar extends EventEmitter<EventTypes> {
+class Bar extends EventEmitter<ViewEvents> {
   private dom: Dom;
 
   constructor(root: HTMLElement) {
@@ -44,7 +44,7 @@ class Bar extends EventEmitter<EventTypes> {
 
     const position = helpers.getPosition(this.dom.bar, pointerEvent);
 
-    this.emit('ChangeNearRunnerPosition', { position });
+    this.emit('changeNearRunnerPosition', { position });
   }
 }
 

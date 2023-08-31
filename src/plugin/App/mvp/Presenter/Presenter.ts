@@ -51,17 +51,17 @@ class Presenter {
       this.model.calculateNearValueUsingFraction(position, true);
     };
 
-    this.view.subscribe('ClickScale', notifyModelClickedScale);
+    this.view.subscribe('clickScale', notifyModelClickedScale);
     this.view.subscribe(
-      'ChangeRunnerPosition',
+      'changeRunnerPosition',
       notifyModelAboutChangeRunnerPosition,
     );
     this.view.subscribe(
-      'ChangeRunnerPositionByStep',
+      'changeRunnerPositionByStep',
       notifyModelAboutTouchValue,
     );
     this.view.subscribe(
-      'ChangeNearRunnerPosition',
+      'changeNearRunnerPosition',
       notifyModelAboutChangeNearRunnerPosition,
     );
 
@@ -69,17 +69,17 @@ class Presenter {
   }
 
   private attachEventEmittersToView(): Presenter {
-    const notifyViewUpdateModelOptions = (options: Options): void => {
+    const notifyViewUpdateOptions = (options: Options): void => {
       this.view.render(options);
     };
 
-    const notifyViewUpdateModelValues = (options: Options): void => {
+    const notifyViewUpdateValues = (options: Options): void => {
       this.view.update(options);
     };
 
-    this.model.subscribe('UpdateModelOptions', notifyViewUpdateModelOptions);
+    this.model.subscribe('updateOptions', notifyViewUpdateOptions);
 
-    this.model.subscribe('UpdateModelValues', notifyViewUpdateModelValues);
+    this.model.subscribe('updateValues', notifyViewUpdateValues);
 
     return this;
   }

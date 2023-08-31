@@ -1,11 +1,11 @@
-import { EventTypes } from '@types';
+import { ViewEvents } from '@types';
 import { EventEmitter } from '@helpers/EventEmitter';
 
 import { Dom, Props, RenderProps } from './type';
 import { createElement, destroy, update } from './methods';
 import './style.scss';
 
-class Scale extends EventEmitter<EventTypes> {
+class Scale extends EventEmitter<ViewEvents> {
   private dom: Dom;
 
   private props: Props = {
@@ -62,7 +62,7 @@ class Scale extends EventEmitter<EventTypes> {
 
     const targetNumber = Number(target.customValue);
 
-    this.emit('ClickScale', { targetNumber });
+    this.emit('clickScale', { targetNumber });
   }
 
   private handleWindowsResize(): void {

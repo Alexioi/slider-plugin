@@ -1,4 +1,4 @@
-import { EventTypes, TouchRoute } from '@types';
+import { ViewEvents, TouchRoute } from '@types';
 import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
 
@@ -13,7 +13,7 @@ import {
 } from './methods';
 import './style.scss';
 
-class Runner extends EventEmitter<EventTypes> {
+class Runner extends EventEmitter<ViewEvents> {
   private dom: Dom;
 
   private props: Props;
@@ -87,7 +87,7 @@ class Runner extends EventEmitter<EventTypes> {
 
       const position = helpers.getPosition(this.dom.root, pointerEvent);
 
-      this.emit('ChangeRunnerPosition', { position, type });
+      this.emit('changeRunnerPosition', { position, type });
     };
 
     const handlePointerUp = (): void => {
@@ -106,7 +106,7 @@ class Runner extends EventEmitter<EventTypes> {
       keyboardEvent.preventDefault();
       const { type } = this.props;
 
-      this.emit('ChangeRunnerPositionByStep', { type, touchRoute });
+      this.emit('changeRunnerPositionByStep', { type, touchRoute });
     };
 
     if (code === 'ArrowDown' || code === 'ArrowRight') {

@@ -4,7 +4,7 @@ import {
   Config,
   ElementPosition,
   ElementTouch,
-  EventTypes,
+  ModelEvents,
 } from '@types';
 
 import { validate } from './validate';
@@ -14,7 +14,7 @@ import {
   updateOptionsByStep,
 } from './methods';
 
-class Model extends EventEmitter<EventTypes> {
+class Model extends EventEmitter<ModelEvents> {
   private options: Options;
 
   private callbacks: Pick<Config, 'onChange'> = { onChange: () => {} };
@@ -39,7 +39,7 @@ class Model extends EventEmitter<EventTypes> {
     this.callbacks = callbacks;
 
     this.callbacks.onChange(this.options);
-    this.emit('UpdateModelOptions', this.options);
+    this.emit('updateOptions', this.options);
   }
 
   public getConfig(): Config {
@@ -58,7 +58,7 @@ class Model extends EventEmitter<EventTypes> {
     );
 
     this.callbacks.onChange(this.options);
-    this.emit('UpdateModelValues', this.options);
+    this.emit('updateValues', this.options);
   }
 
   public calculateNearValueUsingFraction(
@@ -71,21 +71,21 @@ class Model extends EventEmitter<EventTypes> {
     this.options = calculateValue(position, this.options, isCheckSensitive);
 
     this.callbacks.onChange(this.options);
-    this.emit('UpdateModelValues', this.options);
+    this.emit('updateValues', this.options);
   }
 
   public updateNearValue(newValue: number): void {
     this.options = updateNearValue(newValue, this.options);
 
     this.callbacks.onChange(this.options);
-    this.emit('UpdateModelValues', this.options);
+    this.emit('updateValues', this.options);
   }
 
   public updateValueByStep({ type, touchRoute }: ElementTouch): void {
     this.options = updateOptionsByStep(touchRoute, this.options, type);
 
     this.callbacks.onChange(this.options);
-    this.emit('UpdateModelValues', this.options);
+    this.emit('updateValues', this.options);
   }
 }
 

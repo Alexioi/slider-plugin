@@ -1,4 +1,4 @@
-import { EventTypes } from '@types';
+import { ViewEvents } from '@types';
 import { EventEmitter } from '@helpers/EventEmitter';
 import { helpers } from '@helpers';
 
@@ -12,7 +12,7 @@ import {
 } from './methods';
 import './style.scss';
 
-class Tip extends EventEmitter<EventTypes> {
+class Tip extends EventEmitter<ViewEvents> {
   private dom: Dom;
 
   private handleFromTipPointerdown: ({ target }: Event) => void;
@@ -106,12 +106,12 @@ class Tip extends EventEmitter<EventTypes> {
         const position = helpers.getPosition(this.dom.root, pointerEvent);
 
         if (type === 'both') {
-          this.emit('ChangeNearRunnerPosition', { position });
+          this.emit('changeNearRunnerPosition', { position });
           return;
         }
 
         if (type === 'from' || type === 'to') {
-          this.emit('ChangeRunnerPosition', { position, type });
+          this.emit('changeRunnerPosition', { position, type });
         }
       };
 
