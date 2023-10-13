@@ -12,7 +12,7 @@ class Presenter {
     this.view = view;
     this.model = model;
 
-    this.attachEventEmittersToModel().attachEventEmittersToView();
+    this.init();
   }
 
   public updateConfig(config?: Partial<Config>): void {
@@ -21,6 +21,11 @@ class Presenter {
 
   public getConfig(): Config {
     return this.model.getConfig();
+  }
+
+  private init(): void {
+    this.attachEventEmittersToModel().attachEventEmittersToView();
+    this.model.updateConfig();
   }
 
   private attachEventEmittersToModel(): Presenter {
