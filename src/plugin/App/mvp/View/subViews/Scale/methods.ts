@@ -96,11 +96,11 @@ const destroy = ({ scale }: Dom): void => {
 const update = (dom: Dom, props: Props) => {
   deleteMarks(dom);
 
+  dom.root.append(dom.scale);
+
   const scaleParameters = calculateScaleParameters(props, dom);
 
   draw(dom, props, scaleParameters);
-
-  dom.root.append(dom.scale);
 };
 
 export { createElement, getScalePercents, destroy, update };
