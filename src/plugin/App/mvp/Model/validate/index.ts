@@ -49,6 +49,10 @@ const calculateFrom = (min: number, to: number, from: number): number => {
     return min;
   }
 
+  if (from > to) {
+    return to;
+  }
+
   return from;
 };
 

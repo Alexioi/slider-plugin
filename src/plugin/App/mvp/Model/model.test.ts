@@ -267,6 +267,14 @@ describe('Model', () => {
         true,
       );
     })();
+
+    (() => {
+      const model = new Model({ ...options, from: 100, to: 100, max: 90 });
+
+      const { from, max, to } = model.getConfig();
+
+      expect({ from, max, to }).toEqual({ from: 90, max: 90, to: 90 });
+    })();
   });
 
   it('should calculate near value using fraction and emit options', () => {
