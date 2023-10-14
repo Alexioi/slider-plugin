@@ -458,11 +458,11 @@ describe('Model', () => {
       const model = new Model({ ...options });
       const value = {
         ...options,
-        from: 51,
+        from: 50,
       };
       model.subscribe('updateValues', makeTestupdateValues(value));
 
-      model.updateNearValue(51);
+      model.updateNearValue(50);
     })();
   });
 
