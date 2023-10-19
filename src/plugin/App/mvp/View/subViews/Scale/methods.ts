@@ -45,7 +45,7 @@ const getFrequencyFactorOfMarks = (
   differenceMaxAndMin: number,
   step: number,
 ): number => {
-  const frequencyFactorOfMarks = Math.round(differenceMaxAndMin / step);
+  const frequencyFactorOfMarks = Math.trunc(differenceMaxAndMin / step);
 
   if (length > 800) {
     return getLess(10, frequencyFactorOfMarks);
@@ -92,7 +92,7 @@ const calculateScaleParameters = (
     step,
   );
 
-  const frequencyFactorOfMarks = Math.round(
+  const frequencyFactorOfMarks = Math.trunc(
     differenceMaxAndMin / length / step,
   );
 
