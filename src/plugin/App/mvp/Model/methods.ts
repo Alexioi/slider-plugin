@@ -250,16 +250,9 @@ const calculateValue = (
 const updateNearValue = (newValue: number, options: Options) => {
   const nearValueType = getNearValueType(newValue, options);
 
-  const nearType = getNearValueType(newValue, options);
-
   return {
     ...options,
-    [nearValueType]: changeValueDependingOnStep(
-      newValue,
-      options,
-      nearType,
-      true,
-    ),
+    [nearValueType]: newValue,
   };
 };
 

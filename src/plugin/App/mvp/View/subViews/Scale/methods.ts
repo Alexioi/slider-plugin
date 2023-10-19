@@ -10,16 +10,16 @@ const createElement = (root: HTMLDivElement): Dom => {
   return { root, scale };
 };
 
-const getScalePercents = (sliderLength: number): number[] => {
-  if (sliderLength > 800) {
+const getScalePercents = (length: number): number[] => {
+  if (length > 800) {
     return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   }
 
-  if (sliderLength > 500) {
+  if (length > 500) {
     return [0, 20, 40, 60, 80, 100];
   }
 
-  if (sliderLength > 300) {
+  if (length > 300) {
     return [0, 33, 66, 100];
   }
 
@@ -32,25 +32,81 @@ const deleteMarks = ({ scale }: Dom): void => {
   peelableScale.innerHTML = '';
 };
 
+const getLess = (firstNumber: number, secondNumber: number) => {
+  if (firstNumber > secondNumber) {
+    return secondNumber;
+  }
+
+  return firstNumber;
+};
+
+const getFrequencyFactorOfMarks = (
+  length: number,
+  differenceMaxAndMin: number,
+  step: number,
+): number => {
+  const frequencyFactorOfMarks = Math.trunc(differenceMaxAndMin / step);
+
+  if (length > 800) {
+    return getLess(10, frequencyFactorOfMarks);
+  }
+
+  if (length > 500) {
+    return getLess(5, frequencyFactorOfMarks);
+  }
+
+  if (length > 300) {
+    return getLess(3, frequencyFactorOfMarks);
+  }
+
+  return 1;
+};
+
 const calculateScaleParameters = (
-  { max, min, isVertical }: Props,
+  { max, min, step, isVertical }: Props,
   { scale }: Dom,
 ): MarkParameters[] => {
+  const differenceMaxAndMin = Math.abs(max - min);
   const { offsetHeight, offsetWidth } = scale;
   const scaleLength = isVertical ? offsetHeight : offsetWidth;
-  const scalePercents = getScalePercents(scaleLength);
 
-  const differenceMaxAndMin = Math.abs(max - min);
+  if (step === 'none') {
+    const scalePercents = getScalePercents(scaleLength);
 
-  const scaleParameters = scalePercents.map((el) => {
-    const value = Number(
-      (min + (differenceMaxAndMin * el) / 100).toFixed(1).replace(/\.?0+$/, ''),
-    );
+    const scaleParameters = scalePercents.map((el) => {
+      const value = Number(
+        (min + (differenceMaxAndMin * el) / 100)
+          .toFixed(1)
+          .replace(/\.?0+$/, ''),
+      );
 
-    return { percent: el, value };
+      return { percent: el, value };
+    });
+
+    return scaleParameters;
+  }
+
+  const length = getFrequencyFactorOfMarks(
+    scaleLength,
+    differenceMaxAndMin,
+    step,
+  );
+
+  const frequencyFactorOfMarks = Math.trunc(
+    differenceMaxAndMin / length / step,
+  );
+
+  const arrayIncreasingNumbers = Array.from({ length }, (_, i) => i);
+
+  const scaleParameters = arrayIncreasingNumbers.map((el) => {
+    const value = min + frequencyFactorOfMarks * step * el;
+
+    const percent = Math.abs((min - value) / differenceMaxAndMin) * 100;
+
+    return { percent, value };
   });
 
-  return scaleParameters;
+  return [...scaleParameters, { percent: 100, value: max }];
 };
 
 const draw = (

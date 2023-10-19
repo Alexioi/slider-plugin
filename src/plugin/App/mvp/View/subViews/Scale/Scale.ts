@@ -11,6 +11,7 @@ class Scale extends EventEmitter<ViewEvents> {
   private props: Props = {
     min: 0,
     max: 0,
+    step: 0,
     isVertical: false,
   };
 
@@ -25,13 +26,13 @@ class Scale extends EventEmitter<ViewEvents> {
     this.dom = dom;
   }
 
-  public render({ min, max, isVertical, hasScale }: RenderProps): void {
+  public render({ min, max, isVertical, hasScale, step }: RenderProps): void {
     if (!hasScale) {
       destroy(this.dom);
       return;
     }
 
-    this.props = { min, max, isVertical };
+    this.props = { min, max, step, isVertical };
 
     update(this.dom, this.props);
   }

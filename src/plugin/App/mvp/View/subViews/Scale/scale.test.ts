@@ -13,7 +13,13 @@ describe('Scale', () => {
   const scale = new Scale(div);
 
   it('should not render', () => {
-    scale.render({ min: 0, max: 100, isVertical: false, hasScale: false });
+    scale.render({
+      min: 0,
+      max: 100,
+      isVertical: false,
+      hasScale: false,
+      step: 1,
+    });
 
     const scaleNode = document.querySelector(`.${CSSSelectors.scale}`);
 
@@ -21,7 +27,13 @@ describe('Scale', () => {
   });
 
   it('should emit customValue', () => {
-    scale.render({ min: 0, max: 100, isVertical: false, hasScale: true });
+    scale.render({
+      min: 0,
+      max: 100,
+      isVertical: false,
+      hasScale: true,
+      step: 1,
+    });
 
     const markNode = document.querySelector(`.${CSSSelectors.mark}`);
 
@@ -40,7 +52,13 @@ describe('Scale', () => {
   });
 
   it('should update by windows resize', () => {
-    scale.render({ min: 0, max: 100, isVertical: true, hasScale: true });
+    scale.render({
+      min: 0,
+      max: 100,
+      isVertical: true,
+      hasScale: true,
+      step: 1,
+    });
 
     Object.defineProperty(window, 'innerHeight', {
       writable: true,
