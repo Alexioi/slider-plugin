@@ -32,14 +32,6 @@ const deleteMarks = ({ scale }: Dom): void => {
   peelableScale.innerHTML = '';
 };
 
-const getLess = (firstNumber: number, secondNumber: number) => {
-  if (firstNumber > secondNumber) {
-    return secondNumber;
-  }
-
-  return firstNumber;
-};
-
 const getFrequencyFactorOfMarks = (
   length: number,
   differenceMaxAndMin: number,
@@ -48,15 +40,15 @@ const getFrequencyFactorOfMarks = (
   const frequencyFactorOfMarks = Math.trunc(differenceMaxAndMin / step);
 
   if (length > 800) {
-    return getLess(10, frequencyFactorOfMarks);
+    return Math.min(10, frequencyFactorOfMarks);
   }
 
   if (length > 500) {
-    return getLess(5, frequencyFactorOfMarks);
+    return Math.min(5, frequencyFactorOfMarks);
   }
 
   if (length > 300) {
-    return getLess(3, frequencyFactorOfMarks);
+    return Math.min(3, frequencyFactorOfMarks);
   }
 
   return 1;
